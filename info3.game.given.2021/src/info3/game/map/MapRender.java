@@ -1,6 +1,7 @@
 package info3.game.map;
 
 import info3.game.Game;
+import info3.game.entity.Hero;
 import info3.game.entity.Location;
 
 public class MapRender {
@@ -17,18 +18,18 @@ public class MapRender {
 
 	}
 
-	Location mid(Location a, Location b, int len) {
+	Location mid(Location a, Location b) {
 		Location res = new Location(0, 0);
 		float tmp = (a.getX() + b.getX()) / 2;
-		float tmp2 = (Math.min(a.getX(), b.getX()) + len + Math.max(a.getX(), b.getX()));
-		if (diff(tmp, a.getX(), len) < diff(tmp, b.getX(), len)) {
+		float tmp2 = (Math.min(a.getX(), b.getX()) + map.lenX + Math.max(a.getX(), b.getX()));
+		if (diff(tmp, a.getX(), map.lenX) < diff(tmp, b.getX(), map.lenX)) {
 			res.setX(tmp);
 		} else {
 			res.setX(tmp2);
 		}
 		tmp = (a.getY() + b.getY()) / 2;
-		tmp2 = (Math.min(a.getY(), b.getY()) + len + Math.max(a.getY(), b.getY()));
-		if (diff(tmp, a.getY(), len) < diff(tmp, b.getY(), len)) {
+		tmp2 = (Math.min(a.getY(), b.getY()) + map.lenY + Math.max(a.getY(), b.getY()));
+		if (diff(tmp, a.getY(), map.lenY) < diff(tmp, b.getY(), map.lenY)) {
 			res.setY(tmp);
 		} else {
 			res.setY(tmp2);
@@ -52,9 +53,9 @@ public class MapRender {
 
 	void updateCam(Hero player1, Hero player2, int w, int h) {
 		this.camera = mid(player1.location, player2.location);
-		if (diff(player1.x, player2.x) < 7 && diff(player1.y, player2.y) < 7) {
-			nbTileX = diff(player1.x, player2.x, map.lenX) + bufferTile * 2;
-			nbTileY = diff(player1.y, player2.y, map.lenY) + bufferTile * 2;
+		if (diff(player1.location.getX(), player2.location.getX(), map.lenX) < 7 && diff(player1.location.getY(), player2.location.getY(), map.lenY) < 7) {
+			nbTileX = (int) diff(player1.location.getX(), player2.location.getY(), map.lenX) + bufferTile * 2;
+			nbTileY = (int) diff(player1.location.getY(), player2.location.getY(), map.lenY) + bufferTile * 2;
 			int tempx = (int) Math.ceil(w / nbTileX);
 			int tempy = (int) Math.ceil(h / nbTileY);
 			if (tempx > tempy) {
