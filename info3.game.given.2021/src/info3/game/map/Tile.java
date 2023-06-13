@@ -5,6 +5,7 @@ import java.awt.Image;
 
 import info3.game.Sound;
 import info3.game.entity.Entity;
+import info3.game.entity.Location;
 
 public abstract class Tile implements ITile {
 	public boolean walkable;
@@ -12,6 +13,8 @@ public abstract class Tile implements ITile {
 	public float opacity;
 	public Sound sound;
 	public Image image;
+	public Location location;
+	
 	
 	public Tile() {
 		// TODO Auto-generated constructor stub
