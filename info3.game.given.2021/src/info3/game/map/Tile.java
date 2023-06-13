@@ -2,6 +2,7 @@ package info3.game.map;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import info3.game.Sound;
 import info3.game.entity.Entity;
@@ -16,13 +17,18 @@ public abstract class Tile implements ITile {
 	public Location location;
 	
 	
-	public Tile() {
-		// TODO Auto-generated constructor stub
+	public Tile(Location location,boolean walkable,float opacity,BufferedImage img) {
+		this.walkable=walkable;
+		this.location=location;
+		this.opacity=opacity;
+		this.image=img;
+		//TODO Ajouter Sound au constructeur
 	}
 
 	@Override
-	public void paint(Graphics g) {
-		// TODO Auto-generated method stub
+	public void paint(Graphics g,int screenPosX,int screenPosY,int size) {
+		//TODO convertisseur de position grille to position pixel
+		//g.drawImage(this.image, screenPosX, screenPosY, size, size, null);
 
 	}
 }
