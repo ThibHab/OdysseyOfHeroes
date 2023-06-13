@@ -30,14 +30,7 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 
 import info3.game.Game;
-import info3.game.automata.Action;
-import info3.game.automata.Automaton;
-import info3.game.automata.Condition;
-import info3.game.automata.Direction;
-import info3.game.automata.Key;
-import info3.game.automata.Move;
-import info3.game.automata.State;
-import info3.game.automata.Transition;
+import info3.game.automata.*;
 
 /**
  * A simple class that holds the images of a sprite for an animated cowbow.
@@ -56,7 +49,7 @@ public class Cowboy extends Entity {
 	public Cowboy(Game g) throws IOException {
 		m_images = loadSprite("resources/winchester-4x6.png", 4, 6);
 		State src = new State("1");
-		Condition c = new Key(KeyEvent.VK_UP);
+		Condition c = new MyDir(Direction.S);
 		Action a = new Move(Direction.S);
 		Transition t = new Transition(src, c, a, src);
 		LinkedList<Transition> list = new LinkedList<Transition>();
@@ -64,6 +57,7 @@ public class Cowboy extends Entity {
 		aut = new Automaton("Cowboy", src, list);
 		game = g;
 		currentState = src;
+		this.direction = Direction.S;
 	}
 
 	/*
@@ -114,7 +108,7 @@ public class Cowboy extends Entity {
 
 	@Override
 	public void Move(Direction d) {
-		System.out.print("Move in direction" + d.toString());
+		System.out.print("Move in direction " + d.toString() + "\n");
 	}
 
 }
