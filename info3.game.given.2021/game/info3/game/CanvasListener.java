@@ -23,14 +23,18 @@ package info3.game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+import java.util.List;
 
 import info3.game.graphics.GameCanvasListener;
 
 public class CanvasListener implements GameCanvasListener {
   Game m_game;
+  public List<Integer> keys;
 
   CanvasListener(Game game) {
     m_game = game;
+    keys = new LinkedList<Integer>();
   }
 
   @Override
@@ -90,11 +94,14 @@ public class CanvasListener implements GameCanvasListener {
   @Override
   public void keyPressed(KeyEvent e) {
     System.out.println("Key pressed: "+e.getKeyChar()+" code="+e.getKeyCode());
+    if (!keys.contains((Integer)e.getKeyCode()))
+    	keys.add((Integer)e.getKeyCode());
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
     System.out.println("Key released: "+e.getKeyChar()+" code="+e.getKeyCode());
+    keys.remove((Integer)e.getKeyCode());
   }
 
   @Override

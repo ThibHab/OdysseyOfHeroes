@@ -50,14 +50,14 @@ public class Game {
 	JFrame m_frame;
 	JLabel m_text;
 	GameCanvas m_canvas;
-	CanvasListener m_listener;
+	public CanvasListener m_listener;
 	Cowboy m_cowboy;
 	Sound m_music;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
-		m_cowboy = new Cowboy();
+		m_cowboy = new Cowboy(this);
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
