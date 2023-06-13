@@ -18,7 +18,7 @@
  *  Created on: March, 2020
  *      Author: Pr. Olivier Gruber
  */
-package info3.game;
+package info3.game.entity;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -39,7 +39,7 @@ public class Cowboy {
   int m_x=10, m_y=10;
   int m_width;
   
-  Cowboy() throws IOException {
+  public Cowboy() throws IOException {
     m_images = loadSprite("resources/winchester-4x6.png", 4, 6);
   }
   

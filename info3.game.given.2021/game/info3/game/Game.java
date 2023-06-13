@@ -29,6 +29,7 @@ import java.io.RandomAccessFile;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import info3.game.entity.Cowboy;
 import info3.game.graphics.GameCanvas;
 import info3.game.sound.RandomFileInputStream;
 
