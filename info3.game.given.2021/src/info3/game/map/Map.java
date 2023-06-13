@@ -16,6 +16,7 @@ public abstract class Map implements IMap {
 		this.lenY = nb_y;
 		this.player1 = p1;
 		this.player2 = p2;
+		this.map = new Tile[lenX][lenY];
 	}
 
 	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, Entity ent, long seed) {
