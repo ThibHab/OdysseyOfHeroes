@@ -1,8 +1,8 @@
 package info3.game.entity;
 
-public class StrenghtPotion extends Item{
+public class StrengthPotion extends Item{
 
-	public StrenghtPotion(Location l) {
+	public StrengthPotion(Location l) {
 		super();
 		//TODO Set the sprite, the width and the height
 		this.location = l;		
