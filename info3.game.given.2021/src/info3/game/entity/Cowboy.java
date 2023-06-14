@@ -49,11 +49,23 @@ public class Cowboy extends Entity {
 	public Cowboy(Game g) throws IOException {
 		m_images = loadSprite("resources/winchester-4x6.png", 4, 6);
 		State src = new State("1");
-		Condition c = new MyDir(Direction.S);
-		Action a = new Move(Direction.S);
-		Transition t = new Transition(src, c, a, src);
+		Condition up = new Key(KeyEvent.VK_UP);
+		Condition down = new Key(KeyEvent.VK_DOWN);
+		Condition left = new Key(KeyEvent.VK_LEFT);
+		Condition right = new Key(KeyEvent.VK_RIGHT);
+		Action moveUp = new Move(Direction.N);
+		Action moveDown = new Move(Direction.S);
+		Action moveLeft = new Move(Direction.W);
+		Action moveRight = new Move(Direction.E);
+		Transition t1 = new Transition(src, up, moveUp, src);
+		Transition t2 = new Transition(src, down, moveDown, src);
+		Transition t3 = new Transition(src, left, moveLeft, src);
+		Transition t4 = new Transition(src, right, moveRight, src);
 		LinkedList<Transition> list = new LinkedList<Transition>();
-		list.add(t);
+		list.add(t1);
+		list.add(t2);
+		list.add(t3);
+		list.add(t4);
 		aut = new Automaton("Cowboy", src, list);
 		game = g;
 		currentState = src;
