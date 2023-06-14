@@ -68,11 +68,11 @@ public abstract class Map implements IMap {
 					}
 					if (!already) {
 						if (ent instanceof Bush) {
-							map[i][j].entity = new Bush();
+							map[i][j].entity = new Bush(new Location(i, j));
 						} else if (ent instanceof Rock) {
-							map[i][j].entity = new Rock();
+							map[i][j].entity = new Rock(new Location(i, j));
 						} else {
-							map[i][j].entity = new Tree();
+							map[i][j].entity = new Tree(new Location(i, j));
 						}
 
 						System.out.println("Objet créé en: (" + i + ";" + j + ")");
