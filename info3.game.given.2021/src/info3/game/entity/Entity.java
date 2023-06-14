@@ -35,6 +35,12 @@ public abstract class Entity implements IEntity {
 		this.location = new Location(0, 0);
 		this.currentState = null;
 	}
+	
+	public void Tick(long elapsed) {
+		if (!this.frozen) {
+			this.automaton.step(this, Entity.game);
+		}
+	}
 
 	@Override
 	public void Move(Direction d) {
