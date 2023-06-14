@@ -16,19 +16,19 @@ public class ImagesConst {
 	
 	
 	public ImagesConst() throws IOException {
-		File imageFile = new File("resources/grass_placeholder");
+		File imageFile = new File("resources/grass_placeholder.png");
 		if (imageFile.exists()) {
 		      grassTile = ImageIO.read(imageFile);
 		}
-		imageFile = new File("resources/water_placeholder");
+		imageFile = new File("resources/water_placeholder.png");
 		if (imageFile.exists()) {
 		      waterTile = ImageIO.read(imageFile);
 		}
-		imageFile = new File("resources/dirt_placeholder");
+		imageFile = new File("resources/dirt_placeholder.png");
 		if (imageFile.exists()) {
 		      dirtTile = ImageIO.read(imageFile);
 		}
-		imageFile = new File("resources/rock_placeholder");
+		imageFile = new File("resources/rock_placeholder.png");
 		if (imageFile.exists()) {
 		      rockTile = ImageIO.read(imageFile);
 		}
