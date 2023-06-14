@@ -71,7 +71,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Hit() {
+	public void Hit() {		//TODO mettre une direction
 		
 	}
 
@@ -87,7 +87,7 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Pick(Category c) {
-		// TODO Auto-generated method stub
+		// TODO mettre une direction à la place de la categorie
 
 	}
 
@@ -117,7 +117,7 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Throw(Category c) {
-		// TODO Auto-generated method stub
+		// TODO ajouter un parametre direction avant category
 
 	}
 
