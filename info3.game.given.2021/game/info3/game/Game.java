@@ -170,6 +170,7 @@ public class Game {
 			txt = txt+"P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
 			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
 			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
 			m_text.setText(txt);
 		}
 	}
