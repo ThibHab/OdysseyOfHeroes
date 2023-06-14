@@ -20,14 +20,14 @@ public abstract class Entity implements IEntity {
 	public Location location;
 	public Automaton automaton;
 	public State currentState;
-	public Game game;	
+	public Game game;
 	public String name;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
 	public float scale;
-	
-	public int width, height, health, coins, weaponDamages, weaponRange;
+
+	public int width, height, health, coins, weaponDamages, weaponRange, healingPotions, strengthPotions;
 	public float speed;
 	public boolean frozen;
 
@@ -41,7 +41,7 @@ public abstract class Entity implements IEntity {
 		if (d == null) {
 			d = this.direction;
 		}
-		
+
 		switch (d) {
 		case N:
 			this.location.setY(this.location.getY() - 1);
@@ -65,7 +65,7 @@ public abstract class Entity implements IEntity {
 		if (d == null) {
 			d = this.direction;
 		}
-		
+
 		this.direction = d;
 	}
 
@@ -74,7 +74,7 @@ public abstract class Entity implements IEntity {
 		if (d == null) {
 			d = this.direction;
 		}
-		
+
 		Random random = new Random();
 		switch (c) {
 		case A:
@@ -93,38 +93,14 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Direction d) {
-		if (d == null) {
-			d = this.direction;
-		}
-		
-		float xIndex = 0, yIndex = 0;
-		switch (d) {
-		case N:
-			xIndex = this.location.getX();
-			yIndex = this.location.getY() - 1;
-			break;
-		case S:
-			xIndex = this.location.getX();
-			yIndex = this.location.getY() + 1;
-			break;
-		case W:
-			xIndex = this.location.getX() - 1;
-			yIndex = this.location.getY();
-			break;
-		case E:
-			xIndex = this.location.getX() + 1;
-			yIndex = this.location.getY();
-			break;
-		default:
-			break;
-		}
-		
+		Location t = frontTileLocation(d);
+
 		Map map = (Map) this.game.map;
-		Entity entity = map.map[(int) xIndex][(int) yIndex].entity;
+		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
 			entity.health--;
 		}
-		
+
 		// TODO takeDamage method for animation (view) ?
 	}
 
@@ -140,8 +116,20 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Pick(Direction d) {
-		// TODO complete method
+		Location t = frontTileLocation(d);
 
+		Map map = (Map) this.game.map;
+		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		if (entity.category == Category.P) {
+			if (entity instanceof Coin) {
+				this.coins++;
+				// TODO destroy la coin
+			} else if (entity instanceof HealingPotion) {
+				this.healingPotions++;
+			} else if (entity instanceof StrengthPotion) {
+				this.strengthPotions++;
+			}
+		}
 	}
 
 	@Override
@@ -188,5 +176,35 @@ public abstract class Entity implements IEntity {
 
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+	public Location frontTileLocation(Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
+
+		float xIndex = 0, yIndex = 0;
+		switch (d) {
+		case N:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() - 1;
+			break;
+		case S:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() + 1;
+			break;
+		case W:
+			xIndex = this.location.getX() - 1;
+			yIndex = this.location.getY();
+			break;
+		case E:
+			xIndex = this.location.getX() + 1;
+			yIndex = this.location.getY();
+			break;
+		default:
+			break;
+		}
+
+		return new Location((int) xIndex, (int) yIndex);
 	}
 }
