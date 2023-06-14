@@ -3,8 +3,7 @@ package info3.game.map;
 import java.awt.Graphics;
 import java.util.Random;
 
-import info3.game.entity.Entity;
-import info3.game.entity.Location;
+import info3.game.entity.*;
 
 public abstract class Map implements IMap {
 	public Tile[][] map;
