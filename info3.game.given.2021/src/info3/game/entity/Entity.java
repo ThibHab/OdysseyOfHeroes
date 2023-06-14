@@ -15,19 +15,21 @@ public abstract class Entity implements IEntity {
 	public static int level;
 	public static int experience;
 
-	public int width, height, health;
+	public Direction direction;
+	public Category category;
 	public Location location;
 	public Automaton automaton;
 	public State currentState;
-	public float speed;
-	public Direction direction;
-	public Category category;
+	public Game game;	
 	public String name;
+
 	public BufferedImage[] sprites;
-	public int coins;
-	public int weaponDamages;
-	public int weaponRange;
-	public Game game;
+	public int imageIndex;
+	public float scale;
+	
+	public int width, height, health, coins, weaponDamages, weaponRange;
+	public float speed;
+	public boolean frozen;
 
 	public Entity() {
 		this.location = new Location(0, 0);
