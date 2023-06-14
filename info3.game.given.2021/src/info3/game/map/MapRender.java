@@ -1,5 +1,7 @@
 package info3.game.map;
 
+import java.awt.Graphics;
+
 import info3.game.Game;
 import info3.game.entity.Hero;
 import info3.game.entity.Location;
@@ -53,7 +55,8 @@ public class MapRender {
 
 	void updateCam(Hero player1, Hero player2, int w, int h) {
 		this.camera = mid(player1.location, player2.location);
-		if (diff(player1.location.getX(), player2.location.getX(), map.lenX) < 7 && diff(player1.location.getY(), player2.location.getY(), map.lenY) < 7) {
+		if (diff(player1.location.getX(), player2.location.getX(), map.lenX) < 7
+				&& diff(player1.location.getY(), player2.location.getY(), map.lenY) < 7) {
 			nbTileX = (int) diff(player1.location.getX(), player2.location.getY(), map.lenX) + bufferTile * 2;
 			nbTileY = (int) diff(player1.location.getY(), player2.location.getY(), map.lenY) + bufferTile * 2;
 			int tempx = (int) Math.ceil(w / nbTileX);
@@ -66,6 +69,18 @@ public class MapRender {
 				nbTileX = roundup(w, tempx);
 			}
 			this.tileSize = Math.min(tempx, tempy);
+		}
+	}
+
+	void paint(Graphics g) {
+		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				// TODO toute les histoire de float a prendre en compte (decalage)
+				map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)% map.lenX]
+						[(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY]
+						.paint(g, i, j, tileSize);
+			}
 		}
 	}
 

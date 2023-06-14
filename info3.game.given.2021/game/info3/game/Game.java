@@ -49,7 +49,7 @@ public class Game {
 
 	JFrame m_frame;
 	JLabel m_text;
-	GameCanvas m_canvas;
+	public GameCanvas m_canvas;
 	CanvasListener m_listener;
 	Cowboy m_cowboy;
 	Sound m_music;
