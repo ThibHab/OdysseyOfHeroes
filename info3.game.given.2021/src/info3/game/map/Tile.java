@@ -1,5 +1,6 @@
 package info3.game.map;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,8 @@ public abstract class Tile implements ITile {
 	public void paint(Graphics g,int screenPosX,int screenPosY,int size) {
 		//TODO convertisseur de position grille to position pixel(rajouter le decalage float a droite et a gauche)
 		g.drawImage(this.image, screenPosX*size, screenPosY*size, size, size, null);
+		g.setColor(Color.red);
+		g.drawString(location.getX()+";"+location.getY(), screenPosX*size, screenPosY*size+size/2);
 		if (entity != null) {
 			entity.paint(g);
 		}

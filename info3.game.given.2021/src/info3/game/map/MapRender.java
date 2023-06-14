@@ -1,5 +1,6 @@
 package info3.game.map;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import info3.game.Game;
@@ -7,7 +8,7 @@ import info3.game.entity.*;
 //import info3.game.entity.Location;
 
 public class MapRender {
-	Location camera;
+	public Location camera;
 	Map map;
 	int nbTileX, nbTileY;
 	int tileSize;
@@ -23,18 +24,18 @@ public class MapRender {
 	Location mid(Location a, Location b) {
 		Location res = new Location(0, 0);
 		float tmp = (a.getX() + b.getX()) / 2;
-		float tmp2 = (Math.min(a.getX(), b.getX()) + map.lenX + Math.max(a.getX(), b.getX()));
+		float tmp2 = (Math.min(a.getX(), b.getX()) + map.lenX + Math.max(a.getX(), b.getX())/2);
 		if (diff(tmp, a.getX(), map.lenX) < diff(tmp, b.getX(), map.lenX)) {
-			res.setX(tmp);
+			res.setX((tmp+map.lenX)%map.lenX);
 		} else {
-			res.setX(tmp2);
+			res.setX((tmp2+map.lenX)%map.lenX);
 		}
 		tmp = (a.getY() + b.getY()) / 2;
-		tmp2 = (Math.min(a.getY(), b.getY()) + map.lenY + Math.max(a.getY(), b.getY()));
+		tmp2 = (Math.min(a.getY(), b.getY()) + map.lenY + Math.max(a.getY(), b.getY())/2);
 		if (diff(tmp, a.getY(), map.lenY) < diff(tmp, b.getY(), map.lenY)) {
-			res.setY(tmp);
+			res.setY((tmp+map.lenY)%map.lenY);
 		} else {
-			res.setY(tmp2);
+			res.setY((tmp2+map.lenY)%map.lenY);
 		}
 		return res;
 	}
@@ -71,6 +72,21 @@ public class MapRender {
 			this.tileSize = Math.min(tempx, tempy);
 		}
 	}
+	
+	public Location gridToPixel(Location loc) {
+		Location res=new Location(0,0);
+		if(this.camera.getX()-loc.getX()<0) {
+			res.setX((loc.getX() - this.camera.getX() + this.nbTileX / 2) % map.lenX * this.tileSize);
+		}else {
+			res.setX((loc.getX() - (this.camera.getX()-map.lenX) + this.nbTileX / 2) % map.lenX * this.tileSize);
+		}
+		if(this.camera.getY()-loc.getY()<0) {
+			res.setY((loc.getY() - this.camera.getY() + this.nbTileY / 2) % map.lenY * this.tileSize);
+		}else {
+			res.setY((loc.getY() - (this.camera.getY()-map.lenY) + this.nbTileY / 2) % map.lenY * this.tileSize);
+		}
+		return res;
+	}
 
 	public void paint(Graphics g) {
 		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
@@ -82,6 +98,10 @@ public class MapRender {
 						.paint(g, i, j, tileSize);
 			}
 		}
+		g.setColor(Color.red);
+		g.fillOval(tileSize*nbTileX/2,tileSize*nbTileY/2, 5, 5);
+		g.setColor(Color.magenta);
+		g.fillOval(game.m_canvas.getWidth()/2, game.m_canvas.getHeight()/2,5,5);
 	}
 
 }

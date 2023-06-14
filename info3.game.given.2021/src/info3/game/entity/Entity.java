@@ -3,10 +3,12 @@ package info3.game.entity;
 import java.awt.Graphics;
 import java.util.Random;
 
+import info3.game.Game;
 import info3.game.automata.Automaton;
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
 import info3.game.automata.State;
+import info3.game.map.Map;
 
 public abstract class Entity implements IEntity {
 	public int width, height, health;
@@ -16,11 +18,14 @@ public abstract class Entity implements IEntity {
 	public float speed;
 	public Direction direction;
 	public Category category;
+	public static Game game;
+
 
 	public Entity() {
 		this.location = new Location(0, 0);
 		this.currentState = null;
 	}
+
 
 	@Override
 	public void Move(Direction d) {
@@ -30,16 +35,20 @@ public abstract class Entity implements IEntity {
 		
 		switch (d) {
 		case N:
-			this.location.setY(this.location.getY() - 1);
+			//this.location.setY(this.location.getY() - 1);
+			this.location.setY((this.location.getY()+((Map)game.map).lenY-1)%((Map)game.map).lenY);
 			break;
 		case S:
-			this.location.setY(this.location.getY() + 1);
+			//this.location.setY(this.location.getY() + 1);
+			this.location.setY((this.location.getY()+((Map)game.map).lenY+1)%((Map)game.map).lenY);
 			break;
 		case W:
-			this.location.setX(this.location.getX() - 1);
+			//this.location.setX(this.location.getX() - 1);
+			this.location.setX((this.location.getX()+((Map)game.map).lenX-1)%((Map)game.map).lenX);
 			break;
 		case E:
-			this.location.setX(this.location.getX() + 1);
+			//this.location.setX(this.location.getX() + 1);
+			this.location.setX((this.location.getX()+((Map)game.map).lenX+1)%((Map)game.map).lenX);
 			break;
 		default:
 			break;

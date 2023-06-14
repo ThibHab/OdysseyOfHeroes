@@ -95,7 +95,8 @@ public class Cowboy extends Entity {
 		m_width = width;
 		BufferedImage img = m_images[m_imageIndex];
 		int scale = 2;
-		g.drawImage(img, (int) location.getX(), (int)location.getY(), scale * img.getWidth(), scale * img.getHeight(), null);
+		Location pixel=game.render.gridToPixel(location);
+		g.drawImage(img, (int)pixel.getX(), (int)pixel.getY(), scale * img.getWidth(), scale * img.getHeight(), null);
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

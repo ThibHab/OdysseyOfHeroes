@@ -16,7 +16,11 @@ public class DebugMap extends Map {
 		for (int i = 0; i < nb_x; i++) {
 			for (int j = 0; j < nb_y; j++) {
 				Location l = new Location(i, j);
-				this.map[i][j] = new GrassTile(l);
+				if((i+j)%2==0){
+					this.map[i][j] = new GrassTile(l);
+				}else {
+					this.map[i][j] = new WaterTile(l);
+				}
 			}
 		}
 	}
