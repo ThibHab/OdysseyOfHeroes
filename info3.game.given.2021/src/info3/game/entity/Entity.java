@@ -27,7 +27,7 @@ public abstract class Entity implements IEntity {
 	public int imageIndex;
 	public float scale;
 
-	public int width, height, health, coins, weaponDamages, weaponRange;
+	public int width, height, health, coins, weaponDamages, weaponRange, healingPotions, strengthPotions;
 	public float speed;
 	public boolean frozen;
 
@@ -93,39 +93,15 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Direction d) {
-		if (d == null) {
-			d = this.direction;
-		}
+		Location t = frontTileLocation(d);
 
-		float xIndex = 0, yIndex = 0;
-		switch (d) {
-		case N:
-			xIndex = this.location.getX();
-			yIndex = this.location.getY() - 1;
-			break;
-		case S:
-			xIndex = this.location.getX();
-			yIndex = this.location.getY() + 1;
-			break;
-		case W:
-			xIndex = this.location.getX() - 1;
-			yIndex = this.location.getY();
-			break;
-		case E:
-			xIndex = this.location.getX() + 1;
-			yIndex = this.location.getY();
-			break;
-		default:
-			break;
-		}
-
-		Map map = (Map) Entity.game.map;
-		Entity entity = map.map[(int) xIndex][(int) yIndex].entity;
+		Map map = (Map) this.game.map;
+		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
 			entity.health--;
 		}
 
-		// TODO takeDamage method for animation (view)
+		// TODO takeDamage method for animation (view) ?
 	}
 
 	@Override
@@ -150,8 +126,20 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Pick(Direction d) {
-		// TODO complete method
+		Location t = frontTileLocation(d);
 
+		Map map = (Map) this.game.map;
+		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		if (entity.category == Category.P) {
+			if (entity instanceof Coin) {
+				this.coins++;
+				// TODO destroy la coin
+			} else if (entity instanceof HealingPotion) {
+				this.healingPotions++;
+			} else if (entity instanceof StrengthPotion) {
+				this.strengthPotions++;
+			}
+		}
 	}
 
 	@Override
@@ -190,5 +178,35 @@ public abstract class Entity implements IEntity {
 
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+	public Location frontTileLocation(Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
+
+		float xIndex = 0, yIndex = 0;
+		switch (d) {
+		case N:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() - 1;
+			break;
+		case S:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() + 1;
+			break;
+		case W:
+			xIndex = this.location.getX() - 1;
+			yIndex = this.location.getY();
+			break;
+		case E:
+			xIndex = this.location.getX() + 1;
+			yIndex = this.location.getY();
+			break;
+		default:
+			break;
+		}
+
+		return new Location((int) xIndex, (int) yIndex);
 	}
 }
