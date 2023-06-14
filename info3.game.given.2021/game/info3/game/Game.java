@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 
 import info3.game.entity.Cowboy;
 import info3.game.graphics.GameCanvas;
+import info3.game.map.IMap;
 import info3.game.sound.RandomFileInputStream;
 
 public class Game {
@@ -53,6 +54,7 @@ public class Game {
 	public CanvasListener m_listener;
 	Cowboy m_cowboy;
 	Sound m_music;
+	public IMap map;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
