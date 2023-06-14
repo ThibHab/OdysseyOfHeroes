@@ -1,14 +1,20 @@
 package info3.game.entity;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import info3.game.Game;
 import info3.game.automata.Automaton;
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
 import info3.game.automata.State;
+import info3.game.map.Map;
 
 public abstract class Entity implements IEntity {
+	public static int level;
+	public static int experience;
+
 	public int width, height, health;
 	public Location location;
 	public Automaton automaton;
@@ -16,6 +22,12 @@ public abstract class Entity implements IEntity {
 	public float speed;
 	public Direction direction;
 	public Category category;
+	public String name;
+	public BufferedImage[] sprites;
+	public int coins;
+	public int weaponDamages;
+	public int weaponRange;
+	public Game game;
 
 	public Entity() {
 		this.location = new Location(0, 0);
@@ -48,16 +60,23 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Turn(Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
+		
 		this.direction = d;
-
 	}
 
 	@Override
 	public void Egg(Direction d, Category c) {
+		if (d == null) {
+			d = this.direction;
+		}
+		
 		Random random = new Random();
 		switch (c) {
 		case A:
-			new Goblin();
+			new Goblin(this.game);
 			break;
 		case P:
 			// TODO add coin and potion instance creation
@@ -71,8 +90,40 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Hit() {
+	public void Hit(Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
 		
+		float xIndex = 0, yIndex = 0;
+		switch (d) {
+		case N:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() - 1;
+			break;
+		case S:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() + 1;
+			break;
+		case W:
+			xIndex = this.location.getX() - 1;
+			yIndex = this.location.getY();
+			break;
+		case E:
+			xIndex = this.location.getX() + 1;
+			yIndex = this.location.getY();
+			break;
+		default:
+			break;
+		}
+		
+		Map map = (Map) this.game.map;
+		Entity entity = map.map[(int) xIndex][(int) yIndex].entity;
+		if (entity != null) {
+			entity.health--;
+		}
+		
+		// TODO takeDamage method for animation (view) ?
 	}
 
 	@Override
@@ -86,8 +137,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Pick(Category c) {
-		// TODO Auto-generated method stub
+	public void Pick(Direction d) {
+		// TODO complete method
 
 	}
 
@@ -116,8 +167,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Throw(Category c) {
-		// TODO Auto-generated method stub
+	public void Throw(Direction d, Category category) {
+		// TODO complete method
 
 	}
 
@@ -131,5 +182,9 @@ public abstract class Entity implements IEntity {
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 }

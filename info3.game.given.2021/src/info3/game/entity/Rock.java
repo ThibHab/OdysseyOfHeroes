@@ -1,8 +1,7 @@
 package info3.game.entity;
 
-public abstract class NPC extends Entity {
-	public NPC() {
-		super();
+public class Rock extends DecorElement {
+	public Rock() {
 		// TODO Auto-generated constructor stub
 	}
 }
