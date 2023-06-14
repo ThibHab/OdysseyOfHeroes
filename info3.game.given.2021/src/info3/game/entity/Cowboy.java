@@ -76,16 +76,16 @@ public class Cowboy extends Entity {
 	 * Simple animation here, the cowbow
 	 */
 	public void tick(long elapsed) {
-		m_imageElapsed += elapsed;
-		if (m_imageElapsed > 200) {
-			m_imageElapsed = 0;
-			m_imageIndex = (m_imageIndex + 1) % m_images.length;
-		}
-		m_moveElapsed += elapsed;
-		if (m_moveElapsed > 24 & m_width != 0) {
-			m_moveElapsed = 0;
-			m_x = (m_x + 2) % m_width;
-		}
+//		m_imageElapsed += elapsed;
+//		if (m_imageElapsed > 200) {
+//			m_imageElapsed = 0;
+//			m_imageIndex = (m_imageIndex + 1) % m_images.length;
+//		}
+//		m_moveElapsed += elapsed;
+//		if (m_moveElapsed > 24 & m_width != 0) {
+//			m_moveElapsed = 0;
+//			m_x = (m_x + 2) % m_width;
+//		}
 		
 		aut.step(this, game);
 
@@ -95,7 +95,7 @@ public class Cowboy extends Entity {
 		m_width = width;
 		BufferedImage img = m_images[m_imageIndex];
 		int scale = 2;
-		g.drawImage(img, m_x, m_y, scale * img.getWidth(), scale * img.getHeight(), null);
+		g.drawImage(img, (int) location.getX(), (int)location.getY(), scale * img.getWidth(), scale * img.getHeight(), null);
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
@@ -118,9 +118,9 @@ public class Cowboy extends Entity {
 		return null;
 	}
 
-	@Override
-	public void Move(Direction d) {
-		System.out.print("Move in direction " + d.toString() + "\n");
-	}
+//	@Override
+//	public void Move(Direction d) {
+//		System.out.print("Move in direction " + d.toString() + "\n");
+//	}
 
 }
