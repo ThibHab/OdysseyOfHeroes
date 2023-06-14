@@ -29,6 +29,8 @@ public abstract class Tile implements ITile {
 	public void paint(Graphics g,int screenPosX,int screenPosY,int size) {
 		//TODO convertisseur de position grille to position pixel(rajouter le decalage float a droite et a gauche)
 		g.drawImage(this.image, screenPosX*size, screenPosY*size, size, size, null);
-
+		if (entity != null) {
+			entity.paint(g);
+		}
 	}
 }

@@ -3,8 +3,8 @@ package info3.game.map;
 import java.awt.Graphics;
 
 import info3.game.Game;
-import info3.game.entity.Hero;
-import info3.game.entity.Location;
+import info3.game.entity.*;
+//import info3.game.entity.Location;
 
 public class MapRender {
 	Location camera;
@@ -14,7 +14,7 @@ public class MapRender {
 	int bufferTile = 4;
 	Game game;
 
-	MapRender(Map map, Game game) {
+	public MapRender(Map map, Game game) {
 		this.map = map;
 		this.game = game;
 
@@ -53,7 +53,7 @@ public class MapRender {
 		return (int) tmp;
 	}
 
-	void updateCam(Hero player1, Hero player2, int w, int h) {
+	void updateCam(Cowboy player1, Cowboy player2, int w, int h) {
 		this.camera = mid(player1.location, player2.location);
 		if (diff(player1.location.getX(), player2.location.getX(), map.lenX) < 7
 				&& diff(player1.location.getY(), player2.location.getY(), map.lenY) < 7) {
@@ -72,7 +72,7 @@ public class MapRender {
 		}
 	}
 
-	void paint(Graphics g) {
+	public void paint(Graphics g) {
 		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
