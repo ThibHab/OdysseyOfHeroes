@@ -1,9 +1,12 @@
 package info3.game.entity;
 
+import info3.game.Game;
+
 public class Melee extends Hero {
-	public Melee(String name) {
+	public Melee(String name, Game game) {
 		super();
 		// TODO complete null attributes (in super() too)
+		this.game = game;
 		this.automaton = null;
 		this.sprites = null;
 		this.health = 150;

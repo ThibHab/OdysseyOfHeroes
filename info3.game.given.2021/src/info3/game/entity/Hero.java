@@ -1,13 +1,6 @@
 package info3.game.entity;
 
-public abstract class Hero extends Creature {
-	public static int level;
-	public static int experience;
-
-	public int coins;
-	public int weaponDamages;
-	public int weaponRange;
-
+public abstract class Hero extends Entity {
 	public Hero() {
 		super();
 		this.width = 100;
