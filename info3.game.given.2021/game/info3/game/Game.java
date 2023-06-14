@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 
 import info3.game.entity.Cowboy;
 import info3.game.graphics.GameCanvas;
+import info3.game.map.IMap;
 import info3.game.sound.RandomFileInputStream;
 
 public class Game {
@@ -50,14 +51,15 @@ public class Game {
 	JFrame m_frame;
 	JLabel m_text;
 	GameCanvas m_canvas;
-	CanvasListener m_listener;
+	public CanvasListener m_listener;
 	Cowboy m_cowboy;
 	Sound m_music;
+	public IMap map;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
-		m_cowboy = new Cowboy();
+		m_cowboy = new Cowboy(this);
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
