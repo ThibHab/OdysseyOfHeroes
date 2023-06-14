@@ -38,6 +38,8 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Move(Direction d) {
+		this.frozen = true;
+		
 		if (d == null) {
 			d = this.direction;
 		}
@@ -58,6 +60,8 @@ public abstract class Entity implements IEntity {
 		default:
 			break;
 		}
+		
+		this.frozen = false;
 	}
 
 	@Override
