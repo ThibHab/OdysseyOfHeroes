@@ -22,8 +22,8 @@ public abstract class Item extends Entity {
 	}
 
 	@Override
-	public void Pick(Category c) {
+	public void Pick(Direction d) {
 		// TODO Auto-generated method stub
-		super.Pick(c);
+		super.Pick(d);
 	}
 }
