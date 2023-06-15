@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.*;
+import info3.game.constants.EntitiesConst;
 
 public abstract class DecorElement extends Entity {
 	public int width, height;
@@ -15,7 +16,8 @@ public abstract class DecorElement extends Entity {
 
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = sprites[imageIndex];
-		g.drawImage(img, (int) (screenPosX * TileSize), (int) (screenPosY * TileSize), (int) scale * TileSize, (int) scale * TileSize,
+		Location l = EntitiesConst.GAME.render.gridToPixel(location, true);
+		g.drawImage(img, (int) l.getX(), (int) l.getY(), (int) scale * TileSize * width, (int) scale * TileSize * height,
 				null);
 	}
 }

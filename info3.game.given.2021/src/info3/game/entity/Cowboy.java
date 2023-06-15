@@ -52,33 +52,33 @@ public class Cowboy extends Entity {
 
 	public Cowboy(Game g) throws IOException {
 		m_images = loadSprite("resources/winchester-4x6.png", 4, 6);
-		IVisitor visitor = new AutCreator();
-		try {
-			AST ast = (AST)AutomataParser.from_file("resources/test.gal");
-			aut = (Aut_Automaton)ast.accept(visitor);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			aut = null;
-		}
-//		Aut_State src = new Aut_State("1");
-//		Cond up = new Cond(new Aut_Key(KeyEvent.VK_UP), null, "");
-//		Cond down = new Cond(new Aut_Key(KeyEvent.VK_DOWN), null, "");
-//		Cond left = new Cond(new Aut_Key(KeyEvent.VK_LEFT), null, "");
-//		Cond right = new Cond(new Aut_Key(KeyEvent.VK_RIGHT), null, "");
-//		Aut_Action moveUp = new Move(Aut_Direction.N);
-//		Aut_Action moveDown = new Move(Aut_Direction.S);
-//		Aut_Action moveLeft = new Move(Aut_Direction.W);
-//		Aut_Action moveRight = new Move(Aut_Direction.E);
-//		Aut_Transition t1 = new Aut_Transition(src, up, moveUp, src);
-//		Aut_Transition t2 = new Aut_Transition(src, down, moveDown, src);
-//		Aut_Transition t3 = new Aut_Transition(src, left, moveLeft, src);
-//		Aut_Transition t4 = new Aut_Transition(src, right, moveRight, src);
-//		LinkedList<Aut_Transition> list = new LinkedList<Aut_Transition>();
-//		list.add(t1);
-//		list.add(t2);
-//		list.add(t3);
-//		list.add(t4);
-//		aut = new Aut_Automaton("Cowboy", src, list);
+//		IVisitor visitor = new AutCreator();
+//		try {
+//			AST ast = (AST)AutomataParser.from_file("resources/test.gal");
+//			aut = (Aut_Automaton)ast.accept(visitor);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			aut = null;
+//		}
+		Aut_State src = new Aut_State("1");
+		Cond up = new Cond(new Aut_Key(KeyEvent.VK_UP), null, "");
+		Cond down = new Cond(new Aut_Key(KeyEvent.VK_DOWN), null, "");
+		Cond left = new Cond(new Aut_Key(KeyEvent.VK_LEFT), null, "");
+		Cond right = new Cond(new Aut_Key(KeyEvent.VK_RIGHT), null, "");
+		Aut_Action moveUp = new Move(Aut_Direction.N);
+		Aut_Action moveDown = new Move(Aut_Direction.S);
+		Aut_Action moveLeft = new Move(Aut_Direction.W);
+		Aut_Action moveRight = new Move(Aut_Direction.E);
+		Aut_Transition t1 = new Aut_Transition(src, up, moveUp, src);
+		Aut_Transition t2 = new Aut_Transition(src, down, moveDown, src);
+		Aut_Transition t3 = new Aut_Transition(src, left, moveLeft, src);
+		Aut_Transition t4 = new Aut_Transition(src, right, moveRight, src);
+		LinkedList<Aut_Transition> list = new LinkedList<Aut_Transition>();
+		list.add(t1);
+		list.add(t2);
+		list.add(t3);
+		list.add(t4);
+		aut = new Aut_Automaton("Cowboy", src, list);
 		game = g;
 		currentState = aut.initial;
 		this.direction = Aut_Direction.S;

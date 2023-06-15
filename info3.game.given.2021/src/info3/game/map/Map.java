@@ -3,6 +3,7 @@ package info3.game.map;
 import java.awt.Graphics;
 import java.util.Random;
 
+import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
 
 public abstract class Map implements IMap {
@@ -18,7 +19,7 @@ public abstract class Map implements IMap {
 		this.map = new Tile[lenX][lenY];
 	}
 
-	 /**
+	/**
 	  * Generate randomly with a chosen space between the chosen entity.
 	  * @param rareness the bigger the less entity it creates
 	  * @param seed to set the random
@@ -43,14 +44,12 @@ public abstract class Map implements IMap {
 	
 									already = true;
 								}
-								System.out.println("Carré: (" + rec_x + ";" + rec_y + ")");
 								rec_y++;
 							}
 							while (rec_y <= j + spaceBetween) {
 								if (map[lenX + rec_x][rec_y].entity != null) {
 									already = true;
 								}
-								System.out.println("Carré: (" + rec_x + ";" + rec_y + ")");
 								rec_y++;
 							}
 							rec_x++;
@@ -61,14 +60,12 @@ public abstract class Map implements IMap {
 								if (map[rec_x][lenY + rec_y].entity != null) {
 									already = true;
 								}
-								System.out.println("Carré: (" + rec_x + ";" + rec_y + ")");
 								rec_y++;
 							}
 							while (rec_y <= j + spaceBetween) {
 								if (map[rec_x][rec_y].entity != null) {
 									already = true;
 								}
-								System.out.println("Carré: (" + rec_x + ";" + rec_y + ")");
 								rec_y++;
 							}
 							rec_x++;
@@ -79,49 +76,78 @@ public abstract class Map implements IMap {
 							} else if (ent instanceof Rock) {
 								map[i][j].entity = new Rock(new Location(i, j));
 							} else {
-								map[i][j].entity = new Tree(new Location(i, j));
+								if (j - 1 < 0) {
+									if (map[i][lenY - 1].entity == null && map[i + 1][lenY - 1].entity == null && map[i + 1][j].entity == null) {
+										Tree tree = new Tree(new Location(i, j - 1));
+										map[i][lenY - 1].entity = tree;
+										map[i][j].entity = tree;
+										map[i + 1][lenY - 1].entity = tree;
+										map[i + 1][j].entity = tree;
+									}
+								}
+								else {
+									if (map[i][j - 1].entity == null && map[i + 1][j - 1].entity == null && map[i + 1][j].entity == null) {
+										Tree tree = new Tree(new Location(i, j - 1));
+										map[i][j - 1].entity = tree;
+										map[i][j].entity = tree;
+										map[i + 1][j - 1].entity = tree;
+										map[i + 1][j].entity = tree;
+									}
+								}
+																
 							}
-	
-							System.out.println("Objet créé en: (" + i + ";" + j + ")");
 						}
 					}
 				}
 			}
 		}
 	}
-	
+
 	public void setSurfaceBackground(int x, int y, int width, int height, Tile tile) {
 		for (int i = x; i < x + width; i++) {
 			for (int j = y; j < y + height; j++) {
 				Location l = new Location(j, j);
 				if (tile instanceof WaterTile) {
 					map[i][j] = new WaterTile(l);
-				} 
-				else if (tile instanceof RockTile) {
+				} else if (tile instanceof RockTile) {
 					map[i][j] = new RockTile(l);
-				} 
-				else if (tile instanceof GrassTile) {
+				} else if (tile instanceof GrassTile) {
 					map[i][j] = new GrassTile(l);
-				}
-				else {
+				} else {
 					map[i][j] = new DirtTile(l);
 				}
 			}
 		}
 	}
-	
+
 	boolean checkinradius(float x, float y, int c_x, int c_y, float radius) {
-        return (x - c_x) * (x - c_x) + (y - c_y) * (y - c_y) < radius * radius;
-    }
-	
+		return (x - c_x) * (x - c_x) + (y - c_y) * (y - c_y) < radius * radius;
+	}
+
 	public void setCircleWaterBackground(int x, int y, Tile tile, int radius) {
-		for (int i = x - (2*radius); i < x + (2*radius); i++) {
-			for (int j = y - (2*radius); j < y + (2*radius); j++) {
-				if (checkinradius(i, j, x, y, radius+0.3f)) {
+		for (int i = x - (2 * radius); i < x + (2 * radius); i++) {
+			for (int j = y - (2 * radius); j < y + (2 * radius); j++) {
+				if (checkinradius(i, j, x, y, radius + 0.3f)) {
 					Location l = new Location(j, j);
 					map[i][j] = new WaterTile(l);
 				}
 			}
+		}
+	}
+
+	public void setVillage(int x, int y, int areaSize) {
+		DirtTile dirt = new DirtTile(null);
+		setSurfaceBackground(x, y, areaSize, 1, dirt);
+		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, dirt);
+		int i = x + 1;
+		while (i < areaSize) {
+			Location l = new Location(i, y - 2);
+			House house = new House(l);
+			map[i][y - 1].entity = house;
+			map[i][y - 2].entity = house;
+			map[i + 1][y - 1].entity = house;
+			map[i + 1][y - 2].entity = house;
+			i += house.width + 1;
 		}
 	}
 }
