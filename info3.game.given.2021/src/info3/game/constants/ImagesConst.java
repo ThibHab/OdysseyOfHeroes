@@ -29,7 +29,7 @@ public class ImagesConst {
 		DIRT_TILE2 = loadTile("");
 		ROCK_TILE2 = loadTile("");
 
-		HOUSE = loadSprite("", 1, 1);
+		HOUSE = loadSprite("House", 1, 1);
 		ROCK = loadSprite("Rock", 2, 2);
 		TREE = loadSprite("Tree", 2, 1);
 

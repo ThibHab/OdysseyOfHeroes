@@ -7,7 +7,7 @@ import info3.game.automata.Category;
 import info3.game.constants.EntitiesConst;
 
 public abstract class DecorElement extends Entity {
-	public int Width, Height;
+	public int width, height;
 
 	public DecorElement() {
 		super();
