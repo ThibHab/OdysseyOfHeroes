@@ -12,7 +12,9 @@ public class WorldMap extends Map {
 		GrassTile grass = new GrassTile(null);
 		this.setSurfaceBackground(0, 0, lenX, lenY, grass);
 		WaterTile water = new WaterTile(null);
-		this.setSurfaceBackground(12, 12, 3, 3, water);
+//		this.setSurfaceBackground(12, 12, 3, 3, water);
+		this.setCircleWaterBackground(12, 12, water, 3);
+		this.setCircleWaterBackground(14, 14, water, 3);
 		DirtTile dirt = new DirtTile(null);
 		this.setSurfaceBackground(0, 0, 4, 1, dirt);
 		this.setSurfaceBackground(4, 0, 1, 5, dirt);

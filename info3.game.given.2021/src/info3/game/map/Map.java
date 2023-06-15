@@ -31,7 +31,7 @@ public abstract class Map implements IMap {
 		Random r = new Random(seed);
 		for (int i = x; i < x + areaSize; i++) {
 			for (int j = y; j < y + areaSize; j++) {
-				if (map[i][j].entity == null) {
+				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile) && !(map[i][j] instanceof DirtTile)) {
 					int n = r.nextInt(rareness);
 					if (n == 1) {
 						boolean already = false;
@@ -105,6 +105,21 @@ public abstract class Map implements IMap {
 				}
 				else {
 					map[i][j] = new DirtTile(l);
+				}
+			}
+		}
+	}
+	
+	boolean checkinradius(float x, float y, int c_x, int c_y, float radius) {
+        return (x - c_x) * (x - c_x) + (y - c_y) * (y - c_y) < radius * radius;
+    }
+	
+	public void setCircleWaterBackground(int x, int y, Tile tile, int radius) {
+		for (int i = x - (2*radius); i < x + (2*radius); i++) {
+			for (int j = y - (2*radius); j < y + (2*radius); j++) {
+				if (checkinradius(i, j, x, y, radius+0.3f)) {
+					Location l = new Location(j, j);
+					map[i][j] = new WaterTile(l);
 				}
 			}
 		}
