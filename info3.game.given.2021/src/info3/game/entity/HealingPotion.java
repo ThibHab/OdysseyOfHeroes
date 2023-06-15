@@ -17,7 +17,7 @@ public class HealingPotion extends Item{
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = new BufferedImage[]{ImagesConst.healingPotion};
+		this.sprites = ImagesConst.HEALING_POTION;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

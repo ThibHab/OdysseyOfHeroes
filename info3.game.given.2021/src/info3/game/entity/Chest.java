@@ -17,7 +17,7 @@ public class Chest extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.chest;
+		this.sprites = ImagesConst.CHEST;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

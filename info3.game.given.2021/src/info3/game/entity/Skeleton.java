@@ -23,7 +23,7 @@ public class Skeleton extends Mob {
 		this.category = Category.A;
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.skeleton;
+		this.sprites = ImagesConst.SKELETON;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

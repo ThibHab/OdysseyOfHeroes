@@ -17,7 +17,7 @@ public class StrengthPotion extends Item {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = new BufferedImage[]{ImagesConst.strengthPotion};
+		this.sprites = ImagesConst.STRENGTH_POTION;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

@@ -23,7 +23,7 @@ public class Goblin extends Mob {
 		this.category = Category.A;
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.goblin;
+		this.sprites = ImagesConst.GOBLIN;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

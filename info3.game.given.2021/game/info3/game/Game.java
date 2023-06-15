@@ -68,6 +68,7 @@ public class Game {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
 		m_cowboy = new Cowboy(this);
+		Entity.game=this;
 		
 		new ImagesConst();
 		
@@ -156,6 +157,7 @@ public class Game {
 	void tick(long elapsed) {
 
 		player1.tick(elapsed);
+		player2.tick(elapsed);
 
 		// Update every second
 		// the text on top of the frame: tick and fps
@@ -169,7 +171,10 @@ public class Game {
 			while (txt.length() < 15)
 				txt += " ";
 			txt = txt + fps + " fps   ";
-			txt = txt + player1.location.getX() + " " + player1.location.getY() + ";";
+			txt = txt+"P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
 			m_text.setText(txt);
 		}
 	}

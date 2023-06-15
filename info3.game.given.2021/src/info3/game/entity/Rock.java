@@ -16,7 +16,7 @@ public class Rock extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites =  new BufferedImage[]{ImagesConst.rock};
+		this.sprites =  ImagesConst.ROCK;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

@@ -17,7 +17,7 @@ public class Coin extends Item {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = new BufferedImage[] { ImagesConst.coin };
+		this.sprites = ImagesConst.COIN ;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

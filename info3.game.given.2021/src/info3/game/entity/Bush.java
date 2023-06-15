@@ -17,7 +17,7 @@ public class Bush extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.bush;
+		this.sprites = ImagesConst.BUSH;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}
