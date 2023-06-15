@@ -14,6 +14,8 @@ public abstract class Entity implements IEntity {
 	public String name;
 	public Location location;
 	public Location destLocation;
+	public Location relativeMouv;
+	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed;
 
@@ -73,10 +75,10 @@ public abstract class Entity implements IEntity {
 			} else {
 				if (mouvementIndex != 0) {
 					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-					this.location
-							.setX(this.location.getX() + progress * (this.destLocation.getX() - this.location.getX()));
-					this.location
-							.setY(this.location.getY() + progress * (this.destLocation.getY() - this.location.getY()));
+					this.location.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+							% EntitiesConst.MAP.lenX);
+					this.location.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+							% EntitiesConst.MAP.lenY);
 				}
 			}
 		}
@@ -92,18 +94,24 @@ public abstract class Entity implements IEntity {
 			}
 
 			destLocation = new Location(this.location.getX(), this.location.getY());
+			originLocation=new Location(this.location.getX(), this.location.getY());
+			relativeMouv=new Location(0,0);
 			switch (d) {
 			case N:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(-1);
 				break;
 			case S:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(1);
 				break;
 			case W:
 				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(-1);
 				break;
 			case E:
 				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(1);
 				break;
 			default:
 				break;

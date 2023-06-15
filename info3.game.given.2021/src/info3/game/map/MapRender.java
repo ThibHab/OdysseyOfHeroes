@@ -43,7 +43,7 @@ public class MapRender {
 		return res;
 	}
 
-	float diff(float a, float b, int len) {
+	public float diff(float a, float b, int len) {
 		float tmp = Math.abs(a - b);
 		float tmp2 = Math.min(a, b) + len - Math.max(a, b);
 		if (tmp < tmp2) {
