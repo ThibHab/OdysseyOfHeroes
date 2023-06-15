@@ -4,6 +4,7 @@ import info3.game.automata.Category;
 import info3.game.automata.Direction;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.constants.StatesConst;
 
 public class Melee extends Hero {
 	public Melee(String name, Location l) {
@@ -41,5 +42,37 @@ public class Melee extends Hero {
 	public void Wizz(Direction d, Category c) {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
+	}
+
+	public int getSpriteIndex() {
+		int idx = this.imageIndex;
+		switch (this.direction) {
+		case N:
+			idx += 28;
+			break;
+		case E:
+			idx += 14;
+			break;
+		case W:
+			idx += 42;
+			break;
+		default:
+			break;
+		}
+		switch (this.currentState.toString()) {
+		case StatesConst.MOVE:
+			idx+=1;
+			break;
+		case StatesConst.ATTACK:
+			idx += 4;
+			break;
+		case StatesConst.HIT:
+			idx += 8;
+			break;
+		case StatesConst.DIE:
+			idx += 11;
+			break;
+		}
+		return idx;
 	}
 }
