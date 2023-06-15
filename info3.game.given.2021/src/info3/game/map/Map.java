@@ -77,17 +77,21 @@ public abstract class Map implements IMap {
 								map[i][j].entity = new Rock(new Location(i, j));
 							} else {
 								if (j - 1 < 0) {
-									if (map[i][lenY - 1].entity == null) {
+									if (map[i][lenY - 1].entity == null && map[i + 1][lenY - 1].entity == null && map[i + 1][j].entity == null) {
 										Tree tree = new Tree(new Location(i, j - 1));
 										map[i][lenY - 1].entity = tree;
 										map[i][j].entity = tree;
+										map[i + 1][lenY - 1].entity = tree;
+										map[i + 1][j].entity = tree;
 									}
 								}
 								else {
-									if (map[i][j - 1].entity == null) {
+									if (map[i][j - 1].entity == null && map[i + 1][j - 1].entity == null && map[i + 1][j].entity == null) {
 										Tree tree = new Tree(new Location(i, j - 1));
 										map[i][j - 1].entity = tree;
 										map[i][j].entity = tree;
+										map[i + 1][j - 1].entity = tree;
+										map[i + 1][j].entity = tree;
 									}
 								}
 																
@@ -143,7 +147,7 @@ public abstract class Map implements IMap {
 			map[i][y - 2].entity = house;
 			map[i + 1][y - 1].entity = house;
 			map[i + 1][y - 2].entity = house;
-			i += house.Width + 1;
+			i += house.width + 1;
 		}
 	}
 }

@@ -17,7 +17,7 @@ public abstract class DecorElement extends Entity {
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = sprites[imageIndex];
 		Location l = EntitiesConst.GAME.render.gridToPixel(location, true);
-		g.drawImage(img, (int) l.getX(), (int) l.getY(), (int) scale * TileSize * Width, (int) scale * TileSize * Height,
+		g.drawImage(img, (int) l.getX(), (int) l.getY(), (int) scale * TileSize * width, (int) scale * TileSize * height,
 				null);
 	}
 }
