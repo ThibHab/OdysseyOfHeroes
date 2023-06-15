@@ -125,26 +125,56 @@ public abstract class Entity implements IEntity {
 		}
 
 		Location location = this.frontTileLocation(d);
-		Random random = new Random();
-		int tirage = random.nextInt(7);
-		switch (tirage) {
-		case 0:
-		case 1:
-			new Goblin(location);
+		switch (c) {
+		case A:
+			Random randomA = new Random();
+			int tirageA = randomA.nextInt(2);
+			switch(tirageA) {
+			case 0:
+				new Goblin(location);
+				break;
+			case 1:
+				new Skeleton(location);
+				break;
+			}
+		case M:
 			break;
-		case 2:
-			new HealingPotion(location);
-			break;
-		case 3:
-			new StrengthPotion(location);
-			break;
-		case 4:
-		case 5:
-		case 6:
-			new Coin(location);
-			break;
-		default:
-			break;
+		case P:
+			Random randomP = new Random();
+			int tirageP = randomP.nextInt(3);
+			switch(tirageP) {
+			case 0:
+				new Coin(location);
+				break;
+			case 1:
+				new HealingPotion(location);
+				break;
+			case 2:
+				new StrengthPotion(location);
+				break;
+			}
+		case T:
+			Random randomT = new Random();
+			int tirageT = randomT.nextInt(3);
+			switch(tirageT) {
+			case 0:
+				new Villager(location);
+				break;
+			case 1:
+				new Merchant(location);
+				break;
+			}
+		case AT:
+			Random randomAT = new Random();
+			int tirageAT = randomAT.nextInt(3);
+			switch(tirageAT) {
+			case 0:
+				new Melee("melee",location);
+				break;
+			case 1:
+				new Range("range",location);
+				break;
+			}
 		}
 	}
 
