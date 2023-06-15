@@ -2,19 +2,18 @@ package info3.game.entity;
 
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Skeleton extends Mob {
-	public static int SKELETON_HEALTH = 20, SKELETON_DAMAGE = 2, SKELETON_RANGE = 3, SKELETON_SPEED = 2;
-
 	public Skeleton(Location l) {
 		super();
 		this.name = "Skeleton";
 		this.location = l;
-		this.health = Skeleton.SKELETON_HEALTH;
-		this.weaponDamage = Skeleton.SKELETON_DAMAGE;
-		this.weaponRange = Skeleton.SKELETON_RANGE;
-		this.speed = Skeleton.SKELETON_SPEED;
+		this.health = EntitiesConst.SKELETON_HEALTH;
+		this.weaponDamage = EntitiesConst.SKELETON_DAMAGE;
+		this.weaponRange = EntitiesConst.SKELETON_RANGE;
+		this.speed = EntitiesConst.SKELETON_SPEED;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;
