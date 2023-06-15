@@ -16,7 +16,7 @@ public class WorldMap extends Map {
 		DirtTile dirt = new DirtTile(null);
 		this.setSurfaceBackground(0, 0, 4, 1, dirt);
 		this.setSurfaceBackground(4, 0, 1, 5, dirt);
-		Bush bush = new Bush();
+		Bush bush = new Bush(null);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, bush, 2, 6);
 		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
 	}
