@@ -15,7 +15,8 @@ import info3.game.map.Tile;
 public abstract class Entity implements IEntity {
 	public static int MAX_HEALTH = 10;
 	public static Game GAME;
-	public static Tile[][] MAP;
+	public static Map MAP;
+	public static Tile[][] MAP_MATRIX;
 
 	public String name;
 	public Location location;
@@ -62,7 +63,8 @@ public abstract class Entity implements IEntity {
 
 	public static void InitStatics(Game g, int lvl, int xp) {
 		Entity.GAME = g;
-		Entity.MAP = ((Map) g.map).map;
+		Entity.MAP = (Map) g.map;
+		Entity.MAP_MATRIX = Entity.MAP.map;
 		Entity.level = lvl;
 		Entity.experience = xp;
 	}
@@ -84,19 +86,19 @@ public abstract class Entity implements IEntity {
 		switch (d) {
 		case N:
 			//this.location.setY(this.location.getY() - 1);
-			this.location.setY((this.location.getY()+((Map)game.map).lenY-1)%((Map)game.map).lenY);
+			this.location.setY((this.location.getY()+Entity.MAP.lenY-1)%Entity.MAP.lenY);
 			break;
 		case S:
 			//this.location.setY(this.location.getY() + 1);
-			this.location.setY((this.location.getY()+((Map)game.map).lenY+1)%((Map)game.map).lenY);
+			this.location.setY((this.location.getY()+Entity.MAP.lenY+1)%Entity.MAP.lenY);
 			break;
 		case W:
 			//this.location.setX(this.location.getX() - 1);
-			this.location.setX((this.location.getX()+((Map)game.map).lenX-1)%((Map)game.map).lenX);
+			this.location.setX((this.location.getX()+Entity.MAP.lenX-1)%Entity.MAP.lenX);
 			break;
 		case E:
 			//this.location.setX(this.location.getX() + 1);
-			this.location.setX((this.location.getX()+((Map)game.map).lenX+1)%((Map)game.map).lenX);
+			this.location.setX((this.location.getX()+Entity.MAP.lenX+1)%Entity.MAP.lenX);
 			break;
 		default:
 			break;
@@ -148,7 +150,7 @@ public abstract class Entity implements IEntity {
 	public void Hit(Direction d) {
 		Location t = frontTileLocation(d);
 
-		Entity entity = Entity.MAP[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = Entity.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
 			entity.health--;
 		}
@@ -165,7 +167,7 @@ public abstract class Entity implements IEntity {
 		float xBaseIndex = this.location.getX() - 2, yBaseIndex = this.location.getY() - 2;
 		for (int i = (int) xBaseIndex; i < xBaseIndex + 5; i++) {
 			for (int j = (int) yBaseIndex; j < yBaseIndex + 5; j++) {
-				Entity entity = Entity.MAP[i][j].entity;
+				Entity entity = Entity.MAP_MATRIX[i][j].entity;
 				if (entity != null) {
 					entity.health -= 5;
 				}
@@ -184,7 +186,7 @@ public abstract class Entity implements IEntity {
 
 		Location t = frontTileLocation(d);
 
-		Entity entity = Entity.MAP[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = Entity.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity.category == Category.P) {
 			if (entity instanceof Coin) {
 				this.coins++;
