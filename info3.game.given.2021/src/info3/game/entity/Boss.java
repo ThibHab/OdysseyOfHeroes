@@ -2,21 +2,18 @@ package info3.game.entity;
 
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Boss extends Mob {
-	public static int BOSS_HEALTH = 20, BOSS_WIDTH = 2, BOSS_HEIGHT = 2, BOSS_DAMAGE = 4, BOSS_RANGE = 2, BOSS_SPEED = 2;
-
 	public Boss(Location l) {
 		super();
 		this.name = "Boss";
 		this.location = l;
-		this.width = Boss.BOSS_WIDTH;
-		this.height = Boss.BOSS_HEIGHT;
-		this.health = Boss.BOSS_HEALTH;
-		this.weaponDamage = Boss.BOSS_DAMAGE;
-		this.weaponRange = Boss.BOSS_RANGE;
-		this.speed = Boss.BOSS_SPEED;
+		this.health = EntitiesConst.BOSS_HEALTH;
+		this.weaponDamage = EntitiesConst.BOSS_DAMAGE;
+		this.weaponRange = EntitiesConst.BOSS_RANGE;
+		this.speed = EntitiesConst.BOSS_SPEED;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;

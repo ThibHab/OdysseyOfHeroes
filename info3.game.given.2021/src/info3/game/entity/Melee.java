@@ -4,18 +4,17 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Melee extends Hero {
-	public static int MELEE_HEALTH = 20, MELEE_DAMAGE = 3, MELEE_RANGE = 1;
-
 	public Melee(String name, Location l) {
 		super();
 		this.name = name;
 		this.location = l;
-		this.weaponDamage = Melee.MELEE_DAMAGE;
-		this.weaponRange = Melee.MELEE_RANGE;
-		this.health = Melee.MELEE_HEALTH;
+		this.weaponDamage = EntitiesConst.MELEE_DAMAGE;
+		this.weaponRange = EntitiesConst.MELEE_RANGE;
+		this.health = EntitiesConst.MELEE_HEALTH;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;

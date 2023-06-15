@@ -9,20 +9,15 @@ import info3.game.automata.Automaton;
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
 import info3.game.automata.State;
+import info3.game.constants.EntitiesConst;
 import info3.game.map.Map;
 import info3.game.map.Tile;
 
 public abstract class Entity implements IEntity {
-	public static int MAX_HEALTH = 10;
-	public static Game GAME;
-	public static Map MAP;
-	public static Tile[][] MAP_MATRIX;
-
 	public String name;
 	public Location location;
-	public int width, height, health, weaponDamage, weaponRange;
+	public int health, weaponDamage, weaponRange;
 	public float speed;
-	public static int level, experience;
 
 	public int coins, healingPotions, strengthPotions;
 
@@ -39,8 +34,6 @@ public abstract class Entity implements IEntity {
 	public Entity() {
 		this.name = "";
 		this.location = new Location(0, 0);
-		this.width = 1;
-		this.height = 1;
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
@@ -62,16 +55,16 @@ public abstract class Entity implements IEntity {
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
-		Entity.GAME = g;
-		Entity.MAP = (Map) g.map;
-		Entity.MAP_MATRIX = Entity.MAP.map;
-		Entity.level = lvl;
-		Entity.experience = xp;
+		EntitiesConst.GAME = g;
+		EntitiesConst.MAP = (Map) g.map;
+		EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+		EntitiesConst.LEVEL = lvl;
+		EntitiesConst.EXPERIENCE = xp;
 	}
 
 	public void Tick(long elapsed) {
 		if (!this.frozen) {
-			this.automaton.step(this, Entity.GAME);
+			this.automaton.step(this, EntitiesConst.GAME);
 		}
 	}
 
@@ -86,19 +79,19 @@ public abstract class Entity implements IEntity {
 		switch (d) {
 		case N:
 			//this.location.setY(this.location.getY() - 1);
-			this.location.setY((this.location.getY()+Entity.MAP.lenY-1)%Entity.MAP.lenY);
+			this.location.setY((this.location.getY()+EntitiesConst.MAP.lenY-1)%EntitiesConst.MAP.lenY);
 			break;
 		case S:
 			//this.location.setY(this.location.getY() + 1);
-			this.location.setY((this.location.getY()+Entity.MAP.lenY+1)%Entity.MAP.lenY);
+			this.location.setY((this.location.getY()+EntitiesConst.MAP.lenY+1)%EntitiesConst.MAP.lenY);
 			break;
 		case W:
 			//this.location.setX(this.location.getX() - 1);
-			this.location.setX((this.location.getX()+Entity.MAP.lenX-1)%Entity.MAP.lenX);
+			this.location.setX((this.location.getX()+EntitiesConst.MAP.lenX-1)%EntitiesConst.MAP.lenX);
 			break;
 		case E:
 			//this.location.setX(this.location.getX() + 1);
-			this.location.setX((this.location.getX()+Entity.MAP.lenX+1)%Entity.MAP.lenX);
+			this.location.setX((this.location.getX()+EntitiesConst.MAP.lenX+1)%EntitiesConst.MAP.lenX);
 			break;
 		default:
 			break;
@@ -150,7 +143,7 @@ public abstract class Entity implements IEntity {
 	public void Hit(Direction d) {
 		Location t = frontTileLocation(d);
 
-		Entity entity = Entity.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
 			entity.health--;
 		}
@@ -167,7 +160,7 @@ public abstract class Entity implements IEntity {
 		float xBaseIndex = this.location.getX() - 2, yBaseIndex = this.location.getY() - 2;
 		for (int i = (int) xBaseIndex; i < xBaseIndex + 5; i++) {
 			for (int j = (int) yBaseIndex; j < yBaseIndex + 5; j++) {
-				Entity entity = Entity.MAP_MATRIX[i][j].entity;
+				Entity entity = EntitiesConst.MAP_MATRIX[i][j].entity;
 				if (entity != null) {
 					entity.health -= 5;
 				}
@@ -186,7 +179,7 @@ public abstract class Entity implements IEntity {
 
 		Location t = frontTileLocation(d);
 
-		Entity entity = Entity.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity.category == Category.P) {
 			if (entity instanceof Coin) {
 				this.coins++;
@@ -210,7 +203,7 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Power() {
 		if (this.healingPotions > 0) {
-			this.health = Entity.MAX_HEALTH;
+			this.health = EntitiesConst.MAX_HEALTH;
 			this.healingPotions--;
 		}
 	}

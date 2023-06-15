@@ -4,18 +4,17 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Range extends Hero {
-	public static int RANGE_HEALTH = 10, RANGE_DAMAGE = 5, RANGE_RANGE = 3;
-
 	public Range(String name, Location l) {
 		super();
 		this.name = name;
 		this.location = l;
-		this.weaponDamage = Range.RANGE_DAMAGE;
-		this.weaponRange = Boss.BOSS_RANGE;
-		this.health = Range.RANGE_HEALTH;
+		this.weaponDamage = EntitiesConst.RANGE_DAMAGE;
+		this.weaponRange = EntitiesConst.RANGE_RANGE;
+		this.health = EntitiesConst.RANGE_HEALTH;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;
