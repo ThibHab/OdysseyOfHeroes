@@ -83,42 +83,29 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public Object visit(Key key) {
-		int keyPressed = (Integer) null;
-		
 		switch(key.toString()) {
 		case "o":
-			keyPressed = KeyEvent.VK_O;
-			break;
+			return new Aut_Key(KeyEvent.VK_O);
 		case "k":
-			keyPressed = KeyEvent.VK_K;
-			break;
+			return new Aut_Key(KeyEvent.VK_K);
 		case "l":
-			keyPressed = KeyEvent.VK_L;
-			break;
+			return new Aut_Key(KeyEvent.VK_L);
 		case "m":
-			keyPressed = KeyEvent.VK_M;
-			break;
+			return new Aut_Key(KeyEvent.VK_M);
 		case "i":
-			keyPressed = KeyEvent.VK_I;
-			break;
+			return new Aut_Key(KeyEvent.VK_I);
 		case "s":
-			keyPressed = KeyEvent.VK_S;
-			break;
+			return new Aut_Key(KeyEvent.VK_S);
 		case "q":
-			keyPressed = KeyEvent.VK_Q;
-			break;
+			return new Aut_Key(KeyEvent.VK_Q);
 		case "d":
-			keyPressed = KeyEvent.VK_D;
-			break;
+			return new Aut_Key(KeyEvent.VK_D);
 		case "f":
-			keyPressed = KeyEvent.VK_F;
-			break;
+			return new Aut_Key(KeyEvent.VK_F);
 		case "a":
-			keyPressed = KeyEvent.VK_A;
-			break;
+			return new Aut_Key(KeyEvent.VK_A);
 		}
-		this.key = new Aut_Key(keyPressed);
-		return this.key;
+		return null;
 	}
 
 	@Override
@@ -145,11 +132,32 @@ public class AutCreator implements IVisitor {
 		switch(funcall.name) {
 		case "True" :
 			return new True();
+		case "Key" :
+			if (parameters.get(0) instanceof Aut_Key)
+				return parameters.get(0);
+		case "MyDir" :
+			if (parameters.get(0) instanceof Aut_Direction)
+				return new MyDir((Aut_Direction)parameters.get(0));
+		case "Cell" :
+			if (parameters.get(0) instanceof Aut_Direction && parameters.get(1) instanceof Aut_Category)
+				return new Cell((Aut_Direction)parameters.get(0), (Aut_Category)parameters.get(1));
 		case "Move" :
 			if (parameters.get(0) instanceof Aut_Direction)
 				return new Move((Aut_Direction)parameters.get(0));
-			else
-				return new Move(Aut_Direction.F);
+			return new Move(Aut_Direction.F);
+		case "Egg" :
+			if (parameters.get(0) instanceof Aut_Direction && parameters.get(1) instanceof Aut_Category)
+				return new Egg((Aut_Direction)parameters.get(0), (Aut_Category)parameters.get(1));
+			if (parameters.get(0) instanceof Aut_Category)
+				return new Egg(Aut_Direction.F, (Aut_Category)parameters.get(0));
+		case "Hit" :
+			if (parameters.get(0) instanceof Aut_Direction)
+				return new Hit((Aut_Direction)parameters.get(0));
+			return new Hit(Aut_Direction.F);
+		case "Turn" :
+			if (parameters.get(0) instanceof Aut_Direction)
+				return new Turn((Aut_Direction)parameters.get(0));
+			return new Turn(Aut_Direction.F);
 		}
 		return null;
 	}
@@ -206,7 +214,13 @@ public class AutCreator implements IVisitor {
 	@Override
 	public Object visit(Behaviour behaviour, List<Object> transitions) {
 		// TODO Auto-generated method stub
-		return this.transitions;
+		List<Aut_Transition> list = new LinkedList<Aut_Transition>();
+		Iterator iter = transitions.iterator();
+		while (iter.hasNext()) {
+			Aut_Transition next = (Aut_Transition)iter.next();
+			list.add(next);
+		}
+		return list;
 	}
 
 	@Override
