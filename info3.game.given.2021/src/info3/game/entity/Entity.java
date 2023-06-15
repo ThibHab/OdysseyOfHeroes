@@ -221,7 +221,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		// TODO Auto-generated method stub
 
 	}
