@@ -1,6 +1,6 @@
 package info3.game.automata;
 
-public enum Category {
+public enum Aut_Category {
 	A, // Adversary
 	C, // Clue
 	D, // Danger

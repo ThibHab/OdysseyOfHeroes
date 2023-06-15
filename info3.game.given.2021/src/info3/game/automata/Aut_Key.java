@@ -5,11 +5,11 @@ import java.util.Iterator;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class Key extends Condition {
+public class Aut_Key extends Aut_Condition {
 	
 	int key;
 	
-	public Key(int k) {
+	public Aut_Key(int k) {
 		this.key = k;
 	}
 

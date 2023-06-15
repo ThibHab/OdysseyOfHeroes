@@ -1,6 +1,6 @@
 package info3.game.entity;
 
-import info3.game.automata.Category;
+import info3.game.automata.*;
 import info3.game.constants.ImagesConst;
 
 public class Merchant extends NPC {
@@ -13,7 +13,7 @@ public class Merchant extends NPC {
 		this.automaton = null;
 		this.currentState = null;
 		// -----------------------------
-		this.category = Category.T;
+		this.category = Aut_Category.T;
 
 		// --- TODO manage sprite properly ---
 		this.sprites = ImagesConst.MERCHANT;

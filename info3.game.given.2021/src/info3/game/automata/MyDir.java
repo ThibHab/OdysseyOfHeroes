@@ -3,11 +3,11 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class MyDir extends Condition {
+public class MyDir extends Aut_Condition {
 	
-	Direction dir;
+	Aut_Direction dir;
 
-	public MyDir(Direction direction) {
+	public MyDir(Aut_Direction direction) {
 		this.dir = direction;
 	}
 
