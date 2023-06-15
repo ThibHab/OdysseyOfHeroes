@@ -18,8 +18,11 @@ public class Bush extends DecorElement {
 
 		// --- TODO manage sprite properly ---
 		this.sprites = ImagesConst.BUSH;
-		this.imageIndex = 0;
+		this.imageIndex = 1;
 		// -----------------------------------
+		
+		this.Width = 1;
+		this.Height = 1;
 	}
 
 	// TODO is the default egg method sufficient ?

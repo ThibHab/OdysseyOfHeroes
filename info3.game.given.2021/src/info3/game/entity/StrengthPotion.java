@@ -1,7 +1,5 @@
 package info3.game.entity;
 
-import java.awt.image.BufferedImage;
-
 import info3.game.constants.ImagesConst;
 
 public class StrengthPotion extends Item {

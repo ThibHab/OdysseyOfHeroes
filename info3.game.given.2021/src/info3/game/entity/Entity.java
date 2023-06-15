@@ -75,26 +75,35 @@ public abstract class Entity implements IEntity {
 		if (d == null) {
 			d = this.direction;
 		}
-
+		
+		Location destLocation = new Location(this.location.getX(), this.location.getY());
 		switch (d) {
 		case N:
 			//this.location.setY(this.location.getY() - 1);
-			this.location.setY((this.location.getY()+EntitiesConst.MAP.lenY-1)%EntitiesConst.MAP.lenY);
+			destLocation.setY((this.location.getY()+EntitiesConst.MAP.lenY-1)%EntitiesConst.MAP.lenY);
 			break;
 		case S:
 			//this.location.setY(this.location.getY() + 1);
-			this.location.setY((this.location.getY()+EntitiesConst.MAP.lenY+1)%EntitiesConst.MAP.lenY);
+			destLocation.setY((this.location.getY()+EntitiesConst.MAP.lenY+1)%EntitiesConst.MAP.lenY);
 			break;
 		case W:
 			//this.location.setX(this.location.getX() - 1);
-			this.location.setX((this.location.getX()+EntitiesConst.MAP.lenX-1)%EntitiesConst.MAP.lenX);
+			destLocation.setX((this.location.getX()+EntitiesConst.MAP.lenX-1)%EntitiesConst.MAP.lenX);
 			break;
 		case E:
 			//this.location.setX(this.location.getX() + 1);
-			this.location.setX((this.location.getX()+EntitiesConst.MAP.lenX+1)%EntitiesConst.MAP.lenX);
+			destLocation.setX((this.location.getX()+EntitiesConst.MAP.lenX+1)%EntitiesConst.MAP.lenX);
 			break;
 		default:
 			break;
+		}
+		
+		Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
+		if (destTile.walkable && destTile.entity == null) {
+			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
+			destTile.entity = this;
+			this.location.setX(destLocation.getX());
+			this.location.setY(destLocation.getY());
 		}
 
 		this.frozen = false;

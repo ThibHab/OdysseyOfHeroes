@@ -30,7 +30,14 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 
 import info3.game.Game;
-import info3.game.automata.*;
+import info3.game.automata.Action;
+import info3.game.automata.Automaton;
+import info3.game.automata.Condition;
+import info3.game.automata.Direction;
+import info3.game.automata.Key;
+import info3.game.automata.Move;
+import info3.game.automata.State;
+import info3.game.automata.Transition;
 
 /**
  * A simple class that holds the images of a sprite for an animated cowbow.
