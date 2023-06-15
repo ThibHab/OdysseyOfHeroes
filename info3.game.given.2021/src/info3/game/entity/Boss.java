@@ -5,18 +5,18 @@ import info3.game.automata.Direction;
 import info3.game.constants.ImagesConst;
 
 public class Boss extends Mob {
-	public static int BossHealth = 20, BossWidth = 2, BossHeight = 2, BossDamage = 2, BossRange = 2, BossSpeed = 2;
+	public static int BOSS_HEALTH = 20, BOSS_WIDTH = 2, BOSS_HEIGHT = 2, BOSS_DAMAGE = 4, BOSS_RANGE = 2, BOSS_SPEED = 2;
 
 	public Boss(Location l) {
 		super();
 		this.name = "Boss";
 		this.location = l;
-		this.width = Boss.BossWidth;
-		this.height = Boss.BossHeight;
-		this.health = Boss.BossHealth;
-		this.weaponDamage = Boss.BossDamage;
-		this.weaponRange = Boss.BossRange;
-		this.speed = Boss.BossSpeed;
+		this.width = Boss.BOSS_WIDTH;
+		this.height = Boss.BOSS_HEIGHT;
+		this.health = Boss.BOSS_HEALTH;
+		this.weaponDamage = Boss.BOSS_DAMAGE;
+		this.weaponRange = Boss.BOSS_RANGE;
+		this.speed = Boss.BOSS_SPEED;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;

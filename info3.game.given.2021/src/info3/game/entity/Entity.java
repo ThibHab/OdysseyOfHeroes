@@ -10,10 +10,13 @@ import info3.game.automata.Category;
 import info3.game.automata.Direction;
 import info3.game.automata.State;
 import info3.game.map.Map;
+import info3.game.map.Tile;
 
 public abstract class Entity implements IEntity {
-
-	public static Game game;
+	public static int MAX_HEALTH = 10;
+	public static Game GAME;
+	public static Map MAP;
+	public static Tile[][] MAP_MATRIX;
 
 	public String name;
 	public Location location;
@@ -59,14 +62,16 @@ public abstract class Entity implements IEntity {
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
-		Entity.game = g;
+		Entity.GAME = g;
+		Entity.MAP = (Map) g.map;
+		Entity.MAP_MATRIX = Entity.MAP.map;
 		Entity.level = lvl;
 		Entity.experience = xp;
 	}
 
 	public void Tick(long elapsed) {
 		if (!this.frozen) {
-			this.automaton.step(this, Entity.game);
+			this.automaton.step(this, Entity.GAME);
 		}
 	}
 
@@ -81,19 +86,19 @@ public abstract class Entity implements IEntity {
 		switch (d) {
 		case N:
 			//this.location.setY(this.location.getY() - 1);
-			this.location.setY((this.location.getY()+((Map)game.map).lenY-1)%((Map)game.map).lenY);
+			this.location.setY((this.location.getY()+Entity.MAP.lenY-1)%Entity.MAP.lenY);
 			break;
 		case S:
 			//this.location.setY(this.location.getY() + 1);
-			this.location.setY((this.location.getY()+((Map)game.map).lenY+1)%((Map)game.map).lenY);
+			this.location.setY((this.location.getY()+Entity.MAP.lenY+1)%Entity.MAP.lenY);
 			break;
 		case W:
 			//this.location.setX(this.location.getX() - 1);
-			this.location.setX((this.location.getX()+((Map)game.map).lenX-1)%((Map)game.map).lenX);
+			this.location.setX((this.location.getX()+Entity.MAP.lenX-1)%Entity.MAP.lenX);
 			break;
 		case E:
 			//this.location.setX(this.location.getX() + 1);
-			this.location.setX((this.location.getX()+((Map)game.map).lenX+1)%((Map)game.map).lenX);
+			this.location.setX((this.location.getX()+Entity.MAP.lenX+1)%Entity.MAP.lenX);
 			break;
 		default:
 			break;
@@ -117,23 +122,24 @@ public abstract class Entity implements IEntity {
 			d = this.direction;
 		}
 
+		Location location = this.frontTileLocation(d);
 		Random random = new Random();
 		int tirage = random.nextInt(7);
 		switch (tirage) {
 		case 0:
 		case 1:
-			new Goblin(this.location);
+			new Goblin(location);
 			break;
 		case 2:
-			new HealingPotion(this.location);
+			new HealingPotion(location);
 			break;
 		case 3:
-			new StrengthPotion(this.location);
+			new StrengthPotion(location);
 			break;
 		case 4:
 		case 5:
 		case 6:
-			new Coin(this.location);
+			new Coin(location);
 			break;
 		default:
 			break;
@@ -144,8 +150,7 @@ public abstract class Entity implements IEntity {
 	public void Hit(Direction d) {
 		Location t = frontTileLocation(d);
 
-		Map map = (Map) Entity.game.map;
-		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = Entity.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
 			entity.health--;
 		}
@@ -159,26 +164,29 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Explode() {
-		Map map = (Map) Entity.game.map;
 		float xBaseIndex = this.location.getX() - 2, yBaseIndex = this.location.getY() - 2;
 		for (int i = (int) xBaseIndex; i < xBaseIndex + 5; i++) {
 			for (int j = (int) yBaseIndex; j < yBaseIndex + 5; j++) {
-				Entity entity = map.map[i][j].entity;
+				Entity entity = Entity.MAP_MATRIX[i][j].entity;
 				if (entity != null) {
 					entity.health -= 5;
 				}
 			}
 		}
 
+		// TODO delete destroyable rocks
 		// TODO add explode method for animation (view)
 	}
 
 	@Override
 	public void Pick(Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
+
 		Location t = frontTileLocation(d);
 
-		Map map = (Map) Entity.game.map;
-		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = Entity.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity.category == Category.P) {
 			if (entity instanceof Coin) {
 				this.coins++;
@@ -201,8 +209,10 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Power() {
-		// TODO Auto-generated method stub
-
+		if (this.healingPotions > 0) {
+			this.health = Entity.MAX_HEALTH;
+			this.healingPotions--;
+		}
 	}
 
 	@Override
@@ -211,8 +221,6 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Throw(Direction d, Category category) {
-		// TODO complete method
-
 	}
 
 	@Override
