@@ -116,23 +116,24 @@ public abstract class Entity implements IEntity {
 			d = this.direction;
 		}
 
+		Location location = this.frontTileLocation(d);
 		Random random = new Random();
 		int tirage = random.nextInt(7);
 		switch (tirage) {
 		case 0:
 		case 1:
-			new Goblin(this.location);
+			new Goblin(location);
 			break;
 		case 2:
-			new HealingPotion(this.location);
+			new HealingPotion(location);
 			break;
 		case 3:
-			new StrengthPotion(this.location);
+			new StrengthPotion(location);
 			break;
 		case 4:
 		case 5:
 		case 6:
-			new Coin(this.location);
+			new Coin(location);
 			break;
 		default:
 			break;
@@ -202,8 +203,10 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Power() {
-		// TODO Auto-generated method stub
-
+		if (this.healingPotions > 0) {
+			this.health = Entity.MAX_HEALTH;
+			this.healingPotions--;
+		}
 	}
 
 	@Override
@@ -212,8 +215,6 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Throw(Direction d, Category category) {
-		// TODO complete method
-
 	}
 
 	@Override
