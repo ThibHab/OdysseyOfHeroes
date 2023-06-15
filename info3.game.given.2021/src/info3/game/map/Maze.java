@@ -1,4 +1,4 @@
-package info3.game;
+package info3.game.map;
 
 import java.util.Random;
 
