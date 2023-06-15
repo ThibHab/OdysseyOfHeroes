@@ -17,5 +17,8 @@ public class Rock extends DecorElement {
 		this.sprites =  ImagesConst.ROCK;
 		this.imageIndex = 0;
 		// -----------------------------------
+		
+		this.Width = 1;
+		this.Height = 1;
 	}
 }

@@ -17,5 +17,8 @@ public class Tree extends DecorElement {
 		this.sprites =  ImagesConst.TREE;
 		this.imageIndex = 0;
 		// -----------------------------------
+		
+		this.Width = 2;
+		this.Height = 2;
 	}
 }

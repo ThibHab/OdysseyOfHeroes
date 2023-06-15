@@ -16,5 +16,8 @@ public class House extends DecorElement {
 		this.sprites = ImagesConst.HOUSE;
 		this.imageIndex = 0;
 		// -----------------------------------
+		
+		this.Width = 2;
+		this.Height = 2;
 	}
 }
