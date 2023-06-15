@@ -31,11 +31,13 @@ import javax.swing.JLabel;
 
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
+import info3.game.entity.Entity;
 import info3.game.graphics.GameCanvas;
 import info3.game.map.DebugMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
+import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
 
 public class Game {
@@ -67,9 +69,11 @@ public class Game {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
 		m_cowboy = new Cowboy(this);
+		new ImagesConst();
 		
-		ImagesConst im = new ImagesConst();
-				
+		//TODO correctly initialize Level and Experience methods /!\
+		int level = 0, xp = 0;
+		
 		player1 = new Cowboy(this);
 		player2 = new Cowboy(this);
 		// creating a listener for all the events
@@ -80,8 +84,10 @@ public class Game {
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
 		
-		map = new DebugMap(40, 40, player1, player2);
+		map = new WorldMap(40, 40, player1, player2);
 		render = new MapRender((Map)map, this);
+		
+		Entity.InitStatics(this, level, xp);
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
@@ -140,7 +146,7 @@ public class Game {
 	}
 
 	private int m_musicIndex = 0;
-	private String[] m_musicNames = new String[] { "Runaway-Food-Truck" }; 
+	private String[] m_musicNames = new String[] { "theme" }; 
 
 	private long m_textElapsed;
 
@@ -151,6 +157,7 @@ public class Game {
 	void tick(long elapsed) {
 
 		player1.tick(elapsed);
+		player2.tick(elapsed);
 
 		// Update every second
 		// the text on top of the frame: tick and fps
@@ -164,7 +171,10 @@ public class Game {
 			while (txt.length() < 15)
 				txt += " ";
 			txt = txt + fps + " fps   ";
-			txt = txt + player1.location.getX() + " " + player1.location.getY() + ";";
+			txt = txt+"P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
 			m_text.setText(txt);
 		}
 	}

@@ -3,19 +3,35 @@ package info3.game.entity;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import info3.game.automata.Category;
+import info3.game.automata.Direction;
+import info3.game.constants.EntitiesConst;
+
 public abstract class Hero extends Entity {
 	public Hero() {
 		super();
-		this.width = 100;
-		this.height = 100;
-		this.coins = 0;
-		Hero.level = 1;
-		Hero.experience = 0;
-		this.speed = 1;
+		this.speed = EntitiesConst.HERO_SPEED;
+
+		this.category = Category.AT;
 	}
-	
+
 	public void paint(Graphics g, int TileSize) {
 		BufferedImage img = sprites[imageIndex];
-		g.drawImage(img, (int) location.getX(), (int) location.getY(), (int) scale*TileSize, (int) scale*TileSize, null);
+		g.drawImage(img, (int) location.getX(), (int) location.getY(), (int) scale * TileSize, (int) scale * TileSize,
+				null);
 	}
+
+	@Override
+	public void Pick(Direction d) {
+		// TODO Auto-generated method stub
+		super.Pick(d);
+	}
+
+	@Override
+	public void Store(Category c) {
+		// TODO Auto-generated method stub
+		super.Store(c);
+	}
+	
+	
 }

@@ -1,10 +1,22 @@
 package info3.game.entity;
 
+import info3.game.constants.ImagesConst;
+
 public class HealingPotion extends Item{
 
 	public HealingPotion(Location l) {
 		super();
-		//TODO Set the sprite, the width and the height
-		this.location = l;		
+		this.name = "Heal";
+		this.location = l;
+
+		// --- TODO manage automaton ---
+		this.automaton = null;
+		this.currentState = null;
+		// -----------------------------
+
+		// --- TODO manage sprite properly ---
+		this.sprites = ImagesConst.HEALING_POTION;
+		this.imageIndex = 0;
+		// -----------------------------------
 	}
 }
