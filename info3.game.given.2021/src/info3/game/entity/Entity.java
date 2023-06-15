@@ -28,10 +28,15 @@ public abstract class Entity implements IEntity {
 	public BufferedImage[] sprites;
 	public int imageIndex;
 	public float scale;
+	public float XratioCharTile;
+	public float YratioCharTile;
+	
+	public Location hitBoxLocation;
 
 	public Entity() {
 		this.name = "";
 		this.location = new Location(0, 0);
+		this.hitBoxLocation = new Location(0,0);
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
@@ -51,6 +56,12 @@ public abstract class Entity implements IEntity {
 		this.mouvementIndex = 0;
 
 		this.scale = 1;
+		
+		this.XratioCharTile = (float)0.50;
+		this.YratioCharTile = (float)0.75;
+		
+		this.hitBoxLocation.setX((float)(location.getX() + (1 - this.XratioCharTile)/2));
+		this.hitBoxLocation.setY((float)(location.getY() + (1 - this.YratioCharTile)/2));
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -312,5 +323,28 @@ public abstract class Entity implements IEntity {
 		}
 
 		return new Location((int) xIndex, (int) yIndex);
+	}
+	
+	public boolean hitboxOverlap(Direction d, Entity src, Entity tgt) {
+		float x1 = src.hitBoxLocation.getX();
+		float y1 = src.hitBoxLocation.getY();
+		float X1 = tgt.hitBoxLocation.getX();
+		float Y1 = tgt.hitBoxLocation.getY();
+		float x2 = x1 + src.XratioCharTile;
+		float y2 = y1 + src.YratioCharTile;
+		float X2 = X1 + tgt.XratioCharTile;
+		float Y2 = Y1 + tgt.YratioCharTile;
+		switch(d) {
+		case S:
+			return x1 > X1 && X1 > x2;
+		case E:
+			return y1 > Y1 && Y1 > y2;
+		case N:
+			return x1 < X2 && X2 < x2;
+		case W:
+			return y1 < Y2 && Y2 < y2;
+		default:
+			return false;
+		}
 	}
 }

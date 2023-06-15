@@ -20,6 +20,7 @@
  */
 package info3.game.entity;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -109,6 +110,10 @@ public class Cowboy extends Entity {
 		BufferedImage img = m_images[m_imageIndex];
 		Location pixel=game.render.gridToPixel(location,true);
 		g.drawImage(img, (int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize, null);
+		g.setColor(Color.blue);
+		Location l = game.render.gridToPixel(this.hitBoxLocation, true);
+		//g.drawRect((int)l.getX(), (int)l.getY(), (int) (game.render.tileSize * this.XratioCharTile), (int) (game.render.tileSize * this.YratioCharTile));
+		g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize);
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
