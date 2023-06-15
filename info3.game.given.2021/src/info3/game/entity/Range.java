@@ -45,10 +45,4 @@ public class Range extends Hero {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
 	}
-	
-	public void paint(Graphics g, int TileSize) {
-		BufferedImage img = sprites[imageIndex];
-		g.drawImage(img, (int) location.getX(), (int) location.getY(), (int) scale * TileSize, (int) scale * TileSize,
-				null);
-	}
 }
