@@ -3,11 +3,11 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class Hit extends Action {
+public class Hit extends Aut_Action {
 	
-	Direction dir;
+	Aut_Direction dir;
 	
-	public Hit(Direction direction) {
+	public Hit(Aut_Direction direction) {
 		this.dir = direction;
 	}
 

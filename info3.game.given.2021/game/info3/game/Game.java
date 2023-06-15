@@ -84,7 +84,7 @@ public class Game {
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
 		
-		map = new WorldMap(40, 40, player1, player2);
+		map = new WorldMap(60, 60, player1, player2);
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);

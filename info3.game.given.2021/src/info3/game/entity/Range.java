@@ -1,7 +1,6 @@
 package info3.game.entity;
 
-import info3.game.automata.Category;
-import info3.game.automata.Direction;
+import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.constants.StatesConst;
@@ -27,19 +26,19 @@ public class Range extends Hero {
 	}
 
 	@Override
-	public void Hit(Direction d) {
+	public void Hit(Aut_Direction d) {
 		// TODO Auto-generated method stub
 		super.Hit(d);
 	}
 
 	@Override
-	public void Pop(Direction d, Category c) {
+	public void Pop(Aut_Direction d, Aut_Category c) {
 		// TODO Auto-generated method stub
 		super.Pop(d, c);
 	}
 
 	@Override
-	public void Wizz(Direction d, Category c) {
+	public void Wizz(Aut_Direction d, Aut_Category c) {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
 	}

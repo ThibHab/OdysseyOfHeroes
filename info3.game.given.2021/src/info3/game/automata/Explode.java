@@ -3,7 +3,7 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class Explode extends Action {
+public class Explode extends Aut_Action {
 
 	public Explode() {
 		// TODO Auto-generated constructor stub
