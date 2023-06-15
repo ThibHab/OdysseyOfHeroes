@@ -68,8 +68,6 @@ public class Game {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
 		m_cowboy = new Cowboy(this);
-		Entity.game=this;
-		
 		new ImagesConst();
 		
 		//TODO correctly initialize Level and Experience methods /!\

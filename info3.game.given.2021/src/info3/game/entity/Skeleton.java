@@ -5,16 +5,16 @@ import info3.game.automata.Direction;
 import info3.game.constants.ImagesConst;
 
 public class Skeleton extends Mob {
-	public static int SkeletonHealth = 20, SkeletonDamage = 2, SkeletonRange = 2, SkeletonSpeed = 2;
+	public static int SKELETON_HEALTH = 20, SKELETON_DAMAGE = 2, SKELETON_RANGE = 3, SKELETON_SPEED = 2;
 
 	public Skeleton(Location l) {
 		super();
 		this.name = "Skeleton";
 		this.location = l;
-		this.health = Skeleton.SkeletonHealth;
-		this.weaponDamage = Skeleton.SkeletonDamage;
-		this.weaponRange = Skeleton.SkeletonRange;
-		this.speed = Skeleton.SkeletonSpeed;
+		this.health = Skeleton.SKELETON_HEALTH;
+		this.weaponDamage = Skeleton.SKELETON_DAMAGE;
+		this.weaponRange = Skeleton.SKELETON_RANGE;
+		this.speed = Skeleton.SKELETON_SPEED;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;

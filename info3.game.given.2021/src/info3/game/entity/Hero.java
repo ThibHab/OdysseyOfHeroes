@@ -6,13 +6,13 @@ import info3.game.automata.Category;
 import info3.game.automata.Direction;
 
 public abstract class Hero extends Entity {
-	public static int HeroWidth = 2, HeroHeight = 2, HeroSpeed = 2;
+	public static int HERO_WIDTH = 2, HERO_HEIGHT = 2, HERO_SPEED = 2;
 
 	public Hero() {
 		super();
-		this.width = Hero.HeroWidth;
-		this.height = Hero.HeroHeight;
-		this.speed = Hero.HeroSpeed;
+		this.width = Hero.HERO_WIDTH;
+		this.height = Hero.HERO_HEIGHT;
+		this.speed = Hero.HERO_SPEED;
 
 		this.category = Category.AT;
 	}
