@@ -100,7 +100,10 @@ public abstract class Entity implements IEntity {
 		
 		Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
 		if (destTile.walkable && destTile.entity == null) {
-			this.location = destLocation;
+			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
+			destTile.entity = this;
+			this.location.setX(destLocation.getX());
+			this.location.setY(destLocation.getY());
 		}
 
 		this.frozen = false;
