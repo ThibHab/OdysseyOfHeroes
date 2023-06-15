@@ -10,10 +10,12 @@ import info3.game.automata.Category;
 import info3.game.automata.Direction;
 import info3.game.automata.State;
 import info3.game.map.Map;
+import info3.game.map.Tile;
 
 public abstract class Entity implements IEntity {
-
-	public static Game game;
+	public static int MAX_HEALTH = 10;
+	public static Game GAME;
+	public static Tile[][] MAP;
 
 	public String name;
 	public Location location;
@@ -59,14 +61,15 @@ public abstract class Entity implements IEntity {
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
-		Entity.game = g;
+		Entity.GAME = g;
+		Entity.MAP = ((Map) g.map).map;
 		Entity.level = lvl;
 		Entity.experience = xp;
 	}
 
 	public void Tick(long elapsed) {
 		if (!this.frozen) {
-			this.automaton.step(this, Entity.game);
+			this.automaton.step(this, Entity.GAME);
 		}
 	}
 
@@ -140,8 +143,7 @@ public abstract class Entity implements IEntity {
 	public void Hit(Direction d) {
 		Location t = frontTileLocation(d);
 
-		Map map = (Map) Entity.game.map;
-		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = Entity.MAP[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
 			entity.health--;
 		}
@@ -155,26 +157,29 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Explode() {
-		Map map = (Map) Entity.game.map;
 		float xBaseIndex = this.location.getX() - 2, yBaseIndex = this.location.getY() - 2;
 		for (int i = (int) xBaseIndex; i < xBaseIndex + 5; i++) {
 			for (int j = (int) yBaseIndex; j < yBaseIndex + 5; j++) {
-				Entity entity = map.map[i][j].entity;
+				Entity entity = Entity.MAP[i][j].entity;
 				if (entity != null) {
 					entity.health -= 5;
 				}
 			}
 		}
 
+		// TODO delete destroyable rocks
 		// TODO add explode method for animation (view)
 	}
 
 	@Override
 	public void Pick(Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
+
 		Location t = frontTileLocation(d);
 
-		Map map = (Map) Entity.game.map;
-		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		Entity entity = Entity.MAP[(int) t.getX()][(int) t.getY()].entity;
 		if (entity.category == Category.P) {
 			if (entity instanceof Coin) {
 				this.coins++;
