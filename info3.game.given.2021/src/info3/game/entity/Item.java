@@ -11,7 +11,7 @@ public abstract class Item extends Entity {
 
 	public Item() {
 		super();
-		this.category = Category.P;
+		this.category = Aut_Category.P;
 	}
 	
 	public void paint(Graphics g, int TileSize) {

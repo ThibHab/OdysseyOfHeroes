@@ -43,8 +43,8 @@ public abstract class Entity implements IEntity {
 		this.automaton = null;
 		this.currentState = null;
 		// -----------------------------
-		this.direction = Direction.N;
-		this.category = Category.UNDERSCORE;
+		this.direction = Aut_Direction.N;
+		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
 
 		this.scale = 1;
