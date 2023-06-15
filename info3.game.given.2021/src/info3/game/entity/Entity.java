@@ -80,16 +80,20 @@ public abstract class Entity implements IEntity {
 
 		switch (d) {
 		case N:
-			this.location.setY(this.location.getY() - 1);
+			//this.location.setY(this.location.getY() - 1);
+			this.location.setY((this.location.getY()+((Map)game.map).lenY-1)%((Map)game.map).lenY);
 			break;
 		case S:
-			this.location.setY(this.location.getY() + 1);
+			//this.location.setY(this.location.getY() + 1);
+			this.location.setY((this.location.getY()+((Map)game.map).lenY+1)%((Map)game.map).lenY);
 			break;
 		case W:
-			this.location.setX(this.location.getX() - 1);
+			//this.location.setX(this.location.getX() - 1);
+			this.location.setX((this.location.getX()+((Map)game.map).lenX-1)%((Map)game.map).lenX);
 			break;
 		case E:
-			this.location.setX(this.location.getX() + 1);
+			//this.location.setX(this.location.getX() + 1);
+			this.location.setX((this.location.getX()+((Map)game.map).lenX+1)%((Map)game.map).lenX);
 			break;
 		default:
 			break;
