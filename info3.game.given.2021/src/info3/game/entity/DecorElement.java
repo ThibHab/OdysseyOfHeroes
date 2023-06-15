@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.*;
+import info3.game.constants.EntitiesConst;
 
 public abstract class DecorElement extends Entity {
 	public int width, height;
