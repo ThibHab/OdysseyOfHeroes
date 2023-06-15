@@ -34,8 +34,8 @@ public class ImagesConst {
 		TREE = loadSprite("", 1, 1);
 
 		COIN = loadSprite("", 1, 1);
-		HEALING_POTION = loadSprite("", 1, 1);
-		STRENGTH_POTION = loadSprite("", 1, 1);
+		HEALING_POTION = loadSprite("Healing", 3, 3);
+		STRENGTH_POTION = loadSprite("Strength", 3, 3);
 
 		BOSS = loadSprite("", 1, 1);
 		GOBLIN = loadSprite("", 1, 1);
@@ -46,8 +46,8 @@ public class ImagesConst {
 		BUSH = loadSprite("bush_placeholder", 1, 1);
 		CHEST = loadSprite("", 1, 1);
 
-		RANGE = loadSprite("", 8, 7);
-		RANGE = loadSprite("range", 8, 7);
+		RANGE = loadSprite("Melee", 8, 7);
+		RANGE = loadSprite("Range", 8, 7);
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
