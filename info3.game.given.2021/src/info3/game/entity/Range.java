@@ -23,7 +23,7 @@ public class Range extends Hero {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.range;
+		this.sprites = ImagesConst.RANGE;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

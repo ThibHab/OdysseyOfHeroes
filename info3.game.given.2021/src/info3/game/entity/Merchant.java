@@ -16,7 +16,7 @@ public class Merchant extends NPC {
 		this.category = Category.T;
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.merchant;
+		this.sprites = ImagesConst.MERCHANT;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

@@ -23,7 +23,7 @@ public class Melee extends Hero {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.melee;
+		this.sprites = ImagesConst.MELEE;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

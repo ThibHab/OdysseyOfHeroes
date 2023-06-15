@@ -16,7 +16,7 @@ public class Tree extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites =  new BufferedImage[]{ImagesConst.tree};
+		this.sprites =  ImagesConst.TREE;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

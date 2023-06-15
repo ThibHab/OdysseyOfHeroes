@@ -14,7 +14,7 @@ public class House extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = new BufferedImage[] {ImagesConst.house};
+		this.sprites = ImagesConst.HOUSE;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

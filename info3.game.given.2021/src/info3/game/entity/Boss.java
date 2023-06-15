@@ -25,7 +25,7 @@ public class Boss extends Mob {
 		this.category = Category.A;
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.boss;
+		this.sprites = ImagesConst.BOSS;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}
