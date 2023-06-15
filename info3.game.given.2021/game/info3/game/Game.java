@@ -72,7 +72,6 @@ public class Game {
 		
 		//TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
-		Entity.InitStatics(this, level, xp);
 		
 		player1 = new Cowboy(this);
 		player2 = new Cowboy(this);
@@ -86,6 +85,8 @@ public class Game {
 		
 		map = new DebugMap(40, 40, player1, player2);
 		render = new MapRender((Map)map, this);
+		
+		Entity.InitStatics(this, level, xp);
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
