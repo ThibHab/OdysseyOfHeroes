@@ -1,14 +1,14 @@
 package info3.game.entity;
 
 import java.awt.image.BufferedImage;
-import info3.game.automata.Category;
+
 import info3.game.constants.ImagesConst;
 
-public class HealingPotion extends Item{
+public class StrengthPotion extends Item {
 
-	public HealingPotion(Location l) {
+	public StrengthPotion(Location l) {
 		super();
-		this.name = "Heal";
+		this.name = "Strength";
 		this.location = l;
 
 		// --- TODO manage automaton ---
@@ -17,7 +17,7 @@ public class HealingPotion extends Item{
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = new BufferedImage[]{ImagesConst.healingPotion};
+		this.sprites = new BufferedImage[]{ImagesConst.strengthPotion};
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

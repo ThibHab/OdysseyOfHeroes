@@ -1,6 +1,7 @@
 package info3.game.entity;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import info3.game.Game;
@@ -11,28 +12,72 @@ import info3.game.automata.State;
 import info3.game.map.Map;
 
 public abstract class Entity implements IEntity {
-	public int width, height, health;
-	public Location location;
-	public Automaton automaton;
-	public State currentState;
-	public float speed;
-	public Direction direction;
-	public Category category;
+
 	public static Game game;
 
+	public String name;
+	public Location location;
+	public int width, height, health, weaponDamage, weaponRange;
+	public float speed;
+	public static int level, experience;
+
+	public int coins, healingPotions, strengthPotions;
+
+	public Automaton automaton;
+	public State currentState;
+	public Direction direction;
+	public Category category;
+	public boolean frozen;
+
+	public BufferedImage[] sprites;
+	public int imageIndex;
+	public float scale;
 
 	public Entity() {
+		this.name = "";
 		this.location = new Location(0, 0);
+		this.width = 1;
+		this.height = 1;
+		this.health = -1;
+		this.weaponDamage = 1;
+		this.weaponRange = 1;
+		this.speed = 1;
+
+		this.coins = 0;
+		this.healingPotions = 0;
+		this.strengthPotions = 0;
+
+		// --- TODO manage automaton ---
+		this.automaton = null;
 		this.currentState = null;
+		// -----------------------------
+		this.direction = Direction.N;
+		this.category = Category.UNDERSCORE;
+		this.frozen = false;
+
+		this.scale = 1;
 	}
 
+	public static void InitStatics(Game g, int lvl, int xp) {
+		Entity.game = g;
+		Entity.level = lvl;
+		Entity.experience = xp;
+	}
+
+	public void Tick(long elapsed) {
+		if (!this.frozen) {
+			this.automaton.step(this, Entity.game);
+		}
+	}
 
 	@Override
 	public void Move(Direction d) {
+		this.frozen = true;
+
 		if (d == null) {
 			d = this.direction;
 		}
-		
+
 		switch (d) {
 		case N:
 			//this.location.setY(this.location.getY() - 1);
@@ -53,26 +98,42 @@ public abstract class Entity implements IEntity {
 		default:
 			break;
 		}
+
+		this.frozen = false;
 	}
 
 	@Override
 	public void Turn(Direction d) {
-		this.direction = d;
+		if (d == null) {
+			d = this.direction;
+		}
 
+		this.direction = d;
 	}
 
 	@Override
 	public void Egg(Direction d, Category c) {
+		if (d == null) {
+			d = this.direction;
+		}
+
 		Random random = new Random();
-		switch (c) {
-		case A:
-			new Goblin();
+		int tirage = random.nextInt(7);
+		switch (tirage) {
+		case 0:
+		case 1:
+			new Goblin(this.location);
 			break;
-		case P:
-			// TODO add coin and potion instance creation
+		case 2:
+			new HealingPotion(this.location);
 			break;
-		case M:
-			// TODO add projectile drop
+		case 3:
+			new StrengthPotion(this.location);
+			break;
+		case 4:
+		case 5:
+		case 6:
+			new Coin(this.location);
 			break;
 		default:
 			break;
@@ -80,8 +141,16 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Hit() {		//TODO mettre une direction
-		
+	public void Hit(Direction d) {
+		Location t = frontTileLocation(d);
+
+		Map map = (Map) Entity.game.map;
+		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		if (entity != null) {
+			entity.health--;
+		}
+
+		// TODO takeDamage method for animation (view) ?
 	}
 
 	@Override
@@ -90,26 +159,44 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Explode() {
-		// TODO Auto-generated method stub
+		Map map = (Map) Entity.game.map;
+		float xBaseIndex = this.location.getX() - 2, yBaseIndex = this.location.getY() - 2;
+		for (int i = (int) xBaseIndex; i < xBaseIndex + 5; i++) {
+			for (int j = (int) yBaseIndex; j < yBaseIndex + 5; j++) {
+				Entity entity = map.map[i][j].entity;
+				if (entity != null) {
+					entity.health -= 5;
+				}
+			}
+		}
 
+		// TODO add explode method for animation (view)
 	}
 
 	@Override
-	public void Pick(Category c) {
-		// TODO mettre une direction à la place de la categorie
+	public void Pick(Direction d) {
+		Location t = frontTileLocation(d);
 
+		Map map = (Map) Entity.game.map;
+		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
+		if (entity.category == Category.P) {
+			if (entity instanceof Coin) {
+				this.coins++;
+				// TODO destroy la coin
+			} else if (entity instanceof HealingPotion) {
+				this.healingPotions++;
+			} else if (entity instanceof StrengthPotion) {
+				this.strengthPotions++;
+			}
+		}
 	}
 
 	@Override
 	public void Pop(Direction d, Category c) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void Wizz(Direction d, Category c) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -120,25 +207,55 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Store(Category c) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public void Throw(Category c) {
-		// TODO ajouter un parametre direction avant category
+	public void Throw(Direction d, Category category) {
+		// TODO complete method
 
 	}
 
 	@Override
 	public void Wait() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public Location frontTileLocation(Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
+
+		float xIndex = 0, yIndex = 0;
+		switch (d) {
+		case N:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() - 1;
+			break;
+		case S:
+			xIndex = this.location.getX();
+			yIndex = this.location.getY() + 1;
+			break;
+		case W:
+			xIndex = this.location.getX() - 1;
+			yIndex = this.location.getY();
+			break;
+		case E:
+			xIndex = this.location.getX() + 1;
+			yIndex = this.location.getY();
+			break;
+		default:
+			break;
+		}
+
+		return new Location((int) xIndex, (int) yIndex);
 	}
 }

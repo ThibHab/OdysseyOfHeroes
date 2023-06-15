@@ -71,7 +71,11 @@ public class Game {
 		Entity.game=this;
 		
 		new ImagesConst();
-				
+		
+		//TODO correctly initialize Level and Experience methods /!\
+		int level = 0, xp = 0;
+		Entity.InitStatics(this, level, xp);
+		
 		player1 = new Cowboy(this);
 		player2 = new Cowboy(this);
 		// creating a listener for all the events
