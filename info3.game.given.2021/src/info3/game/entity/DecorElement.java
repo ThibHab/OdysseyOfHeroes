@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import info3.game.automata.Category;
 
 public abstract class DecorElement extends Entity {
-	int Width, Height;
+	public int width, height;
 
 	public DecorElement() {
 		super();

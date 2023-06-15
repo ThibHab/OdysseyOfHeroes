@@ -17,7 +17,7 @@ public class House extends DecorElement {
 		this.imageIndex = 0;
 		// -----------------------------------
 		
-		this.Width = 2;
-		this.Height = 2;
+		this.width = 2;
+		this.height = 2;
 	}
 }
