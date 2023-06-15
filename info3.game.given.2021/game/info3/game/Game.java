@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
+import info3.game.entity.Entity;
 import info3.game.graphics.GameCanvas;
 import info3.game.map.DebugMap;
 import info3.game.map.IMap;
@@ -68,9 +69,14 @@ public class Game {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
 		m_cowboy = new Cowboy(this);
+		Entity.game=this;
 		
-		ImagesConst im = new ImagesConst();
-				
+		new ImagesConst();
+		
+		//TODO correctly initialize Level and Experience methods /!\
+		int level = 0, xp = 0;
+		Entity.InitStatics(this, level, xp);
+		
 		player1 = new Cowboy(this);
 		player2 = new Cowboy(this);
 		// creating a listener for all the events
@@ -152,6 +158,7 @@ public class Game {
 	void tick(long elapsed) {
 
 		player1.tick(elapsed);
+		player2.tick(elapsed);
 
 		// Update every second
 		// the text on top of the frame: tick and fps
@@ -165,7 +172,10 @@ public class Game {
 			while (txt.length() < 15)
 				txt += " ";
 			txt = txt + fps + " fps   ";
-			txt = txt + player1.location.getX() + " " + player1.location.getY() + ";";
+			txt = txt+"P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
 			m_text.setText(txt);
 		}
 	}

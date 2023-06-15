@@ -12,30 +12,58 @@ import info3.game.automata.State;
 import info3.game.map.Map;
 
 public abstract class Entity implements IEntity {
-	public static int level;
-	public static int experience;
+
 	public static Game game;
 
-	public Direction direction;
-	public Category category;
+	public String name;
 	public Location location;
+	public int width, height, health, weaponDamage, weaponRange;
+	public float speed;
+	public static int level, experience;
+
+	public int coins, healingPotions, strengthPotions;
+
 	public Automaton automaton;
 	public State currentState;
-	public String name;
+	public Direction direction;
+	public Category category;
+	public boolean frozen;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
 	public float scale;
 
-	public int width, height, health, coins, weaponDamages, weaponRange, healingPotions, strengthPotions;
-	public float speed;
-	public boolean frozen;
-
 	public Entity() {
+		this.name = "";
 		this.location = new Location(0, 0);
+		this.width = 1;
+		this.height = 1;
+		this.health = -1;
+		this.weaponDamage = 1;
+		this.weaponRange = 1;
+		this.speed = 1;
+
+		this.coins = 0;
+		this.healingPotions = 0;
+		this.strengthPotions = 0;
+
+		// --- TODO manage automaton ---
+		this.automaton = null;
 		this.currentState = null;
+		// -----------------------------
+		this.direction = Direction.N;
+		this.category = Category.UNDERSCORE;
+		this.frozen = false;
+
+		this.scale = 1;
 	}
-	
+
+	public static void InitStatics(Game g, int lvl, int xp) {
+		Entity.game = g;
+		Entity.level = lvl;
+		Entity.experience = xp;
+	}
+
 	public void Tick(long elapsed) {
 		if (!this.frozen) {
 			this.automaton.step(this, Entity.game);
@@ -45,28 +73,32 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Move(Direction d) {
 		this.frozen = true;
-		
+
 		if (d == null) {
 			d = this.direction;
 		}
 
 		switch (d) {
 		case N:
-			this.location.setY(this.location.getY() - 1);
+			//this.location.setY(this.location.getY() - 1);
+			this.location.setY((this.location.getY()+((Map)game.map).lenY-1)%((Map)game.map).lenY);
 			break;
 		case S:
-			this.location.setY(this.location.getY() + 1);
+			//this.location.setY(this.location.getY() + 1);
+			this.location.setY((this.location.getY()+((Map)game.map).lenY+1)%((Map)game.map).lenY);
 			break;
 		case W:
-			this.location.setX(this.location.getX() - 1);
+			//this.location.setX(this.location.getX() - 1);
+			this.location.setX((this.location.getX()+((Map)game.map).lenX-1)%((Map)game.map).lenX);
 			break;
 		case E:
-			this.location.setX(this.location.getX() + 1);
+			//this.location.setX(this.location.getX() + 1);
+			this.location.setX((this.location.getX()+((Map)game.map).lenX+1)%((Map)game.map).lenX);
 			break;
 		default:
 			break;
 		}
-		
+
 		this.frozen = false;
 	}
 
@@ -86,15 +118,22 @@ public abstract class Entity implements IEntity {
 		}
 
 		Random random = new Random();
-		switch (c) {
-		case A:
-			new Goblin(Entity.game);
+		int tirage = random.nextInt(7);
+		switch (tirage) {
+		case 0:
+		case 1:
+			new Goblin(this.location);
 			break;
-		case P:
-			// TODO add coin and potion instance creation
+		case 2:
+			new HealingPotion(this.location);
 			break;
-		case M:
-			// TODO add projectile drop
+		case 3:
+			new StrengthPotion(this.location);
+			break;
+		case 4:
+		case 5:
+		case 6:
+			new Coin(this.location);
 			break;
 		default:
 			break;
@@ -105,7 +144,7 @@ public abstract class Entity implements IEntity {
 	public void Hit(Direction d) {
 		Location t = frontTileLocation(d);
 
-		Map map = (Map) this.game.map;
+		Map map = (Map) Entity.game.map;
 		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
 			entity.health--;
@@ -138,7 +177,7 @@ public abstract class Entity implements IEntity {
 	public void Pick(Direction d) {
 		Location t = frontTileLocation(d);
 
-		Map map = (Map) this.game.map;
+		Map map = (Map) Entity.game.map;
 		Entity entity = map.map[(int) t.getX()][(int) t.getY()].entity;
 		if (entity.category == Category.P) {
 			if (entity instanceof Coin) {
