@@ -7,7 +7,7 @@ import info3.game.entity.*;
 
 public abstract class Map implements IMap {
 	public Tile[][] map;
-	int lenX, lenY;
+	public int lenX, lenY;
 	Entity player1, player2;
 
 	public Map(int nb_x, int nb_y, Entity p1, Entity p2) {
