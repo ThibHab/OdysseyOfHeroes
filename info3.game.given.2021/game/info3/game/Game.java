@@ -36,6 +36,7 @@ import info3.game.map.DebugMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
+import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
 
 public class Game {
@@ -80,7 +81,7 @@ public class Game {
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
 		
-		map = new DebugMap(40, 40, player1, player2);
+		map = new WorldMap(40, 40, player1, player2);
 		render = new MapRender((Map)map, this);
 
 		System.out.println("  - creating frame...");

@@ -32,5 +32,5 @@ public interface IEntity {
 	
 	public void Wait();
 	
-	public void paint(Graphics g);
+	public void paint(Graphics g, int TileSize);
 }

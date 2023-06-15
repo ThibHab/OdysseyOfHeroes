@@ -1,6 +1,6 @@
 package info3.game.map;
 
-import info3.game.entity.Entity;
+import info3.game.entity.*;
 import info3.game.entity.Location;
 
 public class DebugMap extends Map {
@@ -19,6 +19,8 @@ public class DebugMap extends Map {
 				this.map[i][j] = new GrassTile(l);
 			}
 		}
+		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
+		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
 	}
 
 }
