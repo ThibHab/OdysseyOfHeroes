@@ -5,12 +5,12 @@ import info3.game.entity.Entity;
 import info3.game.map.Map;
 import info3.game.map.Tile;
 
-public class Cell extends Condition {
+public class Cell extends Aut_Condition {
 
-	Direction dir;
-	Category cat;
+	Aut_Direction dir;
+	Aut_Category cat;
 
-	public Cell(Direction direction, Category cat) {
+	public Cell(Aut_Direction direction, Aut_Category cat) {
 		this.dir = direction;
 		this.cat = cat;
 	}

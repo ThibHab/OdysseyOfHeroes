@@ -5,10 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import info3.game.Game;
-import info3.game.automata.Automaton;
-import info3.game.automata.Category;
-import info3.game.automata.Direction;
-import info3.game.automata.State;
+import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 import info3.game.map.Map;
 import info3.game.map.Tile;
@@ -16,16 +13,17 @@ import info3.game.map.Tile;
 public abstract class Entity implements IEntity {
 	public String name;
 	public Location location;
+	public Location destLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed;
 
+	public Aut_Automaton automaton;
+	public Aut_State currentState;
+	public Aut_Direction direction;
+	public Aut_Category category;
 	public int coins, healingPotions, strengthPotions;
-
-	public Automaton automaton;
-	public State currentState;
-	public Direction direction;
-	public Category category;
 	public boolean frozen;
+	public long mouvementIndex;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -47,9 +45,10 @@ public abstract class Entity implements IEntity {
 		this.automaton = null;
 		this.currentState = null;
 		// -----------------------------
-		this.direction = Direction.N;
-		this.category = Category.UNDERSCORE;
+		this.direction = Aut_Direction.N;
+		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
+		this.mouvementIndex = 0;
 
 		this.scale = 1;
 	}
@@ -62,55 +61,69 @@ public abstract class Entity implements IEntity {
 		EntitiesConst.EXPERIENCE = xp;
 	}
 
-	public void Tick(long elapsed) {
+	public void tick(long elapsed) {
+		this.automaton.step(this, EntitiesConst.GAME);
+		if (this.frozen) {
+			this.mouvementIndex += elapsed;
+			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
+				this.frozen = false;
+				this.mouvementIndex = 0;
+				this.location.setX(destLocation.getX());
+				this.location.setY(destLocation.getY());
+			} else {
+				if (mouvementIndex != 0) {
+					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+					this.location
+							.setX(this.location.getX() + progress * (this.destLocation.getX() - this.location.getX()));
+					this.location
+							.setY(this.location.getY() + progress * (this.destLocation.getY() - this.location.getY()));
+				}
+			}
+		}
+	}
+
+	@Override
+	public void Move(Aut_Direction d) {
+
 		if (!this.frozen) {
-			this.automaton.step(this, EntitiesConst.GAME);
+			this.frozen = true;
+			if (d == null) {
+				d = this.direction;
+			}
+
+			destLocation = new Location(this.location.getX(), this.location.getY());
+			switch (d) {
+			case N:
+				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				break;
+			case S:
+				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				break;
+			case W:
+				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				break;
+			case E:
+				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				break;
+			default:
+				break;
+			}
+			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
+			if (destTile.walkable && destTile.entity == null) {
+				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
+				destTile.entity = this;
+			} else {
+				this.frozen = false;
+			}
+
+		} else {
+			this.mouvementIndex = 0;
 		}
+
 	}
 
 	@Override
-	public void Move(Direction d) {
-		this.frozen = true;
-
-		if (d == null) {
-			d = this.direction;
-		}
-		
-		Location destLocation = new Location(this.location.getX(), this.location.getY());
-		switch (d) {
-		case N:
-			//this.location.setY(this.location.getY() - 1);
-			destLocation.setY((this.location.getY()+EntitiesConst.MAP.lenY-1)%EntitiesConst.MAP.lenY);
-			break;
-		case S:
-			//this.location.setY(this.location.getY() + 1);
-			destLocation.setY((this.location.getY()+EntitiesConst.MAP.lenY+1)%EntitiesConst.MAP.lenY);
-			break;
-		case W:
-			//this.location.setX(this.location.getX() - 1);
-			destLocation.setX((this.location.getX()+EntitiesConst.MAP.lenX-1)%EntitiesConst.MAP.lenX);
-			break;
-		case E:
-			//this.location.setX(this.location.getX() + 1);
-			destLocation.setX((this.location.getX()+EntitiesConst.MAP.lenX+1)%EntitiesConst.MAP.lenX);
-			break;
-		default:
-			break;
-		}
-		
-		Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-		if (destTile.walkable && destTile.entity == null) {
-			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
-			destTile.entity = this;
-			this.location.setX(destLocation.getX());
-			this.location.setY(destLocation.getY());
-		}
-
-		this.frozen = false;
-	}
-
-	@Override
-	public void Turn(Direction d) {
+	public void Turn(Aut_Direction d) {
 		if (d == null) {
 			d = this.direction;
 		}
@@ -119,7 +132,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Egg(Direction d, Category c) {
+	public void Egg(Aut_Direction d, Aut_Category c) {
 		if (d == null) {
 			d = this.direction;
 		}
@@ -129,7 +142,7 @@ public abstract class Entity implements IEntity {
 		case A:
 			Random randomA = new Random();
 			int tirageA = randomA.nextInt(2);
-			switch(tirageA) {
+			switch (tirageA) {
 			case 0:
 				new Goblin(location);
 				break;
@@ -142,7 +155,7 @@ public abstract class Entity implements IEntity {
 		case P:
 			Random randomP = new Random();
 			int tirageP = randomP.nextInt(3);
-			switch(tirageP) {
+			switch (tirageP) {
 			case 0:
 				new Coin(location);
 				break;
@@ -156,7 +169,7 @@ public abstract class Entity implements IEntity {
 		case T:
 			Random randomT = new Random();
 			int tirageT = randomT.nextInt(3);
-			switch(tirageT) {
+			switch (tirageT) {
 			case 0:
 				new Villager(location);
 				break;
@@ -167,19 +180,19 @@ public abstract class Entity implements IEntity {
 		case AT:
 			Random randomAT = new Random();
 			int tirageAT = randomAT.nextInt(3);
-			switch(tirageAT) {
+			switch (tirageAT) {
 			case 0:
-				new Melee("melee",location);
+				new Melee("melee", location);
 				break;
 			case 1:
-				new Range("range",location);
+				new Range("range", location);
 				break;
 			}
 		}
 	}
 
 	@Override
-	public void Hit(Direction d) {
+	public void Hit(Aut_Direction d) {
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -211,7 +224,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Pick(Direction d) {
+	public void Pick(Aut_Direction d) {
 		if (d == null) {
 			d = this.direction;
 		}
@@ -219,7 +232,7 @@ public abstract class Entity implements IEntity {
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
-		if (entity.category == Category.P) {
+		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin) {
 				this.coins++;
 				// TODO destroy la coin
@@ -232,11 +245,11 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Pop(Direction d, Category c) {
+	public void Pop(Aut_Direction d, Aut_Category c) {
 	}
 
 	@Override
-	public void Wizz(Direction d, Category c) {
+	public void Wizz(Aut_Direction d, Aut_Category c) {
 	}
 
 	@Override
@@ -248,11 +261,13 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Store(Category c) {
+	public void Store(Aut_Category c) {
 	}
 
 	@Override
-	public void Throw(Direction d, Category category) {
+	public void Throw(Aut_Direction d, Aut_Category category) {
+		// TODO complete method
+
 	}
 
 	@Override
@@ -269,7 +284,7 @@ public abstract class Entity implements IEntity {
 		this.location = location;
 	}
 
-	public Location frontTileLocation(Direction d) {
+	public Location frontTileLocation(Aut_Direction d) {
 		if (d == null) {
 			d = this.direction;
 		}
