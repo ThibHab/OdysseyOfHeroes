@@ -20,6 +20,9 @@ public class Chest extends DecorElement {
 		this.sprites = ImagesConst.CHEST;
 		this.imageIndex = 0;
 		// -----------------------------------
+		
+		this.Width = 1;
+		this.Height = 1;
 	}
 	// TODO is the default egg method sufficient ?
 }
