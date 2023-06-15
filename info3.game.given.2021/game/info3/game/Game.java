@@ -146,7 +146,7 @@ public class Game {
 	}
 
 	private int m_musicIndex = 0;
-	private String[] m_musicNames = new String[] { "Runaway-Food-Truck" }; 
+	private String[] m_musicNames = new String[] { "theme" }; 
 
 	private long m_textElapsed;
 

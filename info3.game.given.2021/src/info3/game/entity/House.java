@@ -1,7 +1,6 @@
 package info3.game.entity;
 
 import info3.game.constants.ImagesConst;
-import java.awt.image.BufferedImage;
 
 public class House extends DecorElement {
 	public House(Location l) {

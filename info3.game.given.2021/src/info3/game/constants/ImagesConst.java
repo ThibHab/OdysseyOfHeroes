@@ -42,8 +42,8 @@ public class ImagesConst {
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
 		VILLAGER = loadSprite("", 1, 1);
-
-		BUSH = loadSprite("bush_placeholder", 1, 1);
+		
+		BUSH = loadSprite("Bush", 3, 2);
 		CHEST = loadSprite("Chest", 2, 2);
 
 		MELEE = loadSprite("Melee", 8, 7);
