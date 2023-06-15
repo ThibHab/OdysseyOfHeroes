@@ -1,0 +1,4 @@
+Philosopher0(Think){
+  * (Think)
+  | True ? Move(N) :(Think)
+}

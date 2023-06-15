@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import info3.game.automata.Category;
-import info3.game.automata.Direction;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 
 public abstract class Item extends Entity {
 	protected Image image;
@@ -19,13 +19,13 @@ public abstract class Item extends Entity {
 	}
 
 	@Override
-	public void Egg(Direction d, Category c) {
+	public void Egg(Aut_Direction d, Aut_Category c) {
 		// TODO Auto-generated method stub
 		super.Egg(d, c);
 	}
 
 	@Override
-	public void Pick(Direction d) {
+	public void Pick(Aut_Direction d) {
 		// TODO Auto-generated method stub
 		super.Pick(d);
 	}

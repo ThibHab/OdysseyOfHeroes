@@ -3,12 +3,12 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class Throw extends Action {
+public class Throw extends Aut_Action {
 	
-	Direction dir;
-	Category cat;
+	Aut_Direction dir;
+	Aut_Category cat;
 
-	public Throw(Direction direction) {
+	public Throw(Aut_Direction direction) {
 		this.dir = direction;
 	}
 
