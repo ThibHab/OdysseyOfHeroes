@@ -53,45 +53,47 @@ public class MapRender {
 	}
 
 	int roundup(int a, double b) {
-		double tmp = Math.ceil(a / b);
+		double tmp;
+		tmp = Math.ceil(a / b) + 1;
 		return (int) tmp;
 	}
 
 	void updateCam(Cowboy player1, Cowboy player2, int w, int h) {
-		//TODO fix when updating size window
 		this.camera = mid(player1.location, player2.location);
-		if ((diff(player1.location.getX(), player2.location.getX(), map.lenX) < 7
-				&& diff(player1.location.getY(), player2.location.getY(), map.lenY) < 7) || nbTileX == 0
-				|| nbTileY == 0) {
-			nbTileX = (int) diff(player1.location.getX(), player2.location.getY(), map.lenX) + bufferTile * 2;
-			nbTileY = (int) diff(player1.location.getY(), player2.location.getY(), map.lenY) + bufferTile * 2;
-			int tempx = (int) Math.ceil(w / nbTileX);
-			int tempy = (int) Math.ceil(h / nbTileY);
-			if (tempx > tempy) {
-				nbTileX = roundup(w, tempy);
-				nbTileY = roundup(h, tempy);
-			} else {
-				nbTileY = roundup(h, tempx);
-				nbTileX = roundup(w, tempx);
-			}
-			this.tileSize = Math.min(tempx, tempy);
+		nbTileX = (int) diff(camera.getX(), player1.location.getX(), map.lenX) + bufferTile * 2;
+		nbTileY = (int) diff(camera.getY(), player1.location.getY(), map.lenY) + bufferTile * 2;
+		int tempx = (int) Math.ceil(w / nbTileX);
+		int tempy = (int) Math.ceil(h / nbTileY);
+		if (tempx > tempy) {
+			nbTileX = roundup(w, tempy);
+			nbTileY = roundup(h, tempy);
+		} else {
+			nbTileY = roundup(h, tempx);
+			nbTileX = roundup(w, tempx);
 		}
+		this.tileSize = Math.min(tempx, tempy);
 	}
 
-	public Location gridToPixel(Location loc, float offsetX,float offsetY) {
+	public Location gridToPixel(Location loc, boolean offset) {
 		Location res = new Location(0, 0);
-		res.setY(((loc.getY() - (int) this.camera.getY() + map.lenY + this.nbTileY / 2) % map.lenY +offsetY)
-				* this.tileSize);
-		res.setX(((loc.getX() - (int) this.camera.getX() + map.lenX + this.nbTileX / 2) % map.lenX +offsetX)
-				* this.tileSize);
+		if (offset) {
+			res.setY(((loc.getY() - (int) this.camera.getY() + map.lenY + this.nbTileY / 2) % map.lenY
+					+ this.offset.getY()) * this.tileSize);
+			res.setX(((loc.getX() - (int) this.camera.getX() + map.lenX + this.nbTileX / 2) % map.lenX
+					+ this.offset.getX()) * this.tileSize);
+		} else {
+			res.setY(
+					((loc.getY() - (int) this.camera.getY() + map.lenY + this.nbTileY / 2) % map.lenY) * this.tileSize);
+			res.setX(
+					((loc.getX() - (int) this.camera.getX() + map.lenX + this.nbTileX / 2) % map.lenX) * this.tileSize);
+		}
 		return res;
 	}
-	
 
 	void setOffsetCam() {
-		Location camTemp=gridToPixel(camera,0,0);
-		offset.setX((((float)game.m_canvas.getWidth() / 2) -camTemp.getX())/this.tileSize);
-		offset.setY((((float)game.m_canvas.getHeight() / 2) -camTemp.getY())/this.tileSize);
+		Location camTemp = gridToPixel(camera, false);
+		offset.setX((((float) game.m_canvas.getWidth() / 2) - camTemp.getX()) / this.tileSize);
+		offset.setY((((float) game.m_canvas.getHeight() / 2) - camTemp.getY()) / this.tileSize);
 	}
 
 	public void paint(Graphics g) {
@@ -101,12 +103,9 @@ public class MapRender {
 			for (int i = 0; i < nbTileX; i++) {
 				map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
 						% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY]
-						.paint(g, i +this.offset.getX(), j+this.offset.getY() , tileSize);
+						.paint(g, i + this.offset.getX(), j + this.offset.getY(), tileSize);
 			}
 		}
-		g.setColor(Color.red);
-		Location center = gridToPixel(camera,this.offset.getX(),this.offset.getY());
-		g.fillOval((int) (center.getX()), (int) (center.getY()), 5, 5);
 	}
 
 }

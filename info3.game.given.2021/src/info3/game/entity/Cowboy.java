@@ -94,10 +94,8 @@ public class Cowboy extends Entity {
 	public void paint(Graphics g, int width, int height) {
 		m_width = width;
 		BufferedImage img = m_images[m_imageIndex];
-		int scale = 2;
-		Location pixel=game.render.gridToPixel(location,game.render.offset.getX(),game.render.offset.getY());
+		Location pixel=game.render.gridToPixel(location,true);
 		g.drawImage(img, (int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize, null);
-		g.drawString(pixel.getX()+";"+pixel.getY(), (int)pixel.getX(), (int)pixel.getY());
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

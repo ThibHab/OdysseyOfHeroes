@@ -70,7 +70,7 @@ public class Game {
 		m_cowboy = new Cowboy(this);
 		Entity.game=this;
 		
-		ImagesConst im = new ImagesConst();
+		new ImagesConst();
 				
 		player1 = new Cowboy(this);
 		player2 = new Cowboy(this);
