@@ -12,13 +12,13 @@ public interface IEntity {
 	
 	public void Egg(Direction d, Category c);
 	
-	public void Hit();
+	public void Hit(Direction d);
 	
 	public void Jump();
 	
 	public void Explode();
 	
-	public void Pick(Category c);
+	public void Pick(Direction d);
 	
 	public void Pop(Direction d, Category c);
 	
@@ -28,7 +28,7 @@ public interface IEntity {
 	
 	public void Store(Category c);
 	
-	public void Throw(Category c);
+	public void Throw(Direction d, Category c);
 	
 	public void Wait();
 	

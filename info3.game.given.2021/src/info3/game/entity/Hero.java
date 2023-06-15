@@ -1,13 +1,9 @@
 package info3.game.entity;
 
-public abstract class Hero extends Creature {
-	public static int level;
-	public static int experience;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
-	public int coins;
-	public int weaponDamages;
-	public int weaponRange;
-
+public abstract class Hero extends Entity {
 	public Hero() {
 		super();
 		this.width = 100;
@@ -18,4 +14,8 @@ public abstract class Hero extends Creature {
 		this.speed = 1;
 	}
 	
+	public void paint(Graphics g, int TileSize) {
+		BufferedImage img = sprites[imageIndex];
+		g.drawImage(img, (int) location.getX(), (int) location.getY(), (int) scale*TileSize, (int) scale*TileSize, null);
+	}
 }
