@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
+import info3.game.entity.Entity;
 import info3.game.graphics.GameCanvas;
 import info3.game.map.DebugMap;
 import info3.game.map.IMap;
@@ -68,8 +69,12 @@ public class Game {
 		// in an Model-View-Controller pattern (MVC)
 		m_cowboy = new Cowboy(this);
 		
-		ImagesConst im = new ImagesConst();
-				
+		new ImagesConst();
+		
+		//TODO correctly initialize Level and Experience methods /!\
+		int level = 0, xp = 0;
+		Entity.InitStatics(this, level, xp);
+		
 		player1 = new Cowboy(this);
 		player2 = new Cowboy(this);
 		// creating a listener for all the events

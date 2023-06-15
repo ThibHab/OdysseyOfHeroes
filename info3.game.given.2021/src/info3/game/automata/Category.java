@@ -7,8 +7,8 @@ public enum Category {
 	G, // Gate
 	J, // Jumpable
 	M, // Missile
-	O, // Obtable
-	P, // Takeable element
+	O, // Obstacle
+	P, // Pickable
 	T, // Team
 	V, // Void
 	AT, // The player in my team

@@ -1,10 +1,24 @@
 package info3.game.entity;
 
-public class StrengthPotion extends Item{
+import java.awt.image.BufferedImage;
+
+import info3.game.constants.ImagesConst;
+
+public class StrengthPotion extends Item {
 
 	public StrengthPotion(Location l) {
 		super();
-		//TODO Set the sprite, the width and the height
-		this.location = l;		
+		this.name = "Strength";
+		this.location = l;
+
+		// --- TODO manage automaton ---
+		this.automaton = null;
+		this.currentState = null;
+		// -----------------------------
+
+		// --- TODO manage sprite properly ---
+		this.sprites = new BufferedImage[]{ImagesConst.strengthPotion};
+		this.imageIndex = 0;
+		// -----------------------------------
 	}
 }
