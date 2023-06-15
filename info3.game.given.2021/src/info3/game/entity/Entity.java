@@ -5,10 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import info3.game.Game;
-import info3.game.automata.Automaton;
-import info3.game.automata.Category;
-import info3.game.automata.Direction;
-import info3.game.automata.State;
+import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 import info3.game.map.Map;
 import info3.game.map.Tile;
@@ -19,12 +16,11 @@ public abstract class Entity implements IEntity {
 	public int health, weaponDamage, weaponRange;
 	public float speed;
 
+	public Aut_Automaton automaton;
+	public Aut_State currentState;
+	public Aut_Direction direction;
+	public Aut_Category category;
 	public int coins, healingPotions, strengthPotions;
-
-	public Automaton automaton;
-	public State currentState;
-	public Direction direction;
-	public Category category;
 	public boolean frozen;
 
 	public BufferedImage[] sprites;
@@ -47,8 +43,8 @@ public abstract class Entity implements IEntity {
 		this.automaton = null;
 		this.currentState = null;
 		// -----------------------------
-		this.direction = Direction.N;
-		this.category = Category.UNDERSCORE;
+		this.direction = Aut_Direction.N;
+		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
 
 		this.scale = 1;
@@ -69,7 +65,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Move(Direction d) {
+	public void Move(Aut_Direction d) {
 		this.frozen = true;
 
 		if (d == null) {
@@ -110,7 +106,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Turn(Direction d) {
+	public void Turn(Aut_Direction d) {
 		if (d == null) {
 			d = this.direction;
 		}
@@ -119,7 +115,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Egg(Direction d, Category c) {
+	public void Egg(Aut_Direction d, Aut_Category c) {
 		if (d == null) {
 			d = this.direction;
 		}
@@ -179,7 +175,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Hit(Direction d) {
+	public void Hit(Aut_Direction d) {
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -211,7 +207,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Pick(Direction d) {
+	public void Pick(Aut_Direction d) {
 		if (d == null) {
 			d = this.direction;
 		}
@@ -219,7 +215,7 @@ public abstract class Entity implements IEntity {
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
-		if (entity.category == Category.P) {
+		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin) {
 				this.coins++;
 				// TODO destroy la coin
@@ -232,11 +228,11 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Pop(Direction d, Category c) {
+	public void Pop(Aut_Direction d, Aut_Category c) {
 	}
 
 	@Override
-	public void Wizz(Direction d, Category c) {
+	public void Wizz(Aut_Direction d, Aut_Category c) {
 	}
 
 	@Override
@@ -248,11 +244,13 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Store(Category c) {
+	public void Store(Aut_Category c) {
 	}
 
 	@Override
-	public void Throw(Direction d, Category category) {
+	public void Throw(Aut_Direction d, Aut_Category category) {
+		// TODO complete method
+
 	}
 
 	@Override
@@ -269,7 +267,7 @@ public abstract class Entity implements IEntity {
 		this.location = location;
 	}
 
-	public Location frontTileLocation(Direction d) {
+	public Location frontTileLocation(Aut_Direction d) {
 		if (d == null) {
 			d = this.direction;
 		}

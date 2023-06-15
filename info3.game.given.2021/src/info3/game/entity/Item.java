@@ -4,14 +4,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import info3.game.automata.Category;
+import info3.game.automata.Aut_Category;
 
 public abstract class Item extends Entity {
 	protected Image image;
 
 	public Item() {
 		super();
-		this.category = Category.P;
+		this.category = Aut_Category.P;
 	}
 	
 	public void paint(Graphics g, int TileSize) {

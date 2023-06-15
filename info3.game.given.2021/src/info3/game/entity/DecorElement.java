@@ -3,15 +3,14 @@ package info3.game.entity;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import info3.game.automata.Category;
-import info3.game.constants.EntitiesConst;
+import info3.game.automata.*;
 
 public abstract class DecorElement extends Entity {
 	public int width, height;
 
 	public DecorElement() {
 		super();
-		this.category = Category.O;
+		this.category = Aut_Category.O;
 	}
 
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
