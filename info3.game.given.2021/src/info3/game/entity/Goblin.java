@@ -2,19 +2,18 @@ package info3.game.entity;
 
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Goblin extends Mob {
-	public static int GoblinHealth = 20, GoblinDamage = 2, GoblinRange = 2, GoblinSpeed = 2;
-
 	public Goblin(Location l) {
 		super();
 		this.name = "Goblin";
 		this.location = l;
-		this.health = Goblin.GoblinHealth;
-		this.weaponDamage = Goblin.GoblinDamage;
-		this.weaponRange = Goblin.GoblinRange;
-		this.speed = Goblin.GoblinSpeed;
+		this.health = EntitiesConst.GOBLIN_HEALTH;
+		this.weaponDamage = EntitiesConst.GOBLIN_DAMAGE;
+		this.weaponRange = EntitiesConst.GOBLINE_RANGE;
+		this.speed = EntitiesConst.GOBLIN_SPEED;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;

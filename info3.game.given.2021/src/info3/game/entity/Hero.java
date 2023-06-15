@@ -4,15 +4,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import info3.game.automata.Category;
 import info3.game.automata.Direction;
+import info3.game.constants.EntitiesConst;
 
 public abstract class Hero extends Entity {
-	public static int HERO_WIDTH = 2, HERO_HEIGHT = 2, HERO_SPEED = 2;
-
 	public Hero() {
 		super();
-		this.width = Hero.HERO_WIDTH;
-		this.height = Hero.HERO_HEIGHT;
-		this.speed = Hero.HERO_SPEED;
+		this.speed = EntitiesConst.HERO_SPEED;
 
 		this.category = Category.AT;
 	}
