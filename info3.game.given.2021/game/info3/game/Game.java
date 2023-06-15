@@ -29,7 +29,15 @@ import java.io.RandomAccessFile;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import info3.game.constants.ImagesConst;
+import info3.game.entity.Cowboy;
+import info3.game.entity.Entity;
 import info3.game.graphics.GameCanvas;
+import info3.game.map.DebugMap;
+import info3.game.map.IMap;
+import info3.game.map.Map;
+import info3.game.map.MapRender;
+import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
 
 public class Game {
@@ -48,15 +56,26 @@ public class Game {
 
 	JFrame m_frame;
 	JLabel m_text;
-	GameCanvas m_canvas;
-	CanvasListener m_listener;
+	public GameCanvas m_canvas;
+	public CanvasListener m_listener;
 	Cowboy m_cowboy;
+	public Cowboy player1;
+	public Cowboy player2;
 	Sound m_music;
+	public IMap map;
+	public MapRender render;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
-		m_cowboy = new Cowboy();
+		m_cowboy = new Cowboy(this);
+		new ImagesConst();
+		
+		//TODO correctly initialize Level and Experience methods /!\
+		int level = 0, xp = 0;
+		
+		player1 = new Cowboy(this);
+		player2 = new Cowboy(this);
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -64,6 +83,11 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
+		
+		map = new WorldMap(40, 40, player1, player2);
+		render = new MapRender((Map)map, this);
+		
+		Entity.InitStatics(this, level, xp);
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
@@ -132,7 +156,8 @@ public class Game {
 	 */
 	void tick(long elapsed) {
 
-		m_cowboy.tick(elapsed);
+		player1.tick(elapsed);
+		player2.tick(elapsed);
 
 		// Update every second
 		// the text on top of the frame: tick and fps
@@ -146,6 +171,10 @@ public class Game {
 			while (txt.length() < 15)
 				txt += " ";
 			txt = txt + fps + " fps   ";
+			txt = txt+"P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
 			m_text.setText(txt);
 		}
 	}
@@ -163,9 +192,15 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
+		
+
 
 		// paint
-		m_cowboy.paint(g, width, height);
+//		m_cowboy.paint(g, width, height);
+		
+		render.paint(g);
+		player1.paint(g, 1, 1);
+		player2.paint(g, 2, 2);
 	}
 
 }
