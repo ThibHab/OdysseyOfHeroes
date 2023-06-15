@@ -18,7 +18,7 @@ public class ImagesConst {
 	public static BufferedImage[] MELEE, RANGE;
 
 	public ImagesConst() throws IOException {
-		path = "ressources/sprites/";
+		path = "resources/sprites/";
 
 		GRASS_TILE = loadTile("grass_placeholder");
 		WATER_TILE = loadTile("water_placeholder");
