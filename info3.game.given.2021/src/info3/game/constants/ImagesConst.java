@@ -20,34 +20,34 @@ public class ImagesConst {
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
 
-		GRASS_TILE = loadTile("grass_placeholder");
+		GRASS_TILE = loadTile("Grass");
 		WATER_TILE = loadTile("water_placeholder");
-		DIRT_TILE = loadTile("dirt_placeholder");
+		DIRT_TILE = loadTile("Dirt");
 		ROCK_TILE = loadTile("rock_placeholder");
-		GRASS_TILE2 = loadTile("");
+		GRASS_TILE2 = loadTile("Grass2");
 		WATER_TILE2 = loadTile("");
 		DIRT_TILE2 = loadTile("");
 		ROCK_TILE2 = loadTile("");
 
 		HOUSE = loadSprite("", 1, 1);
-		ROCK = loadSprite("", 1, 1);
-		TREE = loadSprite("", 1, 1);
+		ROCK = loadSprite("Rock", 2, 2);
+		TREE = loadSprite("Tree", 2, 1);
 
-		COIN = loadSprite("", 1, 1);
-		HEALING_POTION = loadSprite("", 1, 1);
-		STRENGTH_POTION = loadSprite("", 1, 1);
+		COIN = loadSprite("Coin", 3, 2);
+		HEALING_POTION = loadSprite("Healing", 3, 3);
+		STRENGTH_POTION = loadSprite("Strength", 3, 3);
 
-		BOSS = loadSprite("", 1, 1);
+		BOSS = loadSprite("Boss", 1, 1);
 		GOBLIN = loadSprite("", 1, 1);
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
 		VILLAGER = loadSprite("", 1, 1);
 
 		BUSH = loadSprite("bush_placeholder", 1, 1);
-		CHEST = loadSprite("", 1, 1);
+		CHEST = loadSprite("Chest", 2, 2);
 
-		RANGE = loadSprite("", 8, 7);
-		RANGE = loadSprite("range", 8, 7);
+		MELEE = loadSprite("Melee", 8, 7);
+		RANGE = loadSprite("Range", 8, 7);
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
