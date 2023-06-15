@@ -32,7 +32,7 @@ public abstract class Tile implements ITile {
 		g.setColor(Color.red);
 		g.drawString(screenPosX*size+";"+screenPosY*size, (int)(screenPosX*size), (int)(screenPosY*size));
 		if (entity != null) {
-			entity.paint(g);
+			entity.paint(g, size, screenPosX, screenPosY);
 		}
 	}
 }

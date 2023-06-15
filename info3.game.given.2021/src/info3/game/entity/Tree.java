@@ -1,7 +1,5 @@
 package info3.game.entity;
 
-import java.awt.image.BufferedImage;
-
 import info3.game.constants.ImagesConst;
 
 public class Tree extends DecorElement {
@@ -19,5 +17,8 @@ public class Tree extends DecorElement {
 		this.sprites =  ImagesConst.TREE;
 		this.imageIndex = 0;
 		// -----------------------------------
+		
+		this.Width = 2;
+		this.Height = 2;
 	}
 }
