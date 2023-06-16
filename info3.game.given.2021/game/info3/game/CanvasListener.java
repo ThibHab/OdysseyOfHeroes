@@ -94,8 +94,10 @@ public class CanvasListener implements GameCanvasListener {
   @Override
   public void keyPressed(KeyEvent e) {
     System.out.println("Key pressed: "+e.getKeyChar()+" code="+e.getKeyCode());
-    if (!keys.contains((Integer)e.getKeyCode()))
+    if (!keys.contains((Integer)e.getKeyCode())) {
     	keys.add((Integer)e.getKeyCode());
+    }
+   
   }
 
   @Override
