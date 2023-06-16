@@ -3,7 +3,6 @@ package info3.game.entity;
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.constants.StatesConst;
 
 public class Melee extends Hero {
 	public Melee(String name, Location l) {
@@ -58,18 +57,20 @@ public class Melee extends Hero {
 		default:
 			break;
 		}
-		switch (this.currentState.toString()) {
-		case StatesConst.MOVE:
+		switch (this.action) {
+		case M:
 			idx+=1;
 			break;
-		case StatesConst.ATTACK:
+		case A:
 			idx += 4;
 			break;
-		case StatesConst.HIT:
+		case H:
 			idx += 8;
 			break;
-		case StatesConst.DIE:
+		case D:
 			idx += 11;
+			break;
+		default :
 			break;
 		}
 		return idx;

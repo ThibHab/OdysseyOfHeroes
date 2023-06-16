@@ -20,6 +20,7 @@
  */
 package info3.game.entity;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -80,12 +81,13 @@ public class Cowboy extends Entity {
 		game = g;
 		currentState = aut.initial;
 		this.direction = Aut_Direction.S;
+		this.automaton=aut;
 	}
 
 	/*
 	 * Simple animation here, the cowbow
 	 */
-	public void tick(long elapsed) {
+//	public void tick(long elapsed) {
 //		m_imageElapsed += elapsed;
 //		if (m_imageElapsed > 200) {
 //			m_imageElapsed = 0;
@@ -96,16 +98,20 @@ public class Cowboy extends Entity {
 //			m_moveElapsed = 0;
 //			m_x = (m_x + 2) % m_width;
 //		}
-
-		aut.step(this, game);
-
-	}
+		
+//		aut.step(this, game);
+//
+//	}
 
 	public void paint(Graphics g, int width, int height) {
 		m_width = width;
 		BufferedImage img = m_images[m_imageIndex];
-		Location pixel = game.render.gridToPixel(location, true);
-		g.drawImage(img, (int) pixel.getX(), (int) pixel.getY(), game.render.tileSize, game.render.tileSize, null);
+		Location pixel=game.render.gridToPixel(location,true);
+		g.drawImage(img, (int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize, null);
+		g.setColor(Color.blue);
+		Location l = game.render.gridToPixel(this.hitBoxLocation, true);
+		g.drawRect((int)l.getX(), (int)l.getY(), (int) (game.render.tileSize * this.ratioHitBoxX), (int) (game.render.tileSize * this.ratioHitBoxY));
+		//g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize);
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

@@ -20,11 +20,12 @@ public abstract class Map implements IMap {
 	}
 
 	/**
-	  * Generate randomly with a chosen space between the chosen entity.
-	  * @param rareness the bigger the less entity it creates
-	  * @param seed to set the random
-	  * @param spaceBetween the distance between two entity
-	  */
+	 * Generate randomly with a chosen space between the chosen entity.
+	 * 
+	 * @param rareness     the bigger the less entity it creates
+	 * @param seed         to set the random
+	 * @param spaceBetween the distance between two entity
+	 */
 	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, Entity ent, long seed, int rareness) {
 		if (!(ent instanceof Bush) && !(ent instanceof Rock) && !(ent instanceof Tree)) {
 			return;
@@ -41,7 +42,7 @@ public abstract class Map implements IMap {
 						while (rec_x < 0) {
 							while (rec_y < 0) {
 								if (map[lenX + rec_x][lenY + rec_y].entity != null) {
-	
+
 									already = true;
 								}
 								rec_y++;
@@ -77,16 +78,17 @@ public abstract class Map implements IMap {
 								map[i][j].entity = new Rock(new Location(i, j));
 							} else {
 								if (j - 1 < 0) {
-									if (map[i][lenY - 1].entity == null && map[i + 1][lenY - 1].entity == null && map[i + 1][j].entity == null) {
+									if (map[i][lenY - 1].entity == null && map[i + 1][lenY - 1].entity == null
+											&& map[i + 1][j].entity == null) {
 										Tree tree = new Tree(new Location(i, j - 1));
 										map[i][lenY - 1].entity = tree;
 										map[i][j].entity = tree;
 										map[i + 1][lenY - 1].entity = tree;
 										map[i + 1][j].entity = tree;
 									}
-								}
-								else {
-									if (map[i][j - 1].entity == null && map[i + 1][j - 1].entity == null && map[i + 1][j].entity == null) {
+								} else {
+									if (map[i][j - 1].entity == null && map[i + 1][j - 1].entity == null
+											&& map[i + 1][j].entity == null) {
 										Tree tree = new Tree(new Location(i, j - 1));
 										map[i][j - 1].entity = tree;
 										map[i][j].entity = tree;
@@ -94,7 +96,7 @@ public abstract class Map implements IMap {
 										map[i + 1][j].entity = tree;
 									}
 								}
-																
+
 							}
 						}
 					}
@@ -139,15 +141,34 @@ public abstract class Map implements IMap {
 		DirtTile dirt = new DirtTile(null);
 		setSurfaceBackground(x, y, areaSize, 1, dirt);
 		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, dirt);
+		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
+			setSurfaceBackground(indexHouse, y - 1, 1, 1, dirt);
+		}
+		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
+			setSurfaceBackground(indexHouse, y + 1, 1, 1, dirt);
+		}
 		int i = x + 1;
 		while (i < areaSize) {
-			Location l = new Location(i, y - 2);
+			Location l = new Location(i, y - 4);
+			Location l2 = new Location(i, y + 2);
 			House house = new House(l);
-			map[i][y - 1].entity = house;
-			map[i][y - 2].entity = house;
-			map[i + 1][y - 1].entity = house;
-			map[i + 1][y - 2].entity = house;
+			House house2 = new House(l2);
+			for (int j = 0; j < house.width; j++) {
+				for (int k = 2; k < house.height + 2; k++) {
+					map[i + j][y - k].entity = house;
+				}
+			}
+			
+			if (!(map[i + 1][y + 2] instanceof DirtTile)) {
+				for (int m = 0; m < house.width; m++) {
+					for (int n = 2; n < house.height + 2; n++) {
+						map[i + m][y + n].entity = house2;
+					}
+				}
+			}
+			
 			i += house.width + 1;
 		}
+		
 	}
 }

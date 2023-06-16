@@ -6,7 +6,7 @@ public class WorldMap extends Map {
 
 	public WorldMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
-		Location lp1 = new Location(0, 2);
+		Location lp1 = new Location(0, 4);
 		this.player1.location.setX(lp1.getX());
 		this.player1.location.setY(lp1.getY());
 		GrassTile grass = new GrassTile(null);
@@ -16,7 +16,7 @@ public class WorldMap extends Map {
 		this.setCircleWaterBackground(12, 12, water, 3);
 		this.setCircleWaterBackground(14, 14, water, 3);
 //		DirtTile dirt = new DirtTile(null);
-		this.setVillage(0, 2, 10);
+		this.setVillage(0, 4, 12);
 //		this.setSurfaceBackground(0, 0, 4, 1, dirt);
 //		this.setSurfaceBackground(4, 0, 1, 5, dirt);
 //		Tree forest = new Tree(null);
