@@ -1,21 +1,34 @@
 - [Elements principaux :](#elements-principaux-)
   - [Carte](#carte)
-  - [2 joueurs :](#2-joueurs-)
-  - [2 types d’ennemis :](#2-types-dennemis-)
-- [Déroulement du jeu :](#déroulement-du-jeu-)
+  - [2 joueurs](#2-joueurs)
+  - [2 types d’ennemis](#2-types-dennemis)
+  - [Les PNJ](#les-pnj)
+- [Déroulement du jeu](#déroulement-du-jeu)
+  - [Début du jeu dans le village,](#début-du-jeu-dans-le-village)
+  - [Tuer des monstres](#tuer-des-monstres)
+  - [Visiter le labyrinthe](#visiter-le-labyrinthe)
+  - [Couper des buissons](#couper-des-buissons)
+  - [`HORS CONTRAT` Recommandé :](#hors-contrat-recommandé-)
+  - [Achèter la bombe au pnj mineur](#achèter-la-bombe-au-pnj-mineur)
+  - [Fôret avec un pnj hermite](#fôret-avec-un-pnj-hermite)
+  - [Salle du boss](#salle-du-boss)
+      - [travail graphique](#travail-graphique)
 - [Phase de jeu classique: jeu d’aventure](#phase-de-jeu-classique-jeu-daventure)
   - [Objectif](#objectif)
   - [Jeu](#jeu)
-  - [## Originalité](#originalité)
+    - [Accomplir des quêtes données par des PNJ](#accomplir-des-quêtes-données-par-des-pnj)
+    - [Combattre des ennemis dans la map principale , ainsi que dans le labyrinthe](#combattre-des-ennemis-dans-la-map-principale--ainsi-que-dans-le-labyrinthe)
+    - [Débloquer des objets](#débloquer-des-objets)
+    - [Débloquer des améliorations des armes](#débloquer-des-améliorations-des-armes)
+    - [Jeu 100% collaboratif](#jeu-100-collaboratif)
+    - [Map semi-aléatoire](#map-semi-aléatoire)
+    - [Travail graphique](#travail-graphique-1)
+    - [Système de zoom qui s’adapte à la distance séparant les joueurs.](#système-de-zoom-qui-sadapte-à-la-distance-séparant-les-joueurs)
 - [Mondes Intérieurs : Énigmes et coopération](#mondes-intérieurs--énigmes-et-coopération)
-  - [## Labyrinthe](#labyrinthe)
-  - [## (OPTIONNEL) Donjon1 : jeu de caméra](#optionnel-donjon1--jeu-de-caméra)
-  - [## (OPTIONNEL) Marchand ou Magasin](#optionnel-marchand-ou-magasin)
-  - [## Jeu et Originalité](#jeu-et-originalité)
 - [Salle et Combat de boss](#salle-et-combat-de-boss)
   - [Objectif](#objectif-1)
-  - [Jeu et Originalité](#jeu-et-originalité-1)
-- [Extensions](#extensions)
+  - [Jeu et Originalité](#jeu-et-originalité)
+- [`HORS CONTRAT` Extensions](#hors-contrat-extensions)
 
 # Elements principaux :
 =====================
@@ -96,17 +109,16 @@ Refaire plusieurs fois le labyrinthe pour gagner de l’argent et améliorer ses
 * `HORS CONTRAT` Le pnj ne vends plus une bombe, mais une clé pour entrer dans le  
 donjon. Puis aller dans le donjon (avec le jeu de caméra détaillé plus bas)
 
-- [ ] nécessite une clé pour entrer dans le donjon : la porte s’ouvre quand la clé est utilisée
-- [ ] `AJOUT` :exclamation: la clef est cachée dans le décor   
+* `HORS CONTRAT` nécessite une clé pour entrer dans le donjon : la porte s’ouvre quand la clé est utilisée
+* `HORS CONTRAT` :exclamation: la clef est cachée dans le décor   
 
  
 ## Fôret avec un pnj hermite
 
-- [ ] visualisation des personnages dans la forêt
-    `À PRÉCISER`
+- [ ] visualisation des personnages dans la forêt, beaucoup d'arbres : lorsqu'un personnage est derrière un arbre, l'arbre est affiché légèrement en transparence.
 
-- [ ] besoin de bombe pour entrer :question:_[MP> dans une forêt?]_
-- [ ] :question:_[MP>il faut / on peut]_ exploser le rocher à l’entrée pour entrer )
+- [ ] besoin de bombe pour entrer car la seule entrée de la foret est bloquée par un rocher
+- [ ] il faut exploser le rocher à l’entrée pour entrer
     
 - [ ] l’hermite apprend aux joueurs le pouvoir du feu *(séquence avec philactère  :speech_balloon:)*
 
@@ -124,9 +136,7 @@ donjon. Puis aller dans le donjon (avec le jeu de caméra détaillé plus bas)
 - [ ] le guerrier éclaire légèrement autour de lui
 - [ ] le mage ne se voit plus du tout s’il s’éloigne du guerrier.
     
-- [ ] les 2 joueurs doivent avancer ensemble pour que le mage lance des boules de feu sur des flambeaux
-    `PAS CLAIR, À PRÉCISER`
-`
+- [ ] le mage doit lancer des boules de feu sur des flambeaux situés dans la salle pour les allumer
 
 - [ ] Une fois tous les flambeaux allumés par le mage, le dragon (boss final) se réveille : combat final.
     
@@ -157,12 +167,12 @@ donjon. Puis aller dans le donjon (avec le jeu de caméra détaillé plus bas)
 ### Combattre des ennemis dans la map principale , ainsi que dans le labyrinthe
 
 - [ ] peuvent donner des pièces lorsqu’on les tue 
-- [ ] implémenter via l'action egg de l’automate
+- [ ] implémenté via l'action egg de l’automate
 
 ### Débloquer des objets
     
 - [ ] une bombe
-- [ ] utilisable à l’infini (Quelle action? quelle Touche?)
+- [ ] utilisable à l’infini en appuyant sur une touche (à définir) : inflige des dégâts sur une case autour de là où la bombe a été plantée.
 * à partir du moment où elle est débloquée mais qui ne peut détruire que certaines pierres pour accéder à la zone de la forêt en début de jeu.
         
 - [ ] une torche
@@ -174,7 +184,7 @@ donjon. Puis aller dans le donjon (avec le jeu de caméra détaillé plus bas)
 ### Débloquer des améliorations des armes
 
 à chaque niveau gagné (par les deux joueurs puisque les niveaux sont communs)
-* qui augmentent les dégâts des joueurs, 
+- [ ] qui augmentent les dégâts infligés par les joueurs, 
 - [ ] augmente (plus rarement) la portée du mage 
 * (tous les X niveaux sa portée augmente afin de ne pas trop l'avantager non plus).
     
@@ -193,11 +203,11 @@ certains éléments de la map sont générés aléatoirement par un
 algorithme: 
 - [ ] le fond de map est fixe
 - [ ] ainsi que l’emplacement des donjons et du village. 
-- [ ] Les  villageois sont placés manuellement dans le village (PAR QUI :question:)
+- [ ] Les emplacements des villageois sont également fixes en début de partie, puis les villageois se déplaçeront selon un automate
 
-- [ ] Les ennemis sont placés aléatoirement sur la carte.
+- [ ] Les ennemis apparaissent aléatoirement sur la carte.
 - [ ] Les arbres (beaucoup  dans la forêt, moins dans la plaine) et les buissons sont placés aléatoirement.
-- [ ] génération aléatoire de zones de forêts 
+- [ ] génération aléatoire de la zone de forêt : un algortihme place un nombre important d'arbres sur une petite zone
 
   
 ### Travail graphique 
@@ -210,16 +220,17 @@ algorithme:
    - [ ] leurs items, 
    - [ ] les zones débloquées.
 
-- [ ] :exclamation: `À PRÉCISER` Combien de sauvegardes possibles ?
-- [ ] :exclamation: `À PRÉCISER` Comment restaurer une sauvegarde ?
+- [ ] Nombre de sauvegardes infini
+- [ ] Les deux joueurs doivent aller à un endroit défini pour sauvegarder la partie, il réapparaitront à ce même endroit en restaurant la partie.
+- [ ] Dans le menu : "nouvelle partie" ou "reprendre la partie"
   
 
 ### Système de zoom qui s’adapte à la distance séparant les joueurs. 
 
-- [ ] La caméra dézoom **AUTOMATIQUEMENT* en laissant une zone tampon pour que les joueurs voient ce qui les attend. 
+- [ ] La caméra dézoom *AUTOMATIQUEMENT* en laissant une zone tampon pour que les joueurs voient ce qui les attend. 
 - [ ] jusqu'à  dézoom  maximal 
 * la zone tampon permet aux joueurs de se rendre compte qu’il vont etre bloqués s´ils continuent de s’éloigner l’un de l’autre. 
-- [ ] La caméra suit (=?EST PLACÉE AU?) le centre des deux joueurs.
+- [ ] Le centre de la caméra est placé au centre des deux joueurs.
 
 
 # Mondes Intérieurs : Énigmes et coopération
@@ -269,9 +280,8 @@ de la salle et des flambeaux sur les côtés.
 - [ ] tout cela afin de réveiller le dragon endormi.
     
 *   Le boss se réveille 
-- [ ] il a un comportement différent *(plusieurs automates)* 
-   selon la phase dans laquelle il se trouve (selon ses points de vie), il devient plus agressif lorsqu’il perd des points de  
-    vie.
+- [ ] il a un comportement différent *(plusieurs automates ou un seul automate avec GotPower(points_de_vie))* 
+   selon la phase dans laquelle il se trouve (selon ses points de vie), il devient plus agressif lorsqu’il perd des points de vie.
     
 
 ## Jeu et Originalité
