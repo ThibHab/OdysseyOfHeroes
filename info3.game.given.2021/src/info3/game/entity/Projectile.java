@@ -1,7 +1,6 @@
 package info3.game.entity;
 
-import info3.game.automata.Category;
-import info3.game.automata.Direction;
+import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 
 public class Projectile extends Entity {
@@ -13,33 +12,33 @@ public class Projectile extends Entity {
 	}
 
 	@Override
-	public void Wizz(Direction d, Category c) {
+	public void Wizz(Aut_Direction d, Aut_Category c) {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
-		if (this.owner.category == Category.A) {
-			if (c == Category.AT) {
+		if (this.owner.category == Aut_Category.A) {
+			if (c == Aut_Category.AT) {
 				if (this.direction == null) {
 					this.direction = d;
 				}
 				
 				Location location = this.frontTileLocation(d);
 				Entity target = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
-				// TODO fonction calcul hitbox overlap
-				// if (overlapped) : target.health -= this.owner.weaponDamage
-				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity.health -= this.owner.weaponDamage;
+				if (this.hitboxOverlap(target)) {
+					target.health -= this.owner.weaponDamage;
+				}
 			}
 			// TODO destroy projectile
-		} else if (this.owner.category == Category.AT) {
-			if (c == Category.A) {
+		} else if (this.owner.category == Aut_Category.AT) {
+			if (c == Aut_Category.A) {
 				if (this.direction == null) {
 					this.direction = d;
 				}
 				
 				Location location = this.frontTileLocation(d);
 				Entity target = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
-				// TODO fonction calcul hitbox overlap
-				// if (overlapped) : target.health -= this.owner.weaponDamage
-				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity.health -= this.owner.weaponDamage;
+				if (this.hitboxOverlap(target)) {
+					target.health -= this.owner.weaponDamage;
+				}
 			}
 			// TODO destroy projectile
 		}

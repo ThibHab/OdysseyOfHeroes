@@ -14,6 +14,8 @@ public abstract class Entity implements IEntity {
 	public String name;
 	public Location location;
 	public Location destLocation;
+	public Location relativeMouv;
+	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed;
 
@@ -28,10 +30,11 @@ public abstract class Entity implements IEntity {
 	public BufferedImage[] sprites;
 	public int imageIndex;
 	public float scale;
-	public float XratioCharTile;
-	public float YratioCharTile;
+	public float ratioHitBoxX;
+	public float ratioHitBoxY;
 	
 	public Location hitBoxLocation;
+	public Location destHitBoxLocation;
 
 	public Entity() {
 		this.name = "";
@@ -57,11 +60,11 @@ public abstract class Entity implements IEntity {
 
 		this.scale = 1;
 		
-		this.XratioCharTile = (float)0.50;
-		this.YratioCharTile = (float)0.75;
+		this.ratioHitBoxX = (float)0.50;
+		this.ratioHitBoxY = (float)0.75;
 		
-		this.hitBoxLocation.setX((float)(location.getX() + (1 - this.XratioCharTile)/2));
-		this.hitBoxLocation.setY((float)(location.getY() + (1 - this.YratioCharTile)/2));
+		this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
+		this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -81,13 +84,17 @@ public abstract class Entity implements IEntity {
 				this.mouvementIndex = 0;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
+				this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
+				this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
 			} else {
 				if (mouvementIndex != 0) {
 					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-					this.location
-							.setX(this.location.getX() + progress * (this.destLocation.getX() - this.location.getX()));
-					this.location
-							.setY(this.location.getY() + progress * (this.destLocation.getY() - this.location.getY()));
+					this.location.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+							% EntitiesConst.MAP.lenX);
+					this.location.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+							% EntitiesConst.MAP.lenY);
+					this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
+					this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
 				}
 			}
 		}
@@ -103,18 +110,24 @@ public abstract class Entity implements IEntity {
 			}
 
 			destLocation = new Location(this.location.getX(), this.location.getY());
+			originLocation=new Location(this.location.getX(), this.location.getY());
+			relativeMouv=new Location(0,0);
 			switch (d) {
 			case N:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(-1);
 				break;
 			case S:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(1);
 				break;
 			case W:
 				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(-1);
 				break;
 			case E:
 				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(1);
 				break;
 			default:
 				break;
@@ -325,16 +338,16 @@ public abstract class Entity implements IEntity {
 		return new Location((int) xIndex, (int) yIndex);
 	}
 	
-	public boolean hitboxOverlap(Direction d, Entity src, Entity tgt) {
-		float x1 = src.hitBoxLocation.getX();
-		float y1 = src.hitBoxLocation.getY();
+	public boolean hitboxOverlap(Entity tgt) {
+		float x1 = this.hitBoxLocation.getX();
+		float y1 = this.hitBoxLocation.getY();
 		float X1 = tgt.hitBoxLocation.getX();
 		float Y1 = tgt.hitBoxLocation.getY();
-		float x2 = x1 + src.XratioCharTile;
-		float y2 = y1 + src.YratioCharTile;
-		float X2 = X1 + tgt.XratioCharTile;
-		float Y2 = Y1 + tgt.YratioCharTile;
-		switch(d) {
+		float x2 = x1 + this.ratioHitBoxX;
+		float y2 = y1 + this.ratioHitBoxY;
+		float X2 = X1 + tgt.ratioHitBoxX;
+		float Y2 = Y1 + tgt.ratioHitBoxY;
+		switch(this.direction) {
 		case S:
 			return x1 > X1 && X1 > x2;
 		case E:
