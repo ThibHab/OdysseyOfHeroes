@@ -12,6 +12,8 @@ public abstract class Hero extends Entity {
 		this.speed = EntitiesConst.HERO_SPEED;
 
 		this.category = Aut_Category.AT;
+		
+		this.scale = EntitiesConst.HEROES_SCALE;
 	}
 
 	public void paint(Graphics g, int TileSize) {
