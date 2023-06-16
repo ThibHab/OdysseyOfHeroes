@@ -25,10 +25,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.ast.AST;
+import info3.game.automata.ast.AutCreator;
+import info3.game.automata.ast.IVisitor;
+import info3.game.automata.parser.AutomataParser;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
@@ -64,18 +70,23 @@ public class Game {
 	Sound m_music;
 	public IMap map;
 	public MapRender render;
+	public List<Aut_Automaton> listAutomata;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
-		m_cowboy = new Cowboy(this);
+//		m_cowboy = new Cowboy(this);
 		new ImagesConst();
 		
 		//TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
 		
-		player1 = new Cowboy(this);
-		player2 = new Cowboy(this);
+		IVisitor visitor = new AutCreator();
+		AST ast = (AST)AutomataParser.from_file("resources/test.gal");
+		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
+		
+		player1 = new Cowboy(this, "Player1");
+		player2 = new Cowboy(this, "Player2");
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
