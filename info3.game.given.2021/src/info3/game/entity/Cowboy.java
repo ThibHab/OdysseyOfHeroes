@@ -148,5 +148,6 @@ public class Cowboy extends Entity {
 //	public void Turn(Aut_Direction d) {
 //		System.out.print("Turn in direction " + d.toString() + "\n");
 //	}
+	
 
 }

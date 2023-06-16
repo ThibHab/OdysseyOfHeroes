@@ -49,6 +49,6 @@ public abstract class DecorElement extends Entity {
 			g.drawImage(img, (int) (l.getX() - (((scale - 0.8) / 2 )* TileSize)), (int) (l.getY() - (((scale - 0.8) / 2 )* TileSize)), (int) (scale * TileSize * width), (int) (scale * TileSize * height),
 					null);
 		}
-		System.out.println(screenPosX + " : " + screenPosY);
+		//System.out.println(screenPosX + " : " + screenPosY);
 	}
 }
