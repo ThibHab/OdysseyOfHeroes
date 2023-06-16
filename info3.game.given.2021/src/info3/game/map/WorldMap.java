@@ -21,6 +21,8 @@ public class WorldMap extends Map {
 //		this.setSurfaceBackground(4, 0, 1, 5, dirt);
 //		Tree forest = new Tree(null);
 //		this.setEntityRandomly(20, 20, 40, 0, forest, 2, 2);
+		
+		
 		Bush bush = new Bush(null);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, bush, 2, 6);
 		Rock rock = new Rock(null);
