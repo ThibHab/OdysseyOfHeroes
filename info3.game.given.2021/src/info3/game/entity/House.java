@@ -1,5 +1,6 @@
 package info3.game.entity;
 
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class House extends DecorElement {
@@ -19,5 +20,7 @@ public class House extends DecorElement {
 		
 		this.width = 3;
 		this.height = 3;
+		
+		this.scale = EntitiesConst.HOUSE_SCALE;
 	}
 }

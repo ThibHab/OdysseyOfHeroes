@@ -44,4 +44,16 @@ public class EntitiesConst {
 	public static int BOSS_DAMAGE = 4;
 	public static int BOSS_RANGE = 2;
 	public static int BOSS_SPEED = 2;
+	
+	// HOUSE CONSTANTS
+	public static float HOUSE_SCALE = 1.1f;
+	
+	// TREE CONSTANTS
+	public static float TREE_SCALE = 1.2f;
+	
+	// BUSH CONSTANTS
+	public static float BUSH_SCALE = 1.3f;
+	
+	// ROCK CONSTANTS
+	public static float ROCK_SCALE = 1.3f;
 }
