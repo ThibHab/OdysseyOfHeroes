@@ -34,14 +34,14 @@ public abstract class Entity implements IEntity {
 	public float scale;
 	public float ratioHitBoxX;
 	public float ratioHitBoxY;
-	
+
 	public Location hitBoxLocation;
 	public Location destHitBoxLocation;
 
 	public Entity() {
 		this.name = "";
 		this.location = new Location(0, 0);
-		this.hitBoxLocation = new Location(0,0);
+		this.hitBoxLocation = new Location(0, 0);
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
@@ -61,12 +61,12 @@ public abstract class Entity implements IEntity {
 		this.mouvementIndex = 0;
 
 		this.scale = 1;
-		
-		this.ratioHitBoxX = (float)0.50;
-		this.ratioHitBoxY = (float)0.75;
-		
-		this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
-		this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
+
+		this.ratioHitBoxX = (float) 0.50;
+		this.ratioHitBoxY = (float) 0.75;
+
+		this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
+		this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -86,19 +86,21 @@ public abstract class Entity implements IEntity {
 				this.mouvementIndex = 0;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
-				this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
-				this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
+				this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
+				this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
 				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
 						.getY()].entity = null;
 			} else {
 				if (mouvementIndex != 0) {
 					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-					this.location.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-							% EntitiesConst.MAP.lenX);
-					this.location.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-							% EntitiesConst.MAP.lenY);
-					this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
-					this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
+					this.location
+							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+									% EntitiesConst.MAP.lenX);
+					this.location
+							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+									% EntitiesConst.MAP.lenY);
+					this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
+					this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
 				}
 			}
 		}
@@ -234,7 +236,7 @@ public abstract class Entity implements IEntity {
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
-		if (entity != null) {
+		if (entity != null && entity.category != this.category) {
 			switch(d) {
 			case N:
 				if(entity.hitBoxLocation.getY() + entity.ratioHitBoxY > entity.location.getY() + EntitiesConst.GAME.render.tileSize/2) {
@@ -260,11 +262,26 @@ public abstract class Entity implements IEntity {
 				break;
 			}
 		}
-
 	}
 
 	public void takeDamage(int dmg) {
+		if (this.health - dmg > 0) {
+			this.health -= dmg;
+			if (this.action != Action.H) {
+				this.imageIndex = 0;
+				this.action = Action.H;
+			}
+		} else {
+			this.health = 0;
+			this.die();
+		}
+	}
 
+	public void die() {
+		if (this.action != Action.D) {
+			this.imageIndex = 0;
+			this.action = Action.D;
+		}
 	}
 
 	@Override
@@ -377,7 +394,7 @@ public abstract class Entity implements IEntity {
 
 		return new Location((int) xIndex, (int) yIndex);
 	}
-	
+
 	public boolean hitboxOverlap(Entity tgt) {
 		float x1 = this.hitBoxLocation.getX();
 		float y1 = this.hitBoxLocation.getY();
@@ -387,7 +404,7 @@ public abstract class Entity implements IEntity {
 		float y2 = y1 + this.ratioHitBoxY;
 		float X2 = X1 + tgt.ratioHitBoxX;
 		float Y2 = Y1 + tgt.ratioHitBoxY;
-		switch(this.direction) {
+		switch (this.direction) {
 		case S:
 			return x1 > X1 && X1 > x2;
 		case E:
