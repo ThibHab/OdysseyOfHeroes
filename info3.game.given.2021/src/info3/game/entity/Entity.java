@@ -235,10 +235,32 @@ public abstract class Entity implements IEntity {
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
-			entity.health--;
+			switch(d) {
+			case N:
+				if(entity.hitBoxLocation.getY() + entity.ratioHitBoxY > entity.location.getY() + EntitiesConst.GAME.render.tileSize/2) {
+					// TODO entity.takeDamage(this)
+				}
+				break;
+			case S:
+				if(entity.hitBoxLocation.getY() < entity.location.getY() + EntitiesConst.GAME.render.tileSize/2) {
+					// TODO entity.takeDamage(this)
+				}
+				break;
+			case E:
+				if(entity.hitBoxLocation.getX() < entity.location.getX() + EntitiesConst.GAME.render.tileSize/2) {
+					// TODO entity.takeDamage(this)
+				}
+				break;
+			case W:
+				if(entity.hitBoxLocation.getX() + entity.ratioHitBoxX < entity.location.getX() + EntitiesConst.GAME.render.tileSize/2) {
+					// TODO entity.takeDamage(this)
+				}
+				break;
+			default:
+				break;
+			}
 		}
 
-		// TODO takeDamage method for animation (view) ?
 	}
 
 	public void takeDamage(int dmg) {
