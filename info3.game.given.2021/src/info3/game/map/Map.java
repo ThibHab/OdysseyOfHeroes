@@ -141,22 +141,30 @@ public abstract class Map implements IMap {
 		DirtTile dirt = new DirtTile(null);
 		setSurfaceBackground(x, y, areaSize, 1, dirt);
 		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, dirt);
+		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
+			setSurfaceBackground(indexHouse, y - 1, 1, 1, dirt);
+		}
+		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
+			setSurfaceBackground(indexHouse, y + 1, 1, 1, dirt);
+		}
 		int i = x + 1;
 		while (i < areaSize) {
-			Location l = new Location(i, y - 2);
-			Location l2 = new Location(i, y + 1);
+			Location l = new Location(i, y - 4);
+			Location l2 = new Location(i, y + 2);
 			House house = new House(l);
 			House house2 = new House(l2);
-			map[i][y - 1].entity = house;
-			map[i][y - 2].entity = house;
-			map[i + 1][y - 1].entity = house;
-			map[i + 1][y - 2].entity = house;
+			for (int j = 0; j < house.width; j++) {
+				for (int k = 2; k < house.height + 2; k++) {
+					map[i + j][y - k].entity = house;
+				}
+			}
 			
-			if (!(map[i + 1][y + 1] instanceof DirtTile)) {
-				map[i][y + 1].entity = house2;
-				map[i][y + 2].entity = house2;
-				map[i + 1][y + 1].entity = house2;
-				map[i + 1][y + 2].entity = house2;
+			if (!(map[i + 1][y + 2] instanceof DirtTile)) {
+				for (int m = 0; m < house.width; m++) {
+					for (int n = 2; n < house.height + 2; n++) {
+						map[i + m][y + n].entity = house2;
+					}
+				}
 			}
 			
 			i += house.width + 1;
