@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import info3.game.constants.Action;
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
@@ -13,24 +14,34 @@ import info3.game.map.Tile;
 public abstract class Entity implements IEntity {
 	public String name;
 	public Location location;
+	public Location destLocation;
+	public Location relativeMouv;
+	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed;
+	public int coins, healingPotions, strengthPotions;
 
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
 	public Aut_Direction direction;
 	public Aut_Category category;
-	public int coins, healingPotions, strengthPotions;
 	public boolean frozen;
 	public long mouvementIndex;
+	public Action action;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
 	public float scale;
+	public float ratioHitBoxX;
+	public float ratioHitBoxY;
+	
+	public Location hitBoxLocation;
+	public Location destHitBoxLocation;
 
 	public Entity() {
 		this.name = "";
 		this.location = new Location(0, 0);
+		this.hitBoxLocation = new Location(0,0);
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
@@ -47,9 +58,15 @@ public abstract class Entity implements IEntity {
 		this.direction = Aut_Direction.N;
 		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
-		this.mouvementIndex=0;
+		this.mouvementIndex = 0;
 
 		this.scale = 1;
+		
+		this.ratioHitBoxX = (float)0.50;
+		this.ratioHitBoxY = (float)0.75;
+		
+		this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
+		this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -61,59 +78,80 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		if (!this.frozen) {
-			this.automaton.step(this, EntitiesConst.GAME);
-			this.mouvementIndex=0;
-		}else {
-			this.mouvementIndex+=elapsed;
-			if(this.mouvementIndex>=200) {
-				this.frozen=false;
-				this.mouvementIndex=0;
+		this.automaton.step(this, EntitiesConst.GAME);
+		if (this.frozen) {
+			this.mouvementIndex += elapsed;
+			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
+				this.frozen = false;
+				this.mouvementIndex = 0;
+				this.location.setX(destLocation.getX());
+				this.location.setY(destLocation.getY());
+				this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
+				this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
+				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+						.getY()].entity = null;
+			} else {
+				if (mouvementIndex != 0) {
+					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+					this.location.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+							% EntitiesConst.MAP.lenX);
+					this.location.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+							% EntitiesConst.MAP.lenY);
+					this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
+					this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
+				}
 			}
-			
 		}
 	}
 
 	@Override
 	public void Move(Aut_Direction d) {
-		
-		if(!this.frozen) {
+		if (!this.frozen) {
 			this.frozen = true;
+
 			if (d == null) {
 				d = this.direction;
 			}
-			
-			Location destLocation = new Location(this.location.getX(), this.location.getY());
+			if (this.action != Action.M) {
+				this.imageIndex = 0;
+				this.action = Action.M;
+			}
+
+			this.destLocation = new Location(this.location.getX(), this.location.getY());
+			originLocation = new Location(this.location.getX(), this.location.getY());
+			relativeMouv = new Location(0, 0);
 			switch (d) {
 			case N:
-				//this.location.setY(this.location.getY() - 1);
-				destLocation.setY((this.location.getY()+EntitiesConst.MAP.lenY-1)%EntitiesConst.MAP.lenY);
+				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(-1);
 				break;
 			case S:
-				//this.location.setY(this.location.getY() + 1);
-				destLocation.setY((this.location.getY()+EntitiesConst.MAP.lenY+1)%EntitiesConst.MAP.lenY);
+				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(1);
 				break;
 			case W:
-				//this.location.setX(this.location.getX() - 1);
-				destLocation.setX((this.location.getX()+EntitiesConst.MAP.lenX-1)%EntitiesConst.MAP.lenX);
+				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(-1);
 				break;
 			case E:
-				//this.location.setX(this.location.getX() + 1);
-				destLocation.setX((this.location.getX()+EntitiesConst.MAP.lenX+1)%EntitiesConst.MAP.lenX);
+				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(1);
 				break;
 			default:
 				break;
 			}
-			
+
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
 			if (destTile.walkable && destTile.entity == null) {
-				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 				destTile.entity = this;
-				this.location.setX(destLocation.getX());
-				this.location.setY(destLocation.getY());
+			} else {
+				this.frozen = false;
 			}
+
+		} else {
+			this.mouvementIndex = 0;
 		}
-		
+
 	}
 
 	@Override
@@ -136,7 +174,7 @@ public abstract class Entity implements IEntity {
 		case A:
 			Random randomA = new Random();
 			int tirageA = randomA.nextInt(2);
-			switch(tirageA) {
+			switch (tirageA) {
 			case 0:
 				new Goblin(location);
 				break;
@@ -149,7 +187,7 @@ public abstract class Entity implements IEntity {
 		case P:
 			Random randomP = new Random();
 			int tirageP = randomP.nextInt(3);
-			switch(tirageP) {
+			switch (tirageP) {
 			case 0:
 				new Coin(location);
 				break;
@@ -163,7 +201,7 @@ public abstract class Entity implements IEntity {
 		case T:
 			Random randomT = new Random();
 			int tirageT = randomT.nextInt(3);
-			switch(tirageT) {
+			switch (tirageT) {
 			case 0:
 				new Villager(location);
 				break;
@@ -174,19 +212,25 @@ public abstract class Entity implements IEntity {
 		case AT:
 			Random randomAT = new Random();
 			int tirageAT = randomAT.nextInt(3);
-			switch(tirageAT) {
+			switch (tirageAT) {
 			case 0:
-				new Melee("melee",location);
+				new Melee("melee", location);
 				break;
 			case 1:
-				new Range("range",location);
+				new Range("range", location);
 				break;
 			}
+		default:
+			break;
 		}
 	}
 
 	@Override
 	public void Hit(Aut_Direction d) {
+		if (this.action != Action.H) {
+			this.imageIndex = 0;
+			this.action = Action.H;
+		}
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -195,6 +239,10 @@ public abstract class Entity implements IEntity {
 		}
 
 		// TODO takeDamage method for animation (view) ?
+	}
+
+	public void takeDamage(int dmg) {
+
 	}
 
 	@Override
@@ -306,5 +354,28 @@ public abstract class Entity implements IEntity {
 		}
 
 		return new Location((int) xIndex, (int) yIndex);
+	}
+	
+	public boolean hitboxOverlap(Entity tgt) {
+		float x1 = this.hitBoxLocation.getX();
+		float y1 = this.hitBoxLocation.getY();
+		float X1 = tgt.hitBoxLocation.getX();
+		float Y1 = tgt.hitBoxLocation.getY();
+		float x2 = x1 + this.ratioHitBoxX;
+		float y2 = y1 + this.ratioHitBoxY;
+		float X2 = X1 + tgt.ratioHitBoxX;
+		float Y2 = Y1 + tgt.ratioHitBoxY;
+		switch(this.direction) {
+		case S:
+			return x1 > X1 && X1 > x2;
+		case E:
+			return y1 > Y1 && Y1 > y2;
+		case N:
+			return x1 < X2 && X2 < x2;
+		case W:
+			return y1 < Y2 && Y2 < y2;
+		default:
+			return false;
+		}
 	}
 }
