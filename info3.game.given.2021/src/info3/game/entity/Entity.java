@@ -81,6 +81,9 @@ public abstract class Entity implements IEntity {
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen) {
 			this.mouvementIndex += elapsed;
+			if (mouvementIndex % 200 == 0) {
+				this.imageIndex++;
+			}
 			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
 				this.frozen = false;
 				this.mouvementIndex = 0;
@@ -244,9 +247,9 @@ public abstract class Entity implements IEntity {
 	public void takeDamage(int dmg) {
 		if (this.health - dmg > 0) {
 			this.health -= dmg;
-			if (this.action != Action.H) {
+			if (this.action != Action.T) {
 				this.imageIndex = 0;
-				this.action = Action.H;
+				this.action = Action.T;
 			}
 		} else {
 			this.health = 0;
@@ -393,5 +396,8 @@ public abstract class Entity implements IEntity {
 		default:
 			return false;
 		}
+	}
+
+	public void updateSpriteIndex() {
 	}
 }
