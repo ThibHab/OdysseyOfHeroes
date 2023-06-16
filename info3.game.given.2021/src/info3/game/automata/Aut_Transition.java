@@ -1,16 +1,18 @@
 package info3.game.automata;
 
+import java.util.List;
+
 public class Aut_Transition {
 
 	Aut_State src;
 	Cond condition;
-	Aut_Action action;
+	List<Aut_Action> actions;
 	Aut_State dest;
 	
-	public Aut_Transition(Aut_State s, Cond c, Aut_Action a, Aut_State d) {
+	public Aut_Transition(Aut_State s, Cond c, List<Aut_Action> a, Aut_State d) {
 		this.src = s;
 		this.condition = c;
-		this.action = a;
+		this.actions = a;
 		this.dest = d;
 	}
 	
