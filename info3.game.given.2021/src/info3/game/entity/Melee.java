@@ -61,10 +61,10 @@ public class Melee extends Hero {
 		case M:
 			idx+=1;
 			break;
-		case A:
+		case H:
 			idx += 4;
 			break;
-		case H:
+		case T:
 			idx += 8;
 			break;
 		case D:
