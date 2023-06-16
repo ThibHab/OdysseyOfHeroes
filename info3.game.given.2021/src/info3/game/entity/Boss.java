@@ -1,6 +1,7 @@
 package info3.game.entity;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
@@ -37,43 +38,76 @@ public class Boss extends Mob {
 		
 		Random random = new Random();
 		int randomAttack = 0;
-		switch (this.phase) {
-		case 0:
-			this.frontPawAttack(d);
-			break;
-		case 1:
+		if (this.phase == 0) {
 			randomAttack = random.nextInt(2);
 			if (randomAttack == 0) {
-				this.frontPawAttack(d);
+				this.fireballAttack(d);
 			} else {
-				this.flameAttack(d);
+				this.spawnMobs();
 			}
-			break;			
-		case 2:
+		} else {
 			randomAttack = random.nextInt(3);
 			switch (randomAttack) {
 			case 0:
-				this.frontPawAttack(d);
+				this.fireballAttack(d);
 				break;
 			case 1:
-				this.flameAttack(d);
+				this.spawnMobs();
 				break;
 			case 2:
-				// TODO add 3rd attack
+				this.flameBreathAttack(d);
 				break;
 			default:
 				break;
 			}
-			break;
-		default:
-			break;
 		}
 	}
 	
-	public void frontPawAttack(Aut_Direction d) {
+	public void spawnMobs() {
+		int bossPosX = (int) this.location.getX();
+		int bossPosY = (int) this.location.getY();
+		Random random = new Random();
+		for (int i = 0; i < EntitiesConst.BOSS_MOB_SPAWN_NUMBER; i++) {
+			float randomPosX = ThreadLocalRandom.current().nextInt(bossPosX - EntitiesConst.BOSS_MOB_SPAWN_RANGE, bossPosX + EntitiesConst.BOSS_MOB_SPAWN_RANGE);
+			float randomPosY = ThreadLocalRandom.current().nextInt(bossPosY - EntitiesConst.BOSS_MOB_SPAWN_RANGE, bossPosY + EntitiesConst.BOSS_MOB_SPAWN_RANGE);
+			Location mobLocation = new Location(randomPosX, randomPosY);
+			
+			int randomMob = random.nextInt(2);
+			if (randomMob == 0) {
+				new Skeleton(mobLocation);
+			} else {
+				new Goblin(mobLocation);
+			}
+		}
+	}
+	
+	public void fireballAttack(Aut_Direction d) {
+		int mapHeight = EntitiesConst.MAP.lenY;
+		int mapWidth = EntitiesConst.MAP.lenX;
+		int dragonTopPosHeight = mapHeight / 2 + 1;
+		int dragonSubPosHeight = mapHeight / 2 - 2;
+		int dragonTopPosWidth = mapWidth / 2 + 1;
+		int dragonSubPosWidth = mapWidth / 2 - 2;
+		Random random = new Random();
 		switch (d) {
 		case N:
-			
+			int randomNumberOfFireballs = random.nextInt(EntitiesConst.BOSS_FIREBALL_NUMBER_MAX);
+			int[] eliminatedPos = new int[randomNumberOfFireballs];
+			for (int i = 0; i < randomNumberOfFireballs; i++) {
+				int randomPos = random.nextInt(mapWidth);
+				boolean isPosAlreadyUsed = false;
+				for (int j = 0; j < eliminatedPos.length; j++) {
+					if (randomPos == eliminatedPos[j]) {
+						isPosAlreadyUsed = true;
+					}
+				}
+				
+				if (!isPosAlreadyUsed) {
+					// TODO add direction and location in constructor
+					new Projectile(this);
+					eliminatedPos[i] = randomPos;
+				}
+			}
 			break;
 		case S:
 			
@@ -89,13 +123,14 @@ public class Boss extends Mob {
 		}
 	}
 	
-	public void flameAttack(Aut_Direction d) {
+	public void flameBreathAttack(Aut_Direction d) {
+		// TODO position calculation is not good
 		int mapHeight = EntitiesConst.MAP.lenY;
 		int mapWidth = EntitiesConst.MAP.lenX;
 		int mapHalfHeight = 0, mapHalfWidth = 0;
 		switch (d) {
 		case N:
-			for (int row = 0; row < mapHeight / 2; row++) {
+			for (int row = 0; row < mapHeight / 2 - 2; row++) {
 				for (int column = row; column < mapWidth - row; column++) {
 					Entity entity = EntitiesConst.MAP_MATRIX[row][column].entity;
 					if (entity != null) {
@@ -112,7 +147,7 @@ public class Boss extends Mob {
 				mapHalfHeight = mapHeight / 2;
 			}
 			
-			for (int row = mapHeight; row > mapHalfHeight; row--) {
+			for (int row = mapHeight; row > mapHalfHeight + 1; row--) {
 				int shiftIndex = mapHeight - row;
 				for (int column = shiftIndex; column < mapWidth - shiftIndex; column++) {
 					Entity entity = EntitiesConst.MAP_MATRIX[row][column].entity;
@@ -124,7 +159,7 @@ public class Boss extends Mob {
 			}
 			break;
 		case W:
-			for (int column = 0; column < mapWidth / 2; column++) {
+			for (int column = 0; column < mapWidth / 2 - 2; column++) {
 				for (int row = column; row < mapHeight - column; row++) {
 					Entity entity = EntitiesConst.MAP_MATRIX[row][column].entity;
 					if (entity != null) {
@@ -141,7 +176,7 @@ public class Boss extends Mob {
 				mapHalfWidth = mapWidth / 2;
 			}
 			
-			for (int column = mapWidth; column > mapHalfWidth; column--) {
+			for (int column = mapWidth; column > mapHalfWidth + 1; column--) {
 				int shiftIndex = mapWidth - column;
 				for (int row = shiftIndex; row < mapWidth - shiftIndex; row++) {
 					Entity entity = EntitiesConst.MAP_MATRIX[column][row].entity;
