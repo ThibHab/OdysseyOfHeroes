@@ -43,7 +43,7 @@ public class MapRender {
 		return res;
 	}
 
-	float diff(float a, float b, int len) {
+	public float diff(float a, float b, int len) {
 		float tmp = Math.abs(a - b);
 		float tmp2 = Math.min(a, b) + len - Math.max(a, b);
 		if (tmp < tmp2) {
@@ -56,6 +56,11 @@ public class MapRender {
 		double tmp;
 		tmp = Math.ceil(a / b) + 1;
 		return (int) tmp;
+	}
+	
+	float roundDeci(float val, int nbDec) {
+		long factor=(long) Math.pow(10, nbDec);
+		return (float)Math.round(val*factor)/factor; 
 	}
 
 	void updateCam(Cowboy player1, Cowboy player2, int w, int h) {
@@ -94,6 +99,8 @@ public class MapRender {
 		Location camTemp = gridToPixel(camera, false);
 		offset.setX((((float) game.m_canvas.getWidth() / 2) - camTemp.getX()) / this.tileSize);
 		offset.setY((((float) game.m_canvas.getHeight() / 2) - camTemp.getY()) / this.tileSize);
+		offset.setX(roundDeci(offset.getX(),3));
+		offset.setY(roundDeci(offset.getY(),3));
 	}
 
 	public void paint(Graphics g) {
@@ -103,7 +110,7 @@ public class MapRender {
 			for (int i = 0; i < nbTileX; i++) {
 				map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
 						% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY]
-						.paint(g, i + this.offset.getX(), j + this.offset.getY(), tileSize);
+						.paint(g, roundDeci((i + this.offset.getX())*tileSize,3), roundDeci((j + this.offset.getY())*tileSize,3), tileSize);
 			}
 		}
 	}

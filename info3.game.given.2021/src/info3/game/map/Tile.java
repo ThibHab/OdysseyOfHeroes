@@ -28,9 +28,9 @@ public abstract class Tile implements ITile {
 
 	@Override
 	public void paint(Graphics g,float screenPosX,float screenPosY,int size) {
-		g.drawImage(this.image, (int)(screenPosX*size), (int)(screenPosY*size), size, size, null);
+		g.drawImage(this.image, (int)screenPosX, (int)screenPosY, size, size, null);
 		g.setColor(Color.red);
-		g.drawString(screenPosX*size+";"+screenPosY*size, (int)(screenPosX*size), (int)(screenPosY*size));
+		g.drawString(screenPosX+";"+screenPosY, (int)screenPosX, (int)screenPosY+size/2);
 		if (entity != null) {
 			entity.paint(g, size, screenPosX, screenPosY);
 		}

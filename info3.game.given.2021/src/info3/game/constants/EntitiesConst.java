@@ -13,7 +13,7 @@ public class EntitiesConst {
 	public static Tile[][] MAP_MATRIX;	
 	
 	public static int LEVEL, EXPERIENCE;
-	public static int MOUVEMENT_INDEX_MAX=5000;
+	public static int MOUVEMENT_INDEX_MAX=200;
 	// HERO CONSTANTS
 	public static int HERO_SPEED = 2;
 	
