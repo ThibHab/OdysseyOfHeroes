@@ -41,7 +41,9 @@ public class EntitiesConst {
 	
 	// BOSS CONSTANTS
 	public static int BOSS_HEALTH = 20;
-	public static int BOSS_DAMAGE = 4;
+	public static int BOSS_BASE_DAMAGE = 4;
+	public static int BOSS_FLAME_ATTACK_DAMAGE = 100;
+	public static int BOSS_FRONT_PAW_ATTACK = 10;
 	public static int BOSS_RANGE = 2;
 	public static int BOSS_SPEED = 2;
 }
