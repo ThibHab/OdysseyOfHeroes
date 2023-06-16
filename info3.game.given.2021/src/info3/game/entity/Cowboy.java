@@ -135,4 +135,15 @@ public class Cowboy extends Entity {
 //	public void Move(Aut_Direction d) {
 //		System.out.print("Move in direction " + d.toString() + "\n");
 //	}
+//	
+//	@Override
+//	public void Hit(Aut_Direction d) {
+//		System.out.print("Hit in direction " + d.toString() + "\n");
+//	}
+//	
+//	@Override
+//	public void Turn(Aut_Direction d) {
+//		System.out.print("Turn in direction " + d.toString() + "\n");
+//	}
+
 }
