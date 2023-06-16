@@ -236,26 +236,26 @@ public abstract class Entity implements IEntity {
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
-		if (entity != null && entity.category != this.category) {
+		if (entity != null) {
 			switch(d) {
 			case N:
-				if(entity.hitBoxLocation.getY() + entity.ratioHitBoxY > entity.location.getY() + EntitiesConst.GAME.render.tileSize/2) {
-					// TODO entity.takeDamage(this)
+				if(entity.hitBoxLocation.getY() + entity.ratioHitBoxY > t.getY() + 0.5) {
+					entity.takeDamage(this.weaponDamage);
 				}
 				break;
 			case S:
-				if(entity.hitBoxLocation.getY() < entity.location.getY() + EntitiesConst.GAME.render.tileSize/2) {
-					// TODO entity.takeDamage(this)
+				if(entity.hitBoxLocation.getY() < t.getY() + 0.5) {
+					entity.takeDamage(this.weaponDamage);
 				}
 				break;
 			case E:
-				if(entity.hitBoxLocation.getX() < entity.location.getX() + EntitiesConst.GAME.render.tileSize/2) {
-					// TODO entity.takeDamage(this)
+				if(entity.hitBoxLocation.getX() < t.getX() + 0.5) {
+					entity.takeDamage(this.weaponDamage);
 				}
 				break;
 			case W:
-				if(entity.hitBoxLocation.getX() + entity.ratioHitBoxX < entity.location.getX() + EntitiesConst.GAME.render.tileSize/2) {
-					// TODO entity.takeDamage(this)
+				if(entity.hitBoxLocation.getX() + entity.ratioHitBoxX > t.getX() + 0.5) {
+					entity.takeDamage(this.weaponDamage);
 				}
 				break;
 			default:
@@ -265,6 +265,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void takeDamage(int dmg) {
+		System.out.println("HEHO CA FAIT MALEUH");
 		if (this.health - dmg > 0) {
 			this.health -= dmg;
 			if (this.action != Action.H) {
@@ -374,18 +375,18 @@ public abstract class Entity implements IEntity {
 		switch (d) {
 		case N:
 			xIndex = this.location.getX();
-			yIndex = this.location.getY() - 1;
+			yIndex = (this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY;
 			break;
 		case S:
 			xIndex = this.location.getX();
-			yIndex = this.location.getY() + 1;
+			yIndex = (this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY;
 			break;
 		case W:
-			xIndex = this.location.getX() - 1;
+			xIndex = (this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX;
 			yIndex = this.location.getY();
 			break;
 		case E:
-			xIndex = this.location.getX() + 1;
+			xIndex = (this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX;
 			yIndex = this.location.getY();
 			break;
 		default:
