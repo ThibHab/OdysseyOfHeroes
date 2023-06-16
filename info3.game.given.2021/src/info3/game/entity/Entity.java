@@ -103,9 +103,7 @@ public abstract class Entity implements IEntity {
 				this.action = Action.M;
 			}
 
-			Location destLocation = new Location(this.location.getX(), this.location.getY());
-
-			destLocation = new Location(this.location.getX(), this.location.getY());
+			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
 			switch (d) {
