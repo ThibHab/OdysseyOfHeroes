@@ -56,4 +56,10 @@ public class EntitiesConst {
 	
 	// ROCK CONSTANTS
 	public static float ROCK_SCALE = 1.3f;
+	
+	// HEROES CONSTANTS
+	public static float HEROES_SCALE = 1.3f;
+	
+	// COWBOY CONSTANTS
+	public static float COWBOY_SCALE = 1.3f;
 }
