@@ -28,7 +28,7 @@ public class Range extends Hero {
 	@Override
 	public void Hit(Aut_Direction d) {
 		// TODO Auto-generated method stub
-		super.Hit(d);
+		this.Egg(this.direction, Aut_Category.M);
 	}
 
 	@Override
