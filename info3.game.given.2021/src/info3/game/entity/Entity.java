@@ -72,6 +72,7 @@ public abstract class Entity implements IEntity {
 				this.mouvementIndex = 0;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
+				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation.getY()].entity = null;
 			} else {
 				if (mouvementIndex != 0) {
 					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
@@ -118,7 +119,6 @@ public abstract class Entity implements IEntity {
 			}
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
 			if (destTile.walkable && destTile.entity == null) {
-				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
