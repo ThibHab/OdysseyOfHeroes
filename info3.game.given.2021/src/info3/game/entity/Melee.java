@@ -41,4 +41,38 @@ public class Melee extends Hero {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
 	}
+
+	public int getSpriteIndex() {
+		int idx = this.imageIndex;
+		switch (this.direction) {
+		case N:
+			idx += 28;
+			break;
+		case E:
+			idx += 14;
+			break;
+		case W:
+			idx += 42;
+			break;
+		default:
+			break;
+		}
+		switch (this.action) {
+		case M:
+			idx+=1;
+			break;
+		case A:
+			idx += 4;
+			break;
+		case H:
+			idx += 8;
+			break;
+		case D:
+			idx += 11;
+			break;
+		default :
+			break;
+		}
+		return idx;
+	}
 }
