@@ -2,8 +2,8 @@ package info3.game.constants;
 
 public enum Action {
 	M, // is Moving
-	A, // is Attacking
-	H, // is Hit
+	H, // is Hitting
+	T, // is touched (damaged)
 	D, // is dead
 	S, // is Standing
 }
