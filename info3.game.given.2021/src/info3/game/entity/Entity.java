@@ -14,6 +14,9 @@ import info3.game.map.Tile;
 public abstract class Entity implements IEntity {
 	public String name;
 	public Location location;
+	public Location destLocation;
+	public Location relativeMouv;
+	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed;
 	public int coins, healingPotions, strengthPotions;
@@ -63,16 +66,27 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		if (!this.frozen) {
-			this.automaton.step(this, EntitiesConst.GAME);
-			this.mouvementIndex = 0;
-		} else {
+		this.automaton.step(this, EntitiesConst.GAME);
+		if (this.frozen) {
 			this.mouvementIndex += elapsed;
-			if (this.mouvementIndex >= 200) {
+			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
 				this.frozen = false;
 				this.mouvementIndex = 0;
+				this.location.setX(destLocation.getX());
+				this.location.setY(destLocation.getY());
+				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+						.getY()].entity = null;
+			} else {
+				if (mouvementIndex != 0) {
+					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+					this.location
+							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+									% EntitiesConst.MAP.lenX);
+					this.location
+							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+									% EntitiesConst.MAP.lenY);
+				}
 			}
-
 		}
 	}
 
@@ -90,22 +104,26 @@ public abstract class Entity implements IEntity {
 			}
 
 			Location destLocation = new Location(this.location.getX(), this.location.getY());
+
+			destLocation = new Location(this.location.getX(), this.location.getY());
+			originLocation = new Location(this.location.getX(), this.location.getY());
+			relativeMouv = new Location(0, 0);
 			switch (d) {
 			case N:
-				// this.location.setY(this.location.getY() - 1);
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(-1);
 				break;
 			case S:
-				// this.location.setY(this.location.getY() + 1);
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				relativeMouv.setY(1);
 				break;
 			case W:
-				// this.location.setX(this.location.getX() - 1);
 				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(-1);
 				break;
 			case E:
-				// this.location.setX(this.location.getX() + 1);
 				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				relativeMouv.setX(1);
 				break;
 			default:
 				break;
@@ -113,11 +131,13 @@ public abstract class Entity implements IEntity {
 
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
 			if (destTile.walkable && destTile.entity == null) {
-				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 				destTile.entity = this;
-				this.location.setX(destLocation.getX());
-				this.location.setY(destLocation.getY());
+			} else {
+				this.frozen = false;
 			}
+
+		} else {
+			this.mouvementIndex = 0;
 		}
 
 	}
@@ -188,6 +208,8 @@ public abstract class Entity implements IEntity {
 				new Range("range", location);
 				break;
 			}
+		default:
+			break;
 		}
 	}
 
