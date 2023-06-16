@@ -162,7 +162,8 @@ public class Game {
 		// Update every second
 		// the text on top of the frame: tick and fps
 		m_textElapsed += elapsed;
-		if (m_textElapsed > 1000) {
+		//TODO modif pour debug
+		if (m_textElapsed > 100) {
 			m_textElapsed = 0;
 			float period = m_canvas.getTickPeriod();
 			int fps = m_canvas.getFPS();
