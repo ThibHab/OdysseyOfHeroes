@@ -82,12 +82,13 @@ public class Cowboy extends Entity {
 		game = g;
 		currentState = aut.initial;
 		this.direction = Aut_Direction.S;
+		this.automaton=aut;
 	}
 
 	/*
 	 * Simple animation here, the cowbow
 	 */
-	public void tick(long elapsed) {
+//	public void tick(long elapsed) {
 //		m_imageElapsed += elapsed;
 //		if (m_imageElapsed > 200) {
 //			m_imageElapsed = 0;
@@ -99,9 +100,9 @@ public class Cowboy extends Entity {
 //			m_x = (m_x + 2) % m_width;
 //		}
 		
-		aut.step(this, game);
-
-	}
+//		aut.step(this, game);
+//
+//	}
 
 	public void paint(Graphics g, int width, int height) {
 		m_width = width;
