@@ -140,17 +140,18 @@ public abstract class Map implements IMap {
 	public void setVillage(int x, int y, int areaSize) {
 		DirtTile dirt = new DirtTile(null);
 		setSurfaceBackground(x, y, areaSize, 1, dirt);
+		setSurfaceBackground(x + 2, y + 4, areaSize - 3, 1, dirt);
 		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, dirt);
 		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
 			setSurfaceBackground(indexHouse, y - 1, 1, 1, dirt);
 		}
-		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
-			setSurfaceBackground(indexHouse, y + 1, 1, 1, dirt);
-		}
+//		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
+//			setSurfaceBackground(indexHouse, y + 1, 1, 1, dirt);
+//		}
 		int i = x + 1;
 		while (i < areaSize) {
 			Location l = new Location(i, y - 4);
-			Location l2 = new Location(i, y + 2);
+			Location l2 = new Location(i, y + 1);
 			House house = new House(l);
 			House house2 = new House(l2);
 			for (int j = 0; j < house.width; j++) {
@@ -161,7 +162,7 @@ public abstract class Map implements IMap {
 			
 			if (!(map[i + 1][y + 2] instanceof DirtTile)) {
 				for (int m = 0; m < house.width; m++) {
-					for (int n = 2; n < house.height + 2; n++) {
+					for (int n = 1; n < house.height + 1; n++) {
 						map[i + m][y + n].entity = house2;
 					}
 				}
