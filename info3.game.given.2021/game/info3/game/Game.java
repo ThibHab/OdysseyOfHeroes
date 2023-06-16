@@ -84,7 +84,7 @@ public class Game {
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
 		
-		map = new WorldMap(60, 60, player1, player2);
+		map = new WorldMap(64, 64, player1, player2);
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);
@@ -162,7 +162,8 @@ public class Game {
 		// Update every second
 		// the text on top of the frame: tick and fps
 		m_textElapsed += elapsed;
-		if (m_textElapsed > 1000) {
+		//TODO modif pour debug
+		if (m_textElapsed > 100) {
 			m_textElapsed = 0;
 			float period = m_canvas.getTickPeriod();
 			int fps = m_canvas.getFPS();
