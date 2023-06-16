@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import info3.game.constants.Action;
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
@@ -15,13 +16,14 @@ public abstract class Entity implements IEntity {
 	public Location location;
 	public int health, weaponDamage, weaponRange;
 	public float speed;
+	public int coins, healingPotions, strengthPotions;
 
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
 	public Aut_Direction direction;
 	public Aut_Category category;
-	public int coins, healingPotions, strengthPotions;
 	public boolean frozen;
+	public Action action;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -67,6 +69,11 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Move(Aut_Direction d) {
 		this.frozen = true;
+		
+		if (this.action != Action.M) {
+			this.imageIndex = 0;
+			this.action = Action.M;
+		}
 
 		if (d == null) {
 			d = this.direction;
@@ -176,6 +183,10 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Aut_Direction d) {
+		if (this.action != Action.H) {
+			this.imageIndex = 0;
+			this.action = Action.H;
+		}
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -184,6 +195,10 @@ public abstract class Entity implements IEntity {
 		}
 
 		// TODO takeDamage method for animation (view) ?
+	}
+	
+	public void takeDamage(int dmg) {
+		
 	}
 
 	@Override
