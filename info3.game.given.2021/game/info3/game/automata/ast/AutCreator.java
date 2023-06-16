@@ -95,13 +95,13 @@ public class AutCreator implements IVisitor {
 		case "i":
 			return new Aut_Key(KeyEvent.VK_I);
 		case "z":
-			return new Aut_Key(KeyEvent.VK_S);
+			return new Aut_Key(KeyEvent.VK_Z);
 		case "s":
-			return new Aut_Key(KeyEvent.VK_Q);
+			return new Aut_Key(KeyEvent.VK_S);
 		case "q":
-			return new Aut_Key(KeyEvent.VK_D);
+			return new Aut_Key(KeyEvent.VK_Q);
 		case "d":
-			return new Aut_Key(KeyEvent.VK_F);
+			return new Aut_Key(KeyEvent.VK_D);
 		case "a":
 			return new Aut_Key(KeyEvent.VK_A);
 		}
