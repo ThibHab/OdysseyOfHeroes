@@ -38,6 +38,7 @@ import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
+import info3.game.constants.EntitiesConst;
 
 /**
  * A simple class that holds the images of a sprite for an animated cowbow.
@@ -82,6 +83,8 @@ public class Cowboy extends Entity {
 		currentState = aut.initial;
 		this.direction = Aut_Direction.S;
 		this.automaton=aut;
+		
+		this.scale = EntitiesConst.COWBOY_SCALE;
 	}
 
 	/*
@@ -102,12 +105,12 @@ public class Cowboy extends Entity {
 //		aut.step(this, game);
 //
 //	}
-
-	public void paint(Graphics g, int width, int height) {
-		m_width = width;
+	
+	@Override
+	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = m_images[m_imageIndex];
 		Location pixel=game.render.gridToPixel(location,true);
-		g.drawImage(img, (int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize, null);
+		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2 )* TileSize)), (int) (pixel.getY() - (((scale - 1) / 2 )* TileSize)), (int) (TileSize * scale), (int) (TileSize * scale), null);
 		g.setColor(Color.blue);
 		Location l = game.render.gridToPixel(this.hitBoxLocation, true);
 		g.drawRect((int)l.getX(), (int)l.getY(), (int) (game.render.tileSize * this.ratioHitBoxX), (int) (game.render.tileSize * this.ratioHitBoxY));

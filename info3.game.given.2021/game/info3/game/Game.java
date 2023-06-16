@@ -211,8 +211,6 @@ public class Game {
 //		m_cowboy.paint(g, width, height);
 		
 		render.paint(g);
-		player1.paint(g, 1, 1);
-		player2.paint(g, 2, 2);
 	}
 
 }
