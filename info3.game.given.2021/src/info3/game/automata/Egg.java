@@ -8,7 +8,11 @@ public class Egg extends Aut_Action {
 	Aut_Direction dir;
 	Aut_Category c;
 	
-	public Egg(Aut_Direction direction, Aut_Category category) {
+	public Egg(Aut_Direction direction, Aut_Category category, int percent) {
+		this.percent = percent;
+		if (percent == -1) {
+			this.percent = 100;
+		}
 		dir = direction;
 		c = category;
 	}
