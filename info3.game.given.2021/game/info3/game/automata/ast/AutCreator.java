@@ -94,13 +94,13 @@ public class AutCreator implements IVisitor {
 			return new Aut_Key(KeyEvent.VK_M);
 		case "i":
 			return new Aut_Key(KeyEvent.VK_I);
-		case "s":
+		case "z":
 			return new Aut_Key(KeyEvent.VK_S);
-		case "q":
+		case "s":
 			return new Aut_Key(KeyEvent.VK_Q);
-		case "d":
+		case "q":
 			return new Aut_Key(KeyEvent.VK_D);
-		case "f":
+		case "d":
 			return new Aut_Key(KeyEvent.VK_F);
 		case "a":
 			return new Aut_Key(KeyEvent.VK_A);
@@ -278,7 +278,13 @@ public class AutCreator implements IVisitor {
 	@Override
 	public Object visit(AST bot, List<Object> automata) {
 		// TODO Auto-generated method stub
-		return (Aut_Automaton)automata.get(0);
+		List<Aut_Automaton> list = new LinkedList<Aut_Automaton>();
+		Iterator iter = automata.iterator();
+		while (iter.hasNext()) {
+			Aut_Automaton next = (Aut_Automaton) iter.next();
+			list.add(next);
+		}
+		return list;
 	}
 
 }

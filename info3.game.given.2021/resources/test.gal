@@ -26,5 +26,35 @@ Player1(Stand_S){
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Move(E) :(Stand_E)
   | Key(i) ? Hit(E)  :(Stand_E)
+ }
+  
+Player2(Stand_S){
+  * (Stand_S)
+  | Key(z) ? Turn(N) :(Stand_N)
+  | Key(s) ? Move(S) :(Stand_S)
+  | Key(q) ? Turn(W) :(Stand_W)
+  | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) ? Hit(S)  :(Stand_S)
+  
+  * (Stand_N)
+  | Key(z) ? Move(N) :(Stand_N)
+  | Key(s) ? Turn(S) :(Stand_S)
+  | Key(q) ? Turn(W) :(Stand_W)
+  | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) ? Hit(N)  :(Stand_N)
+  
+  * (Stand_W)
+  | Key(z) ? Turn(N) :(Stand_N)
+  | Key(s) ? Turn(S) :(Stand_S)
+  | Key(q) ? Move(W) :(Stand_W)
+  | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) ? Hit(W)  :(Stand_W)
+  
+  * (Stand_E)
+  | Key(z) ? Turn(N) :(Stand_N)
+  | Key(s) ? Turn(S) :(Stand_S)
+  | Key(q) ? Turn(W) :(Stand_W)
+  | Key(d) ? Move(E) :(Stand_E)
+  | Key(a) ? Hit(E)  :(Stand_E)
   
 }
