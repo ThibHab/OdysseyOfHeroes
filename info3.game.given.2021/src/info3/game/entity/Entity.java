@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import info3.game.constants.Action;
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
@@ -18,14 +19,15 @@ public abstract class Entity implements IEntity {
 	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed;
+	public int coins, healingPotions, strengthPotions;
 
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
 	public Aut_Direction direction;
 	public Aut_Category category;
-	public int coins, healingPotions, strengthPotions;
 	public boolean frozen;
 	public long mouvementIndex;
+	public Action action;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -72,14 +74,17 @@ public abstract class Entity implements IEntity {
 				this.mouvementIndex = 0;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
-				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation.getY()].entity = null;
+				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+						.getY()].entity = null;
 			} else {
 				if (mouvementIndex != 0) {
 					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-					this.location.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-							% EntitiesConst.MAP.lenX);
-					this.location.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-							% EntitiesConst.MAP.lenY);
+					this.location
+							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+									% EntitiesConst.MAP.lenX);
+					this.location
+							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+									% EntitiesConst.MAP.lenY);
 				}
 			}
 		}
@@ -87,16 +92,22 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Move(Aut_Direction d) {
-
 		if (!this.frozen) {
 			this.frozen = true;
+
 			if (d == null) {
 				d = this.direction;
 			}
+			if (this.action != Action.M) {
+				this.imageIndex = 0;
+				this.action = Action.M;
+			}
+
+			Location destLocation = new Location(this.location.getX(), this.location.getY());
 
 			destLocation = new Location(this.location.getX(), this.location.getY());
-			originLocation=new Location(this.location.getX(), this.location.getY());
-			relativeMouv=new Location(0,0);
+			originLocation = new Location(this.location.getX(), this.location.getY());
+			relativeMouv = new Location(0, 0);
 			switch (d) {
 			case N:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
@@ -117,6 +128,7 @@ public abstract class Entity implements IEntity {
 			default:
 				break;
 			}
+
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
 			if (destTile.walkable && destTile.entity == null) {
 				destTile.entity = this;
@@ -196,11 +208,17 @@ public abstract class Entity implements IEntity {
 				new Range("range", location);
 				break;
 			}
+		default:
+			break;
 		}
 	}
 
 	@Override
 	public void Hit(Aut_Direction d) {
+		if (this.action != Action.H) {
+			this.imageIndex = 0;
+			this.action = Action.H;
+		}
 		Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -209,6 +227,10 @@ public abstract class Entity implements IEntity {
 		}
 
 		// TODO takeDamage method for animation (view) ?
+	}
+
+	public void takeDamage(int dmg) {
+
 	}
 
 	@Override
