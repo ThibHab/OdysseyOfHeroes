@@ -56,6 +56,7 @@ public class Cowboy extends Entity {
 
 	public Cowboy(Game g, String name) throws IOException {
 		m_images = loadSprite("resources/winchester-4x6.png", 4, 6);
+		this.name = name;
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))
 				aut = next;

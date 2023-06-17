@@ -66,3 +66,11 @@ Bush(Existing){
   * ()
   
  } 
+ 
+ Projectile(Forward){
+   *(Forward)
+   | Cell(F,V) ? Move : (Forward)
+   | True ? Wizz(F,A) : ()
+   
+   *()
+ }
