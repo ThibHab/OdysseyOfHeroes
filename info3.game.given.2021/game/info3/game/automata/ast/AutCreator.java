@@ -93,7 +93,7 @@ public class AutCreator implements IVisitor {
 	@Override
 	public Object visit(Value v) {
 		// TODO Auto-generated method stub
-		return null;
+		return v.value;
 	}
 
 	@Override
@@ -112,41 +112,45 @@ public class AutCreator implements IVisitor {
 	public Object exit(FunCall funcall, List<Object> parameters) {
 		// TODO Auto-generated method stub
 		Aut_Action act = null;
+		Aut_Direction dir = Aut_Direction.F;
+		Aut_Category cat = null;
+		int number = 0;
+		
+		for (Object param : parameters) {
+			if (param instanceof Aut_Direction)
+				dir = (Aut_Direction)param;
+			else if (param instanceof Aut_Category)
+				cat = (Aut_Category)param;
+			else if (param instanceof Integer)
+				number = (int)param;
+		}
+		
 		switch (funcall.name) {
 		case "True":
 			return new True();
 		case "Key":
 			if (parameters.get(0) instanceof Aut_Key)
 				return parameters.get(0);
+			break;
 		case "MyDir":
-			if (parameters.get(0) instanceof Aut_Direction)
-				return new MyDir((Aut_Direction) parameters.get(0));
+			return new MyDir(dir);
 		case "Cell":
-			if (parameters.get(0) instanceof Aut_Direction && parameters.get(1) instanceof Aut_Category)
-				return new Cell((Aut_Direction) parameters.get(0), (Aut_Category) parameters.get(1));
+			return new Cell(dir, cat);
+		case "GotPower" :
+			return new GotPower(number);
+			
+			
 		case "Move":
-			if (parameters.get(0) instanceof Aut_Direction)
-				act = new Move((Aut_Direction) parameters.get(0), funcall.percent);
-			else
-				act = new Move(Aut_Direction.F, funcall.percent);
+			act = new Move(dir, funcall.percent);
 			break;
 		case "Egg":
-			if (parameters.get(0) instanceof Aut_Direction && parameters.get(1) instanceof Aut_Category)
-				act = new Egg((Aut_Direction) parameters.get(0), (Aut_Category) parameters.get(1), funcall.percent);
-			else if (parameters.get(0) instanceof Aut_Category)
-				act = new Egg(Aut_Direction.F, (Aut_Category) parameters.get(0), funcall.percent);
+			act = new Egg(dir, cat, funcall.percent, number);
 			break;
 		case "Hit":
-			if (parameters.get(0) instanceof Aut_Direction)
-				act = new Hit((Aut_Direction) parameters.get(0), funcall.percent);
-			else
-				act = new Hit(Aut_Direction.F, funcall.percent);
+			act = new Hit(dir, funcall.percent);
 			break;
 		case "Turn":
-			if (parameters.get(0) instanceof Aut_Direction)
-				act = new Turn((Aut_Direction) parameters.get(0), funcall.percent);
-			else
-				act = new Turn(Aut_Direction.F, funcall.percent);
+			act = new Turn(dir, funcall.percent);
 			break;
 		case "Wizz":
 			act = new Wizz((Aut_Direction) parameters.get(0),(Aut_Category) parameters.get(1), funcall.percent);
