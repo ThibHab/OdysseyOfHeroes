@@ -153,10 +153,10 @@ public class AutCreator implements IVisitor {
 			act = new Turn(dir, funcall.percent);
 			break;
 		case "Wizz":
-			act = new Wizz((Aut_Direction) parameters.get(0),(Aut_Category) parameters.get(1), funcall.percent);
+			act = new Wizz(dir, cat, funcall.percent);
 			break;
 		case "Pop":
-			act = new Pop((Aut_Direction) parameters.get(0), funcall.percent);
+			act = new Pop(dir, cat, funcall.percent);
 			break;
 		}
 		actions.add(act);
