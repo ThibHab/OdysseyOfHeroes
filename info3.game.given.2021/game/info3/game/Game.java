@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -71,6 +72,7 @@ public class Game {
 	public IMap map;
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
+	public List<Entity> entities;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
@@ -84,9 +86,12 @@ public class Game {
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST)AutomataParser.from_file("resources/test.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
+		entities = new LinkedList<>();
 		
 		player1 = new Cowboy(this, "Player1");
+		this.entities.add(player1);
 		player2 = new Cowboy(this, "Player2");
+		this.entities.add(player2);
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -166,9 +171,10 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-
-		player1.tick(elapsed);
-		player2.tick(elapsed);
+		
+		for(int i = 0; i < entities.size(); i++) {
+			entities.get(i).tick(elapsed);
+		}
 
 		// Update every second
 		// the text on top of the frame: tick and fps

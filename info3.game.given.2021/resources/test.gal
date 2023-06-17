@@ -56,5 +56,13 @@ Player2(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Move(E) :(Stand_E)
   | Key(a) ? Hit(E)  :(Stand_E)
-  
 }
+
+EnergyBall(Forward){
+  * (Forward)
+  | Cell(F,V) ? Move(F) : (Forward)
+  | True ? Wizz(F,A) : ()
+   
+   *()
+ }
+

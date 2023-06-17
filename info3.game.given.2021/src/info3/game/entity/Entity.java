@@ -18,7 +18,7 @@ public abstract class Entity implements IEntity {
 	public Location relativeMouv;
 	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
-	public float speed;
+	public float speed, attackSpeed;
 	public int coins, healingPotions, strengthPotions;
 
 	public Aut_Automaton automaton;
@@ -26,7 +26,10 @@ public abstract class Entity implements IEntity {
 	public Aut_Direction direction;
 	public Aut_Category category;
 	public boolean frozen;
+	public boolean hitFrozen;
+	public boolean moving;
 	public long mouvementIndex;
+	public long attackIndex;
 	public Action action;
 
 	public BufferedImage[] sprites;
@@ -46,6 +49,7 @@ public abstract class Entity implements IEntity {
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
 		this.speed = 1;
+		this.attackSpeed = 500;
 
 		this.coins = 0;
 		this.healingPotions = 0;
@@ -58,7 +62,10 @@ public abstract class Entity implements IEntity {
 		this.direction = Aut_Direction.N;
 		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
+		this.hitFrozen = false;
+		this.moving = false;
 		this.mouvementIndex = 0;
+		this.attackIndex = 0;
 
 		this.scale = 1;
 
@@ -79,10 +86,11 @@ public abstract class Entity implements IEntity {
 
 	public void tick(long elapsed) {
 		this.automaton.step(this, EntitiesConst.GAME);
-		if (this.frozen) {
+		if (this.frozen && this.moving) {
 			this.mouvementIndex += elapsed;
 			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
 				this.frozen = false;
+				this.moving = false;
 				this.mouvementIndex = 0;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
@@ -103,6 +111,12 @@ public abstract class Entity implements IEntity {
 					this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
 				}
 			}
+		}else if(this.hitFrozen) {
+			this.attackIndex += elapsed;
+			if(this.attackIndex >= this.attackSpeed) {
+				this.hitFrozen = false;
+				this.attackIndex = 0;
+			}
 		}
 	}
 
@@ -110,6 +124,7 @@ public abstract class Entity implements IEntity {
 	public void Move(Aut_Direction d) {
 		if (!this.frozen) {
 			this.frozen = true;
+			this.moving = true;
 
 			if (d == null) {
 				d = this.direction;
@@ -122,7 +137,7 @@ public abstract class Entity implements IEntity {
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
-			switch (d) {
+			switch (this.direction) {
 			case N:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
 				relativeMouv.setY(-1);

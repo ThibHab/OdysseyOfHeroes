@@ -16,6 +16,7 @@ public class ImagesConst {
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGER;
 	public static BufferedImage[] BUSH, CHEST;
 	public static BufferedImage[] MELEE, RANGE;
+	public static BufferedImage[] ENERGYBALL;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -48,6 +49,8 @@ public class ImagesConst {
 
 		MELEE = loadSprite("Melee", 8, 7);
 		RANGE = loadSprite("Range", 8, 7);
+		
+		ENERGYBALL = loadSprite("EnergyBall",1,1);
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
