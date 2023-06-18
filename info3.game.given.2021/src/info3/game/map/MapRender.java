@@ -8,13 +8,15 @@ import info3.game.entity.*;
 //import info3.game.entity.Location;
 
 public class MapRender {
-	public Location camera;
+
+	Game game;
 	Map map;
 	public int nbTileX, nbTileY;
 	public int tileSize;
+	int bufferTile = 6;
+
+	public Location camera;
 	public Location offset = new Location(0.0f, 0.0f);
-	int bufferTile = 4;
-	Game game;
 
 	public MapRender(Map map, Game game) {
 		this.map = map;
@@ -52,31 +54,32 @@ public class MapRender {
 		return tmp2;
 	}
 
-	int roundup(int a, double b) {
-		double tmp;
-		tmp = Math.ceil(a / b) + 1;
-		return (int) tmp;
-	}
-	
 	float roundDeci(float val, int nbDec) {
-		long factor=(long) Math.pow(10, nbDec);
-		return (float)Math.round(val*factor)/factor; 
+		long factor = (long) Math.pow(10, nbDec);
+		return (float) Math.round(val * factor) / factor;
 	}
 
-	void updateCam(Cowboy player1, Cowboy player2, int w, int h) {
+	public void updateCam(Cowboy player1, Cowboy player2, int w, int h) {
 		this.camera = mid(player1.location, player2.location);
-		nbTileX = (int) diff(camera.getX(), player1.location.getX(), map.lenX) + bufferTile * 2;
-		nbTileY = (int) diff(camera.getY(), player1.location.getY(), map.lenY) + bufferTile * 2;
-		int tempx = (int) Math.ceil(w / nbTileX);
-		int tempy = (int) Math.ceil(h / nbTileY);
+		float viewX = diff(player2.location.getX(), player1.location.getX(), map.lenX) + bufferTile;
+		float viewY = diff(player2.location.getY(), player1.location.getY(), map.lenY) + bufferTile;
+		Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
+				(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
+		nbTileX = (int) Math.ceil(
+				diff((float) Math.floor(upLeft.getX()), (float) Math.ceil(upLeft.getX() + viewX) % map.lenX, map.lenX))+1;
+		nbTileY = (int) Math.ceil(
+				diff((float) Math.floor(upLeft.getY()), (float) Math.ceil(upLeft.getY() + viewY) % map.lenY, map.lenY))+1;
+		double tempx = w / viewX;
+		double tempy = h / viewY;
 		if (tempx > tempy) {
-			nbTileX = roundup(w, tempy);
-			nbTileY = roundup(h, tempy);
-		} else {
-			nbTileY = roundup(h, tempx);
-			nbTileX = roundup(w, tempx);
+			nbTileX = (int) Math.ceil(nbTileY * (double) w / h);
 		}
-		this.tileSize = Math.min(tempx, tempy);
+		if (tempy > tempx) {
+			nbTileY = (int) Math.ceil(nbTileX * (double) h / w);
+		}
+		System.out.println(viewX+";"+viewY);
+		this.tileSize = (int) Math.min(Math.ceil(tempy), Math.ceil(tempx));
+
 	}
 
 	public Location gridToPixel(Location loc, boolean offset) {
@@ -95,12 +98,12 @@ public class MapRender {
 		return res;
 	}
 
-	void setOffsetCam() {
+	public void setOffsetCam() {
 		Location camTemp = gridToPixel(camera, false);
 		offset.setX((((float) game.m_canvas.getWidth() / 2) - camTemp.getX()) / this.tileSize);
 		offset.setY((((float) game.m_canvas.getHeight() / 2) - camTemp.getY()) / this.tileSize);
-		offset.setX(roundDeci(offset.getX(),3));
-		offset.setY(roundDeci(offset.getY(),3));
+		offset.setX(roundDeci(offset.getX(), 3));
+		offset.setY(roundDeci(offset.getY(), 3));
 	}
 
 	public void paint(Graphics g) {
@@ -108,9 +111,13 @@ public class MapRender {
 		setOffsetCam();
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
-				map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
-						% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY]
-						.paint(g, roundDeci((i + this.offset.getX())*tileSize,3), roundDeci((j + this.offset.getY())*tileSize,3), tileSize);
+				int mapX=(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)% map.lenX;
+				int mapY=(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
+				Tile renderTile = map.map[mapX][mapY];
+				renderTile.paint(g, roundDeci((i + this.offset.getX()) * tileSize, 3),
+						roundDeci((j + this.offset.getY()) * tileSize, 3), tileSize);
+				renderTile.location.setX(mapX);
+				renderTile.location.setY(mapY);
 			}
 		}
 	}
