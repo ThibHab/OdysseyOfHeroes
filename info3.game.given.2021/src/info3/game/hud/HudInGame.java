@@ -30,41 +30,77 @@ public class HudInGame {
 		int width = EntitiesConst.GAME.m_canvas.getWidth();
 		int height = EntitiesConst.GAME.m_canvas.getHeight();
 		
+		Font f = new Font(null, 0, 25);
+		g.setFont(f);
+		
 		g.setColor(Color.blue);
 		g.drawRect(7, 7, 55, 55);
 		Image melee = ImagesConst.MELEE[0];
 		g.drawImage(melee, 5, 7, 60,  60, m_frame);
+		// TODO: Mettre le nombre de vie max en gris (Besoind de l'inforamtion de vie max)
 		
-		int inc = 63;
-		for (int i =0; i < 10; i++) {
-			g.fillOval(5 + inc, 7, 25, 25);
-			g.fillOval(5 + inc, 35, 25, 25);
-			inc += 30;
+		int incJ11 = 63;
+		int incJ12 = 63;
+		for (int i =0; i < j1.health; i++) {
+			if (i < 10) {
+				g.fillOval(5 + incJ11, 7, 25, 25);
+				incJ11 += 30;
+			}
+			else {
+				g.fillOval(5 + incJ12, 35, 25, 25);
+				incJ12 += 30;
+			}			
 		}
 		
 		Image potion = ImagesConst.HEALING_POTION[0];
 		g.drawImage(potion, 7, 70, 25, 25, m_frame);
+		String potionJ1 = "X" + j1.healingPotions;
+		g.drawString(potionJ1, 7 + 28, 93);
+		
 		
 		g.setColor(Color.red);
-		g.drawRect(width - 63, 5, 55, 55);
+		g.drawRect(width - 62, 5, 55, 55);
 		Image range = ImagesConst.RANGE[0];
-		g.drawImage(range, width - 65, 7, 60,  60, m_frame);
+		g.drawImage(range, width - 64, 7, 60,  60, m_frame);
+		// TODO: Mettre le nombre de vie max en gris (Besoind de l'inforamtion de vie max)
+		
+		int inc1 = 87;
 		int inc2 = 87;
-		for (int i =0; i < 10; i++) {
-			g.fillOval(width - (5 + inc2), 7, 25, 25);
-			g.fillOval(width - (5 + inc2), 35, 25, 25);
-			inc2 += 30;
+		for (int i =0; i < j2.health; i++) {
+			if (i < 10) {
+				g.fillOval(width - (5 + inc1), 7, 25, 25);
+				inc1 += 30;
+			}
+			else {
+				g.fillOval(width - (5 + inc2), 35, 25, 25);
+				inc2 += 30;
+			}
 		}
 		
 		g.drawImage(potion, width - 32, 70, 25, 25, m_frame);
+		String potionJ2 = j2.healingPotions + "X";
+		g.drawString(potionJ2, width - (7 + 28 + (17 * potionJ2.length())), 93);
 		
 		Image coinIcone = ImagesConst.COIN[0];
-		g.drawImage(coinIcone, width/2, 7, 25, 25, m_frame);
+		int coinWidth = 25;
+		g.drawImage(coinIcone, width/2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
 		g.setColor(Color.YELLOW);
-		String argent = "1000";
-		Font f = new Font(argent, 2, 25);
-		g.setFont(f);
-		g.drawString(argent, width/2 - 20, 55);
+		String argent = "" + j1.coins;
+		g.drawString(argent, width/2 - ((argent.length() * 32) / 4), 55);
+		
+		g.setColor(Color.blue);
+		g.drawRoundRect(width/8, height - 15, width - (width / 4), 10, 10, 10);
+		g.drawRoundRect(width/8 - 1, height - 16, width - (width / 4)+ 2, 12, 10, 10);
+		
+		Color grayTrans = new Color(192, 192, 192, 100);
+		g.setColor(grayTrans);
+		g.fillRoundRect(width/8 + 1, height - 14, width - width/4 - 1, 9, 10, 10);
+		// TODO: Fill the experience incrementally in cyan (need experience to be reacherd for next level)
+		
+		
+		g.setColor(Color.blue);
+		String lv = "Level " + EntitiesConst.LEVEL;
+		g.drawString(lv, width/2 - ((lv.length() * 28) / 4), height - 20);
 		
 		return;
 	}
