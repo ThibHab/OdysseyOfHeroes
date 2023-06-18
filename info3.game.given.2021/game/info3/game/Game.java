@@ -82,11 +82,18 @@ public class Game {
 		int level = 0, xp = 0;
 		
 		IVisitor visitor = new AutCreator();
-		AST ast = (AST)AutomataParser.from_file("resources/test.gal");
+		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
+//		player1 = new Cowboy(this, "Player1");
+//		player1.frozen = true;
+//		player2 = new Cowboy(this, "Player2");
+//		player2.frozen = true;
+		
 		player1 = new Cowboy(this, "Player1");
+		player1.frozen = true;
 		player2 = new Cowboy(this, "Player2");
+		player2.frozen = true;
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -99,6 +106,9 @@ public class Game {
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);
+		
+		player1.frozen = false;
+		player2.frozen = false;
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);

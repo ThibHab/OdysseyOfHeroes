@@ -14,15 +14,25 @@ public class AutCreator implements IVisitor {
 	List<Aut_Action> actions;
 
 	public AutCreator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Object visit(Category cat) {
-		// TODO Auto-generated method stub
 		switch (cat.toString()) {
 		case "A":
 			return Aut_Category.A;
+		case "C":
+			return Aut_Category.C;
+		case "D":
+			return Aut_Category.D;
+		case "G":
+			return Aut_Category.G;
+		case "J":
+			return Aut_Category.J;
+		case "M":
+			return Aut_Category.M;
+		case "O":
+			return Aut_Category.O;
 		case "P":
 			return Aut_Category.P;
 		case "T":
@@ -39,7 +49,6 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public Object visit(Direction dir) {
-		// TODO Auto-generated method stub
 		switch (dir.toString()) {
 		case "N":
 			return Aut_Direction.N;
@@ -65,66 +74,56 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public Object visit(Key key) {
-		switch (key.toString()) {
-		case "o":
-			return new Aut_Key(KeyEvent.VK_O);
-		case "k":
-			return new Aut_Key(KeyEvent.VK_K);
-		case "l":
-			return new Aut_Key(KeyEvent.VK_L);
-		case "m":
-			return new Aut_Key(KeyEvent.VK_M);
-		case "i":
-			return new Aut_Key(KeyEvent.VK_I);
-		case "z":
-			return new Aut_Key(KeyEvent.VK_Z);
-		case "s":
-			return new Aut_Key(KeyEvent.VK_S);
-		case "q":
-			return new Aut_Key(KeyEvent.VK_Q);
-		case "d":
-			return new Aut_Key(KeyEvent.VK_D);
-		case "a":
-			return new Aut_Key(KeyEvent.VK_A);
+		switch(key.toString()) {
+		case "FU" :
+			return new Aut_Key(KeyEvent.VK_UP);
+		case "FD" :
+			return new Aut_Key(KeyEvent.VK_DOWN);
+		case "FL" :
+			return new Aut_Key(KeyEvent.VK_LEFT);
+		case "FR" :
+			return new Aut_Key(KeyEvent.VK_RIGHT);
+		case "SPACE" :
+			return new Aut_Key(KeyEvent.VK_SPACE);
+		case "ENTER" :
+			return new Aut_Key(KeyEvent.VK_ENTER);
+		default :
+			int ascii = (int)key.toString().toUpperCase().charAt(0);
+			return new Aut_Key(ascii);
 		}
-		return null;
 	}
 
 	@Override
 	public Object visit(Value v) {
-		// TODO Auto-generated method stub
 		return v.value;
 	}
 
 	@Override
 	public Object visit(Underscore u) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void enter(FunCall funcall) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Object exit(FunCall funcall, List<Object> parameters) {
-		// TODO Auto-generated method stub
 		Aut_Action act = null;
 		Aut_Direction dir = Aut_Direction.F;
 		Aut_Category cat = null;
 		int number = 0;
-		
+
 		for (Object param : parameters) {
 			if (param instanceof Aut_Direction)
-				dir = (Aut_Direction)param;
+				dir = (Aut_Direction) param;
 			else if (param instanceof Aut_Category)
-				cat = (Aut_Category)param;
+				cat = (Aut_Category) param;
 			else if (param instanceof Integer)
-				number = (int)param;
+				number = (int) param;
 		}
-		
+
 		switch (funcall.name) {
 		case "True":
 			return new True();
@@ -136,10 +135,13 @@ public class AutCreator implements IVisitor {
 			return new MyDir(dir);
 		case "Cell":
 			return new Cell(dir, cat);
-		case "GotPower" :
+		case "GotPower":
 			return new GotPower(number);
-			
-			
+		case "GotStuff" :
+			return new GotStuff(number);
+		case "Closest" :
+			return new Closest(dir, cat);
+
 		case "Move":
 			act = new Move(dir, funcall.percent);
 			break;
@@ -152,6 +154,27 @@ public class AutCreator implements IVisitor {
 		case "Turn":
 			act = new Turn(dir, funcall.percent);
 			break;
+		case "Wizz":
+			act = new Wizz(dir, cat, funcall.percent);
+			break;
+		case "Pop":
+			act = new Pop(dir, cat, funcall.percent);
+			break;
+		case "Explode":
+			act = new Explode(funcall.percent);
+			break;
+		case "Get":
+			act = new Get(funcall.percent);
+			break;
+		case "Pick":
+			act = new Pick(dir, funcall.percent);
+			break;
+		case "Throw":
+			act = new Throw(dir, funcall.percent);
+			break;
+		case "Wait":
+			act = new Wait(funcall.percent);
+			break;
 		}
 		actions.add(act);
 		return act;
@@ -159,7 +182,6 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public Object visit(BinaryOp operator, Object left, Object right) {
-		// TODO Auto-generated method stub
 		switch (operator.operator) {
 		case "&":
 			return new Cond((Aut_Condition) left, (Aut_Condition) right, "&");
@@ -178,7 +200,6 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public Object visit(State state) {
-		// TODO Auto-generated method stub
 		for (Aut_State s : states) {
 			if (state.toString().equals(s.name))
 				return s;
@@ -190,13 +211,11 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public void enter(Mode mode) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Object exit(Mode mode, Object source_state, Object behaviour) {
-		// TODO Auto-generated method stub
 		List<Aut_Transition> AST_transitions = (List<Aut_Transition>) behaviour;
 		Iterator<Aut_Transition> iter = AST_transitions.iterator();
 		while (iter.hasNext()) {
@@ -209,7 +228,6 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public Object visit(Behaviour behaviour, List<Object> transitions) {
-		// TODO Auto-generated method stub
 		List<Aut_Transition> list = new LinkedList<Aut_Transition>();
 		Iterator iter = transitions.iterator();
 		while (iter.hasNext()) {
@@ -221,13 +239,11 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public void enter(Condition condition) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public Object exit(Condition condition, Object expression) {
-		// TODO Auto-generated method stub
 		return expression;
 	}
 
@@ -239,8 +255,7 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public Object exit(Action action, List<Object> funcalls) {
-		// TODO Auto-generated method stub
-		return (Aut_Action) funcalls.get(0);
+		return null;
 	}
 
 	@Override
@@ -256,25 +271,17 @@ public class AutCreator implements IVisitor {
 
 	@Override
 	public void enter(Automaton automaton) {
-		// TODO Auto-generated method stub
 		this.transitions = new LinkedList<Aut_Transition>();
 		this.states = new LinkedList<Aut_State>();
 	}
 
 	@Override
 	public Object exit(Automaton automaton, Object initial_state, List<Object> modes) {
-//		List<Aut_Transition> transitions = new LinkedList<Aut_Transition>();
-//		Iterator iter = modes.iterator();
-//		while (iter.hasNext()) {
-//			transitions.add((Aut_Transition)iter.next());
-//		}
-
 		return new Aut_Automaton(automaton.toString(), (Aut_State) initial_state, this.transitions);
 	}
 
 	@Override
 	public Object visit(AST bot, List<Object> automata) {
-		// TODO Auto-generated method stub
 		List<Aut_Automaton> list = new LinkedList<Aut_Automaton>();
 		Iterator iter = automata.iterator();
 		while (iter.hasNext()) {

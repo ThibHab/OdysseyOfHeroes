@@ -66,3 +66,23 @@ Bush(Existing){
   * ()
   
  } 
+ 
+ Projectile(Forward){
+   *(Forward)
+   | Cell(F,V) ? Move : (Forward)
+   | True ? Wizz(F,A) : ()
+   
+   *()
+ }
+ 
+ Ennemy(DontStart) {
+   * (DontStart)
+   | Key(s) ? : (Search)
+   | True ? :(DontStart)
+   
+   * (Search)
+   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
+   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
+   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
+   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+ }
