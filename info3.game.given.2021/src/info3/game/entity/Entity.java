@@ -28,6 +28,7 @@ public abstract class Entity implements IEntity {
 	public boolean frozen;
 	public long mouvementIndex;
 	public Action action;
+	public int detectionRadius;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -78,6 +79,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
+		// TODO : step only if not frozen, then remove if not frozen in move 
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen) {
 			this.mouvementIndex += elapsed;

@@ -35,7 +35,8 @@ public class Aut_Automaton {
 						}
 						a += act.percent;
 					}
-					action.exec(e, g);
+					if (action != null)
+						action.exec(e, g);
 					e.currentState = next_t.dest;
 					return next_t.dest;
 				}
