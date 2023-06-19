@@ -13,15 +13,18 @@ public class Coin extends Item {
 		this.name = "Coin";
 		this.location = l;
 
-		this.automaton = null;
-		this.currentState = null;
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 
 		this.sprites = ImagesConst.COIN;
 		this.imageIndex = 0;
-		
+
 		this.scale = 1;
 	}
-	
+
 	@Override
 	public int getStandNbSprite() {
 		return AnimConst.COIN_S;
