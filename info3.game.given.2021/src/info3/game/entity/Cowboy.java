@@ -86,6 +86,7 @@ public class Cowboy extends Entity {
 		this.automaton=aut;
 		
 		this.scale = EntitiesConst.COWBOY_SCALE;
+		this.health = 15;
 	}
 
 	/*
