@@ -79,12 +79,13 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		// TODO : step only if not frozen, then remove if not frozen in move
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen) {
 			this.mouvementIndex += elapsed;
 			if (this.action == Action.M) {
-				if (mouvementIndex % 200 == 0) {
+				if ((mouvementIndex - elapsed)
+						/ (EntitiesConst.MOUVEMENT_INDEX_MAX / this.getMvmtNbSprite()) < mouvementIndex
+								/ (EntitiesConst.MOUVEMENT_INDEX_MAX / this.getMvmtNbSprite())) {
 					this.updateSpriteIndex();
 				}
 				if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
@@ -107,7 +108,8 @@ public abstract class Entity implements IEntity {
 					this.hitbox.update();
 				}
 			} else if (this.action == Action.H) {
-				if (mouvementIndex % 50 == 0) {
+				if ((mouvementIndex - elapsed) / (EntitiesConst.HIT_INDEX_MAX / this.getHitNbSprite()) < mouvementIndex
+						/ (EntitiesConst.HIT_INDEX_MAX / this.getHitNbSprite())) {
 					this.updateSpriteIndex();
 				}
 				this.attackIndex += elapsed;
@@ -118,11 +120,19 @@ public abstract class Entity implements IEntity {
 					this.attackIndex = 0;
 				}
 			}
-		} else if (this.action != Action.S) {
-			System.out.println(this.name + " is standing");
-			this.action = Action.S;
-			this.imageIndex = this.sprites.length - 1;
-			this.updateSpriteIndex();
+		} else {
+			if (this.action != Action.S) {
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is standing");
+				}
+				this.action = Action.S;
+				this.imageIndex = this.sprites.length;
+				this.updateSpriteIndex();
+			}
+			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
+					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
+				this.updateSpriteIndex();
+			}
 		}
 //		if (this.hitFrozen) {
 //			this.attackIndex += elapsed;
@@ -143,7 +153,9 @@ public abstract class Entity implements IEntity {
 				d = this.direction;
 			}
 			if (this.action != Action.M) {
-				System.out.println(this.name + " is moving");
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is moving");
+				}
 				this.action = Action.M;
 				this.imageIndex = this.sprites.length;
 				this.updateSpriteIndex();
@@ -190,7 +202,6 @@ public abstract class Entity implements IEntity {
 		if (d == null) {
 			d = this.direction;
 		}
-
 		this.direction = d;
 	}
 
@@ -261,7 +272,9 @@ public abstract class Entity implements IEntity {
 		if (!this.frozen) {
 			this.frozen = true;
 			if (this.action != Action.H) {
-				System.out.println(this.name + " hits");
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " hits");
+				}
 				this.imageIndex = this.sprites.length;
 				this.action = Action.H;
 				this.updateSpriteIndex();
@@ -303,7 +316,9 @@ public abstract class Entity implements IEntity {
 		if (this.health - dmg > 0) {
 			this.health -= dmg;
 			if (this.action != Action.T) {
-				System.out.println(this.name + " is touched");
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is touched");
+				}
 				this.imageIndex = this.sprites.length;
 				this.action = Action.T;
 				this.updateSpriteIndex();
@@ -320,7 +335,9 @@ public abstract class Entity implements IEntity {
 			this.action = Action.D;
 			this.updateSpriteIndex();
 
-			System.out.println(this.name + " is diing");
+			if (EntitiesConst.GAME.debug) {
+				System.out.println(this.name + " is diing");
+			}
 		}
 	}
 
@@ -458,6 +475,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void updateSpriteIndex() {
+		imageIndex = 0;
 	}
 
 	public int getHitNbSprite() {
