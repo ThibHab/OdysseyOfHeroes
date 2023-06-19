@@ -54,6 +54,7 @@ public class EntitiesConst {
 	public static float TREE_SCALE = 1.2f;
 	
 	// BUSH CONSTANTS
+	public static int BUSH_HEALTH = 1;
 	public static float BUSH_SCALE = 1.3f;
 	
 	// ROCK CONSTANTS
