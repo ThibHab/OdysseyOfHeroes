@@ -63,7 +63,7 @@ public class MapRender {
 		return (float)Math.round(val*factor)/factor; 
 	}
 
-	void updateCam(Cowboy player1, Cowboy player2, int w, int h) {
+	void updateCam(Range player1, Melee player2, int w, int h) {
 		this.camera = mid(player1.location, player2.location);
 		nbTileX = (int) diff(camera.getX(), player1.location.getX(), map.lenX) + bufferTile * 2;
 		nbTileY = (int) diff(camera.getY(), player1.location.getY(), map.lenY) + bufferTile * 2;

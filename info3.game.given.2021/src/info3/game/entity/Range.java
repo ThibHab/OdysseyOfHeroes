@@ -1,35 +1,55 @@
 package info3.game.entity;
 
+import info3.game.Game;
 import info3.game.automata.*;
+import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.constants.StatesConst;
 
 public class Range extends Hero {
-	public Range(String name, Location l) {
+	public Range(String name, Game g) {
 		super();
 		this.name = name;
-		this.location = l;
 		this.weaponDamage = EntitiesConst.RANGE_DAMAGE;
 		this.weaponRange = EntitiesConst.RANGE_RANGE;
 		this.health = 8;
 		this.maxHealth = this.health;
-		
-		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
-		// -----------------------------
+        
+		for (Aut_Automaton next : g.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 
-		// --- TODO manage sprite properly ---
 		this.sprites = ImagesConst.RANGE;
 		this.imageIndex = 0;
-		// -----------------------------------
 	}
-
+	
 	@Override
-	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		this.Egg(this.direction, Aut_Category.M);
+	public int getHitNbSprite() {
+		return AnimConst.RANGE_H;
+	}
+	
+	@Override
+	public int getMvmtNbSprite() {
+		return AnimConst.RANGE_M;
+	}
+	
+	@Override
+	public int getStandNbSprite() {
+		return AnimConst.RANGE_S;
+	}
+	
+	@Override
+	public int getDieNbSprite() {
+		return AnimConst.RANGE_D;
+	}
+	
+	@Override
+	public int getTouchedNbSprite() {
+		return AnimConst.RANGE_T;
 	}
 
 	@Override
@@ -43,36 +63,66 @@ public class Range extends Hero {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
 	}
-	
-	public int getSpriteIndex() {
-		int idx = this.imageIndex;
+
+	@Override
+	public void updateSpriteIndex() {
+		int idx = 0;
 		switch (this.direction) {
-		case N:
-			idx += 26;
+		case S:
 			break;
 		case E:
-			idx += 13;
+			idx += (1 * AnimConst.RANGE_TOT);
+			break;
+		case N:
+			idx += (2 * AnimConst.RANGE_TOT);
 			break;
 		case W:
-			idx += 39;
+			idx += (3 * AnimConst.RANGE_TOT);
 			break;
 		default:
 			break;
 		}
-		switch (this.currentState.toString()) {
-		case StatesConst.MOVE:
-			idx+=1;
-			break;
-		case StatesConst.ATTACK:
-			idx += 4;
-			break;
-		case StatesConst.HIT:
-			idx += 8;
-			break;
-		case StatesConst.DIE:
-			idx += 11;
-			break;
+		if (this.action == Action.S) {
+			if (this.imageIndex + 1 < idx + AnimConst.RANGE_S) {
+				this.imageIndex = idx + this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
 		}
-		return idx;
+		idx += AnimConst.RANGE_S;
+		if (this.action == Action.M) {
+			if (this.imageIndex + 1 < idx + AnimConst.RANGE_M) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
+		}
+		idx += AnimConst.RANGE_M;
+		if (this.action == Action.H) {
+			if (this.imageIndex + 1 < idx + AnimConst.RANGE_H) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
+		}
+		idx += AnimConst.RANGE_H;
+		if (this.action == Action.T) {
+			if (this.imageIndex + 1 < idx + AnimConst.RANGE_T) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
+		}
+		idx += AnimConst.RANGE_T;
+		if (this.imageIndex + 1 < idx + AnimConst.RANGE_D) {
+			this.imageIndex = this.imageIndex + 1;
+			return;
+		}
+		this.imageIndex = idx;
+		return;
 	}
 }

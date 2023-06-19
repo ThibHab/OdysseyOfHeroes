@@ -39,6 +39,9 @@ import info3.game.automata.parser.AutomataParser;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
+import info3.game.entity.Location;
+import info3.game.entity.Melee;
+import info3.game.entity.Range;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
 import info3.game.map.DebugMap;
@@ -67,8 +70,8 @@ public class Game {
 	public GameCanvas m_canvas;
 	public CanvasListener m_listener;
 	Cowboy m_cowboy;
-	public Cowboy player1;
-	public Cowboy player2;
+	public Range player1;
+	public Melee player2;
 	Sound m_music;
 	public IMap map;
 	public MapRender render;
@@ -88,15 +91,8 @@ public class Game {
 		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
-//		player1 = new Cowboy(this, "Player1");
-//		player1.frozen = true;
-//		player2 = new Cowboy(this, "Player2");
-//		player2.frozen = true;
-		
-		player1 = new Cowboy(this, "Player1");
-		player1.frozen = true;
-		player2 = new Cowboy(this, "Player2");
-		player2.frozen = true;
+		player1 = new Range("Player1", this);
+		player2 = new Melee("Player2", this);
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -226,15 +222,8 @@ public class Game {
 //		m_cowboy.paint(g, width, height);
 		
 		render.paint(g);
-		hud.paint(g);
-//		g.setColor(Color.red);
-//		g.fillRect(5, height - 15, 10, 10);
-//		g.fillRect(17, height - 15, 10, 10);
-//		g.fillRect(29, height - 15, 10, 10);
-//		g.fillRect(41, height - 15, 10, 10);
-//		g.fillRect(53, height - 15, 10, 10);
-//		String j1 = "Vie J1";
-//		g.drawString(j1, 70, height - 5);
+		player1.paint(g, this.render.tileSize);
+		player2.paint(g, this.render.tileSize);
 	}
 
 }
