@@ -72,8 +72,8 @@ public class Game {
 	public GameCanvas m_canvas;
 	public CanvasListener m_listener;
 	Cowboy m_cowboy;
-	public Range player1;
-	public Melee player2;
+	public Melee player1;
+	public Range player2;
 	Sound m_music;
 	public IMap map;
 	public MapRender render;
@@ -94,9 +94,9 @@ public class Game {
 		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
-		player1 = new Range("Player1", this);
+		player1 = new Melee("Player1", this);
 		player1.name = "player1";
-		player2 = new Melee("Player2", this);
+		player2 = new Range("Player2", this);
         player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
