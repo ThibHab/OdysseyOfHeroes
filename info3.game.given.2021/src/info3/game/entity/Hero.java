@@ -8,11 +8,15 @@ import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 
 public abstract class Hero extends Entity {
+	public int maxHealth;
+	
 	public Hero() {
 		super();
 		this.speed = EntitiesConst.HERO_SPEED;
 
 		this.category = Aut_Category.AT;
+		
+		this.scale = EntitiesConst.HEROES_SCALE;
 	}
 
 	public void paint(Graphics g, int TileSize) {
@@ -29,6 +33,14 @@ public abstract class Hero extends Entity {
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitBoxLocation, true);
 		g.drawRect((int)l.getX(), (int)l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.ratioHitBoxX), (int) (EntitiesConst.GAME.render.tileSize * this.ratioHitBoxY));
 		//g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize);
+	}
+	
+	@Override
+	public void Power() {
+		if (this.healingPotions > 0) {
+			this.health = this.maxHealth;
+			this.healingPotions--;
+		}
 	}
 
 	@Override

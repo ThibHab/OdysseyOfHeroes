@@ -14,8 +14,9 @@ public class Range extends Hero {
 		this.name = name;
 		this.weaponDamage = EntitiesConst.RANGE_DAMAGE;
 		this.weaponRange = EntitiesConst.RANGE_RANGE;
-		this.health = EntitiesConst.RANGE_HEALTH;
-
+		this.health = 8;
+		this.maxHealth = this.health;
+        
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;

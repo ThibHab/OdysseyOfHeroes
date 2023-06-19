@@ -7,24 +7,22 @@ import info3.game.map.Tile;
 public class EntitiesConst {
 	
 	// GLOBAL ENTITY CONSTANTS
-	public static int MAX_HEALTH = 10;
 	public static Game GAME;
 	public static Map MAP;
 	public static Tile[][] MAP_MATRIX;	
 	
-	public static int LEVEL, EXPERIENCE;
-	public static int MOUVEMENT_INDEX_MAX=200;
+	public static int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10;
+	public static int MOUVEMENT_INDEX_MAX = 200;
 	public static int HIT_INDEX_MAX = 50;
+    
 	// HERO CONSTANTS
 	public static int HERO_SPEED = 2;
 	
 	// MELEE CONSTANTS
-	public static int MELEE_HEALTH = 20;
 	public static int MELEE_DAMAGE = 3;
 	public static int MELEE_RANGE = 1;
 	
 	// RANGE CONSTANTS
-	public static int RANGE_HEALTH = 10;
 	public static int RANGE_DAMAGE = 5;
 	public static int RANGE_RANGE = 3;
 	
@@ -45,4 +43,22 @@ public class EntitiesConst {
 	public static int BOSS_DAMAGE = 4;
 	public static int BOSS_RANGE = 2;
 	public static int BOSS_SPEED = 2;
+	
+	// HOUSE CONSTANTS
+	public static float HOUSE_SCALE = 1.1f;
+	
+	// TREE CONSTANTS
+	public static float TREE_SCALE = 1.2f;
+	
+	// BUSH CONSTANTS
+	public static float BUSH_SCALE = 1.3f;
+	
+	// ROCK CONSTANTS
+	public static float ROCK_SCALE = 1.3f;
+	
+	// HEROES CONSTANTS
+	public static float HEROES_SCALE = 1.3f;
+	
+	// COWBOY CONSTANTS
+	public static float COWBOY_SCALE = 1.3f;
 }

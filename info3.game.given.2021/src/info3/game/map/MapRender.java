@@ -113,6 +113,17 @@ public class MapRender {
 						.paint(g, roundDeci((i + this.offset.getX())*tileSize,3), roundDeci((j + this.offset.getY())*tileSize,3), tileSize);
 			}
 		}
+		
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				if (map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
+						% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY].entity != null) {
+					map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
+							% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY].entity
+							.paint(g, tileSize, roundDeci((i + this.offset.getX())*tileSize,3), roundDeci((j + this.offset.getY())*tileSize,3));
+				}
+			}
+		}
 	}
 
 }

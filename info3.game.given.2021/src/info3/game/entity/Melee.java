@@ -17,7 +17,8 @@ public class Melee extends Hero {
 		this.name = name;
 		this.weaponDamage = EntitiesConst.MELEE_DAMAGE;
 		this.weaponRange = EntitiesConst.MELEE_RANGE;
-		this.health = EntitiesConst.MELEE_HEALTH;
+		this.health = 12;
+		this.maxHealth = this.health;
 
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))

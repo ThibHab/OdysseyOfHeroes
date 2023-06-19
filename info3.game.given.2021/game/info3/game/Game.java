@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
+import java.nio.CharBuffer;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -42,6 +43,7 @@ import info3.game.entity.Location;
 import info3.game.entity.Melee;
 import info3.game.entity.Range;
 import info3.game.graphics.GameCanvas;
+import info3.game.hud.HudInGame;
 import info3.game.map.DebugMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
@@ -74,6 +76,7 @@ public class Game {
 	public IMap map;
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
+	public HudInGame hud;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
@@ -85,7 +88,7 @@ public class Game {
 		int level = 0, xp = 0;
 		
 		IVisitor visitor = new AutCreator();
-		AST ast = (AST)AutomataParser.from_file("resources/test.gal");
+		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
 		player1 = new Range("Player1", this);
@@ -102,10 +105,15 @@ public class Game {
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);
+		
+		player1.frozen = false;
+		player2.frozen = false;
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
 		m_frame = m_canvas.createFrame(d);
+		
+		hud = new HudInGame(m_frame);
 
 		System.out.println("  - setting up the frame...");
 		setupFrame();
