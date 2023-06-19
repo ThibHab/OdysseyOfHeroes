@@ -1,5 +1,6 @@
 package info3.game.entity;
 
+import info3.game.automata.Aut_Automaton;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -7,12 +8,15 @@ public class CaveWall extends DecorElement {
 	
 	public CaveWall(Location l) {
 		super();
-		this.name = "Cave Wall";
+		this.name = "CaveWall";
 		this.location = l;
 
 		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---

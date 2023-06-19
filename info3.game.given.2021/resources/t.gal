@@ -122,5 +122,10 @@ Bush(Existing){
    | True ? : (Exists)
  }
  
+  CaveWall(Existing){
+  *(Existing)
+  | True ? : (Existing)
+  } 
+ 
  
  
