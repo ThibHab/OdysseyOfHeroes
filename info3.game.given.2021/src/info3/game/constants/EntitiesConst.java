@@ -34,12 +34,14 @@ public class EntitiesConst {
 	public static int SKELETON_DAMAGE = 2;
 	public static int SKELETON_RANGE = 3;
 	public static int SKELETON_SPEED = 2;
+	public static float SKELETON_SCALE = 1.3f;
 	
 	// GOBLIN CONSTANTS
 	public static int GOBLIN_HEALTH = 20;
 	public static int GOBLIN_DAMAGE = 2;
 	public static int GOBLINE_RANGE = 2;
 	public static int GOBLIN_SPEED = 2;
+	public static float GOBLIN_SCALE = 1.3f;
 	
 	// BOSS CONSTANTS
 	public static int BOSS_HEALTH = 20;
