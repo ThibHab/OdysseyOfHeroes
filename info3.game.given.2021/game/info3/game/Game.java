@@ -122,6 +122,8 @@ public class Game {
 		hud = new HudInGame(m_frame);
 
 		System.out.println("  - setting up the frame...");
+		render.updateCam(player1, player2, m_canvas.getWidth(), m_canvas.getHeight());
+		render.setOffsetCam();
 		setupFrame();
 	}
 
@@ -187,16 +189,8 @@ public class Game {
 		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 		}
-
-//		player1.tick(elapsed);
-//		player2.tick(elapsed);
 		
-		((Map) map).tickEntities((int) render.offset.getX(), (int) render.offset.getY(), elapsed);
-
-//		player1.tick(elapsed);
-//		player2.tick(elapsed);
-		
-		((Map) map).tickEntities((int) render.offset.getX(), (int) render.offset.getY(), elapsed);
+		((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 
 		// Update every second
 		// the text on top of the frame: tick and fps
@@ -233,14 +227,11 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
-
-
-		// paint
-//		m_cowboy.paint(g, width, height);
 		
 		render.paint(g);
 		player1.paint(g, this.render.tileSize);
 		player2.paint(g, this.render.tileSize);
+		hud.paint(g);
 	}
 
 }
