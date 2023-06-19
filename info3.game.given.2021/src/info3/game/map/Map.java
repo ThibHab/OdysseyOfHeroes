@@ -26,8 +26,8 @@ public abstract class Map implements IMap {
 	 * @param seed         to set the random
 	 * @param spaceBetween the distance between two entity
 	 */
-	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, Entity ent, long seed, int rareness) {
-		if (!(ent instanceof Bush) && !(ent instanceof Rock) && !(ent instanceof Tree)) {
+	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, String ent, long seed, int rareness) {
+		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree"))) {
 			return;
 		}
 		Random r = new Random(seed);
@@ -72,9 +72,9 @@ public abstract class Map implements IMap {
 							rec_x++;
 						}
 						if (!already) {
-							if (ent instanceof Bush) {
+							if (ent.equals("Bush")) {
 								map[i][j].entity = new Bush(new Location(i, j));
-							} else if (ent instanceof Rock) {
+							} else if (ent.equals("Rock")) {
 								map[i][j].entity = new Rock(new Location(i, j));
 							} else {
 								if (j - 1 < 0) {
@@ -105,15 +105,15 @@ public abstract class Map implements IMap {
 		}
 	}
 
-	public void setSurfaceBackground(int x, int y, int width, int height, Tile tile) {
+	public void setSurfaceBackground(int x, int y, int width, int height, String tile) {
 		for (int i = x; i < x + width; i++) {
 			for (int j = y; j < y + height; j++) {
 				Location l = new Location(j, j);
-				if (tile instanceof WaterTile) {
+				if (tile.equals("Water")) {
 					map[i][j] = new WaterTile(l);
-				} else if (tile instanceof RockTile) {
+				} else if (tile.equals("Rock")) {
 					map[i][j] = new RockTile(l);
-				} else if (tile instanceof GrassTile) {
+				} else if (tile.equals("Grass")) {
 					map[i][j] = new GrassTile(l);
 				} else {
 					map[i][j] = new DirtTile(l);
@@ -126,7 +126,7 @@ public abstract class Map implements IMap {
 		return (x - c_x) * (x - c_x) + (y - c_y) * (y - c_y) < radius * radius;
 	}
 
-	public void setCircleWaterBackground(int x, int y, Tile tile, int radius) {
+	public void setCircleWaterBackground(int x, int y, int radius) {
 		for (int i = x - (2 * radius); i < x + (2 * radius); i++) {
 			for (int j = y - (2 * radius); j < y + (2 * radius); j++) {
 				if (checkinradius(i, j, x, y, radius + 0.3f)) {
@@ -138,16 +138,12 @@ public abstract class Map implements IMap {
 	}
 
 	public void setVillage(int x, int y, int areaSize) {
-		DirtTile dirt = new DirtTile(null);
-		setSurfaceBackground(x, y, areaSize, 1, dirt);
-		setSurfaceBackground(x + 2, y + 4, areaSize - 3, 1, dirt);
-		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, dirt);
+		setSurfaceBackground(x, y, areaSize, 1, "Dirt");
+		setSurfaceBackground(x + 2, y + 4, areaSize - 3, 1, "Dirt");
+		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, "Dirt");
 		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
-			setSurfaceBackground(indexHouse, y - 1, 1, 1, dirt);
+			setSurfaceBackground(indexHouse, y - 1, 1, 1, "Dirt");
 		}
-//		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
-//			setSurfaceBackground(indexHouse, y + 1, 1, 1, dirt);
-//		}
 		int i = x + 1;
 		while (i < areaSize) {
 			Location l = new Location(i, y - 4);

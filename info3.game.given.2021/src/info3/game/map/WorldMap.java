@@ -13,25 +13,14 @@ public class WorldMap extends Map {
 		this.player2.location.setX(lp2.getX());
 		this.player2.location.setY(lp2.getY());
 		GrassTile grass = new GrassTile(null);
-		this.setSurfaceBackground(0, 0, lenX, lenY, grass);
-		WaterTile water = new WaterTile(null);
-//		this.setSurfaceBackground(12, 12, 3, 3, water);
-		this.setCircleWaterBackground(12, 12, water, 3);
-		this.setCircleWaterBackground(14, 14, water, 3);
-//		DirtTile dirt = new DirtTile(null);
-		this.setVillage(0, 4, 12);
-//		this.setSurfaceBackground(0, 0, 4, 1, dirt);
-//		this.setSurfaceBackground(4, 0, 1, 5, dirt);
-//		Tree forest = new Tree(null);
-//		this.setEntityRandomly(20, 20, 40, 0, forest, 2, 2);
+		this.setSurfaceBackground(0, 0, lenX, lenY, "Grass");
+		this.setCircleWaterBackground(12, 12, 3);
+		this.setCircleWaterBackground(14, 14, 3);
+		this.setVillage(0, 4, 12);		
 		
-		
-		Bush bush = new Bush(null);
-		this.setEntityRandomly(0, 0, lenX - 2, 2, bush, 2, 6);
-		Rock rock = new Rock(null);
-		this.setEntityRandomly(0, 0, lenX - 2, 2, rock, 2, 15);
-		Tree tree = new Tree(null);
-		this.setEntityRandomly(0, 0, lenX - 2, 2, tree, 2, 8);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", 2, 6);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", 2, 15);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, "Tree", 2, 8);
 		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
 		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
 	}
