@@ -85,7 +85,8 @@ public class Game {
 		// in an Model-View-Controller pattern (MVC)
 //		m_cowboy = new Cowboy(this);
 		new ImagesConst();
-		
+		new EntitiesConst();
+		EntitiesConst.GAME = this;
 		//TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
 		
@@ -188,6 +189,11 @@ public class Game {
 		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 		}
+
+//		player1.tick(elapsed);
+//		player2.tick(elapsed);
+		
+		((Map) map).tickEntities((int) render.offset.getX(), (int) render.offset.getY(), elapsed);
 
 		// Update every second
 		// the text on top of the frame: tick and fps

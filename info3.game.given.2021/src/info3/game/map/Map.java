@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
 
@@ -45,7 +46,6 @@ public abstract class Map implements IMap {
 						while (rec_x < 0) {
 							while (rec_y < 0) {
 								if (map[lenX + rec_x][lenY + rec_y].entity != null) {
-
 									already = true;
 								}
 								rec_y++;
@@ -169,6 +169,98 @@ public abstract class Map implements IMap {
 			
 			i += house.width + 1;
 		}
-		
+	}
+	
+	public void tickEntities(int x, int y, long elapsed) {
+		Game game = EntitiesConst.GAME;
+		MapRender render = game.render;
+		int sizeX = (render.nbTileX / 2) + 4;
+		int sizeY = (render.nbTileY / 2) + 4;
+		int tabSize = 50;
+		Entity tab[] = new Entity[tabSize];
+		int indexTab = 0;
+		boolean alreadyTicked = false;
+		// 27, 14
+		int i = x - sizeX;
+		while (i < 0) {
+			int j = y - sizeY;
+			while (j < 0) {
+				Entity ent = map[lenX + i][lenY + j].entity;
+				if (ent!= null) {
+					for (int k = 0; k < indexTab; k++) {
+						if (ent == tab[k]) {
+							alreadyTicked = true;
+						}
+					}
+					if (!alreadyTicked) {
+						if (ent instanceof House || ent instanceof Tree || ent instanceof Hero) {
+							tab[indexTab++] = ent;
+						}
+						ent.tick(elapsed);
+					}
+					alreadyTicked = false;
+				}
+				j += 1;
+			}
+			while (j <= y + sizeY) {
+				Entity ent = map[lenX + i][j].entity;
+				if (ent!= null) {
+					for (int k = 0; k < indexTab; k++) {
+						if (ent == tab[k]) {
+							alreadyTicked = true;
+						}
+					}
+					if (!alreadyTicked) {
+						if (ent instanceof House || ent instanceof Tree || ent instanceof Hero) {
+							tab[indexTab++] = ent;
+						}
+						ent.tick(elapsed);
+					}
+					alreadyTicked = false;
+				}
+				j += 1;
+			}
+			i += 1;
+		}
+		while (i <= x + sizeX) {
+			int j = y - sizeY;
+			while (j < 0) {
+				Entity ent = map[i][lenY + j].entity;
+				if (ent!= null) {
+					for (int k = 0; k < indexTab; k++) {
+						if (ent == tab[k]) {
+							alreadyTicked = true;
+						}
+					}
+					if (!alreadyTicked) {
+						if (ent instanceof House || ent instanceof Tree) {
+							tab[indexTab++] = ent;
+						}
+						ent.tick(elapsed);
+					}
+					alreadyTicked = false;
+				}
+				j += 1;
+			}
+			while (j <= y + sizeY) {
+				Entity ent = map[i][j].entity;
+				if (ent!= null) {
+					for (int k = 0; k < indexTab; k++) {
+						if (ent == tab[k]) {
+							alreadyTicked = true;
+						}
+					}
+					if (!alreadyTicked) {
+						if (ent instanceof House || ent instanceof Tree) {
+							tab[indexTab++] = ent;
+						}
+						ent.tick(elapsed);
+					}
+					alreadyTicked = false;
+				}
+				j += 1;
+			}
+			i += 1;
+		}
 	}
 }

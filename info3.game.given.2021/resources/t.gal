@@ -64,8 +64,22 @@ Bush(Existing){
   | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
   
   * ()
-  
  } 
+ 
+ Tree(Existing){
+  *(Existing)
+  | True ? : (Existing)
+  } 
+  
+ House(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
+ 
+  Rock(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
  
  EnergyBall(Forward){
    *(Forward)
