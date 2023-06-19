@@ -17,6 +17,8 @@ public abstract class Hero extends Entity {
 		this.category = Aut_Category.AT;
 
 		this.scale = EntitiesConst.HEROES_SCALE;
+		
+		this.hitbox = new Hitbox(this, (float)0.50, (float)0.75);
 	}
 
 	public void paint(Graphics g, int tileSize) {
@@ -25,9 +27,11 @@ public abstract class Hero extends Entity {
 		int diff=(int) (tileSize*(scale-1))/2;
 		g.drawImage(img, (int) pixel.getX()-diff, (int) pixel.getY()-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
 		g.setColor(Color.blue);
-		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitBoxLocation, true);
-		g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.ratioHitBoxX),
-				(int) (tileSize * this.ratioHitBoxY));
+		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
+		g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
+				(int) (tileSize * this.hitbox.height));
+		// g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize,
+		// game.render.tileSize);
 	}
 
 	@Override

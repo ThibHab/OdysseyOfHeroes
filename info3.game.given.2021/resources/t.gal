@@ -1,4 +1,4 @@
-Player1(Stand_S){
+Player2(Stand_S){
   * (Stand_S)
   | Key(o) ? Turn(N) :(Stand_N)
   | Key(l) ? Move(S) :(Stand_S)
@@ -28,7 +28,7 @@ Player1(Stand_S){
   | Key(i) ? Hit(E)  :(Stand_E)
  }
  
- Player2(Stand_S){
+ Player1(Stand_S){
   * (Stand_S)
   | Key(z) ? Turn(N) :(Stand_N)
   | Key(s) ? Move(S) :(Stand_S)
@@ -64,13 +64,26 @@ Bush(Existing){
   | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
   
   * ()
-  
  } 
  
- Projectile(Forward){
+ Tree(Existing){
+  *(Existing)
+  | True ? : (Existing)
+  } 
+  
+ House(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
+ 
+  Rock(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
+ 
+ EnergyBall(Forward){
    *(Forward)
-   | Cell(F,V) ? Move : (Forward)
-   | True ? Wizz(F,A) : ()
+   | True ? Move : (Forward)
    
    *()
  }

@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
 import java.nio.CharBuffer;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
@@ -70,8 +72,8 @@ public class Game {
 	public GameCanvas m_canvas;
 	public CanvasListener m_listener;
 	Cowboy m_cowboy;
-	public Range player1;
-	public Melee player2;
+	public Melee player1;
+	public Range player2;
 	Sound m_music;
 	public IMap map;
 	public MapRender render;
@@ -83,7 +85,8 @@ public class Game {
 		// in an Model-View-Controller pattern (MVC)
 //		m_cowboy = new Cowboy(this);
 		new ImagesConst();
-		
+		new EntitiesConst();
+		EntitiesConst.GAME = this;
 		//TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
 		
@@ -91,8 +94,10 @@ public class Game {
 		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
-		player1 = new Range("Player1", this);
-		player2 = new Melee("Player2", this);
+		player1 = new Melee("Player1", this);
+		player1.name = "player1";
+		player2 = new Range("Player2", this);
+        player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -117,6 +122,8 @@ public class Game {
 		hud = new HudInGame(m_frame);
 
 		System.out.println("  - setting up the frame...");
+		render.updateCam(player1, player2, m_canvas.getWidth(), m_canvas.getHeight());
+		render.setOffsetCam();
 		setupFrame();
 	}
 
@@ -178,9 +185,12 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-
-		player1.tick(elapsed);
-		player2.tick(elapsed);
+		
+		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
+		}
+		
+		((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 
 		// Update every second
 		// the text on top of the frame: tick and fps
@@ -217,14 +227,11 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
-
-
-		// paint
-//		m_cowboy.paint(g, width, height);
 		
 		render.paint(g);
 		player1.paint(g, this.render.tileSize);
 		player2.paint(g, this.render.tileSize);
+		hud.paint(g);
 	}
 
 }

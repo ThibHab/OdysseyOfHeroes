@@ -28,6 +28,19 @@ public class Range extends Hero {
 	}
 	
 	@Override
+	public void Hit(Aut_Direction d) {
+		if (!this.hitFrozen) {
+			this.frozen = true;
+			if (this.action != Action.H) {
+				System.out.println(this.name + " hits");
+				this.imageIndex = this.sprites.length;
+				this.action = Action.H;
+				this.updateSpriteIndex();
+			}
+			this.hitFrozen = true;
+			Projectile p = new Projectile(this, this.direction);
+		}
+	}
 	public int getHitNbSprite() {
 		return AnimConst.RANGE_H;
 	}
