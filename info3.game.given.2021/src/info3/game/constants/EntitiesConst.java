@@ -63,4 +63,7 @@ public class EntitiesConst {
 	
 	// COWBOY CONSTANTS
 	public static float COWBOY_SCALE = 1.3f;
+	
+	// CAVE WALL CONSTANTS
+	public static float CAVE_WALL_SCALE = 1.0f;
 }

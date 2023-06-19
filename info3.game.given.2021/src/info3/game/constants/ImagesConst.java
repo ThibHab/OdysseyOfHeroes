@@ -14,7 +14,7 @@ public class ImagesConst {
 	public static BufferedImage[] HOUSE, ROCK, TREE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGER;
-	public static BufferedImage[] BUSH, CHEST;
+	public static BufferedImage[] BUSH, CHEST, CAVE_WALL;
 	public static BufferedImage[] MELEE, RANGE;
 
 	public ImagesConst() throws IOException {
@@ -38,13 +38,14 @@ public class ImagesConst {
 		STRENGTH_POTION = loadSprite("Strength", 3, 3);
 
 		BOSS = loadSprite("Boss", 1, 1);
-		GOBLIN = loadSprite("", 1, 1);
+		GOBLIN = loadSprite("goblin", 1, 1);
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
 		VILLAGER = loadSprite("", 1, 1);
 		
 		BUSH = loadSprite("Bush", 3, 2);
 		CHEST = loadSprite("Chest", 2, 2);
+		CAVE_WALL = loadSprite("cave_wall", 1, 1);
 
 		MELEE = loadSprite("Melee", 8, 7);
 		RANGE = loadSprite("Range", 8, 7);
