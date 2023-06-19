@@ -11,7 +11,8 @@ public class Melee extends Hero {
 		this.location = l;
 		this.weaponDamage = EntitiesConst.MELEE_DAMAGE;
 		this.weaponRange = EntitiesConst.MELEE_RANGE;
-		this.health = EntitiesConst.MELEE_HEALTH;
+		this.health = 12;
+		this.maxHealth = this.health;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;
