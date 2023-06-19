@@ -3,7 +3,7 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class Cond {
+public class Cond extends Aut_Condition{
 	
 	Aut_Condition condition1;
 	Aut_Condition condition2;

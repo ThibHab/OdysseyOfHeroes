@@ -1,7 +1,7 @@
 Player1(Stand_S){
   * (Stand_S)
   | Key(o) ? Turn(N) :(Stand_N)
-  | Key(l) ? 50% Move(S) / 50% Hit(S) :(Stand_S)
+  | Key(l) ? Move(S) :(Stand_S)
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(S)  :(Stand_S)
@@ -35,7 +35,7 @@ Player1(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(S)  :(Stand_S)
-  
+
   * (Stand_N)
   | Key(z) ? Move(N) :(Stand_N)
   | Key(s) ? Turn(S) :(Stand_S)
@@ -58,3 +58,31 @@ Player1(Stand_S){
   | Key(a) ? Hit(E)  :(Stand_E)
   
 }
+
+Bush(Existing){
+  *(Existing)
+  | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
+  
+  * ()
+  
+ } 
+ 
+ Projectile(Forward){
+   *(Forward)
+   | Cell(F,V) ? Move : (Forward)
+   | True ? Wizz(F,A) : ()
+   
+   *()
+ }
+ 
+ Ennemy(DontStart) {
+   * (DontStart)
+   | Key(s) ? : (Search)
+   | True ? :(DontStart)
+   
+   * (Search)
+   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
+   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
+   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
+   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+ }
