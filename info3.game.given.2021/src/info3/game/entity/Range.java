@@ -27,8 +27,10 @@ public class Range extends Hero {
 
 	@Override
 	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		this.Egg(this.direction, Aut_Category.M);
+		if (!this.hitFrozen) {
+			this.hitFrozen = true;
+			Projectile p = new Projectile(this, this.direction);
+		}
 	}
 
 	@Override

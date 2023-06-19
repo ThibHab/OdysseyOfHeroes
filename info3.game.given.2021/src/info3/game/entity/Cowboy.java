@@ -83,6 +83,7 @@ public class Cowboy extends Entity {
 		currentState = aut.initial;
 		this.direction = Aut_Direction.S;
 		this.automaton = aut;
+		this.hitbox = new Hitbox(this, (float)0.50, (float)0.75);
 
 		this.scale = EntitiesConst.COWBOY_SCALE;
 	}
@@ -114,9 +115,9 @@ public class Cowboy extends Entity {
 				(int) (pixel.getY() - (((scale - 1) / 2) * TileSize)), (int) (TileSize * scale),
 				(int) (TileSize * scale), null);
 		g.setColor(Color.blue);
-		Location l = game.render.gridToPixel(this.hitBoxLocation, true);
-		g.drawRect((int) l.getX(), (int) l.getY(), (int) (game.render.tileSize * this.ratioHitBoxX),
-				(int) (game.render.tileSize * this.ratioHitBoxY));
+		Location l = game.render.gridToPixel(this.hitbox.location, true);
+		g.drawRect((int) l.getX(), (int) l.getY(), (int) (game.render.tileSize * this.hitbox.width),
+				(int) (game.render.tileSize * this.hitbox.height));
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

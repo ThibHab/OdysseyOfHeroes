@@ -60,8 +60,7 @@ Player2(Stand_S){
 
 EnergyBall(Forward){
   * (Forward)
-  | Cell(F,V) ? Move(F) : (Forward)
-  | True ? Wizz(F,A) : ()
+  | True ? Move(F) : (Forward)
    
    *()
  }

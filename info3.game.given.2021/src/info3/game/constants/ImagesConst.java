@@ -50,7 +50,7 @@ public class ImagesConst {
 		MELEE = loadSprite("Melee", 8, 7);
 		RANGE = loadSprite("Range", 8, 7);
 		
-		ENERGYBALL = loadSprite("EnergyBall",1,1);
+		ENERGYBALL = loadSprite("EnergyBall",1,4);
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

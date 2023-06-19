@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import info3.game.Game;
+import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
 //import info3.game.entity.Location;
 
@@ -123,6 +124,10 @@ public class MapRender {
 							.paint(g, tileSize, roundDeci((i + this.offset.getX())*tileSize,3), roundDeci((j + this.offset.getY())*tileSize,3));
 				}
 			}
+		}
+		
+		for(int i = 0; i < EntitiesConst.GAME.entities.size(); i++) {
+			EntitiesConst.GAME.entities.get(i).paint(g, tileSize, roundDeci((this.offset.getX())*tileSize,3), roundDeci((this.offset.getY())*tileSize,3));
 		}
 	}
 

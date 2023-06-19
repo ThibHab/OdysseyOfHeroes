@@ -90,8 +90,10 @@ public class Game {
 		
 		player1 = new Cowboy(this, "Player1");
 		this.entities.add(player1);
+		player1.name = "player1";
 		player2 = new Cowboy(this, "Player2");
 		this.entities.add(player2);
+		player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern

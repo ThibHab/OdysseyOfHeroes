@@ -25,6 +25,10 @@ public class Bush extends DecorElement {
 		this.width = 1;
 		this.height = 1;
 		
+		if(this.location != null) {
+			this.hitbox = new Hitbox(this, (float)0.90, (float)0.90);
+		}
+		
 		this.scale = EntitiesConst.BUSH_SCALE;
 	}
 

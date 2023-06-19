@@ -35,16 +35,13 @@ public abstract class Entity implements IEntity {
 	public BufferedImage[] sprites;
 	public int imageIndex;
 	public float scale;
-	public float ratioHitBoxX;
-	public float ratioHitBoxY;
-
-	public Location hitBoxLocation;
-	public Location destHitBoxLocation;
+	public Hitbox hitbox;
 
 	public Entity() {
 		this.name = "";
 		this.location = new Location(0, 0);
-		this.hitBoxLocation = new Location(0, 0);
+		this.destLocation = this.location;
+		this.hitbox = new Hitbox (this, 1,1);
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
@@ -69,11 +66,6 @@ public abstract class Entity implements IEntity {
 
 		this.scale = 1;
 
-		this.ratioHitBoxX = (float) 0.50;
-		this.ratioHitBoxY = (float) 0.75;
-
-		this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
-		this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -94,8 +86,7 @@ public abstract class Entity implements IEntity {
 				this.mouvementIndex = 0;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
-				this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
-				this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
+				this.hitbox.update();
 				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
 						.getY()].entity = null;
 			} else {
@@ -107,8 +98,7 @@ public abstract class Entity implements IEntity {
 					this.location
 							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
 									% EntitiesConst.MAP.lenY);
-					this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
-					this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
+					this.hitbox.update();
 				}
 			}
 		}else if(this.hitFrozen) {
@@ -254,22 +244,22 @@ public abstract class Entity implements IEntity {
 		if (entity != null) {
 			switch(d) {
 			case N:
-				if(entity.hitBoxLocation.getY() + entity.ratioHitBoxY > t.getY() + 0.5) {
+				if(entity.hitbox.location.getY() + entity.hitbox.height > t.getY() + 0.5) {
 					entity.takeDamage(this.weaponDamage);
 				}
 				break;
 			case S:
-				if(entity.hitBoxLocation.getY() < t.getY() + 0.5) {
+				if(entity.hitbox.location.getY() < t.getY() + 0.5) {
 					entity.takeDamage(this.weaponDamage);
 				}
 				break;
 			case E:
-				if(entity.hitBoxLocation.getX() < t.getX() + 0.5) {
+				if(entity.hitbox.location.getX() < t.getX() + 0.5) {
 					entity.takeDamage(this.weaponDamage);
 				}
 				break;
 			case W:
-				if(entity.hitBoxLocation.getX() + entity.ratioHitBoxX > t.getX() + 0.5) {
+				if(entity.hitbox.location.getX() + entity.hitbox.width > t.getX() + 0.5) {
 					entity.takeDamage(this.weaponDamage);
 				}
 				break;
@@ -412,23 +402,23 @@ public abstract class Entity implements IEntity {
 	}
 
 	public boolean hitboxOverlap(Entity tgt) {
-		float x1 = this.hitBoxLocation.getX();
-		float y1 = this.hitBoxLocation.getY();
-		float X1 = tgt.hitBoxLocation.getX();
-		float Y1 = tgt.hitBoxLocation.getY();
-		float x2 = x1 + this.ratioHitBoxX;
-		float y2 = y1 + this.ratioHitBoxY;
-		float X2 = X1 + tgt.ratioHitBoxX;
-		float Y2 = Y1 + tgt.ratioHitBoxY;
+		float x1 = this.hitbox.location.getX();
+		float y1 = this.hitbox.location.getY();
+		float X1 = tgt.hitbox.location.getX();
+		float Y1 = tgt.hitbox.location.getY();
+		float x2 = x1 + this.hitbox.width;
+		float y2 = y1 + this.hitbox.height;
+		float X2 = X1 + tgt.hitbox.width;
+		float Y2 = Y1 + tgt.hitbox.height;
 		switch (this.direction) {
 		case S:
-			return x1 > X1 && X1 > x2;
+			return y2 > Y1 && x1 <= X2 && x2 >= X1;
 		case E:
-			return y1 > Y1 && Y1 > y2;
+			return x2 > X1 && y1 <= Y2 && y2 >= Y1;
 		case N:
-			return x1 < X2 && X2 < x2;
+			return y1 < Y2 && x1 <= X2 && x2 >= X1 ;
 		case W:
-			return y1 < Y2 && Y2 < y2;
+			return x1 < X2 && y1 <= Y2 && y2 >= Y1;
 		default:
 			return false;
 		}
