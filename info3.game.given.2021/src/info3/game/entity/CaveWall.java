@@ -5,7 +5,6 @@ import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class CaveWall extends DecorElement {
-	
 	public CaveWall(Location l) {
 		super();
 		this.name = "CaveWall";
