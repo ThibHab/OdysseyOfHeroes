@@ -102,6 +102,7 @@ public class Game {
 		m_canvas = new GameCanvas(m_listener);
 		
 		map = new WorldMap(64, 64, player1, player2);
+		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);
@@ -185,7 +186,7 @@ public class Game {
 		// the text on top of the frame: tick and fps
 		m_textElapsed += elapsed;
 		//TODO modif pour debug
-		if (m_textElapsed > 100) {
+		if (m_textElapsed > 1000) {
 			m_textElapsed = 0;
 			float period = m_canvas.getTickPeriod();
 			int fps = m_canvas.getFPS();
@@ -198,6 +199,7 @@ public class Game {
 			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
 			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
 			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
+			txt = txt+"offset" + render.nbTileX + ";" + render.nbTileY + "     ";
 			m_text.setText(txt);
 		}
 	}
@@ -215,7 +217,6 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
-		
 
 
 		// paint
