@@ -21,6 +21,9 @@ public class WorldMap extends Map {
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", 2, 6);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", 2, 15);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Tree", 2, 8);
+		Location lgob = new Location(0, 0);
+		Goblin gob = new Goblin(lgob);
+		map[0][0].entity = gob;
 		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
 		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
 	}

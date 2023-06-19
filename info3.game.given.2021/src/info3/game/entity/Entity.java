@@ -121,7 +121,7 @@ public abstract class Entity implements IEntity {
 		} else if (this.action != Action.S) {
 			System.out.println(this.name + " is standing");
 			this.action = Action.S;
-			this.imageIndex = this.sprites.length;
+			this.imageIndex = this.sprites.length - 1;
 			this.updateSpriteIndex();
 		}
 //		if (this.hitFrozen) {
