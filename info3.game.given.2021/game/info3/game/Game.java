@@ -40,6 +40,7 @@ import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.constants.MapConstants;
@@ -62,7 +63,7 @@ public class Game {
 	public static void main(String args[]) throws Exception {
 		try {
 			System.out.println("Game starting...");
-			newGame = true;
+			newGame = false;
 			if (newGame)
 				game = new Game(null);
 			else {
@@ -146,6 +147,8 @@ public class Game {
 		
 		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
 	    map = new WorldMap(64, 64, player1, player2);
+	    EntitiesConst.MAP = (Map) map;
+	    EntitiesConst.MAP_MATRIX = ((Map)map).map;
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
@@ -158,9 +161,6 @@ public class Game {
 
 		player1.frozen = false;
 		player2.frozen = false;
-
-//		if (reload)
-//			reload(buffer);
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
@@ -290,10 +290,10 @@ public class Game {
 		data += EntitiesConst.SEED + "\n";
 		data += player1.location.getX() + "/" + player1.location.getY() + "/" + player1.currentState.name + "/"
 				+ player1.health + "/" + player1.maxHealth + "/" + player1.healingPotions + "/"
-				+ player1.strengthPotions + "/" + player1.direction + "\n";
+				+ player1.strengthPotions + "/" + player1.direction + "/" + player1.action + "\n";
 		data += player2.location.getX() + "/" + player2.location.getY() + "/" + player2.currentState.name + "/"
 				+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
-				+ player2.strengthPotions + "/" + player2.direction + "\n";
+				+ player2.strengthPotions + "/" + player2.direction + "/" + player2.action + "\n";
 
 		byte[] buffer = data.getBytes();
 		try {
@@ -320,11 +320,13 @@ public class Game {
 		Location loc2 = new Location(Float.valueOf(p2[0]), Float.valueOf(p2[1]));
 		Aut_Direction dir1 = Aut_Direction.valueOf(p1[7]);
 		Aut_Direction dir2 = Aut_Direction.valueOf(p2[7]);
+		Action a1 = Action.valueOf(p1[8]);
+		Action a2 = Action.valueOf(p2[8]);
 
 		player1.saveRestore(loc1, p1[2], Integer.valueOf(p1[3]), Integer.valueOf(p1[4]), Integer.valueOf(p1[5]),
-				Integer.valueOf(p1[6]), dir1);
+				Integer.valueOf(p1[6]), dir1, a1);
 		player2.saveRestore(loc2, p2[2], Integer.valueOf(p2[3]), Integer.valueOf(p2[4]), Integer.valueOf(p2[5]),
-				Integer.valueOf(p2[6]), dir2);
+				Integer.valueOf(p2[6]), dir2, a2);
 
 	}
 	
