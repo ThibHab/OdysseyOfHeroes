@@ -20,6 +20,24 @@ public abstract class Hero extends Entity {
 		
 		this.hitbox = new Hitbox(this, (float)0.50, (float)0.75);
 	}
+	
+	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int sPotions, Aut_Direction dir) {
+		this.location = loc;
+		if (this.automaton.initial.name.equals(state))
+			this.currentState = this.automaton.initial;
+		for (Aut_Transition next : this.automaton.transitions) {
+			if (next.dest.name.equals(state)) {
+				this.currentState = next.dest;
+				break;
+			}	
+		}
+		
+		this.healingPotions = hPotions;
+		this.strengthPotions = sPotions;
+		this.health = health;
+		this.maxHealth = maxHealth;
+		this.direction = dir;
+	}
 
 	public void paint(Graphics g, int tileSize) {
 		BufferedImage img = sprites[imageIndex];

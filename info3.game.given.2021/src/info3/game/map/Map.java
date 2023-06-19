@@ -29,11 +29,11 @@ public abstract class Map implements IMap {
 	 * @param seed         to set the random
 	 * @param spaceBetween the distance between two entity
 	 */
-	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, Entity ent, long seed, int rareness) {
+	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, Entity ent, int rareness) {
 		if (!(ent instanceof Bush) && !(ent instanceof Rock) && !(ent instanceof Tree)) {
 			return;
 		}
-		Random r = new Random(seed);
+		Random r = new Random(EntitiesConst.SEED);
 		for (int i = x; i < x + areaSize; i++) {
 			for (int j = y; j < y + areaSize; j++) {
 				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile) && !(map[i][j] instanceof DirtTile)) {

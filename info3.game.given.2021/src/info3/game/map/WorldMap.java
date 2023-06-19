@@ -27,11 +27,11 @@ public class WorldMap extends Map {
 		
 		
 		Bush bush = new Bush(null);
-		this.setEntityRandomly(0, 0, lenX - 2, 2, bush, 2, 6);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, bush, 6);
 		Rock rock = new Rock(null);
-		this.setEntityRandomly(0, 0, lenX - 2, 2, rock, 2, 15);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, rock, 15);
 		Tree tree = new Tree(null);
-		this.setEntityRandomly(0, 0, lenX - 2, 2, tree, 2, 8);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, tree, 8);
 		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
 		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
 	}

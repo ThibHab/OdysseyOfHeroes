@@ -6,7 +6,6 @@ import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.constants.StatesConst;
 
 public class Range extends Hero {
 	public Range(String name, Game g) {
@@ -26,6 +25,7 @@ public class Range extends Hero {
 		this.sprites = ImagesConst.RANGE;
 		this.imageIndex = 0;
 	}
+	
 	
 	@Override
 	public void Hit(Aut_Direction d) {

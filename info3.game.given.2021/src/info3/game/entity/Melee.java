@@ -28,6 +28,7 @@ public class Melee extends Hero {
 
 		this.sprites = ImagesConst.MELEE;
 		this.imageIndex = 0;
+		this.detectionRadius = 5;
 	}
 	
 	@Override

@@ -24,26 +24,25 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.CharBuffer;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import info3.game.automata.Aut_Automaton;
+import info3.game.automata.*;
 import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.entity.Cowboy;
-import info3.game.entity.Entity;
-import info3.game.entity.Location;
-import info3.game.entity.Melee;
-import info3.game.entity.Range;
+import info3.game.entity.*;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
 import info3.game.map.DebugMap;
@@ -56,11 +55,22 @@ import info3.game.sound.RandomFileInputStream;
 public class Game {
 
 	static Game game;
+	static boolean newGame;
 
 	public static void main(String args[]) throws Exception {
 		try {
 			System.out.println("Game starting...");
-			game = new Game();
+			newGame = true;
+			if (newGame)
+				game = new Game(null);
+			else {
+				File f = new File("save.txt");
+				long length = f.length();
+				if (length == 0)
+					game = new Game(null);
+				else
+					game = new Game(new File("save.txt"));
+			}
 			System.out.println("Game started.");
 		} catch (Throwable th) {
 			th.printStackTrace(System.err);
@@ -79,24 +89,49 @@ public class Game {
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
 	public HudInGame hud;
+	public RandomAccessFile save;
+	boolean reload;
 
-	Game() throws Exception {
+	Game(File file) throws Exception {
 		// creating a cowboy, that would be a model
 		// in an Model-View-Controller pattern (MVC)
 //		m_cowboy = new Cowboy(this);
+		byte[] buffer = null;
+		if (file == null) {
+			file = new File("save.txt");
+			save = new RandomAccessFile(file, "rw");
+			Random r = new Random();
+			EntitiesConst.SEED = r.nextInt();
+			reload = false;
+		} else {
+			reload = true;
+		}
+
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		save = new RandomAccessFile(file, "rw");
+		
+		if (reload) {
+			buffer = new byte[(int) save.length()];
+			save.readFully(buffer);
+			loadSeed(buffer);
+		}
+		
+		
 		new ImagesConst();
-		
-		//TODO correctly initialize Level and Experience methods /!\
+
+		// TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
-		
+
 		IVisitor visitor = new AutCreator();
-		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
+		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
-		
+
 		player1 = new Range("Player1", this);
 		player1.name = "player1";
 		player2 = new Melee("Player2", this);
-        player2.name = "player2";
+		player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -104,20 +139,26 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
-		
+
 		map = new WorldMap(64, 64, player1, player2);
-		//map=new DebugMap(40,40,player1,player2);
-		render = new MapRender((Map)map, this);
 		
+		if (reload)
+			reload(buffer);
+		// map=new DebugMap(40,40,player1,player2);
+		render = new MapRender((Map) map, this);
+
 		Entity.InitStatics(this, level, xp);
-		
+
 		player1.frozen = false;
 		player2.frozen = false;
+
+//		if (reload)
+//			reload(buffer);
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
 		m_frame = m_canvas.createFrame(d);
-		
+
 		hud = new HudInGame(m_frame);
 
 		System.out.println("  - setting up the frame...");
@@ -162,8 +203,8 @@ public class Game {
 		m_musicName = m_musicNames[m_musicIndex];
 		String filename = "resources/" + m_musicName + ".ogg";
 		m_musicIndex = (m_musicIndex + 1) % m_musicNames.length;
-		try { 
-			RandomAccessFile file = new RandomAccessFile(filename,"r");
+		try {
+			RandomAccessFile file = new RandomAccessFile(filename, "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
 			m_canvas.playMusic(fis, 0, 1.0F);
 		} catch (Throwable th) {
@@ -173,7 +214,7 @@ public class Game {
 	}
 
 	private int m_musicIndex = 0;
-	private String[] m_musicNames = new String[] { "theme" }; 
+	private String[] m_musicNames = new String[] { "theme" };
 
 	private long m_textElapsed;
 
@@ -182,17 +223,17 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-		
+
 		player1.tick(elapsed);
 		player2.tick(elapsed);
-		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 		}
 
 		// Update every second
 		// the text on top of the frame: tick and fps
 		m_textElapsed += elapsed;
-		//TODO modif pour debug
+		// TODO modif pour debug
 		if (m_textElapsed > 1000) {
 			m_textElapsed = 0;
 			float period = m_canvas.getTickPeriod();
@@ -202,11 +243,11 @@ public class Game {
 			while (txt.length() < 15)
 				txt += " ";
 			txt = txt + fps + " fps   ";
-			txt = txt+"P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
-			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
-			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
-			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
-			txt = txt+"offset" + render.nbTileX + ";" + render.nbTileY + "     ";
+			txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+			txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+			txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+			txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
+			txt = txt + "offset" + render.nbTileX + ";" + render.nbTileY + "     ";
 			m_text.setText(txt);
 		}
 	}
@@ -225,13 +266,60 @@ public class Game {
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
 
-
 		// paint
 //		m_cowboy.paint(g, width, height);
-		
+
 		render.paint(g);
 		player1.paint(g, this.render.tileSize);
 		player2.paint(g, this.render.tileSize);
+	}
+
+	public void save() {
+		String data = "";
+		data += EntitiesConst.SEED + "\n";
+		data += player1.location.getX() + "/" + player1.location.getY() + "/" + player1.currentState.name + "/"
+				+ player1.health + "/" + player1.maxHealth + "/" + player1.healingPotions + "/"
+				+ player1.strengthPotions + "/" + player1.direction + "\n";
+		data += player2.location.getX() + "/" + player2.location.getY() + "/" + player2.currentState.name + "/"
+				+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
+				+ player2.strengthPotions + "/" + player2.direction + "\n";
+
+		byte[] buffer = data.getBytes();
+		try {
+			save.seek(0);
+			save.write(buffer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadSeed(byte[] buffer) {
+		String[] data = new String(buffer).split("\n");
+		EntitiesConst.SEED = Integer.valueOf(data[0]); // restore seed
+
+	}
+
+	public void reload(byte[] buffer) {
+		String[] data = new String(buffer).split("\n");
+
+		String[] p1 = data[1].split("/");
+		String[] p2 = data[2].split("/");
+
+		Location loc1 = new Location(Float.valueOf(p1[0]), Float.valueOf(p1[1]));
+		Location loc2 = new Location(Float.valueOf(p2[0]), Float.valueOf(p2[1]));
+		Aut_Direction dir1 = Aut_Direction.valueOf(p1[7]);
+		Aut_Direction dir2 = Aut_Direction.valueOf(p2[7]);
+
+		player1.saveRestore(loc1, p1[2], Integer.valueOf(p1[3]), Integer.valueOf(p1[4]), Integer.valueOf(p1[5]),
+				Integer.valueOf(p1[6]), dir1);
+		player2.saveRestore(loc2, p2[2], Integer.valueOf(p2[3]), Integer.valueOf(p2[4]), Integer.valueOf(p2[5]),
+				Integer.valueOf(p2[6]), dir2);
+
+	}
+	
+	public void unsave() {
+		File f = new File("save.txt");
+		f.delete();
 	}
 
 }

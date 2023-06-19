@@ -142,6 +142,8 @@ public abstract class Entity implements IEntity {
 			if (d == null) {
 				d = this.direction;
 			}
+			this.direction = d;
+			
 			if (this.action != Action.M) {
 				System.out.println(this.name + " is moving");
 				this.action = Action.M;
@@ -152,7 +154,7 @@ public abstract class Entity implements IEntity {
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
-			switch (this.direction) {
+			switch (d) {
 			case N:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
 				relativeMouv.setY(-1);

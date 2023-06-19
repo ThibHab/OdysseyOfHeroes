@@ -8,6 +8,7 @@ public class EntitiesConst {
 	
 	// GLOBAL ENTITY CONSTANTS
 	public static Game GAME;
+	public static int SEED;
 	public static Map MAP;
 	public static Tile[][] MAP_MATRIX;	
 	
