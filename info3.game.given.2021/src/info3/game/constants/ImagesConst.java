@@ -10,12 +10,14 @@ public class ImagesConst {
 
 	public static BufferedImage GRASS_TILE, WATER_TILE, DIRT_TILE, ROCK_TILE;
 	public static BufferedImage GRASS_TILE2, WATER_TILE2, DIRT_TILE2, ROCK_TILE2;
+	public static BufferedImage RED_HEART, BLUE_HEART, BLACK_HEART;
 
 	public static BufferedImage[] HOUSE, ROCK, TREE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGER;
 	public static BufferedImage[] BUSH, CHEST, CAVE_WALL;
 	public static BufferedImage[] MELEE, RANGE;
+	public static BufferedImage[] ENERGYBALL;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -49,6 +51,12 @@ public class ImagesConst {
 
 		MELEE = loadSprite("Melee", 8, 7);
 		RANGE = loadSprite("Range", 8, 7);
+		
+		ENERGYBALL = loadSprite("EnergyBall",1,4);
+		
+		RED_HEART = loadTile("red_heart");
+		BLUE_HEART = loadTile("blue_heart");
+		BLACK_HEART = loadTile("empty_heart");
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

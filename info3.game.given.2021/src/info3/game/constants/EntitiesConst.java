@@ -13,7 +13,8 @@ public class EntitiesConst {
 	
 	public static int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10, COINS = 0;
 	public static int MOUVEMENT_INDEX_MAX = 200;
-	public static int HIT_INDEX_MAX = 50;
+	public static int HIT_INDEX_MAX = 300;
+	public static int STAND_INDEX_MAX = 50;
     
 	public static int MAX_DIFFX=7;
 	public static int MAX_DIFFY=3;
@@ -63,6 +64,9 @@ public class EntitiesConst {
 	
 	// COWBOY CONSTANTS
 	public static float COWBOY_SCALE = 1.3f;
+	
+	// ENERGYBALL CONSTANTS
+	public static float ENERGYBALL_SCALE = 1.2f;
 	
 	// CAVE WALL CONSTANTS
 	public static float CAVE_WALL_SCALE = 1.0f;
