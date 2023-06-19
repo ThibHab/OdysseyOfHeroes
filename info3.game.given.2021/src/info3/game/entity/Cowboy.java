@@ -83,8 +83,9 @@ public class Cowboy extends Entity {
 		game = g;
 		currentState = aut.initial;
 		this.direction = Aut_Direction.S;
-		this.automaton=aut;
-		
+		this.automaton = aut;
+		this.hitbox = new Hitbox(this, (float)0.50, (float)0.75);
+
 		this.scale = EntitiesConst.COWBOY_SCALE;
 		this.health = 15;
 	}
@@ -103,20 +104,22 @@ public class Cowboy extends Entity {
 //			m_moveElapsed = 0;
 //			m_x = (m_x + 2) % m_width;
 //		}
-		
+
 //		aut.step(this, game);
 //
 //	}
-	
+
 	@Override
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = m_images[m_imageIndex];
-		Location pixel=game.render.gridToPixel(location,true);
-		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2 )* TileSize)), (int) (pixel.getY() - (((scale - 1) / 2 )* TileSize)), (int) (TileSize * scale), (int) (TileSize * scale), null);
+		Location pixel = game.render.gridToPixel(location, true);
+		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2) * TileSize)),
+				(int) (pixel.getY() - (((scale - 1) / 2) * TileSize)), (int) (TileSize * scale),
+				(int) (TileSize * scale), null);
 		g.setColor(Color.blue);
-		Location l = game.render.gridToPixel(this.hitBoxLocation, true);
-		g.drawRect((int)l.getX(), (int)l.getY(), (int) (game.render.tileSize * this.ratioHitBoxX), (int) (game.render.tileSize * this.ratioHitBoxY));
-		//g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize);
+		Location l = game.render.gridToPixel(this.hitbox.location, true);
+		g.drawRect((int) l.getX(), (int) l.getY(), (int) (game.render.tileSize * this.hitbox.width),
+				(int) (game.render.tileSize * this.hitbox.height));
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
@@ -139,15 +142,13 @@ public class Cowboy extends Entity {
 		return null;
 	}
 
-//	@Override
-//	public void Move(Aut_Direction d) {
-//		System.out.print("Move in direction " + d.toString() + "\n");
-//	}
-//	
-//	@Override
-//	public void Hit(Aut_Direction d) {
-//		System.out.print("Hit in direction " + d.toString() + "\n");
-//	}
+	@Override
+	public void Hit(Aut_Direction d) {
+		if (!this.hitFrozen) {
+			this.hitFrozen = true;
+			Projectile p = new Projectile(this, this.direction);
+		}
+	}
 //	
 //	@Override
 //	public void Turn(Aut_Direction d) {

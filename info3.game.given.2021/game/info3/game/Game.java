@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
 import java.nio.CharBuffer;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
@@ -92,7 +94,9 @@ public class Game {
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
 		player1 = new Range("Player1", this);
+		player1.name = "player1";
 		player2 = new Melee("Player2", this);
+        player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -102,6 +106,7 @@ public class Game {
 		m_canvas = new GameCanvas(m_listener);
 		
 		map = new WorldMap(64, 64, player1, player2);
+		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);
@@ -177,15 +182,18 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-
+		
 		player1.tick(elapsed);
 		player2.tick(elapsed);
+		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
+		}
 
 		// Update every second
 		// the text on top of the frame: tick and fps
 		m_textElapsed += elapsed;
 		//TODO modif pour debug
-		if (m_textElapsed > 100) {
+		if (m_textElapsed > 1000) {
 			m_textElapsed = 0;
 			float period = m_canvas.getTickPeriod();
 			int fps = m_canvas.getFPS();
@@ -198,6 +206,7 @@ public class Game {
 			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
 			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
 			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
+			txt = txt+"offset" + render.nbTileX + ";" + render.nbTileY + "     ";
 			m_text.setText(txt);
 		}
 	}
@@ -215,7 +224,6 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
-		
 
 
 		// paint

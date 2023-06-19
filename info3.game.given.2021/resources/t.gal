@@ -67,10 +67,9 @@ Bush(Existing){
   
  } 
  
- Projectile(Forward){
+ EnergyBall(Forward){
    *(Forward)
-   | Cell(F,V) ? Move : (Forward)
-   | True ? Wizz(F,A) : ()
+   | True ? Move : (Forward)
    
    *()
  }
@@ -78,9 +77,13 @@ Bush(Existing){
  Ennemy(DontStart) {
    * (DontStart)
    | Key(s) ? : (Search)
-   | True ? :(DontStart)
+   | True ? : (DontStart)
    
    * (Search)
+   | Cell(@,N,3) ? Hit(N) : (Search)
+   | Cell(@,S,3) ? Hit(S) : (Search)
+   | Cell(@,E,3) ? Hit(E) : (Search)
+   | Cell(@,W,3) ? Hit(W) : (Search)
    | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
