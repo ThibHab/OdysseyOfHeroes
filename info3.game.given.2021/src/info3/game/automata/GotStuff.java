@@ -1,6 +1,7 @@
 package info3.game.automata;
 
 import info3.game.Game;
+import info3.game.constants.EntitiesConst;
 import info3.game.entity.Entity;
 
 public class GotStuff extends Aut_Condition {
@@ -19,7 +20,7 @@ public class GotStuff extends Aut_Condition {
 		case 2 :
 			return e.strengthPotions > 0;
 		case 3 :
-			return e.coins > 0;
+			return EntitiesConst.COINS > 0;
 		default :
 			return false;
 		}

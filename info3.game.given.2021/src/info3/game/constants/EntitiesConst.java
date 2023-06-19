@@ -11,7 +11,7 @@ public class EntitiesConst {
 	public static Map MAP;
 	public static Tile[][] MAP_MATRIX;	
 	
-	public static int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10;
+	public static int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10, COINS = 0;
 	public static int MOUVEMENT_INDEX_MAX = 200;
 	public static int HIT_INDEX_MAX = 50;
     

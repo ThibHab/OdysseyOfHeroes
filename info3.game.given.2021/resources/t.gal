@@ -5,6 +5,7 @@ Player1(Stand_S){
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(S)  :(Stand_S)
+  | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
   | Key(o) ? Move(N) :(Stand_N)
@@ -12,6 +13,7 @@ Player1(Stand_S){
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(N)  :(Stand_N)
+  | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
   | Key(o) ? Turn(N) :(Stand_N)
@@ -19,6 +21,7 @@ Player1(Stand_S){
   | Key(k) ? Move(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(W)  :(Stand_W)
+  | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
   | Key(o) ? Turn(N) :(Stand_N)
@@ -26,6 +29,7 @@ Player1(Stand_S){
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Move(E) :(Stand_E)
   | Key(i) ? Hit(E)  :(Stand_E)
+  | Cell(E,P) ? Pick(E) : (Stand_E)
  }
  
  Player2(Stand_S){
@@ -35,6 +39,7 @@ Player1(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(S)  :(Stand_S)
+  | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
   | Key(z) ? Move(N) :(Stand_N)
@@ -42,6 +47,7 @@ Player1(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(N)  :(Stand_N)
+  | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
   | Key(z) ? Turn(N) :(Stand_N)
@@ -49,6 +55,7 @@ Player1(Stand_S){
   | Key(q) ? Move(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(W)  :(Stand_W)
+  | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
   | Key(z) ? Turn(N) :(Stand_N)
@@ -56,6 +63,7 @@ Player1(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Move(E) :(Stand_E)
   | Key(a) ? Hit(E)  :(Stand_E)
+  | Cell(E,P) ? Pick(E) : (Stand_E)
   
 }
 
@@ -90,3 +98,11 @@ Bush(Existing){
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
  }
+ 
+ Chest(Exists) {
+   * (Exists)
+   | True ? : (Exists)
+ }
+ 
+ 
+ 

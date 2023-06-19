@@ -3,9 +3,11 @@ package info3.game.entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
+import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
 	public int maxHealth;
@@ -41,14 +43,26 @@ public abstract class Hero extends Entity {
 
 	@Override
 	public void Pick(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		super.Pick(d);
-	}
+		if (d == null) {
+			d = this.direction;
+		}
 
-	@Override
-	public void Store(Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Store(c);
+		Location location = frontTileLocation(d);
+		Tile tile = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()];
+		if (tile.entity.category == Aut_Category.P) {
+			if (tile.entity instanceof Chest) {
+				Random random = new Random();
+				boolean randomLoot = random.nextBoolean();
+				if (randomLoot) {
+					System.out.println("Looted coins");
+					EntitiesConst.COINS += 5;
+				} else {
+					System.out.println("Looted healing potion");
+					this.healingPotions++;
+				}
+				
+				tile.entity = null;
+			}
+		}
 	}
-
 }
