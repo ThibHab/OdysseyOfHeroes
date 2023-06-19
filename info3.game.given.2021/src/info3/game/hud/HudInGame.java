@@ -95,12 +95,21 @@ public class HudInGame {
 		Color grayTrans = new Color(192, 192, 192, 100);
 		g.setColor(grayTrans);
 		g.fillRoundRect(width/8 + 1, height - 14, width - width/4 - 1, 9, 10, 10);
-		// TODO: Fill the experience incrementally in cyan (need experience to be reacherd for next level)
-		
+		// TODO: Test experience bar
+		g.setColor(Color.cyan);
+		int exp = EntitiesConst.EXPERIENCE;
+		if (exp == 0) {
+			g.fillRoundRect(width/8 + 1, height - 14, 0, 9, 10, 10);
+		}
+		else {
+			g.fillRoundRect(width/8 + 1, height - 14, (int) ((width - width/4 - 1) / (EntitiesConst.LEVEL_UP / exp )), 9, 10, 10);
+		}
 		
 		g.setColor(Color.blue);
 		String lv = "Level " + EntitiesConst.LEVEL;
 		g.drawString(lv, width/2 - ((lv.length() * 28) / 4), height - 20);
+		
+		
 		
 		return;
 	}
