@@ -15,7 +15,7 @@ public abstract class DecorElement extends Entity {
 	}
 
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = sprites[imageIndex];
+		BufferedImage img = sprites[0];
 		Location l = EntitiesConst.GAME.render.gridToPixel(location, true);
 		// Cas de la location en dehors de l'écran en X et en Y
 		if (screenPosY < 0 && screenPosX < 0) {

@@ -20,7 +20,7 @@ public abstract class Entity implements IEntity {
 	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed, attackSpeed;
-	public int coins, healingPotions, strengthPotions;
+	public int healingPotions, strengthPotions;
 
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
@@ -50,7 +50,7 @@ public abstract class Entity implements IEntity {
 		this.speed = 1;
 		this.attackSpeed = 500;
 
-		this.coins = 0;
+		EntitiesConst.COINS = 0;
 		this.healingPotions = 0;
 		this.strengthPotions = 0;
 
@@ -79,12 +79,13 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		// TODO : step only if not frozen, then remove if not frozen in move
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen) {
 			this.mouvementIndex += elapsed;
 			if (this.action == Action.M) {
-				if (mouvementIndex % 200 == 0) {
+				if ((mouvementIndex - elapsed)
+						/ (EntitiesConst.MOUVEMENT_INDEX_MAX / this.getMvmtNbSprite()) < mouvementIndex
+								/ (EntitiesConst.MOUVEMENT_INDEX_MAX / this.getMvmtNbSprite())) {
 					this.updateSpriteIndex();
 				}
 				if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
@@ -107,7 +108,8 @@ public abstract class Entity implements IEntity {
 					this.hitbox.update();
 				}
 			} else if (this.action == Action.H) {
-				if (mouvementIndex % 50 == 0) {
+				if ((mouvementIndex - elapsed) / (EntitiesConst.HIT_INDEX_MAX / this.getHitNbSprite()) < mouvementIndex
+						/ (EntitiesConst.HIT_INDEX_MAX / this.getHitNbSprite())) {
 					this.updateSpriteIndex();
 				}
 				this.attackIndex += elapsed;
@@ -118,11 +120,19 @@ public abstract class Entity implements IEntity {
 					this.attackIndex = 0;
 				}
 			}
-		} else if (this.action != Action.S) {
-			System.out.println(this.name + " is standing");
-			this.action = Action.S;
-			this.imageIndex = this.sprites.length;
-			this.updateSpriteIndex();
+		} else {
+			if (this.action != Action.S) {
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is standing");
+				}
+				this.action = Action.S;
+				this.imageIndex = this.sprites.length;
+				this.updateSpriteIndex();
+			}
+			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
+					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
+				this.updateSpriteIndex();
+			}
 		}
 //		if (this.hitFrozen) {
 //			this.attackIndex += elapsed;
@@ -145,7 +155,9 @@ public abstract class Entity implements IEntity {
 			this.direction = d;
 			
 			if (this.action != Action.M) {
-				System.out.println(this.name + " is moving");
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is moving");
+				}
 				this.action = Action.M;
 				this.imageIndex = this.sprites.length;
 				this.updateSpriteIndex();
@@ -192,7 +204,6 @@ public abstract class Entity implements IEntity {
 		if (d == null) {
 			d = this.direction;
 		}
-
 		this.direction = d;
 	}
 
@@ -260,10 +271,13 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Aut_Direction d) {
+		// TODO Melee blocked when touching an enemy, also see for the hits in the border of the maps
 		if (!this.frozen) {
 			this.frozen = true;
 			if (this.action != Action.H) {
-				System.out.println(this.name + " hits");
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " hits");
+				}
 				this.imageIndex = this.sprites.length;
 				this.action = Action.H;
 				this.updateSpriteIndex();
@@ -305,7 +319,9 @@ public abstract class Entity implements IEntity {
 		if (this.health - dmg > 0) {
 			this.health -= dmg;
 			if (this.action != Action.T) {
-				System.out.println(this.name + " is touched");
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is touched");
+				}
 				this.imageIndex = this.sprites.length;
 				this.action = Action.T;
 				this.updateSpriteIndex();
@@ -322,12 +338,16 @@ public abstract class Entity implements IEntity {
 			this.action = Action.D;
 			this.updateSpriteIndex();
 
-			System.out.println(this.name + " is diing");
+			if (EntitiesConst.GAME.debug) {
+				System.out.println(this.name + " has died");
+			}
+			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 		}
 	}
 
 	@Override
 	public void Jump() {
+		// TODO write function not usable ?
 	}
 
 	@Override
@@ -352,13 +372,12 @@ public abstract class Entity implements IEntity {
 			d = this.direction;
 		}
 
-		Location t = frontTileLocation(d);
-
-		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
+		Location location = frontTileLocation(d);
+		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin) {
-				this.coins++;
-				// TODO destroy la coin
+				EntitiesConst.COINS++;
+				// TODO destroy the coin
 			} else if (entity instanceof HealingPotion) {
 				this.healingPotions++;
 			} else if (entity instanceof StrengthPotion) {
@@ -460,6 +479,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void updateSpriteIndex() {
+		imageIndex = 0;
 	}
 
 	public int getHitNbSprite() {

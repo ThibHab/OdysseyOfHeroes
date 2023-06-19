@@ -1,20 +1,22 @@
 package info3.game.entity;
 
+import info3.game.automata.Aut_Automaton;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Bush extends DecorElement {
-	public static int BushHealth = 1;
-
 	public Bush(Location l) {
 		super();
 		this.name = "Bush";
 		this.location = l;
-		this.health = Bush.BushHealth;
+		this.health = EntitiesConst.BUSH_HEALTH;
 
 		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
@@ -31,6 +33,4 @@ public class Bush extends DecorElement {
 		
 		this.scale = EntitiesConst.BUSH_SCALE;
 	}
-
-	// TODO is the default egg method sufficient ?
 }

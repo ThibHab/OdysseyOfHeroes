@@ -9,26 +9,28 @@ import javax.swing.JFrame;
 
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.entity.Coin;
-import info3.game.entity.Entity;
+import info3.game.entity.*;
 
 public class HudInGame {
 	
 	JFrame m_frame;
-	Entity j1;
-	Entity j2;
+	Melee j1;
+	Range j2;
 	int moula;
 
 	public HudInGame(JFrame frame) {
 		m_frame = frame;
 		j1 = EntitiesConst.GAME.player1;
 		j2 = EntitiesConst.GAME.player2;
-		moula = EntitiesConst.GAME.player1.coins;
+		moula = EntitiesConst.COINS;
 	}
 	
 	public void paint(Graphics g){
 		int width = EntitiesConst.GAME.m_canvas.getWidth();
 		int height = EntitiesConst.GAME.m_canvas.getHeight();
+		Image redHeart = ImagesConst.RED_HEART;
+		Image blueHeart = ImagesConst.BLUE_HEART;
+		Image blackHeart = ImagesConst.BLACK_HEART;
 		
 		Font f = new Font(null, 0, 25);
 		g.setFont(f);
@@ -41,13 +43,26 @@ public class HudInGame {
 		
 		int incJ11 = 63;
 		int incJ12 = 63;
-		for (int i =0; i < j1.health; i++) {
+		for (int i =0; i < j1.maxHealth; i++) {
 			if (i < 10) {
-				g.fillOval(5 + incJ11, 7, 25, 25);
+				g.drawImage(blackHeart, 5 + incJ11, 7, 25, 25, null);
 				incJ11 += 30;
 			}
 			else {
-				g.fillOval(5 + incJ12, 35, 25, 25);
+				g.drawImage(blackHeart, 5 + incJ12, 35, 25, 25, null);
+				incJ12 += 30;
+			}			
+		}
+		
+		incJ11 = 63;
+		incJ12 = 63;
+		for (int i =0; i < j1.health; i++) {
+			if (i < 10) {
+				g.drawImage(blueHeart, 5 + incJ11, 7, 25, 25, null);
+				incJ11 += 30;
+			}
+			else {
+				g.drawImage(blueHeart, 5 + incJ12, 35, 25, 25, null);
 				incJ12 += 30;
 			}			
 		}
@@ -66,13 +81,26 @@ public class HudInGame {
 		
 		int inc1 = 87;
 		int inc2 = 87;
-		for (int i =0; i < j2.health; i++) {
+		for (int i =0; i < j2.maxHealth; i++) {
 			if (i < 10) {
-				g.fillOval(width - (5 + inc1), 7, 25, 25);
+				g.drawImage(blackHeart, width - (5 + inc1), 7, 25, 25, null);
 				inc1 += 30;
 			}
 			else {
-				g.fillOval(width - (5 + inc2), 35, 25, 25);
+				g.drawImage(blackHeart, width - (5 + inc2), 35, 25, 25, null);
+				inc2 += 30;
+			}
+		}
+		
+		inc1 = 87;
+		inc2 = 87;
+		for (int i =0; i < j2.health; i++) {
+			if (i < 10) {
+				g.drawImage(redHeart, width - (5 + inc1), 7, 25, 25, null);
+				inc1 += 30;
+			}
+			else {
+				g.drawImage(redHeart, width - (5 + inc2), 35, 25, 25, null);
 				inc2 += 30;
 			}
 		}
@@ -85,7 +113,7 @@ public class HudInGame {
 		int coinWidth = 25;
 		g.drawImage(coinIcone, width/2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
 		g.setColor(Color.YELLOW);
-		String argent = "" + j1.coins;
+		String argent = "" + EntitiesConst.COINS;
 		g.drawString(argent, width/2 - ((argent.length() * 32) / 4), 55);
 		
 		g.setColor(Color.blue);

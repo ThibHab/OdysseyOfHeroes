@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
 
@@ -29,8 +30,8 @@ public abstract class Map implements IMap {
 	 * @param seed         to set the random
 	 * @param spaceBetween the distance between two entity
 	 */
-	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, Entity ent, int rareness) {
-		if (!(ent instanceof Bush) && !(ent instanceof Rock) && !(ent instanceof Tree)) {
+	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, String ent, long seed, int rareness) {
+		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree"))) {
 			return;
 		}
 		Random r = new Random(EntitiesConst.SEED);
@@ -45,7 +46,6 @@ public abstract class Map implements IMap {
 						while (rec_x < 0) {
 							while (rec_y < 0) {
 								if (map[lenX + rec_x][lenY + rec_y].entity != null) {
-
 									already = true;
 								}
 								rec_y++;
@@ -75,9 +75,9 @@ public abstract class Map implements IMap {
 							rec_x++;
 						}
 						if (!already) {
-							if (ent instanceof Bush) {
+							if (ent.equals("Bush")) {
 								map[i][j].entity = new Bush(new Location(i, j));
-							} else if (ent instanceof Rock) {
+							} else if (ent.equals("Rock")) {
 								map[i][j].entity = new Rock(new Location(i, j));
 							} else {
 								if (j - 1 < 0) {
@@ -108,15 +108,15 @@ public abstract class Map implements IMap {
 		}
 	}
 
-	public void setSurfaceBackground(int x, int y, int width, int height, Tile tile) {
+	public void setSurfaceBackground(int x, int y, int width, int height, String tile) {
 		for (int i = x; i < x + width; i++) {
 			for (int j = y; j < y + height; j++) {
 				Location l = new Location(j, j);
-				if (tile instanceof WaterTile) {
+				if (tile.equals("Water")) {
 					map[i][j] = new WaterTile(l);
-				} else if (tile instanceof RockTile) {
+				} else if (tile.equals("Rock")) {
 					map[i][j] = new RockTile(l);
-				} else if (tile instanceof GrassTile) {
+				} else if (tile.equals("Grass")) {
 					map[i][j] = new GrassTile(l);
 				} else {
 					map[i][j] = new DirtTile(l);
@@ -129,7 +129,7 @@ public abstract class Map implements IMap {
 		return (x - c_x) * (x - c_x) + (y - c_y) * (y - c_y) < radius * radius;
 	}
 
-	public void setCircleWaterBackground(int x, int y, Tile tile, int radius) {
+	public void setCircleWaterBackground(int x, int y, int radius) {
 		for (int i = x - (2 * radius); i < x + (2 * radius); i++) {
 			for (int j = y - (2 * radius); j < y + (2 * radius); j++) {
 				if (checkinradius(i, j, x, y, radius + 0.3f)) {
@@ -141,16 +141,12 @@ public abstract class Map implements IMap {
 	}
 
 	public void setVillage(int x, int y, int areaSize) {
-		DirtTile dirt = new DirtTile(null);
-		setSurfaceBackground(x, y, areaSize, 1, dirt);
-		setSurfaceBackground(x + 2, y + 4, areaSize - 3, 1, dirt);
-		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, dirt);
+		setSurfaceBackground(x, y, areaSize, 1, "Dirt");
+		setSurfaceBackground(x + 2, y + 4, areaSize - 3, 1, "Dirt");
+		setSurfaceBackground(x + (areaSize / 2), y, 1, areaSize, "Dirt");
 		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
-			setSurfaceBackground(indexHouse, y - 1, 1, 1, dirt);
+			setSurfaceBackground(indexHouse, y - 1, 1, 1, "Dirt");
 		}
-//		for (int indexHouse = x + 2; indexHouse < areaSize; indexHouse += 4) {
-//			setSurfaceBackground(indexHouse, y + 1, 1, 1, dirt);
-//		}
 		int i = x + 1;
 		while (i < areaSize) {
 			Location l = new Location(i, y - 4);
@@ -173,6 +169,38 @@ public abstract class Map implements IMap {
 			
 			i += house.width + 1;
 		}
+	}
+	
+	public void tickEntities(int x, int y, long elapsed) {
+		MapRender rend = EntitiesConst.GAME.render;
+		int nbTileY = rend.nbTileY + 4;
+		int nbTileX = rend.nbTileX + 4;
+		int tabSize = 50;
+		Entity tab[] = new Entity[tabSize];
+		int indexTab = 0;
+		boolean alreadyTicked = false;
 		
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
+				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
+				Tile renderTile = map[mapX][mapY];
+				Entity ent = renderTile.entity;
+				if (ent != null) {
+					for (int k = 0; k < indexTab; k++) {
+						if (ent == tab[k]) {
+							alreadyTicked = true;
+						}
+					}
+					if (!alreadyTicked) {
+						if (ent instanceof House || ent instanceof Tree || ent instanceof Hero) {
+							tab[indexTab++] = ent;
+						}
+						ent.tick(elapsed);
+					}
+					alreadyTicked = false;
+				}
+			}
+		}
 	}
 }

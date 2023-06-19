@@ -12,9 +12,10 @@ public class EntitiesConst {
 	public static Map MAP;
 	public static Tile[][] MAP_MATRIX;	
 	
-	public static int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10;
+	public static int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10, COINS = 0;
 	public static int MOUVEMENT_INDEX_MAX = 200;
-	public static int HIT_INDEX_MAX = 50;
+	public static int HIT_INDEX_MAX = 300;
+	public static int STAND_INDEX_MAX = 50;
     
 	public static int MAX_DIFFX=7;
 	public static int MAX_DIFFY=3;
@@ -54,6 +55,7 @@ public class EntitiesConst {
 	public static float TREE_SCALE = 1.2f;
 	
 	// BUSH CONSTANTS
+	public static int BUSH_HEALTH = 1;
 	public static float BUSH_SCALE = 1.3f;
 	
 	// ROCK CONSTANTS
@@ -67,4 +69,7 @@ public class EntitiesConst {
 	
 	// ENERGYBALL CONSTANTS
 	public static float ENERGYBALL_SCALE = 1.2f;
+	
+	// CAVE WALL CONSTANTS
+	public static float CAVE_WALL_SCALE = 1.0f;
 }
