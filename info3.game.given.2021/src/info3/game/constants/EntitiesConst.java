@@ -17,6 +17,8 @@ public class EntitiesConst {
 	public static int HIT_INDEX_MAX = 300;
 	public static int STAND_INDEX_MAX = 50;
     
+	public static int MAX_DIFFX=7;
+	public static int MAX_DIFFY=3;
 	// HERO CONSTANTS
 	public static int HERO_SPEED = 2;
 	
@@ -63,4 +65,7 @@ public class EntitiesConst {
 	
 	// COWBOY CONSTANTS
 	public static float COWBOY_SCALE = 1.3f;
+	
+	// ENERGYBALL CONSTANTS
+	public static float ENERGYBALL_SCALE = 1.2f;
 }

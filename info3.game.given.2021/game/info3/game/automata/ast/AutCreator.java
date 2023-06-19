@@ -134,7 +134,7 @@ public class AutCreator implements IVisitor {
 		case "MyDir":
 			return new MyDir(dir);
 		case "Cell":
-			return new Cell(dir, cat);
+			return new Cell(dir, cat, number);
 		case "GotPower":
 			return new GotPower(number);
 		case "GotStuff" :
