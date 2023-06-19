@@ -43,7 +43,7 @@ public abstract class Entity implements IEntity {
 		this.name = "";
 		this.location = new Location(0, 0);
 		this.hitBoxLocation = new Location(0,0);
-		this.health = -1;
+		this.health = - 1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
 		this.speed = 1;
@@ -299,7 +299,7 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Power() {
 		if (this.healingPotions > 0) {
-			this.health = EntitiesConst.MAX_HEALTH;
+			this.health = - 1;
 			this.healingPotions--;
 		}
 	}
