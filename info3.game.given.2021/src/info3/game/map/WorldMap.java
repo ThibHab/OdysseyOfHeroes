@@ -6,10 +6,10 @@ public class WorldMap extends Map {
 
 	public WorldMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
-		Location lp1 = new Location(0, 4);
+		Location lp1 = new Location(1, 4);
+		Location lp2 = new Location(0, 4);
 		this.player1.location.setX(lp1.getX());
 		this.player1.location.setY(lp1.getY());
-		Location lp2 = new Location(0, 2);
 		this.player2.location.setX(lp2.getX());
 		this.player2.location.setY(lp2.getY());
 		GrassTile grass = new GrassTile(null);
@@ -24,6 +24,8 @@ public class WorldMap extends Map {
 //		this.setSurfaceBackground(4, 0, 1, 5, dirt);
 //		Tree forest = new Tree(null);
 //		this.setEntityRandomly(20, 20, 40, 0, forest, 2, 2);
+		
+		
 		Bush bush = new Bush(null);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, bush, 2, 6);
 		Rock rock = new Rock(null);

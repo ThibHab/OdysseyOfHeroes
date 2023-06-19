@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
@@ -28,20 +29,21 @@ public abstract class Entity implements IEntity {
 	public boolean frozen;
 	public long mouvementIndex;
 	public Action action;
+	public int detectionRadius;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
 	public float scale;
 	public float ratioHitBoxX;
 	public float ratioHitBoxY;
-	
+
 	public Location hitBoxLocation;
 	public Location destHitBoxLocation;
 
 	public Entity() {
 		this.name = "";
 		this.location = new Location(0, 0);
-		this.hitBoxLocation = new Location(0,0);
+		this.hitBoxLocation = new Location(0, 0);
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
@@ -61,12 +63,12 @@ public abstract class Entity implements IEntity {
 		this.mouvementIndex = 0;
 
 		this.scale = 1;
-		
-		this.ratioHitBoxX = (float)0.50;
-		this.ratioHitBoxY = (float)0.75;
-		
-		this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
-		this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
+
+		this.ratioHitBoxX = (float) 0.50;
+		this.ratioHitBoxY = (float) 0.75;
+
+		this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
+		this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -78,28 +80,53 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
+		// TODO : step only if not frozen, then remove if not frozen in move 
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen) {
 			this.mouvementIndex += elapsed;
-			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
-				this.frozen = false;
-				this.mouvementIndex = 0;
-				this.location.setX(destLocation.getX());
-				this.location.setY(destLocation.getY());
-				this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
-				this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
-				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-						.getY()].entity = null;
-			} else {
-				if (mouvementIndex != 0) {
-					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-					this.location.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-							% EntitiesConst.MAP.lenX);
-					this.location.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-							% EntitiesConst.MAP.lenY);
-					this.hitBoxLocation.setX((float)(location.getX() + (1 - this.ratioHitBoxX)/2));
-					this.hitBoxLocation.setY((float)(location.getY() + (1 - this.ratioHitBoxY)/2));
+			if (this.action == Action.M) {
+				if (mouvementIndex %200 == 0) {
+					this.updateSpriteIndex();
 				}
+				if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
+					this.frozen = false;
+					this.mouvementIndex = 0;
+					this.location.setX(destLocation.getX());
+					this.location.setY(destLocation.getY());
+					this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
+					this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
+					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+							.getY()].entity = null;
+				} else {
+					if (mouvementIndex != 0) {
+						float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+						this.location.setX(
+								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location.setY(
+								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitBoxLocation.setX((float) (location.getX() + (1 - this.ratioHitBoxX) / 2));
+						this.hitBoxLocation.setY((float) (location.getY() + (1 - this.ratioHitBoxY) / 2));
+					}
+				}
+			}
+
+			if (this.action == Action.H) {
+				if (mouvementIndex % 50 == 0) {
+					this.updateSpriteIndex();
+				}
+				if (this.mouvementIndex >= EntitiesConst.HIT_INDEX_MAX) {
+					this.frozen = false;
+					this.mouvementIndex = 0;
+				}
+			}
+		} else {
+			if (this.action != Action.S) {
+				System.out.println(this.name + " is standing");
+				this.action = Action.S;
+				this.imageIndex = this.sprites.length;
+				this.updateSpriteIndex();
 			}
 		}
 	}
@@ -113,8 +140,10 @@ public abstract class Entity implements IEntity {
 				d = this.direction;
 			}
 			if (this.action != Action.M) {
-				this.imageIndex = 0;
+				System.out.println(this.name + " is moving");
 				this.action = Action.M;
+				this.imageIndex = this.sprites.length;
+				this.updateSpriteIndex();
 			}
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
@@ -213,10 +242,10 @@ public abstract class Entity implements IEntity {
 			int tirageAT = randomAT.nextInt(3);
 			switch (tirageAT) {
 			case 0:
-				new Melee("melee", location);
+				new Melee("melee", EntitiesConst.GAME);
 				break;
 			case 1:
-				new Range("range", location);
+				new Range("range", EntitiesConst.GAME);
 				break;
 			}
 		default:
@@ -226,22 +255,46 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Aut_Direction d) {
-		if (this.action != Action.H) {
-			this.imageIndex = 0;
-			this.action = Action.H;
-		}
-		Location t = frontTileLocation(d);
+		if (!this.frozen) {
+			this.frozen = true;
+			if (this.action != Action.H) {
+				System.out.println(this.name + " hits");
+				this.imageIndex = this.sprites.length;
+				this.action = Action.H;
+				this.updateSpriteIndex();
+			}
+			Location t = frontTileLocation(d);
 
-		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
-		if (entity != null) {
-			entity.health--;
+			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
+			if (entity != null && entity.category != this.category) {
+				entity.takeDamage(this.weaponDamage);
+			}
 		}
-
-		// TODO takeDamage method for animation (view) ?
 	}
 
 	public void takeDamage(int dmg) {
+		if (this.health - dmg > 0) {
+			this.health -= dmg;
+			if (this.action != Action.T) {
+				System.out.println(this.name + " is touched");
+				this.imageIndex = this.sprites.length;
+				this.action = Action.T;
+				this.updateSpriteIndex();
+			}
+		} else {
+			this.health = 0;
+			this.die();
+		}
+	}
 
+	public void die() {
+		if (this.action != Action.D) {
+			this.imageIndex = this.sprites.length;
+			this.action = Action.D;
+			this.updateSpriteIndex();
+
+			System.out.println(this.name + " is diing");
+		}
 	}
 
 	@Override
@@ -296,7 +349,7 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Power() {
 		if (this.healingPotions > 0) {
-			this.health = EntitiesConst.MAX_HEALTH;
+			this.health = - 1;
 			this.healingPotions--;
 		}
 	}
@@ -318,7 +371,6 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void setLocation(Location location) {
@@ -354,7 +406,7 @@ public abstract class Entity implements IEntity {
 
 		return new Location((int) xIndex, (int) yIndex);
 	}
-	
+
 	public boolean hitboxOverlap(Entity tgt) {
 		float x1 = this.hitBoxLocation.getX();
 		float y1 = this.hitBoxLocation.getY();
@@ -364,7 +416,7 @@ public abstract class Entity implements IEntity {
 		float y2 = y1 + this.ratioHitBoxY;
 		float X2 = X1 + tgt.ratioHitBoxX;
 		float Y2 = Y1 + tgt.ratioHitBoxY;
-		switch(this.direction) {
+		switch (this.direction) {
 		case S:
 			return x1 > X1 && X1 > x2;
 		case E:
@@ -376,5 +428,27 @@ public abstract class Entity implements IEntity {
 		default:
 			return false;
 		}
+	}
+
+	public void updateSpriteIndex() {
+	}
+	public int getHitNbSprite() {
+		return 1;
+	}
+	
+	public int getMvmtNbSprite() {
+		return 1;
+	}
+	
+	public int getStandNbSprite() {
+		return 1;
+	}
+	
+	public int getDieNbSprite() {
+		return 1;
+	}
+	
+	public int getTouchedNbSprite() {
+		return 1;
 	}
 }

@@ -61,7 +61,7 @@ public class MapRender {
 		return (float) Math.round(val * factor) / factor;
 	}
 
-	public void updateCam(Cowboy player1, Cowboy player2, int w, int h) {
+	void updateCam(Range player1, Melee player2, int w, int h) {
 		this.camera = mid(player1.location, player2.location);
 		float viewX = diff(player2.location.getX(), player1.location.getX(), map.lenX) + bufferTile;
 		float viewY = diff(player2.location.getY(), player1.location.getY(), map.lenY) + bufferTile;
@@ -138,6 +138,17 @@ public class MapRender {
 						roundDeci((j + this.offset.getY()) * tileSize, 3), tileSize);
 				renderTile.location.setX(mapX);
 				renderTile.location.setY(mapY);
+			}
+		}
+		
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				if (map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
+						% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY].entity != null) {
+					map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
+							% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY].entity
+							.paint(g, tileSize, roundDeci((i + this.offset.getX())*tileSize,3), roundDeci((j + this.offset.getY())*tileSize,3));
+				}
 			}
 		}
 	}

@@ -8,7 +8,11 @@ public class Wizz extends Aut_Action {
 	Aut_Direction dir;
 	Aut_Category cat;
 
-	public Wizz(Aut_Direction direction, Aut_Category category) {
+	public Wizz(Aut_Direction direction, Aut_Category category, int percent) {
+		this.percent = percent;
+		if (percent == -1) {
+			this.percent = 100;
+		}
 		this.dir = direction;
 		this.cat = category;
 	}
