@@ -7,6 +7,8 @@ import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 
 public abstract class Hero extends Entity {
+	public int maxHealth;
+	
 	public Hero() {
 		super();
 		this.speed = EntitiesConst.HERO_SPEED;
@@ -20,6 +22,14 @@ public abstract class Hero extends Entity {
 		BufferedImage img = sprites[imageIndex];
 		g.drawImage(img, (int) location.getX(), (int) location.getY(), (int) scale * TileSize, (int) scale * TileSize,
 				null);
+	}
+	
+	@Override
+	public void Power() {
+		if (this.healingPotions > 0) {
+			this.health = this.maxHealth;
+			this.healingPotions--;
+		}
 	}
 
 	@Override
