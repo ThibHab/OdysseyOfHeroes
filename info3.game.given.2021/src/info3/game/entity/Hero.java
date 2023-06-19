@@ -10,7 +10,6 @@ import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
-	public int maxHealth;
 
 	public Hero() {
 		super();
@@ -19,8 +18,6 @@ public abstract class Hero extends Entity {
 		this.category = Aut_Category.AT;
 
 		this.scale = EntitiesConst.HEROES_SCALE;
-		
-		this.hitbox = new Hitbox(this, (float)0.50, (float)0.75);
 	}
 
 	public void paint(Graphics g, int tileSize) {

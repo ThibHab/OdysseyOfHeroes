@@ -13,6 +13,7 @@ public class EntitiesConst {
 	
 	public static int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10, COINS = 0;
 	public static int MOUVEMENT_INDEX_MAX = 200;
+	public static int MOUVEMENT_INDEX_MAX_PROJ = 100;
 	public static int HIT_INDEX_MAX = 300;
 	public static int STAND_INDEX_MAX = 50;
     
