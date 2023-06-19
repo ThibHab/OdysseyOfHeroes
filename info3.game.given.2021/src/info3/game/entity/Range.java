@@ -12,8 +12,9 @@ public class Range extends Hero {
 		this.location = l;
 		this.weaponDamage = EntitiesConst.RANGE_DAMAGE;
 		this.weaponRange = EntitiesConst.RANGE_RANGE;
-		this.health = EntitiesConst.RANGE_HEALTH;
-
+		this.health = 8;
+		this.maxHealth = this.health;
+		
 		// --- TODO manage automaton ---
 		this.automaton = null;
 		this.currentState = null;
