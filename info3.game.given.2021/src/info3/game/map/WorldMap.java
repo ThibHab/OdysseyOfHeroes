@@ -34,6 +34,9 @@ public class WorldMap extends Map {
 		this.setEntityRandomly(0, 0, lenX - 2, 2, tree, 2, 8);
 		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
 		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
+		
+		Coin c = new Coin(new Location(0,0));
+		map[(int)c.location.getX()][(int)c.location.getY()].entity = c;
 	}
 
 }

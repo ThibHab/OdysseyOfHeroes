@@ -16,5 +16,8 @@ public class AnimConst {
 	public static final int RANGE_T = 3;
 	public static final int RANGE_D = 3;
 	public static final int RANGE_TOT = RANGE_S + RANGE_M + RANGE_H + RANGE_T + RANGE_D;
+	
+	//Items
+	public static final int COIN_S = 3;
 
 }

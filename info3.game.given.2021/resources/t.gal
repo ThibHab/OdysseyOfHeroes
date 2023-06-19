@@ -86,3 +86,8 @@ Bush(Existing){
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
  }
+ 
+ Coin(Exists) {
+   *(Exists)
+   | True ? : (Exists) 
+ }
