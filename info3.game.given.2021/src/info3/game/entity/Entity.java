@@ -20,7 +20,7 @@ public abstract class Entity implements IEntity {
 	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed, attackSpeed;
-	public int coins, healingPotions, strengthPotions;
+	public int healingPotions, strengthPotions;
 
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
@@ -50,7 +50,7 @@ public abstract class Entity implements IEntity {
 		this.speed = 1;
 		this.attackSpeed = 500;
 
-		this.coins = 0;
+		EntitiesConst.COINS = 0;
 		this.healingPotions = 0;
 		this.strengthPotions = 0;
 
@@ -336,13 +336,15 @@ public abstract class Entity implements IEntity {
 			this.updateSpriteIndex();
 
 			if (EntitiesConst.GAME.debug) {
-				System.out.println(this.name + " is diing");
+				System.out.println(this.name + " has died");
 			}
+			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 		}
 	}
 
 	@Override
 	public void Jump() {
+		// TODO write function not usable ?
 	}
 
 	@Override
@@ -367,13 +369,12 @@ public abstract class Entity implements IEntity {
 			d = this.direction;
 		}
 
-		Location t = frontTileLocation(d);
-
-		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
+		Location location = frontTileLocation(d);
+		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin) {
-				this.coins++;
-				// TODO destroy la coin
+				EntitiesConst.COINS++;
+				// TODO destroy the coin
 			} else if (entity instanceof HealingPotion) {
 				this.healingPotions++;
 			} else if (entity instanceof StrengthPotion) {
