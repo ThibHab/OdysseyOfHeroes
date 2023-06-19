@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
+import java.nio.CharBuffer;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -39,6 +40,7 @@ import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
 import info3.game.graphics.GameCanvas;
+import info3.game.hud.HudInGame;
 import info3.game.map.DebugMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
@@ -71,6 +73,7 @@ public class Game {
 	public IMap map;
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
+	public HudInGame hud;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
@@ -113,6 +116,8 @@ public class Game {
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
 		m_frame = m_canvas.createFrame(d);
+		
+		hud = new HudInGame(m_frame);
 
 		System.out.println("  - setting up the frame...");
 		setupFrame();
@@ -221,6 +226,15 @@ public class Game {
 //		m_cowboy.paint(g, width, height);
 		
 		render.paint(g);
+		hud.paint(g);
+//		g.setColor(Color.red);
+//		g.fillRect(5, height - 15, 10, 10);
+//		g.fillRect(17, height - 15, 10, 10);
+//		g.fillRect(29, height - 15, 10, 10);
+//		g.fillRect(41, height - 15, 10, 10);
+//		g.fillRect(53, height - 15, 10, 10);
+//		String j1 = "Vie J1";
+//		g.drawString(j1, 70, height - 5);
 	}
 
 }
