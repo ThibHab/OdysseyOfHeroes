@@ -12,6 +12,7 @@ import info3.game.map.Tile;
 
 public class Projectile extends Entity {
 	public Entity owner;
+	public int tilesCrossed;
 
 	public Projectile(Entity owner, Aut_Direction d) {
 		super();
@@ -23,6 +24,7 @@ public class Projectile extends Entity {
 				this.automaton = next;
 		}
 		this.owner = owner;
+		this.tilesCrossed = 0;
 		this.sprites = ImagesConst.ENERGYBALL;
 		this.currentState = this.automaton.initial;
 		this.location.setX((float)(this.owner.location.getX()));
@@ -37,6 +39,7 @@ public class Projectile extends Entity {
 	@Override
 	public void Move(Aut_Direction d) {
 		if (!this.frozen) {
+			this.tilesCrossed++;
 			this.frozen = true;
 			this.moving = true;
 
@@ -121,6 +124,11 @@ public class Projectile extends Entity {
 	}
 	
 	public void tick(long elapsed) {
+		if (this.owner.range < this.tilesCrossed) {
+			EntitiesConst.MAP.projectiles.remove(this);
+			System.out.println("dead proj");
+			return;
+		}
 		this.automaton.step(this, EntitiesConst.GAME);
 		Entity e = EntitiesConst.MAP_MATRIX[(int)this.destLocation.getX()][(int)this.destLocation.getY()].entity;
 		if (e != null && e != this.owner) {
@@ -131,7 +139,7 @@ public class Projectile extends Entity {
 		}
 		if (this.frozen && this.moving) {
 			this.mouvementIndex += elapsed;
-			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
+			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ) {
 				this.frozen = false;
 				this.moving = false;
 				this.mouvementIndex = 0;
@@ -142,7 +150,7 @@ public class Projectile extends Entity {
 			} else {
 				if (mouvementIndex != 0) {
 					this.imageIndex = (this.imageIndex + 1) % this.sprites.length;
-					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
 					this.location
 							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
 									% EntitiesConst.MAP.lenX);

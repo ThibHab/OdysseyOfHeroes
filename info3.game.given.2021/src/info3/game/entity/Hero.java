@@ -8,7 +8,6 @@ import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 
 public abstract class Hero extends Entity {
-	public int maxHealth;
 
 	public Hero() {
 		super();

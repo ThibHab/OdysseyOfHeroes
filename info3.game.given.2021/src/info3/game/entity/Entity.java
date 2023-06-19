@@ -33,6 +33,8 @@ public abstract class Entity implements IEntity {
 	public long attackIndex;
 	public Action action;
 	public int detectionRadius;
+	public int maxHealth;
+	public int range;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -49,6 +51,7 @@ public abstract class Entity implements IEntity {
 		this.weaponRange = 1;
 		this.speed = 1;
 		this.attackSpeed = 500;
+		this.range = 0;
 
 		this.coins = 0;
 		this.healingPotions = 0;
