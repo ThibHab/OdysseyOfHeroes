@@ -27,8 +27,11 @@ public abstract class Hero extends Entity {
 		g.drawImage(img, (int) pixel.getX(), (int) pixel.getY(), tileSize, tileSize, null);
 		g.setColor(Color.blue);
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
-		g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
-				(int) (tileSize * this.hitbox.height));
+
+		if (EntitiesConst.GAME.debug) {
+			g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
+					(int) (tileSize * this.hitbox.height));
+		}
 		// g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize,
 		// game.render.tileSize);
 	}

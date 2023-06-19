@@ -67,6 +67,7 @@ public class Game {
 		}
 	}
 
+	public boolean debug = true;
 	JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -89,9 +90,9 @@ public class Game {
 		EntitiesConst.GAME = this;
 		//TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
-		
+
 		IVisitor visitor = new AutCreator();
-		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
+		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
 		player1 = new Melee("Player1", this);
@@ -105,20 +106,20 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
-		
+
 		map = new WorldMap(64, 64, player1, player2);
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);
-		
+
 		player1.frozen = false;
 		player2.frozen = false;
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
 		m_frame = m_canvas.createFrame(d);
-		
+
 		hud = new HudInGame(m_frame);
 
 		System.out.println("  - setting up the frame...");
@@ -138,9 +139,11 @@ public class Game {
 
 		m_frame.add(m_canvas, BorderLayout.CENTER);
 
-		m_text = new JLabel();
-		m_text.setText("Tick: 0ms FPS=0");
-		m_frame.add(m_text, BorderLayout.NORTH);
+		if (EntitiesConst.GAME.debug) {
+			m_text = new JLabel();
+			m_text.setText("Tick: 0ms FPS=0");
+			m_frame.add(m_text, BorderLayout.NORTH);
+		}
 
 		// center the window on the screen
 		m_frame.setLocationRelativeTo(null);
@@ -165,8 +168,8 @@ public class Game {
 		m_musicName = m_musicNames[m_musicIndex];
 		String filename = "resources/" + m_musicName + ".ogg";
 		m_musicIndex = (m_musicIndex + 1) % m_musicNames.length;
-		try { 
-			RandomAccessFile file = new RandomAccessFile(filename,"r");
+		try {
+			RandomAccessFile file = new RandomAccessFile(filename, "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
 			m_canvas.playMusic(fis, 0, 1.0F);
 		} catch (Throwable th) {
@@ -176,7 +179,7 @@ public class Game {
 	}
 
 	private int m_musicIndex = 0;
-	private String[] m_musicNames = new String[] { "theme" }; 
+	private String[] m_musicNames = new String[] { "theme" };
 
 	private long m_textElapsed;
 
@@ -194,23 +197,25 @@ public class Game {
 
 		// Update every second
 		// the text on top of the frame: tick and fps
-		m_textElapsed += elapsed;
-		//TODO modif pour debug
-		if (m_textElapsed > 1000) {
-			m_textElapsed = 0;
-			float period = m_canvas.getTickPeriod();
-			int fps = m_canvas.getFPS();
 
-			String txt = "Tick=" + period + "ms";
-			while (txt.length() < 15)
-				txt += " ";
-			txt = txt + fps + " fps   ";
-			txt = txt+"P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
-			txt = txt+"P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
-			txt = txt+"Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
-			txt = txt+"offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
-			txt = txt+"offset" + render.nbTileX + ";" + render.nbTileY + "     ";
-			m_text.setText(txt);
+		if (EntitiesConst.GAME.debug) {
+			m_textElapsed += elapsed;
+			// TODO modif pour debug
+			if (m_textElapsed > 100) {
+				m_textElapsed = 0;
+				float period = m_canvas.getTickPeriod();
+				int fps = m_canvas.getFPS();
+
+				String txt = "Tick=" + period + "ms";
+				while (txt.length() < 15)
+					txt += " ";
+				txt = txt + fps + " fps   ";
+				txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+				txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+				txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+				txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
+				m_text.setText(txt);
+			}
 		}
 	}
 
