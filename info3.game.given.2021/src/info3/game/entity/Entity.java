@@ -435,14 +435,14 @@ public abstract class Entity implements IEntity {
 	}
 
 	public boolean hitboxOverlap(Entity tgt) {
-		float x1 = this.hitbox.location.getX();
+		float x1 = this.hitbox.location.getX() ;
 		float y1 = this.hitbox.location.getY();
 		float X1 = tgt.hitbox.location.getX();
 		float Y1 = tgt.hitbox.location.getY();
-		float x2 = x1 + this.hitbox.width;
-		float y2 = y1 + this.hitbox.height;
-		float X2 = X1 + tgt.hitbox.width;
-		float Y2 = Y1 + tgt.hitbox.height;
+		float x2 = (x1 + this.hitbox.width+EntitiesConst.MAP.lenX)%EntitiesConst.MAP.lenX;
+		float y2 = (y1 + this.hitbox.height+EntitiesConst.MAP.lenY)%EntitiesConst.MAP.lenY;
+		float X2 = (X1 + tgt.hitbox.width+EntitiesConst.MAP.lenX)%EntitiesConst.MAP.lenX;
+		float Y2 = (Y1 + tgt.hitbox.height+EntitiesConst.MAP.lenY)%EntitiesConst.MAP.lenY;
 		switch (this.direction) {
 		case S:
 			return y2 > Y1 && x1 <= X2 && x2 >= X1;
