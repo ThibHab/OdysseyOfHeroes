@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
@@ -31,6 +32,7 @@ public abstract class Entity implements IEntity {
 	public long mouvementIndex;
 	public long attackIndex;
 	public Action action;
+	public int detectionRadius;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -77,9 +79,14 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
+		// TODO : step only if not frozen, then remove if not frozen in move 
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen && this.moving) {
 			this.mouvementIndex += elapsed;
+			if (this.action == Action.M) {
+				if (mouvementIndex %200 == 0) {
+					this.updateSpriteIndex();
+				}
 			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
 				this.frozen = false;
 				this.moving = false;
@@ -107,6 +114,23 @@ public abstract class Entity implements IEntity {
 				this.hitFrozen = false;
 				this.attackIndex = 0;
 			}
+
+			if (this.action == Action.H) {
+				if (mouvementIndex % 50 == 0) {
+					this.updateSpriteIndex();
+				}
+				if (this.mouvementIndex >= EntitiesConst.HIT_INDEX_MAX) {
+					this.frozen = false;
+					this.mouvementIndex = 0;
+				}
+			}
+		} else {
+			if (this.action != Action.S) {
+				System.out.println(this.name + " is standing");
+				this.action = Action.S;
+				this.imageIndex = this.sprites.length;
+				this.updateSpriteIndex();
+			}
 		}
 	}
 
@@ -120,8 +144,10 @@ public abstract class Entity implements IEntity {
 				d = this.direction;
 			}
 			if (this.action != Action.M) {
-				this.imageIndex = 0;
+				System.out.println(this.name + " is moving");
 				this.action = Action.M;
+				this.imageIndex = this.sprites.length;
+				this.updateSpriteIndex();
 			}
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
@@ -221,10 +247,10 @@ public abstract class Entity implements IEntity {
 			int tirageAT = randomAT.nextInt(3);
 			switch (tirageAT) {
 			case 0:
-				new Melee("melee", location);
+				new Melee("melee", EntitiesConst.GAME);
 				break;
 			case 1:
-				new Range("range", location);
+				new Range("range", EntitiesConst.GAME);
 				break;
 			}
 		default:
@@ -234,11 +260,15 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Aut_Direction d) {
-		if (this.action != Action.H) {
-			this.imageIndex = 0;
-			this.action = Action.H;
-		}
-		Location t = frontTileLocation(d);
+		if (!this.frozen) {
+			this.frozen = true;
+			if (this.action != Action.H) {
+				System.out.println(this.name + " hits");
+				this.imageIndex = this.sprites.length;
+				this.action = Action.H;
+				this.updateSpriteIndex();
+			}
+			Location t = frontTileLocation(d);
 
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 		if (entity != null) {
@@ -273,9 +303,11 @@ public abstract class Entity implements IEntity {
 		System.out.println("HEHO CA FAIT MALEUH");
 		if (this.health - dmg > 0) {
 			this.health -= dmg;
-			if (this.action != Action.H) {
-				this.imageIndex = 0;
-				this.action = Action.H;
+			if (this.action != Action.T) {
+				System.out.println(this.name + " is touched");
+				this.imageIndex = this.sprites.length;
+				this.action = Action.T;
+				this.updateSpriteIndex();
 			}
 		} else {
 			this.health = 0;
@@ -285,8 +317,11 @@ public abstract class Entity implements IEntity {
 
 	public void die() {
 		if (this.action != Action.D) {
-			this.imageIndex = 0;
+			this.imageIndex = this.sprites.length;
 			this.action = Action.D;
+			this.updateSpriteIndex();
+
+			System.out.println(this.name + " is diing");
 		}
 	}
 
@@ -342,7 +377,7 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Power() {
 		if (this.healingPotions > 0) {
-			this.health = EntitiesConst.MAX_HEALTH;
+			this.health = - 1;
 			this.healingPotions--;
 		}
 	}
@@ -364,7 +399,6 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void setLocation(Location location) {
@@ -422,5 +456,27 @@ public abstract class Entity implements IEntity {
 		default:
 			return false;
 		}
+	}
+
+	public void updateSpriteIndex() {
+	}
+	public int getHitNbSprite() {
+		return 1;
+	}
+	
+	public int getMvmtNbSprite() {
+		return 1;
+	}
+	
+	public int getStandNbSprite() {
+		return 1;
+	}
+	
+	public int getDieNbSprite() {
+		return 1;
+	}
+	
+	public int getTouchedNbSprite() {
+		return 1;
 	}
 }

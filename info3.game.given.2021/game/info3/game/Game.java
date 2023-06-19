@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
+import java.nio.CharBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,7 +40,11 @@ import info3.game.automata.parser.AutomataParser;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
+import info3.game.entity.Location;
+import info3.game.entity.Melee;
+import info3.game.entity.Range;
 import info3.game.graphics.GameCanvas;
+import info3.game.hud.HudInGame;
 import info3.game.map.DebugMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
@@ -66,13 +71,12 @@ public class Game {
 	public GameCanvas m_canvas;
 	public CanvasListener m_listener;
 	Cowboy m_cowboy;
-	public Cowboy player1;
-	public Cowboy player2;
+	public Range player1;
+	public Melee player2;
 	Sound m_music;
 	public IMap map;
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
-	public List<Entity> entities;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
@@ -84,16 +88,16 @@ public class Game {
 		int level = 0, xp = 0;
 		
 		IVisitor visitor = new AutCreator();
-		AST ast = (AST)AutomataParser.from_file("resources/test.gal");
+		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		entities = new LinkedList<>();
 		
-		player1 = new Cowboy(this, "Player1");
-		this.entities.add(player1);
+		player1 = new Range("Player1", this);
+        this.entities.add(player1);
 		player1.name = "player1";
-		player2 = new Cowboy(this, "Player2");
-		this.entities.add(player2);
-		player2.name = "player2";
+		player2 = new Melee("Player2", this);
+        this.entities.add(player2);
+        player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -106,10 +110,15 @@ public class Game {
 		render = new MapRender((Map)map, this);
 		
 		Entity.InitStatics(this, level, xp);
+		
+		player1.frozen = false;
+		player2.frozen = false;
 
 		System.out.println("  - creating frame...");
 		Dimension d = new Dimension(1024, 768);
 		m_frame = m_canvas.createFrame(d);
+		
+		hud = new HudInGame(m_frame);
 
 		System.out.println("  - setting up the frame...");
 		setupFrame();
@@ -219,6 +228,8 @@ public class Game {
 //		m_cowboy.paint(g, width, height);
 		
 		render.paint(g);
+		player1.paint(g, this.render.tileSize);
+		player2.paint(g, this.render.tileSize);
 	}
 
 }
