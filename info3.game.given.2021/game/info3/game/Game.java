@@ -37,6 +37,7 @@ import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
@@ -77,6 +78,7 @@ public class Game {
 	public IMap map;
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
+	public HudInGame hud;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
@@ -90,13 +92,10 @@ public class Game {
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST)AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
-		entities = new LinkedList<>();
 		
 		player1 = new Range("Player1", this);
-        this.entities.add(player1);
 		player1.name = "player1";
 		player2 = new Melee("Player2", this);
-        this.entities.add(player2);
         player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
@@ -183,8 +182,10 @@ public class Game {
 	 */
 	void tick(long elapsed) {
 		
-		for(int i = 0; i < entities.size(); i++) {
-			entities.get(i).tick(elapsed);
+		player1.tick(elapsed);
+		player2.tick(elapsed);
+		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 		}
 
 		// Update every second

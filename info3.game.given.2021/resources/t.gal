@@ -67,10 +67,9 @@ Bush(Existing){
   
  } 
  
- Projectile(Forward){
+ EnergyBall(Forward){
    *(Forward)
-   | Cell(F,V) ? Move : (Forward)
-   | True ? Wizz(F,A) : ()
+   | True ? Move : (Forward)
    
    *()
  }

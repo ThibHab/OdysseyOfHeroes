@@ -1,6 +1,7 @@
 package info3.game.map;
 
 import java.awt.Graphics;
+import java.util.LinkedList;
 import java.util.Random;
 
 import info3.game.constants.EntitiesConst;
@@ -10,6 +11,7 @@ public abstract class Map implements IMap {
 	public Tile[][] map;
 	public int lenX, lenY;
 	Entity player1, player2;
+	public LinkedList<Projectile> projectiles;
 
 	public Map(int nb_x, int nb_y, Entity p1, Entity p2) {
 		this.lenX = nb_x;
@@ -17,6 +19,7 @@ public abstract class Map implements IMap {
 		this.player1 = p1;
 		this.player2 = p2;
 		this.map = new Tile[lenX][lenY];
+		this.projectiles = new LinkedList<>();
 	}
 
 	/**

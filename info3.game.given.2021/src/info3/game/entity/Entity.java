@@ -43,7 +43,7 @@ public abstract class Entity implements IEntity {
 		this.name = "";
 		this.location = new Location(0, 0);
 		this.destLocation = this.location;
-		this.hitbox = new Hitbox (this, 1,1);
+		this.hitbox = new Hitbox(this, 1, 1);
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
@@ -79,25 +79,24 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		// TODO : step only if not frozen, then remove if not frozen in move 
+		// TODO : step only if not frozen, then remove if not frozen in move
 		this.automaton.step(this, EntitiesConst.GAME);
-		if (this.frozen && this.moving) {
+		if (this.frozen) {
 			this.mouvementIndex += elapsed;
 			if (this.action == Action.M) {
-				if (mouvementIndex %200 == 0) {
+				if (mouvementIndex % 200 == 0) {
 					this.updateSpriteIndex();
 				}
-			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
-				this.frozen = false;
-				this.moving = false;
-				this.mouvementIndex = 0;
-				this.location.setX(destLocation.getX());
-				this.location.setY(destLocation.getY());
-				this.hitbox.update();
-				EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-						.getY()].entity = null;
-			} else {
-				if (mouvementIndex != 0) {
+				if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
+					this.frozen = false;
+					this.moving = false;
+					this.mouvementIndex = 0;
+					this.location.setX(destLocation.getX());
+					this.location.setY(destLocation.getY());
+					this.hitbox.update();
+					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+							.getY()].entity = null;
+				} else if (mouvementIndex != 0) {
 					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
 					this.location
 							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
@@ -107,31 +106,31 @@ public abstract class Entity implements IEntity {
 									% EntitiesConst.MAP.lenY);
 					this.hitbox.update();
 				}
-			}
-		}else if(this.hitFrozen) {
-			this.attackIndex += elapsed;
-			if(this.attackIndex >= this.attackSpeed) {
-				this.hitFrozen = false;
-				this.attackIndex = 0;
-			}
-
-			if (this.action == Action.H) {
+			} else if (this.action == Action.H) {
 				if (mouvementIndex % 50 == 0) {
 					this.updateSpriteIndex();
 				}
-				if (this.mouvementIndex >= EntitiesConst.HIT_INDEX_MAX) {
+				this.attackIndex += elapsed;
+				if (this.attackIndex >= this.attackSpeed) {
 					this.frozen = false;
+					this.hitFrozen = false;
 					this.mouvementIndex = 0;
+					this.attackIndex = 0;
 				}
 			}
-		} else {
-			if (this.action != Action.S) {
-				System.out.println(this.name + " is standing");
-				this.action = Action.S;
-				this.imageIndex = this.sprites.length;
-				this.updateSpriteIndex();
-			}
+		} else if (this.action != Action.S) {
+			System.out.println(this.name + " is standing");
+			this.action = Action.S;
+			this.imageIndex = this.sprites.length;
+			this.updateSpriteIndex();
 		}
+//		if (this.hitFrozen) {
+//			this.attackIndex += elapsed;
+//			if (this.attackIndex >= this.attackSpeed) {
+//				this.hitFrozen = false;
+//				this.attackIndex = 0;
+//			}
+//		}
 	}
 
 	@Override
@@ -270,31 +269,32 @@ public abstract class Entity implements IEntity {
 			}
 			Location t = frontTileLocation(d);
 
-		Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
-		if (entity != null) {
-			switch(d) {
-			case N:
-				if(entity.hitbox.location.getY() + entity.hitbox.height > t.getY() + 0.5) {
-					entity.takeDamage(this.weaponDamage);
+			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
+			if (entity != null) {
+				switch (d) {
+				case N:
+					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() + 0.5) {
+						entity.takeDamage(this.weaponDamage);
+					}
+					break;
+				case S:
+					if (entity.hitbox.location.getY() < t.getY() + 0.5) {
+						entity.takeDamage(this.weaponDamage);
+					}
+					break;
+				case E:
+					if (entity.hitbox.location.getX() < t.getX() + 0.5) {
+						entity.takeDamage(this.weaponDamage);
+					}
+					break;
+				case W:
+					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() + 0.5) {
+						entity.takeDamage(this.weaponDamage);
+					}
+					break;
+				default:
+					break;
 				}
-				break;
-			case S:
-				if(entity.hitbox.location.getY() < t.getY() + 0.5) {
-					entity.takeDamage(this.weaponDamage);
-				}
-				break;
-			case E:
-				if(entity.hitbox.location.getX() < t.getX() + 0.5) {
-					entity.takeDamage(this.weaponDamage);
-				}
-				break;
-			case W:
-				if(entity.hitbox.location.getX() + entity.hitbox.width > t.getX() + 0.5) {
-					entity.takeDamage(this.weaponDamage);
-				}
-				break;
-			default:
-				break;
 			}
 		}
 	}
@@ -377,7 +377,7 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Power() {
 		if (this.healingPotions > 0) {
-			this.health = - 1;
+			this.health = -1;
 			this.healingPotions--;
 		}
 	}
@@ -450,7 +450,7 @@ public abstract class Entity implements IEntity {
 		case E:
 			return x2 > X1 && y1 <= Y2 && y2 >= Y1;
 		case N:
-			return y1 < Y2 && x1 <= X2 && x2 >= X1 ;
+			return y1 < Y2 && x1 <= X2 && x2 >= X1;
 		case W:
 			return x1 < X2 && y1 <= Y2 && y2 >= Y1;
 		default:
@@ -460,22 +460,23 @@ public abstract class Entity implements IEntity {
 
 	public void updateSpriteIndex() {
 	}
+
 	public int getHitNbSprite() {
 		return 1;
 	}
-	
+
 	public int getMvmtNbSprite() {
 		return 1;
 	}
-	
+
 	public int getStandNbSprite() {
 		return 1;
 	}
-	
+
 	public int getDieNbSprite() {
 		return 1;
 	}
-	
+
 	public int getTouchedNbSprite() {
 		return 1;
 	}

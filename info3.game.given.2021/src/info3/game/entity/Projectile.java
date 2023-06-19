@@ -31,7 +31,7 @@ public class Projectile extends Entity {
 		this.speed = 2;
 		this.hitbox = new Hitbox(this, (float)0.30, (float)0.40);
 		this.scale = EntitiesConst.ENERGYBALL_SCALE;
-		EntitiesConst.GAME.entities.add(this);
+		EntitiesConst.MAP.projectiles.add(this);
 	}
 
 	@Override
@@ -123,10 +123,10 @@ public class Projectile extends Entity {
 	public void tick(long elapsed) {
 		this.automaton.step(this, EntitiesConst.GAME);
 		Entity e = EntitiesConst.MAP_MATRIX[(int)this.destLocation.getX()][(int)this.destLocation.getY()].entity;
-		if (e != null && e.category != this.owner.category) {
+		if (e != null && e != this.owner) {
 			if (this.hitboxOverlap(e)) {
 				System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
-				EntitiesConst.GAME.entities.remove(this);
+				EntitiesConst.MAP.projectiles.remove(this);
 			}
 		}
 		if (this.frozen && this.moving) {
