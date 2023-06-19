@@ -184,11 +184,14 @@ public class Game {
 	 */
 	void tick(long elapsed) {
 		
-		player1.tick(elapsed);
-		player2.tick(elapsed);
 		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 		}
+
+//		player1.tick(elapsed);
+//		player2.tick(elapsed);
+		
+		((Map) map).tickEntities((int) render.offset.getX(), (int) render.offset.getY(), elapsed);
 
 //		player1.tick(elapsed);
 //		player2.tick(elapsed);
