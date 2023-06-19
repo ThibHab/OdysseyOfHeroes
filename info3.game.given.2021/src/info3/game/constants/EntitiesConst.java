@@ -63,4 +63,7 @@ public class EntitiesConst {
 	
 	// COWBOY CONSTANTS
 	public static float COWBOY_SCALE = 1.3f;
+	
+	// ENERGYBALL CONSTANTS
+	public static float ENERGYBALL_SCALE = 1.2f;
 }

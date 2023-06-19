@@ -151,6 +151,10 @@ public class MapRender {
 				}
 			}
 		}
+		
+		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX())*tileSize,3), roundDeci((this.offset.getY())*tileSize,3));
+		}
 	}
 
 }

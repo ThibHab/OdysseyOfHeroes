@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
 import java.nio.CharBuffer;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
@@ -92,7 +94,9 @@ public class Game {
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
 		player1 = new Range("Player1", this);
+		player1.name = "player1";
 		player2 = new Melee("Player2", this);
+        player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -178,9 +182,12 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-
+		
 		player1.tick(elapsed);
 		player2.tick(elapsed);
+		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
+		}
 
 		// Update every second
 		// the text on top of the frame: tick and fps
