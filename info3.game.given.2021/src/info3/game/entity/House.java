@@ -1,5 +1,7 @@
 package info3.game.entity;
 
+import java.awt.Graphics;
+
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -22,5 +24,9 @@ public class House extends DecorElement {
 		this.height = 3;
 		
 		this.scale = EntitiesConst.HOUSE_SCALE;
+	}
+	
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		
 	}
 }

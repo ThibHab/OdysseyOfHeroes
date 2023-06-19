@@ -1,5 +1,6 @@
 package info3.game.entity;
 
+
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -27,6 +28,5 @@ public class Bush extends DecorElement {
 		
 		this.scale = EntitiesConst.BUSH_SCALE;
 	}
-
-	// TODO is the default egg method sufficient ?
+		
 }

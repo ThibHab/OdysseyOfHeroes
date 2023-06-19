@@ -22,13 +22,12 @@ public abstract class Hero extends Entity {
 	public void paint(Graphics g, int tileSize) {
 		BufferedImage img = sprites[imageIndex];
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
-		g.drawImage(img, (int) pixel.getX(), (int) pixel.getY(), tileSize, tileSize, null);
+		int diff=(int) (tileSize*(scale-1))/2;
+		g.drawImage(img, (int) pixel.getX()-diff, (int) pixel.getY()-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
 		g.setColor(Color.blue);
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitBoxLocation, true);
 		g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.ratioHitBoxX),
 				(int) (tileSize * this.ratioHitBoxY));
-		// g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize,
-		// game.render.tileSize);
 	}
 
 	@Override

@@ -77,25 +77,8 @@ public abstract class Map implements IMap {
 							} else if (ent instanceof Rock) {
 								map[i][j].entity = new Rock(new Location(i, j));
 							} else {
-								if (j - 1 < 0) {
-									if (map[i][lenY - 1].entity == null && map[i + 1][lenY - 1].entity == null
-											&& map[i + 1][j].entity == null) {
-										Tree tree = new Tree(new Location(i, j - 1));
-										map[i][lenY - 1].entity = tree;
-										map[i][j].entity = tree;
-										map[i + 1][lenY - 1].entity = tree;
-										map[i + 1][j].entity = tree;
-									}
-								} else {
-									if (map[i][j - 1].entity == null && map[i + 1][j - 1].entity == null
-											&& map[i + 1][j].entity == null) {
-										Tree tree = new Tree(new Location(i, j - 1));
-										map[i][j - 1].entity = tree;
-										map[i][j].entity = tree;
-										map[i + 1][j - 1].entity = tree;
-										map[i + 1][j].entity = tree;
-									}
-								}
+								map[i][j].entity=new Tree(new Location(i,j),map[i][j]);
+								
 
 							}
 						}

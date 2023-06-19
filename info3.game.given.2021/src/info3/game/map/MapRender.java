@@ -65,15 +65,13 @@ public class MapRender {
 		this.camera = mid(player1.location, player2.location);
 		float viewX = diff(player2.location.getX(), player1.location.getX(), map.lenX) + bufferTile;
 		float viewY = diff(player2.location.getY(), player1.location.getY(), map.lenY) + bufferTile;
-		if(viewX<EntitiesConst.MAX_DIFFX*2+bufferTile && viewY<EntitiesConst.MAX_DIFFY*2+bufferTile) {
+		if (viewX < EntitiesConst.MAX_DIFFX * 2 + bufferTile && viewY < EntitiesConst.MAX_DIFFY * 2 + bufferTile) {
 			Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
 					(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
-			nbTileX = (int) Math.ceil(
-					diff((float) Math.floor(upLeft.getX()), (float) Math.ceil(upLeft.getX() + viewX) % map.lenX, map.lenX))
-					+ 1;
-			nbTileY = (int) Math.ceil(
-					diff((float) Math.floor(upLeft.getY()), (float) Math.ceil(upLeft.getY() + viewY) % map.lenY, map.lenY))
-					+ 1;
+			nbTileX = (int) Math.ceil(diff((float) Math.floor(upLeft.getX()),
+					(float) Math.ceil(upLeft.getX() + viewX) % map.lenX, map.lenX)) + 1;
+			nbTileY = (int) Math.ceil(diff((float) Math.floor(upLeft.getY()),
+					(float) Math.ceil(upLeft.getY() + viewY) % map.lenY, map.lenY)) + 1;
 			double tempx = w / viewX;
 			double tempy = h / viewY;
 			if (tempx > tempy) {
@@ -102,21 +100,21 @@ public class MapRender {
 		return res;
 	}
 
-	public boolean moveDooable(Location loc,Aut_Direction dir,int h, int w) {
-		Location pix=this.gridToPixel(loc, true);
-		switch(dir) {
+	public boolean moveDooable(Location loc, Aut_Direction dir, int h, int w) {
+		Location pix = this.gridToPixel(loc, true);
+		switch (dir) {
 		case N:
-			return pix.getY()+tileSize/2>=0;
+			return pix.getY() + tileSize / 2 >= 0;
 		case S:
-			return pix.getY()+tileSize/2<h;
+			return pix.getY() + tileSize / 2 < h;
 		case W:
-			return pix.getX()+tileSize/2>=0;
+			return pix.getX() + tileSize / 2 >= 0;
 		case E:
-			return pix.getX()+tileSize/2<w;
+			return pix.getX() + tileSize / 2 < w;
 		default:
 			return false;
 		}
-		}
+	}
 
 	public void setOffsetCam() {
 		Location camTemp = gridToPixel(camera, false);
@@ -129,6 +127,8 @@ public class MapRender {
 	public void paint(Graphics g) {
 		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
 		setOffsetCam();
+		
+		//BACKGGROUND
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
 				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
@@ -136,21 +136,36 @@ public class MapRender {
 				Tile renderTile = map.map[mapX][mapY];
 				renderTile.paint(g, roundDeci((i + this.offset.getX()) * tileSize, 3),
 						roundDeci((j + this.offset.getY()) * tileSize, 3), tileSize);
-				renderTile.location.setX(mapX);
-				renderTile.location.setY(mapY);
 			}
 		}
-		
+		//EFFECT
+
+		//DECOR & PLAYER
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
-				if (map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
-						% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY].entity != null) {
-					map.map[(int) (i + this.camera.getX() + map.lenX - nbTileX / 2)
-							% map.lenX][(int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY].entity
-							.paint(g, tileSize, roundDeci((i + this.offset.getX())*tileSize,3), roundDeci((j + this.offset.getY())*tileSize,3));
+				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
+				int mapY = (int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
+				Tile renderTile = map.map[mapX][mapY];
+				if (renderTile.entity != null) {
+					renderTile.entity.paint(g, tileSize, roundDeci((i + this.offset.getX()) * tileSize, 3),
+							roundDeci((j + this.offset.getY()) * tileSize, 3));
 				}
 			}
 		}
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
+				int mapY = (int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
+				Tile renderTile = map.map[mapX][mapY];
+				if (renderTile.tpBlock != null) {
+					renderTile.tpBlock.paint(g, tileSize, roundDeci((i + this.offset.getX()) * tileSize, 3),
+							roundDeci((j + this.offset.getY()) * tileSize, 3));
+				}
+			}
+		}
+		
+		//NIGHT
+		
 	}
 
 }
