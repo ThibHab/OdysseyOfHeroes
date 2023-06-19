@@ -269,6 +269,7 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Aut_Direction d) {
+		// TODO Melee blocked when touching an enemy, also see for the hits in the border of the maps
 		if (!this.frozen) {
 			this.frozen = true;
 			if (this.action != Action.H) {

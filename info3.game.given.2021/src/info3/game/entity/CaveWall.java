@@ -10,6 +10,8 @@ public class CaveWall extends DecorElement {
 		this.name = "CaveWall";
 		this.location = l;
 
+		// TODO set walls unbreakable, but keep this idea for a secret place room in the labyrinth ?
+		
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
