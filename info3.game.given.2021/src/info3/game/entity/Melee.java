@@ -12,23 +12,46 @@ import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Melee extends Hero {
-	public Melee(String name, Location l) {
+	public Melee(String name, Game g) {
 		super();
 		this.name = name;
-		this.location = l;
 		this.weaponDamage = EntitiesConst.MELEE_DAMAGE;
 		this.weaponRange = EntitiesConst.MELEE_RANGE;
 		this.health = EntitiesConst.MELEE_HEALTH;
 
-		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
-		// -----------------------------
+		for (Aut_Automaton next : g.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 
-		// --- TODO manage sprite properly ---
 		this.sprites = ImagesConst.MELEE;
 		this.imageIndex = 0;
-		// -----------------------------------
+	}
+	
+	@Override
+	public int getHitNbSprite() {
+		return AnimConst.MELEE_H;
+	}
+	
+	@Override
+	public int getMvmtNbSprite() {
+		return AnimConst.MELEE_M;
+	}
+	
+	@Override
+	public int getStandNbSprite() {
+		return AnimConst.MELEE_S;
+	}
+	
+	@Override
+	public int getDieNbSprite() {
+		return AnimConst.MELEE_D;
+	}
+	
+	@Override
+	public int getTouchedNbSprite() {
+		return AnimConst.MELEE_T;
 	}
 
 	@Override
@@ -48,58 +71,66 @@ public class Melee extends Hero {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
 	}
-	
+
 	@Override
 	public void updateSpriteIndex() {
-		int spr_dir = AnimConst.MELEE_D + AnimConst.MELEE_H + AnimConst.MELEE_M + AnimConst.MELEE_S + AnimConst.MELEE_T;
-
 		int idx = 0;
 		switch (this.direction) {
 		case S:
 			break;
 		case E:
-			idx += (1 * spr_dir);
+			idx += (1 * AnimConst.MELEE_TOT);
 			break;
 		case N:
-			idx += (2 * spr_dir);
+			idx += (2 * AnimConst.MELEE_TOT);
 			break;
 		case W:
-			idx += (3 * spr_dir);
+			idx += (3 * AnimConst.MELEE_TOT);
 			break;
 		default:
 			break;
 		}
 		if (this.action == Action.S) {
-			if(idx + this.imageIndex < idx + AnimConst.MELEE_S) {
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_S) {
 				this.imageIndex = idx + this.imageIndex + 1;
+				return;
 			}
 			this.imageIndex = idx;
+			return;
 		}
 		idx += AnimConst.MELEE_S;
 		if (this.action == Action.M) {
-			if(idx + this.imageIndex < idx + AnimConst.MELEE_M) {
-				this.imageIndex = idx + this.imageIndex + 1;
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_M) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
 			}
 			this.imageIndex = idx;
+			return;
 		}
 		idx += AnimConst.MELEE_M;
 		if (this.action == Action.H) {
-			if(idx + this.imageIndex < idx + AnimConst.MELEE_H) {
-				this.imageIndex = idx + this.imageIndex + 1;
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_H) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
 			}
 			this.imageIndex = idx;
+			return;
 		}
 		idx += AnimConst.MELEE_H;
 		if (this.action == Action.T) {
-			if(idx + this.imageIndex < idx + AnimConst.MELEE_T) {
-				this.imageIndex = idx + this.imageIndex + 1;
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_T) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
 			}
 			this.imageIndex = idx;
+			return;
 		}
 		idx += AnimConst.MELEE_T;
-		if(idx + this.imageIndex < idx + AnimConst.MELEE_D) {
-			this.imageIndex = idx + this.imageIndex + 1;
+		if (this.imageIndex + 1 < idx + AnimConst.MELEE_D) {
+			this.imageIndex = this.imageIndex + 1;
+			return;
 		}
 		this.imageIndex = idx;
+		return;
 	}
 }

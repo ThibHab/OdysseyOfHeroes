@@ -1,5 +1,6 @@
 package info3.game.entity;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -18,6 +19,16 @@ public abstract class Hero extends Entity {
 		BufferedImage img = sprites[imageIndex];
 		g.drawImage(img, (int) location.getX(), (int) location.getY(), (int) scale * TileSize, (int) scale * TileSize,
 				null);
+	}
+	
+	public void paint(Graphics g, int width, int height) {
+		BufferedImage img = sprites[imageIndex];
+		Location pixel=EntitiesConst.GAME.render.gridToPixel(location,true);
+		g.drawImage(img, (int)pixel.getX(), (int)pixel.getY(), EntitiesConst.GAME.render.tileSize, EntitiesConst.GAME.render.tileSize, null);
+		g.setColor(Color.blue);
+		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitBoxLocation, true);
+		g.drawRect((int)l.getX(), (int)l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.ratioHitBoxX), (int) (EntitiesConst.GAME.render.tileSize * this.ratioHitBoxY));
+		//g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize, game.render.tileSize);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ public class EntitiesConst {
 	
 	public static int LEVEL, EXPERIENCE;
 	public static int MOUVEMENT_INDEX_MAX=200;
+	public static int HIT_INDEX_MAX = 50;
 	// HERO CONSTANTS
 	public static int HERO_SPEED = 2;
 	
