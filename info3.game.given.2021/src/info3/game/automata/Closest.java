@@ -34,74 +34,62 @@ public class Closest extends Aut_Condition {
 		Tile tile;
 
 		while (e.detectionRadius >= range) {
+			
 			int xSearch = xEnt + range;
 			int ySearch = yEnt - range;
-			tile = map[getXmap(xSearch)][getYmap(ySearch)];
-			if (tile.entity != null && tile.entity.category == cat) {
-				if (dir == Aut_Direction.N || dir == Aut_Direction.E)
-					return true;
-				return false;
-			}
 
-			for (int i = 0; i < 2 * range -1; i++) {
+			for (int i = 0; i < 2 * range; i++) {
 				xSearch -= 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
 				if (tile.entity != null && tile.entity.category == cat) {
-					if (dir == Aut_Direction.N)
+					if (xEnt < xSearch && (dir == Aut_Direction.N || dir == Aut_Direction.E))
 						return true;
+					if (xEnt == xSearch && dir == Aut_Direction.N)
+						return true;
+					if (xEnt > xSearch && (dir == Aut_Direction.N || dir == Aut_Direction.W))
+						return true;
+					
 					return false;
 				}
 			}
 			
-			xSearch -= 1;
-			tile = map[getXmap(xSearch)][getYmap(ySearch)];
-			if (tile.entity != null && tile.entity.category == cat) {
-				if (dir == Aut_Direction.N || dir == Aut_Direction.W)
-					return true;
-				return false;
-			}
-			
-			for (int i = 0; i < 2 * range-1; i++) {
+			for (int i = 0; i < 2 * range; i++) {
 				ySearch += 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
 				if (tile.entity != null && tile.entity.category == cat) {
-					if (dir == Aut_Direction.W)
+					if (yEnt < ySearch && (dir == Aut_Direction.W || dir == Aut_Direction.S))
+						return true;
+					if (yEnt == ySearch && dir == Aut_Direction.W)
+						return true;
+					if (yEnt > ySearch && (dir == Aut_Direction.W || dir == Aut_Direction.N))
 						return true;
 					return false;
 				}
 			}
 			
-			ySearch += 1;
-			tile = map[getXmap(xSearch)][getYmap(ySearch)];
-			if (tile.entity != null && tile.entity.category == cat) {
-				if (dir == Aut_Direction.S || dir == Aut_Direction.W)
-					return true;
-				return false;
-			}
-			
-			for (int i = 0; i < 2 * range-1; i++) {
+			for (int i = 0; i < 2 * range; i++) {
 				xSearch += 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
 				if (tile.entity != null && tile.entity.category == cat) {
-					if (dir == Aut_Direction.S)
+					if (xEnt < xSearch && (dir == Aut_Direction.S || dir == Aut_Direction.E))
+						return true;
+					if (xEnt == xSearch && dir == Aut_Direction.S)
+						return true;
+					if (xEnt > xSearch && (dir == Aut_Direction.S || dir == Aut_Direction.W))
 						return true;
 					return false;
 				}
 			}
 			
-			xSearch += 1;
-			tile = map[getXmap(xSearch)][getYmap(ySearch)];
-			if (tile.entity != null && tile.entity.category == cat) {
-				if (dir == Aut_Direction.S || dir == Aut_Direction.E)
-					return true;
-				return false;
-			}
-			
-			for (int i = 0; i < 2 * range -1; i++) {
+			for (int i = 0; i < 2 * range; i++) {
 				ySearch -= 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
 				if (tile.entity != null && tile.entity.category == cat) {
-					if (dir == Aut_Direction.E)
+					if (yEnt < ySearch && (dir == Aut_Direction.E || dir == Aut_Direction.S))
+						return true;
+					if (yEnt == ySearch && dir == Aut_Direction.E)
+						return true;
+					if (yEnt > ySearch && (dir == Aut_Direction.E || dir == Aut_Direction.N))
 						return true;
 					return false;
 				}

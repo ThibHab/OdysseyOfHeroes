@@ -172,9 +172,8 @@ public abstract class Entity implements IEntity {
 			default:
 				break;
 			}
-
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if (destTile.walkable && destTile.entity == null) {
+			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation,d,EntitiesConst.GAME.m_canvas.getHeight(),EntitiesConst.GAME.m_canvas.getWidth())) {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
