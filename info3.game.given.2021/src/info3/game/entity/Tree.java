@@ -24,7 +24,10 @@ public class Tree extends TransparentDecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites =  ImagesConst.TREE;
+		if (forest)
+			this.sprites = ImagesConst.FOREST_TREE;
+		else
+			this.sprites = ImagesConst.TREE;
 		this.imageIndex = 0;
 		// -----------------------------------
 		
