@@ -9,6 +9,7 @@ public class Tree extends DecorElement {
 		super();
 		this.name = "Tree";
 		this.location = l;
+		this.hitbox.update();
 
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {

@@ -9,6 +9,7 @@ public class House extends DecorElement {
 		super();
 		this.name = "House";
 		this.location = l;
+		this.hitbox.update();
 
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {

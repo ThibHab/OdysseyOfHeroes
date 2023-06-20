@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.*;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 
 public abstract class DecorElement extends Entity {
@@ -50,5 +51,11 @@ public abstract class DecorElement extends Entity {
 		} else {
 			g.drawImage(img, (int) (l.getX() - shiftImage), (int) (l.getY() - shiftImage), sizeWidth, sizeHeight, null);
 		}
+	}
+	
+	@Override
+	public void takeDamage(int dmg) {
+		System.out.println("HEHO CA FAIT MALEUH");
+		
 	}
 }

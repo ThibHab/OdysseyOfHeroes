@@ -123,20 +123,21 @@ public abstract class Entity implements IEntity {
 					this.attackIndex = 0;
 				}
 			}
-		} else {
-			if (this.action != Action.S) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is standing");
-				}
-				this.action = Action.S;
-				this.imageIndex = this.sprites.length;
-				this.updateSpriteIndex();
+		} else
+
+		if (this.action != Action.S) {
+			if (EntitiesConst.GAME.debug) {
+				System.out.println(this.name + " is standing");
 			}
+			this.action = Action.S;
+			this.imageIndex = this.sprites.length;
+			this.updateSpriteIndex();
+		}
 			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
 					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
 				this.updateSpriteIndex();
 			}
-		}
+	}
 //		if (this.hitFrozen) {
 //			this.attackIndex += elapsed;
 //			if (this.attackIndex >= this.attackSpeed) {
@@ -144,7 +145,6 @@ public abstract class Entity implements IEntity {
 //				this.attackIndex = 0;
 //			}
 //		}
-	}
 
 	@Override
 	public void Move(Aut_Direction d) {
@@ -188,7 +188,8 @@ public abstract class Entity implements IEntity {
 				break;
 			}
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation,d,EntitiesConst.GAME.m_canvas.getHeight(),EntitiesConst.GAME.m_canvas.getWidth())) {
+			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
+					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
@@ -272,7 +273,8 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Aut_Direction d) {
-		// TODO Melee blocked when touching an enemy, also see for the hits in the border of the maps
+		// TODO Melee blocked when touching an enemy, also see for the hits in the
+		// border of the maps
 		if (!this.frozen) {
 			this.frozen = true;
 			if (this.action != Action.H) {
@@ -289,7 +291,7 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() + 0.5) {
+					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) {
 						entity.takeDamage(this.weaponDamage);
 					}
 					break;
@@ -304,7 +306,7 @@ public abstract class Entity implements IEntity {
 					}
 					break;
 				case W:
-					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() + 0.5) {
+					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) {
 						entity.takeDamage(this.weaponDamage);
 					}
 					break;
@@ -319,14 +321,6 @@ public abstract class Entity implements IEntity {
 		System.out.println("HEHO CA FAIT MALEUH");
 		if (this.health - dmg > 0) {
 			this.health -= dmg;
-			if (this.action != Action.T) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is touched");
-				}
-				this.imageIndex = this.sprites.length;
-				this.action = Action.T;
-				this.updateSpriteIndex();
-			}
 		} else {
 			this.health = 0;
 			this.die();
@@ -457,14 +451,14 @@ public abstract class Entity implements IEntity {
 	}
 
 	public boolean hitboxOverlap(Entity tgt) {
-		float x1 = this.hitbox.location.getX() ;
+		float x1 = this.hitbox.location.getX();
 		float y1 = this.hitbox.location.getY();
 		float X1 = tgt.hitbox.location.getX();
 		float Y1 = tgt.hitbox.location.getY();
-		float x2 = (x1 + this.hitbox.width+EntitiesConst.MAP.lenX)%EntitiesConst.MAP.lenX;
-		float y2 = (y1 + this.hitbox.height+EntitiesConst.MAP.lenY)%EntitiesConst.MAP.lenY;
-		float X2 = (X1 + tgt.hitbox.width+EntitiesConst.MAP.lenX)%EntitiesConst.MAP.lenX;
-		float Y2 = (Y1 + tgt.hitbox.height+EntitiesConst.MAP.lenY)%EntitiesConst.MAP.lenY;
+		float x2 = (x1 + this.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
+		float y2 = (y1 + this.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
+		float X2 = (X1 + tgt.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
+		float Y2 = (Y1 + tgt.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
 		switch (this.direction) {
 		case S:
 			return y2 > Y1 && x1 <= X2 && x2 >= X1;
