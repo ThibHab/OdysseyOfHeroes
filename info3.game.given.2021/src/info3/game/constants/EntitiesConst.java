@@ -51,20 +51,22 @@ public class EntitiesConst {
 	public static int BOSS_SPEED = 2;
 	
 	// HOUSE CONSTANTS
-	public static float HOUSE_SCALE = 1.1f;
+	public static float HOUSE_SCALE = 1f;
+	public static float HOUSE_OPACITY = 0.45f;
 	
 	// TREE CONSTANTS
-	public static float TREE_SCALE = 1.2f;
+	public static float TREE_SCALE = 1f;
+	public static float TREE_OPACITY = 0.75f;
 	
 	// BUSH CONSTANTS
+	public static float BUSH_SCALE = 1.4f;
 	public static int BUSH_HEALTH = 1;
-	public static float BUSH_SCALE = 1.3f;
 	
 	// ROCK CONSTANTS
 	public static float ROCK_SCALE = 1.3f;
 	
 	// HEROES CONSTANTS
-	public static float HEROES_SCALE = 1.3f;
+	public static float HEROES_SCALE = 1.45f;
 	
 	// COWBOY CONSTANTS
 	public static float COWBOY_SCALE = 1.3f;

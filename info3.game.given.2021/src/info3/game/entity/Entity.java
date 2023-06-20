@@ -129,7 +129,7 @@ public abstract class Entity implements IEntity {
 					System.out.println(this.name + " is standing");
 				}
 				this.action = Action.S;
-				this.imageIndex = this.sprites.length;
+			this.imageIndex = this.sprites.length - 1;
 				this.updateSpriteIndex();
 			}
 			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
@@ -188,7 +188,8 @@ public abstract class Entity implements IEntity {
 				break;
 			}
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation,d,EntitiesConst.GAME.m_canvas.getHeight(),EntitiesConst.GAME.m_canvas.getWidth())) {
+			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
+					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
