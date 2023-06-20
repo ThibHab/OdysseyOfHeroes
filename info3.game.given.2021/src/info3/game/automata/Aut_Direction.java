@@ -1,6 +1,6 @@
 package info3.game.automata;
 
-public enum Direction {
+public enum Aut_Direction {
 	N, // North
 	S, // South
 	W, // West

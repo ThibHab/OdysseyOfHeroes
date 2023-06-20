@@ -1,14 +1,14 @@
 package info3.game.automata;
 
-public enum Category {
+public enum Aut_Category {
 	A, // Adversary
 	C, // Clue
 	D, // Danger
 	G, // Gate
 	J, // Jumpable
 	M, // Missile
-	O, // Obtable
-	P, // Takeable element
+	O, // Obstacle
+	P, // Pickable
 	T, // Team
 	V, // Void
 	AT, // The player in my team

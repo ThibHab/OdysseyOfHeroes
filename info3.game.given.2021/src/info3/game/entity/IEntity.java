@@ -2,35 +2,35 @@ package info3.game.entity;
 
 import java.awt.Graphics;
 
-import info3.game.automata.Category;
-import info3.game.automata.Direction;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 
 public interface IEntity {
-	public void Move(Direction d);
+	public void Move(Aut_Direction d);
 	
-	public void Turn(Direction d);
+	public void Turn(Aut_Direction d);
 	
-	public void Egg(Direction d, Category c);
+	public void Egg(Aut_Direction d, Aut_Category c);
 	
-	public void Hit();
+	public void Hit(Aut_Direction d);
 	
 	public void Jump();
 	
 	public void Explode();
 	
-	public void Pick(Category c);
+	public void Pick(Aut_Direction d);
 	
-	public void Pop(Direction d, Category c);
+	public void Pop(Aut_Direction d, Aut_Category c);
 	
-	public void Wizz(Direction d, Category c);
+	public void Wizz(Aut_Direction d, Aut_Category c);
 	
 	public void Power();
 	
-	public void Store(Category c);
+	public void Store(Aut_Category c);
 	
-	public void Throw(Category c);
+	public void Throw(Aut_Direction d, Aut_Category c);
 	
 	public void Wait();
 	
-	public void paint(Graphics g);
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY);
 }
