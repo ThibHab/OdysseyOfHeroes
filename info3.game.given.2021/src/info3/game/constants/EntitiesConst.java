@@ -48,12 +48,11 @@ public class EntitiesConst {
 	public static int BOSS_HEALTH = 20;
 	public static int BOSS_BASE_DAMAGE = 4;
 	public static int BOSS_FLAME_ATTACK_DAMAGE = 100;
-	public static int BOSS_FRONT_PAW_ATTACK = 10;
 	public static int BOSS_RANGE = 2;
 	public static int BOSS_SPEED = 2;
-	public static int BOSS_MOB_SPAWN_RANGE = 2;
+	public static int BOSS_MOB_SPAWN_RANGE = 1;
 	public static int BOSS_MOB_SPAWN_NUMBER = 5;
-	public static int BOSS_FIREBALL_NUMBER_MAX = 3;
+	public static int BOSS_FLAME_ATTACK_SIZE = 3;
 	
 	// HOUSE CONSTANTS
 	public static float HOUSE_SCALE = 1.1f;
