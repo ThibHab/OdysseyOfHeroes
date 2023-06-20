@@ -68,9 +68,9 @@ public class Range extends Hero {
 	}
 
 	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
+	public void Pop(Aut_Direction d) {
 		// TODO Auto-generated method stub
-		super.Pop(d, c);
+		super.Pop(d);
 	}
 
 	@Override

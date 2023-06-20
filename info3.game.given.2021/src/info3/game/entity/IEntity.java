@@ -20,7 +20,7 @@ public interface IEntity {
 	
 	public void Pick(Aut_Direction d);
 	
-	public void Pop(Aut_Direction d, Aut_Category c);
+	public void Pop(Aut_Direction d);
 	
 	public void Wizz(Aut_Direction d, Aut_Category c);
 	

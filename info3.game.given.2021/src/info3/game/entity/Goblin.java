@@ -29,10 +29,4 @@ public class Goblin extends Mob {
 		this.imageIndex = 0;
 		// -----------------------------------
 	}
-
-	@Override
-	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		super.Hit(d);
-	}
 }

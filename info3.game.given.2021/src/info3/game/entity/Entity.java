@@ -388,7 +388,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
+	public void Pop(Aut_Direction d) {
 	}
 
 	@Override

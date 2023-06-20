@@ -19,7 +19,7 @@ public class Pop extends Aut_Action {
 
 	@Override
 	public void exec(Entity e, Game g) {
-		e.Pop(dir, cat);
+		e.Pop(dir);
 
 	}
 

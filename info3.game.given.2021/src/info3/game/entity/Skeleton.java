@@ -26,34 +26,4 @@ public class Skeleton extends Mob {
 		this.imageIndex = 0;
 		// -----------------------------------
 	}
-
-	@Override
-	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		super.Hit(d);
-	}
-
-	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Pop(d, c);
-	}
-
-	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Wizz(d, c);
-	}
-
-	@Override
-	public void Power() {
-		// TODO Auto-generated method stub
-		super.Power();
-	}
-
-	@Override
-	public void Throw(Aut_Direction d, Aut_Category category) {
-		// TODO Auto-generated method stub
-		super.Throw(d, category);
-	}
 }
