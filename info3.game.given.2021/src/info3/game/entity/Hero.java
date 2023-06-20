@@ -20,10 +20,14 @@ public abstract class Hero extends Entity {
 		this.scale = EntitiesConst.HEROES_SCALE;
 	}
 
-	public void paint(Graphics g, int tileSize) {
+	public void paint(Graphics g, int tileSize,  float screenPosX, float screenPosY) {
 		BufferedImage img = sprites[imageIndex];
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
-		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2) * tileSize)), (int) (pixel.getY() - (((scale - 1) / 2) * tileSize)),(int) (tileSize * scale), (int) (tileSize * scale), null);
+		int dimension = (int) (scale * tileSize);
+		float shiftXY = ((scale - 1) / 2) * tileSize;
+		int positionX = (int) (pixel.getX() - shiftXY);
+		int positionY = (int) (pixel.getY() - shiftXY);
+		g.drawImage(img, positionX, positionY, dimension, dimension, null);
 		g.setColor(Color.blue);
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
 

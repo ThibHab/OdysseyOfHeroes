@@ -113,11 +113,14 @@ public class Projectile extends Entity {
 	// TODO destroy projectile
 	
 	@Override
-	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = this.sprites[this.imageIndex];
 		Location pixel=EntitiesConst.GAME.render.gridToPixel(location,true);
-		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2 )* TileSize)), (int) (pixel.getY() - (((scale - 1) / 2 )* TileSize)), (int) (TileSize * scale), (int) (TileSize * scale), null);
-		g.setColor(Color.red);
+		int dimension = (int) (scale * tileSize);
+		float shiftXY = ((scale - 1) / 2) * tileSize;
+		int positionX = (int) (pixel.getX() - shiftXY);
+		int positionY = (int) (pixel.getY() - shiftXY);
+		g.drawImage(img, positionX, positionY, dimension, dimension, null);g.setColor(Color.red);
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
 		g.drawRect((int) l.getX(), (int) l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.hitbox.width),
 				(int) (EntitiesConst.GAME.render.tileSize * this.hitbox.height));
