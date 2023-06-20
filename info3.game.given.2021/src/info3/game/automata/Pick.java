@@ -7,7 +7,11 @@ public class Pick extends Aut_Action {
 	
 	Aut_Direction dir;
 
-	public Pick(Aut_Direction direction) {
+	public Pick(Aut_Direction direction, int percent) {
+		this.percent = percent;
+		if (percent == -1) {
+			this.percent = 100;
+		}
 		this.dir = direction;
 	}
 

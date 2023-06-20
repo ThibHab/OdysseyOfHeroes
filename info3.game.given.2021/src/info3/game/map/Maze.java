@@ -151,7 +151,7 @@ public class Maze {
 	}
 
 	public static void main(String[] args) {
-		int nb_case = 20, print_size = 1; // modify these values to change the maze
+		int nb_case = 20, print_size = 3; // modify these values to change the maze
 		Maze m = new Maze(nb_case);
 		m.pretty_print(print_size);
 	}

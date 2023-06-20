@@ -5,8 +5,11 @@ import info3.game.entity.Entity;
 
 public class Get extends Aut_Action {
 
-	public Get() {
-		// TODO Auto-generated constructor stub
+	public Get(int percent) {
+		this.percent = percent;
+		if (percent == -1) {
+			this.percent = 100;
+		}
 	}
 
 	@Override

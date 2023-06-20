@@ -1,27 +1,59 @@
 package info3.game.entity;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
+import info3.game.Game;
 import info3.game.automata.*;
+import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Melee extends Hero {
-	public Melee(String name, Location l) {
+	public Melee(String name, Game g) {
 		super();
 		this.name = name;
-		this.location = l;
 		this.weaponDamage = EntitiesConst.MELEE_DAMAGE;
 		this.weaponRange = EntitiesConst.MELEE_RANGE;
-		this.health = EntitiesConst.MELEE_HEALTH;
+		this.health = 12;
+		this.maxHealth = this.health;
 
-		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
-		// -----------------------------
+		for (Aut_Automaton next : g.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 
-		// --- TODO manage sprite properly ---
 		this.sprites = ImagesConst.MELEE;
 		this.imageIndex = 0;
-		// -----------------------------------
+		this.hitbox = new Hitbox(this, (float)0.50, (float)0.65);
+	}
+	
+	@Override
+	public int getHitNbSprite() {
+		return AnimConst.MELEE_H;
+	}
+	
+	@Override
+	public int getMvmtNbSprite() {
+		return AnimConst.MELEE_M;
+	}
+	
+	@Override
+	public int getStandNbSprite() {
+		return AnimConst.MELEE_S;
+	}
+	
+	@Override
+	public int getDieNbSprite() {
+		return AnimConst.MELEE_D;
+	}
+	
+	@Override
+	public int getTouchedNbSprite() {
+		return AnimConst.MELEE_T;
 	}
 
 	@Override
@@ -42,37 +74,65 @@ public class Melee extends Hero {
 		super.Wizz(d, c);
 	}
 
-	public int getSpriteIndex() {
-		int idx = this.imageIndex;
+	@Override
+	public void updateSpriteIndex() {
+		int idx = 0;
 		switch (this.direction) {
-		case N:
-			idx += 28;
+		case S:
 			break;
 		case E:
-			idx += 14;
+			idx += (1 * AnimConst.MELEE_TOT);
+			break;
+		case N:
+			idx += (2 * AnimConst.MELEE_TOT);
 			break;
 		case W:
-			idx += 42;
+			idx += (3 * AnimConst.MELEE_TOT);
 			break;
 		default:
 			break;
 		}
-		switch (this.action) {
-		case M:
-			idx+=1;
-			break;
-		case H:
-			idx += 4;
-			break;
-		case T:
-			idx += 8;
-			break;
-		case D:
-			idx += 11;
-			break;
-		default :
-			break;
+		if (this.action == Action.S) {
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_S) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
 		}
-		return idx;
+		idx += AnimConst.MELEE_S;
+		if (this.action == Action.M) {
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_M) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
+		}
+		idx += AnimConst.MELEE_M;
+		if (this.action == Action.H) {
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_H) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
+		}
+		idx += AnimConst.MELEE_H;
+		if (this.action == Action.T) {
+			if (this.imageIndex + 1 < idx + AnimConst.MELEE_T) {
+				this.imageIndex = this.imageIndex + 1;
+				return;
+			}
+			this.imageIndex = idx;
+			return;
+		}
+		idx += AnimConst.MELEE_T;
+		if (this.imageIndex + 1 < idx + AnimConst.MELEE_D) {
+			this.imageIndex = this.imageIndex + 1;
+			return;
+		}
+		this.imageIndex = idx;
+		return;
 	}
 }

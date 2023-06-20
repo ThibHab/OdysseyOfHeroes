@@ -1,0 +1,143 @@
+Player2(Stand_S){
+  * (Stand_S)
+  | Key(o) ? Turn(N) :(Stand_N)
+  | Key(l) ? Move(S) :(Stand_S)
+  | Key(k) ? Turn(W) :(Stand_W)
+  | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) ? Hit(S)  :(Stand_S)
+  | Cell(S,P) ? Pick(S) : (Stand_S)
+
+  * (Stand_N)
+  | Key(o) ? Move(N) :(Stand_N)
+  | Key(l) ? Turn(S) :(Stand_S)
+  | Key(k) ? Turn(W) :(Stand_W)
+  | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) ? Hit(N)  :(Stand_N)
+  | Cell(N,P) ? Pick(N) : (Stand_N)
+  
+  * (Stand_W)
+  | Key(o) ? Turn(N) :(Stand_N)
+  | Key(l) ? Turn(S) :(Stand_S)
+  | Key(k) ? Move(W) :(Stand_W)
+  | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) ? Hit(W)  :(Stand_W)
+  | Cell(W,P) ? Pick(W) : (Stand_W)
+  
+  * (Stand_E)
+  | Key(o) ? Turn(N) :(Stand_N)
+  | Key(l) ? Turn(S) :(Stand_S)
+  | Key(k) ? Turn(W) :(Stand_W)
+  | Key(m) ? Move(E) :(Stand_E)
+  | Key(i) ? Hit(E)  :(Stand_E)
+  | Cell(E,P) ? Pick(E) : (Stand_E)
+ }
+ 
+ Player1(Stand_S){
+  * (Stand_S)
+  | Key(z) ? Turn(N) :(Stand_N)
+  | Key(s) ? Move(S) :(Stand_S)
+  | Key(q) ? Turn(W) :(Stand_W)
+  | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) ? Hit(S)  :(Stand_S)
+  | Cell(S,P) ? Pick(S) : (Stand_S)
+
+  * (Stand_N)
+  | Key(z) ? Move(N) :(Stand_N)
+  | Key(s) ? Turn(S) :(Stand_S)
+  | Key(q) ? Turn(W) :(Stand_W)
+  | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) ? Hit(N)  :(Stand_N)
+  | Cell(N,P) ? Pick(N) : (Stand_N)
+  
+  * (Stand_W)
+  | Key(z) ? Turn(N) :(Stand_N)
+  | Key(s) ? Turn(S) :(Stand_S)
+  | Key(q) ? Move(W) :(Stand_W)
+  | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) ? Hit(W)  :(Stand_W)
+  | Cell(W,P) ? Pick(W) : (Stand_W)
+  
+  * (Stand_E)
+  | Key(z) ? Turn(N) :(Stand_N)
+  | Key(s) ? Turn(S) :(Stand_S)
+  | Key(q) ? Turn(W) :(Stand_W)
+  | Key(d) ? Move(E) :(Stand_E)
+  | Key(a) ? Hit(E)  :(Stand_E)
+  | Cell(E,P) ? Pick(E) : (Stand_E)
+  
+}
+
+Bush(Existing){
+  *(Existing)
+  | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
+  
+  * ()
+ } 
+ 
+ Tree(Existing){
+  *(Existing)
+  | True ? : (Existing)
+  } 
+  
+ House(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
+ 
+  Rock(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
+ 
+ EnergyBall(Forward){
+   *(Forward)
+   | True ? Move : (Forward)
+   
+   *()
+ }
+ 
+ Ennemy(DontStart) {
+   * (DontStart)
+   | Key(s) ? : (Search)
+   | True ? : (DontStart)
+   
+   * (Search)
+   | Cell(@,N,3) ? Hit(N) : (Search)
+   | Cell(@,S,3) ? Hit(S) : (Search)
+   | Cell(@,E,3) ? Hit(E) : (Search)
+   | Cell(@,W,3) ? Hit(W) : (Search)
+   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
+   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
+   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
+   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+ }
+ 
+  Goblin(Search) {
+   * (Search)
+   | Cell(@,N) ? Hit(N) : (Search)
+   | Cell(@,S) ? Hit(S) : (Search)
+   | Cell(@,E) ? Hit(E) : (Search)
+   | Cell(@,W) ? Hit(W) : (Search)
+   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
+   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
+   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
+   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+ }
+ 
+ Coin(Exists) {
+   *(Exists)
+   | True ? : (Exists) 
+ }
+ 
+ Chest(Exists) {
+   * (Exists)
+   | True ? : (Exists)
+ }
+ 
+  CaveWall(Existing){
+  *(Existing)
+  | True ? : (Existing)
+  } 
+ 
+ 
+ 
