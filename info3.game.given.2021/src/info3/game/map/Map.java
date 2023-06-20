@@ -50,6 +50,7 @@ public abstract class Map implements IMap {
 	
 	void createHouse(int x,int y) {
 		House h=new House(new Location(x,y));
+		h.hitbox.update();
 		int count=0;
 		for(int hj=0;hj<3;hj++) {
 			for(int hi=0;hi<3;hi++) {
@@ -72,6 +73,16 @@ public abstract class Map implements IMap {
 				}
 			}
 		}
+	}
+	
+	void createRock(int x, int y) {
+		Rock r = new Rock(new Location(x,y));
+		map[x][y].entity = r;
+	}
+	
+	void createBush(int x, int y) {
+		Bush b = new Bush(new Location(x,y));
+		map[x][y].entity = b;
 	}
 
 	/**
@@ -127,13 +138,11 @@ public abstract class Map implements IMap {
 						}
 						if (!already) {
 							if (ent.equals("Bush")) {
-								map[i][j].entity = new Bush(new Location(i, j));
+								this.createBush(i, j);
 							} else if (ent.equals("Rock")) {
-								map[i][j].entity = new Rock(new Location(i, j));
+								this.createRock(i, j);
 							} else {
 								createTree(i,j);
-								
-
 							}
 						}
 					}
@@ -184,24 +193,10 @@ public abstract class Map implements IMap {
 		int i = x;
 		while (i < areaSize) {
 			Location l = new Location(i+2, y - 2);
-			Location l2 = new Location(i, y + 3);
-//			House house = new House(l);
-//			House house2 = new House(l2);
+			Location l2 = new Location(i+2, y + 3);
+
 			createHouse((int)l.getX(),(int)l.getY());
 			createHouse((int)l2.getX(),(int)l2.getY());
-//			for (int j = 0; j < house.width; j++) {
-//				for (int k = 2; k < house.height + 2; k++) {
-//					map[i + j][y - k].entity = house;
-//				}
-//			}
-//			
-//			if (!(map[i + 1][y + 2] instanceof DirtTile)) {
-//				for (int m = 0; m < house.width; m++) {
-//					for (int n = 1; n < house.height + 1; n++) {
-//						map[i + m][y + n].entity = house2;
-//					}
-//				}
-//			}
 			
 			i += 4;
 		}
