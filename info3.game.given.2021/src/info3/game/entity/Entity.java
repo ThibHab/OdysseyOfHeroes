@@ -415,7 +415,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Wait() {
+	public void Wait(int time) {
 	}
 
 	@Override
