@@ -94,7 +94,7 @@ public class Melee extends Hero {
 		}
 		if (this.action == Action.S) {
 			if (this.imageIndex + 1 < idx + AnimConst.MELEE_S) {
-				this.imageIndex = idx + this.imageIndex + 1;
+				this.imageIndex = this.imageIndex + 1;
 				return;
 			}
 			this.imageIndex = idx;
