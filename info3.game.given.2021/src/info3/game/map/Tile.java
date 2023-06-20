@@ -40,7 +40,7 @@ public abstract class Tile implements ITile {
 				g.setColor(new Color(0,255,0,50));
 			}
 		}else {
-			g.setColor(Color.RED);
+			g.setColor(new Color(255,0,0,50));
 		}
 		g.fillRect((int)screenPosX, (int)screenPosY, size, size);
 	}

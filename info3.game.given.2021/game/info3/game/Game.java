@@ -229,8 +229,6 @@ public class Game {
 		g.fillRect(0, 0, width, height);
 		
 		render.paint(g);
-		player1.paint(g, this.render.tileSize);
-		player2.paint(g, this.render.tileSize);
 		hud.paint(g);
 	}
 

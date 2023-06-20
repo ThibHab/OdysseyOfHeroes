@@ -124,11 +124,7 @@ public class MapRender {
 		offset.setY(roundDeci(offset.getY(), 3));
 	}
 
-	public void paint(Graphics g) {
-		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
-		setOffsetCam();
-		
-		//BACKGGROUND
+	void paintBackground(Graphics g) {
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
 				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
@@ -138,37 +134,57 @@ public class MapRender {
 						roundDeci((j + this.offset.getY()) * tileSize, 3), tileSize);
 			}
 		}
-		//EFFECT
+	}
 
-		//DECOR & PLAYER
+	void paintEffect(Graphics g) {
+
+	}
+
+	void paintEntity(Graphics g) {
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
 				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
 				int mapY = (int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
 				Tile renderTile = map.map[mapX][mapY];
-				if (renderTile.entity != null) {
-					renderTile.entity.paint(g, tileSize, roundDeci((i + this.offset.getX()) * tileSize, 3),
-							roundDeci((j + this.offset.getY()) * tileSize, 3));
+				if (renderTile.entity != null && !(renderTile.entity instanceof TransparentDecorElement)) {
+					if (renderTile.entity instanceof Hero) {
+						((Hero) renderTile.entity).paint(g, tileSize);
+					} else {
+						renderTile.entity.paint(g, tileSize, roundDeci((i + this.offset.getX()) * tileSize, 3),
+								roundDeci((j + this.offset.getY()) * tileSize, 3));
+					}
 				}
-			}
-		}
-		for (int j = 0; j < nbTileY; j++) {
-			for (int i = 0; i < nbTileX; i++) {
-				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
-				int mapY = (int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
-				Tile renderTile = map.map[mapX][mapY];
 				if (renderTile.tpBlock != null) {
+					TransparentDecorElement target = renderTile.tpBlock.target;
+					target.checkTransparent();
+					if (target.tilePainter.getX() == mapX && target.tilePainter.getY() == mapY) {
+						Location l = this.gridToPixel(target.location, true);
+						renderTile.tpBlock.target.paint(g, tileSize, l.getX(), l.getY());
+					}
 					renderTile.tpBlock.paint(g, tileSize, roundDeci((i + this.offset.getX()) * tileSize, 3),
 							roundDeci((j + this.offset.getY()) * tileSize, 3));
+
 				}
 			}
 		}
-		
-		//NIGHT
-		
-		
-		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
-			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX())*tileSize,3), roundDeci((this.offset.getY())*tileSize,3));
+	}
+
+	public void paint(Graphics g) {
+		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
+		setOffsetCam();
+
+		// BACKGGROUND
+		paintBackground(g);
+		// EFFECT
+		paintEffect(g);
+		// DECOR & PLAYER
+		paintEntity(g);
+
+		// NIGHT
+
+		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
+					roundDeci((this.offset.getY()) * tileSize, 3));
 		}
 	}
 

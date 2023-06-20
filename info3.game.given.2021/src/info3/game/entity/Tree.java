@@ -1,18 +1,17 @@
 package info3.game.entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import info3.game.automata.Aut_Automaton;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.map.Tile;
 
-public class Tree extends DecorElement {
+public class Tree extends TransparentDecorElement {
 	
-	public TransparencyBlock[] tpBlock;
-	
-	public Tree(Location l,Tile tile) {
-		super();
+	public Tree(Location l, Location painter) {
+		super(8,painter);
 		this.name = "Tree";
 		this.location = l;
 
@@ -33,20 +32,18 @@ public class Tree extends DecorElement {
 		this.height = 3;
 		
 		this.scale = EntitiesConst.TREE_SCALE;
-		int ii=0;
-		for(int i=0;i<3;i++) {
-			for(int j=0;j<3;j++) {
-				int x=(int)(location.getX()-1+i);
-				int y=(int)(location.getY()-2+j);
-				if(location.getX()!=x && location.getY()!=y) {
-					tile.tpBlock=new TransparencyBlock(x,y,this);
-				}
-			}
-		}
 	}
 	
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img=sprites[imageIndex];
-		g.drawImage(img, (int)(screenPosX-tileSize), (int)(screenPosY-2*tileSize), (int)(tileSize*scale*width), (int)(tileSize*scale*height), null);
+		BufferedImage img=sprites[0];
+		if(this.transparent) {
+			Graphics2D gr=(Graphics2D)g;
+			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.75f));
+			gr.drawImage(img, (int)(screenPosX-tileSize), (int)(screenPosY-2*tileSize), (int)(tileSize*scale*width), (int)(tileSize*scale*height), null);
+			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1));
+		}else {
+			g.drawImage(img, (int)(screenPosX-tileSize), (int)(screenPosY-2*tileSize), (int)(tileSize*scale*width), (int)(tileSize*scale*height), null);
+		}
+		
 	}
 }
