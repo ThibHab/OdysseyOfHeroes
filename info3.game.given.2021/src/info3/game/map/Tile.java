@@ -19,32 +19,31 @@ public abstract class Tile implements ITile {
 	public Image image;
 	public Location location;
 	public TransparencyBlock tpBlock;
-	
-	
-	public Tile(Location location,boolean walkable,float opacity,BufferedImage img) {
-		this.walkable=walkable;
-		this.location=location;
-		this.opacity=opacity;
-		this.image=img;
-		//TODO Ajouter Sound au constructeur
+
+	public Tile(Location location, boolean walkable, float opacity, BufferedImage img) {
+		this.walkable = walkable;
+		this.location = location;
+		this.opacity = opacity;
+		this.image = img;
+		// TODO Ajouter Sound au constructeur
 	}
 
 	@Override
-	public void paint(Graphics g,float screenPosX,float screenPosY,int size) {
-		g.drawImage(this.image, (int)screenPosX, (int)screenPosY, size, size, null);
+	public void paint(Graphics g, float screenPosX, float screenPosY, int size) {
+		g.drawImage(this.image, (int) screenPosX, (int) screenPosY, size, size, null);
 		if (EntitiesConst.GAME.debug) {
-		g.setColor(Color.red);
-		g.drawString(screenPosX+";"+screenPosY, (int)screenPosX, (int)screenPosY+size/2);
-		if(entity==null) {
-			if((location.getX()+location.getY())%2==0) {
-				g.setColor(new Color(0,255,255,50));
-			}else {
-				g.setColor(new Color(0,255,0,50));
+			g.setColor(Color.red);
+			g.drawString(screenPosX + ";" + screenPosY, (int) screenPosX, (int) screenPosY + size / 2);
+			if (entity == null) {
+				if ((location.getX() + location.getY()) % 2 == 0) {
+					g.setColor(new Color(0, 255, 255, 50));
+				} else {
+					g.setColor(new Color(0, 255, 0, 50));
+				}
+			} else {
+				g.setColor(new Color(255, 0, 0, 50));
 			}
-		}else {
-			g.setColor(new Color(255,0,0,50));
-		}
-		g.fillRect((int)screenPosX, (int)screenPosY, size, size);
+			g.fillRect((int) screenPosX, (int) screenPosY, size, size);
 		}
 	}
 }

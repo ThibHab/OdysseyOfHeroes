@@ -29,6 +29,15 @@ public class WorldMap extends Map {
 		
 		Coin c = new Coin(new Location(0,0));
 		map[(int)c.location.getX()][(int)c.location.getY()].entity = c;
+		
+		createTree(0,13);
+		createTree(2,13);
+		createTree(4,13);
+		createTree(6,13);
+		createTree(1,12);
+		createTree(3,12);
+		createTree(5,12);
+		createTree(7,12);
 	}
 
 }

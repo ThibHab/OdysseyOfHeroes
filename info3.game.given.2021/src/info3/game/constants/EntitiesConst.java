@@ -50,9 +50,11 @@ public class EntitiesConst {
 	
 	// HOUSE CONSTANTS
 	public static float HOUSE_SCALE = 1f;
+	public static float HOUSE_OPACITY = 0.45f;
 	
 	// TREE CONSTANTS
 	public static float TREE_SCALE = 1f;
+	public static float TREE_OPACITY = 0.75f;
 	
 	// BUSH CONSTANTS
 	public static float BUSH_SCALE = 1.4f;

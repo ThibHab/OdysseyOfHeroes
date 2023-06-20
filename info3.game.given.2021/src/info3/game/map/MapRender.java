@@ -2,6 +2,9 @@ package info3.game.map;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import info3.game.Game;
 import info3.game.automata.Aut_Direction;
@@ -141,6 +144,7 @@ public class MapRender {
 	}
 
 	void paintEntity(Graphics g) {
+		List<TransparentDecorElement> transparent= new LinkedList<TransparentDecorElement>();
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
 				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
@@ -154,18 +158,27 @@ public class MapRender {
 								roundDeci((j + this.offset.getY()) * tileSize, 3));
 					}
 				}
-				if (renderTile.tpBlock != null) {
-					TransparentDecorElement target = renderTile.tpBlock.target;
-					target.checkTransparent();
-					if (target.tilePainter.getX() == mapX && target.tilePainter.getY() == mapY) {
-						Location l = this.gridToPixel(target.location, true);
-						renderTile.tpBlock.target.paint(g, tileSize, l.getX(), l.getY());
+				boolean isTDE=(renderTile.entity instanceof TransparentDecorElement && !transparent.contains(renderTile.entity));
+				if(isTDE){
+					transparent.add((TransparentDecorElement)renderTile.entity);
+				}
+				if(renderTile.tpBlock != null) {
+					Iterator it=renderTile.tpBlock.target.iterator();
+					while(it.hasNext()) {
+						TransparentDecorElement tde=(TransparentDecorElement)it.next();
+						tde.checkTransparent();
+						if(!transparent.contains(tde)) {
+							transparent.add(tde);
+						}
 					}
-					renderTile.tpBlock.paint(g, tileSize, roundDeci((i + this.offset.getX()) * tileSize, 3),
-							roundDeci((j + this.offset.getY()) * tileSize, 3));
-
 				}
 			}
+		}
+		Iterator it=transparent.iterator();
+		while(it.hasNext()) {
+			TransparentDecorElement tde=(TransparentDecorElement)it.next();
+			Location l = this.gridToPixel(tde.location, true);
+			tde.paint(g, tileSize, l.getX(), l.getY());
 		}
 	}
 

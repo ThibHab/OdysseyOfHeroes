@@ -12,8 +12,8 @@ import info3.game.constants.ImagesConst;
 public class House extends TransparentDecorElement {
 	
 	
-	public House(Location l,Location painter) {
-		super(3,painter);
+	public House(Location l) {
+		super(3);
 		this.name = "House";
 		this.location = l;
 
@@ -38,9 +38,9 @@ public class House extends TransparentDecorElement {
 	
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img=sprites[0];
-		if(true) {
+		if(this.transparent) {
 			Graphics2D gr=(Graphics2D)g;
-			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.75f));
+			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float)(EntitiesConst.HOUSE_OPACITY/this.opacityDiv)));
 			gr.drawImage(img, (int)(screenPosX-tileSize), (int)(screenPosY-2*tileSize), (int)(tileSize*scale*width), (int)(tileSize*scale*height), null);
 			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1));
 		}else {

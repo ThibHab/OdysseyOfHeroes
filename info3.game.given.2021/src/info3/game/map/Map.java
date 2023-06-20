@@ -24,7 +24,7 @@ public abstract class Map implements IMap {
 	}
 	
 	void createTree(int x,int y) {
-		Tree tr=new Tree(new Location(x,y),new Location((x+1)%lenX,y));
+		Tree tr=new Tree(new Location(x,y));
 		map[x][y].entity=tr;
 		int count=0;
 		for(int tr_j=0;tr_j<3;tr_j++) {
@@ -32,25 +32,41 @@ public abstract class Map implements IMap {
 				int tr_x=(x-1+tr_i+lenX)%lenX;
 				int tr_y=(y-2+tr_j+lenY)%lenY;
 				if(x!=tr_x || y!=tr_y) {
-					map[tr_x][tr_y].tpBlock=new TransparencyBlock(tr_x,tr_y,tr);
-					tr.liste[count]=map[tr_x][tr_y];
-					count++;
+					if(map[tr_x][tr_y].tpBlock!=null) {
+						map[tr_x][tr_y].tpBlock.add(tr);
+						tr.liste[count]=map[tr_x][tr_y];
+						count++;
+					}else {
+						TransparencyBlock tb=new TransparencyBlock(tr_x,tr_y);
+						tb.add(tr);
+						map[tr_x][tr_y].tpBlock=tb;
+						tr.liste[count]=map[tr_x][tr_y];
+						count++;
+					}
 				}
 			}
 		}
 	}
 	
 	void createHouse(int x,int y) {
-		House h=new House(new Location(x,y),new Location((x+1)%lenX,y));
+		House h=new House(new Location(x,y));
 		int count=0;
 		for(int hj=0;hj<3;hj++) {
 			for(int hi=0;hi<3;hi++) {
 				int hx=(x-1+hi+lenX)%lenX;
 				int hy=(y-2+hj+lenY)%lenY;
 				if(hj==0) {
-					map[hx][hy].tpBlock=new TransparencyBlock(hx,hy,h);
-					h.liste[count]=map[hx][hy];
-					count++;
+					if(map[hx][hy].tpBlock!=null) {
+						map[hx][hy].tpBlock.add(h);
+						h.liste[count]=map[hx][hy];
+						count++;
+					}else {
+						TransparencyBlock tb=new TransparencyBlock(hx,hy);
+						tb.add(h);
+						map[hx][hy].tpBlock=tb;
+						h.liste[count]=map[hx][hy];
+						count++;
+					}
 				}else {
 					map[hx][hy].entity=h;
 				}
