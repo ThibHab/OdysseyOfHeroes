@@ -40,7 +40,12 @@ public class Range extends Hero {
 				this.updateSpriteIndex();
 			}
 			this.hitFrozen = true;
-			Projectile p = new Projectile(this, this.direction);
+			if(d != null) {
+				Projectile p = new Projectile(this, d);
+			}else {
+				Projectile p = new Projectile(this, this.direction);
+			}
+			
 		}
 	}
 	public int getHitNbSprite() {

@@ -14,6 +14,7 @@ public class Tree extends TransparentDecorElement {
 		super(8);
 		this.name = "Tree";
 		this.location = l;
+		this.hitbox.update();
 
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {

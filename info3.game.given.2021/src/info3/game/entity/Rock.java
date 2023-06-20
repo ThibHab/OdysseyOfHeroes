@@ -9,6 +9,7 @@ public class Rock extends DecorElement {
 		super();
 		this.name = "Rock";
 		this.location = l;
+		this.hitbox.update();
 
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
