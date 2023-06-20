@@ -16,8 +16,11 @@ public class Skeleton extends Mob {
 		this.scale = EntitiesConst.SKELETON_SCALE;
 
 		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 		// -----------------------------
 		this.category = Aut_Category.A;
 
