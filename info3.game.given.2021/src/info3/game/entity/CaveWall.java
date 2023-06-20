@@ -1,19 +1,17 @@
 package info3.game.entity;
 
-import info3.game.automata.*;
+import info3.game.automata.Aut_Automaton;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class Goblin extends Mob {
-	public Goblin(Location l) {
+public class CaveWall extends DecorElement {
+	public CaveWall(Location l) {
 		super();
-		this.name = "Goblin";
+		this.name = "CaveWall";
 		this.location = l;
-		this.health = EntitiesConst.GOBLIN_HEALTH;
-		this.weaponDamage = EntitiesConst.GOBLIN_DAMAGE;
-		this.weaponRange = EntitiesConst.GOBLINE_RANGE;
-		this.speed = EntitiesConst.GOBLIN_SPEED;
 
+		// TODO set walls unbreakable, but keep this idea for a secret place room in the labyrinth ?
+		
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -21,17 +19,16 @@ public class Goblin extends Mob {
 		}
 		this.currentState = automaton.initial;
 		// -----------------------------
-		this.category = Aut_Category.A;
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.GOBLIN;
+		this.sprites = ImagesConst.CAVE_WALL;
 		this.imageIndex = 0;
 		// -----------------------------------
+		
+		this.width = 1;
+		this.height = 1;
+		
+		this.scale = EntitiesConst.CAVE_WALL_SCALE;
 	}
 
-	@Override
-	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		super.Hit(d);
-	}
 }
