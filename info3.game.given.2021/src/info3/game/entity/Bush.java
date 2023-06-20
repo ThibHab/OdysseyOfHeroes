@@ -1,5 +1,8 @@
 package info3.game.entity;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
 import info3.game.automata.Aut_Automaton;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
@@ -22,7 +25,7 @@ public class Bush extends DecorElement {
 
 		// --- TODO manage sprite properly ---
 		this.sprites = ImagesConst.BUSH;
-		this.imageIndex = 1;
+		this.imageIndex = 0;
 		// -----------------------------------
 		
 		this.width = 1;
@@ -33,6 +36,8 @@ public class Bush extends DecorElement {
 		}
 		
 		this.scale = EntitiesConst.BUSH_SCALE;
+		
+		
 	}
 	
 	@Override
@@ -53,4 +58,10 @@ public class Bush extends DecorElement {
 			this.die();
 		}
 	}
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		BufferedImage img=sprites[1];
+		int diff=(int) (tileSize*(scale-1))/2;
+		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
+	}
+		
 }

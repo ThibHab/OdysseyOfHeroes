@@ -20,7 +20,7 @@ public abstract class Hero extends Entity {
 		this.scale = EntitiesConst.HEROES_SCALE;
 	}
 
-	public void paint(Graphics g, int tileSize,  float screenPosX, float screenPosY) {
+	public void paint(Graphics g, int tileSize) {
 		BufferedImage img = sprites[imageIndex];
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
 		int dimension = (int) (scale * tileSize);

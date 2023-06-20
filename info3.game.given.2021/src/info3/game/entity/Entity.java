@@ -123,11 +123,14 @@ public abstract class Entity implements IEntity {
 					this.attackIndex = 0;
 				}
 			}
-		} else
-
-		if (this.action != Action.S) {
-			if (EntitiesConst.GAME.debug) {
-				System.out.println(this.name + " is standing");
+		} else {
+			if (this.action != Action.S) {
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is standing");
+				}
+				this.action = Action.S;
+			this.imageIndex = this.sprites.length - 1;
+				this.updateSpriteIndex();
 			}
 			this.action = Action.S;
 			this.imageIndex = this.sprites.length;
