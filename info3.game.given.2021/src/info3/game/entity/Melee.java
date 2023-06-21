@@ -1,17 +1,16 @@
 package info3.game.entity;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
+import animations.Action;
+import animations.Animation;
 import info3.game.Game;
-import info3.game.automata.*;
-import info3.game.constants.Action;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class Melee extends Hero {
+public class Melee extends Hero{
 	public Melee(String name, Game g) {
 		super();
 		this.name = name;
@@ -25,34 +24,34 @@ public class Melee extends Hero {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
+		
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.S, Aut_Direction.E,
+				Aut_Direction.W };
+		Action acts[] = new Action[] { Action.S, Action.H, Action.M, Action.D, Action.T };
+		this.anim = new Animation(this, ImagesConst.MELEE, dirs, acts);
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.MELEE_M;
+		case H:
+			return AnimConst.MELEE_H;
+		case T:
+			return AnimConst.MELEE_T;
+		case D:
+			return AnimConst.MELEE_D;
+		case S:
+			return AnimConst.MELEE_S;
+		default:
+			return 0;
+		}
+	}
 
-		this.sprites = ImagesConst.MELEE;
-		this.imageIndex = 0;
-	}
-	
 	@Override
-	public int getHitNbSprite() {
-		return AnimConst.MELEE_H;
-	}
-	
-	@Override
-	public int getMvmtNbSprite() {
-		return AnimConst.MELEE_M;
-	}
-	
-	@Override
-	public int getStandNbSprite() {
-		return AnimConst.MELEE_S;
-	}
-	
-	@Override
-	public int getDieNbSprite() {
-		return AnimConst.MELEE_D;
-	}
-	
-	@Override
-	public int getTouchedNbSprite() {
-		return AnimConst.MELEE_T;
+	public int totSrpitePerDir() {
+		return AnimConst.MELEE_TOT;
 	}
 
 	@Override
@@ -71,67 +70,5 @@ public class Melee extends Hero {
 	public void Wizz(Aut_Direction d, Aut_Category c) {
 		// TODO Auto-generated method stub
 		super.Wizz(d, c);
-	}
-
-	@Override
-	public void updateSpriteIndex() {
-		int idx = 0;
-		switch (this.direction) {
-		case S:
-			break;
-		case E:
-			idx += (1 * AnimConst.MELEE_TOT);
-			break;
-		case N:
-			idx += (2 * AnimConst.MELEE_TOT);
-			break;
-		case W:
-			idx += (3 * AnimConst.MELEE_TOT);
-			break;
-		default:
-			break;
-		}
-		if (this.action == Action.S) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_S) {
-				this.imageIndex = idx + this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_S;
-		if (this.action == Action.M) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_M) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_M;
-		if (this.action == Action.H) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_H) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_H;
-		if (this.action == Action.T) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_T) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_T;
-		if (this.imageIndex + 1 < idx + AnimConst.MELEE_D) {
-			this.imageIndex = this.imageIndex + 1;
-			return;
-		}
-		this.imageIndex = idx;
-		return;
 	}
 }

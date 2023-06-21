@@ -3,7 +3,7 @@ package info3.game.entity;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import info3.game.automata.*;
+import info3.game.automata.Aut_Category;
 import info3.game.constants.EntitiesConst;
 
 public abstract class DecorElement extends Entity {
@@ -15,7 +15,7 @@ public abstract class DecorElement extends Entity {
 	}
 
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = sprites[0];
+		BufferedImage img = anim.get_frame();
 		Location l = EntitiesConst.GAME.render.gridToPixel(location, true);
 		// Cas de la location en dehors de l'écran en X et en Y
 		if (screenPosY < 0 && screenPosX < 0) {

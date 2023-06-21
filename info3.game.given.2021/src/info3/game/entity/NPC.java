@@ -9,7 +9,7 @@ public abstract class NPC extends Entity {
 	}
 
 	public void paint(Graphics g, int TileSize) {
-		BufferedImage img = sprites[imageIndex];
+		BufferedImage img = anim.get_frame();
 		g.drawImage(img, (int) location.getX(), (int) location.getY(), (int) scale * TileSize, (int) scale * TileSize,
 				null);
 	}

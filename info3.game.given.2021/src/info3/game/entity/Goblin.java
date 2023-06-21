@@ -1,6 +1,11 @@
 package info3.game.entity;
 
-import info3.game.automata.*;
+import animations.Action;
+import animations.Animation;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -14,16 +19,18 @@ public class Goblin extends Mob {
 		this.weaponRange = EntitiesConst.GOBLINE_RANGE;
 		this.speed = EntitiesConst.GOBLIN_SPEED;
 
-		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
-		// -----------------------------
-		this.category = Aut_Category.A;
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 
-		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.GOBLIN;
-		this.imageIndex = 0;
-		// -----------------------------------
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.W, Aut_Direction.N,
+				Aut_Direction.E };
+		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
+		this.anim = new Animation(this,ImagesConst.GOBLIN, dirs, acts);
+
+		this.category = Aut_Category.A;
 	}
 
 	@Override
@@ -54,5 +61,29 @@ public class Goblin extends Mob {
 	public void Throw(Aut_Direction d, Aut_Category category) {
 		// TODO Auto-generated method stub
 		super.Throw(d, category);
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		//TODO
+		switch (a) {
+		case M:
+			return AnimConst.GOBLIN_M;
+		case H:
+			return AnimConst.GOBLIN_H;
+		case T:
+			return AnimConst.GOBLIN_T;
+		case D:
+			return AnimConst.GOBLIN_D;
+		case S:
+			return AnimConst.GOBLIN_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.GOBLIN_TOT;
 	}
 }

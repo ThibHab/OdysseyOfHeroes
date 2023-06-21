@@ -40,7 +40,7 @@ public class ImagesConst {
 		STRENGTH_POTION = loadSprite("Strength", 3, 3);
 
 		BOSS = loadSprite("Boss", 1, 1);
-		GOBLIN = loadSprite("", 1, 1);
+		GOBLIN = loadSprite("Orc", 8, 8);
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
 		VILLAGER = loadSprite("", 1, 1);

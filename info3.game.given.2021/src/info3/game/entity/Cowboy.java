@@ -22,22 +22,15 @@ package info3.game.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import info3.game.Game;
-import info3.game.automata.*;
-import info3.game.automata.ast.AST;
-import info3.game.automata.ast.AutCreator;
-import info3.game.automata.ast.IVisitor;
-import info3.game.automata.parser.AutomataParser;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
 
 /**

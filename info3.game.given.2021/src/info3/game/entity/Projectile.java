@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import info3.game.automata.*;
-import info3.game.constants.Action;
+import animations.Action;
+import animations.Animation;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.map.Tile;
 
 public class Projectile extends Entity {
 	public Entity owner;
@@ -22,14 +24,17 @@ public class Projectile extends Entity {
 			if (next.name.equals(name))
 				this.automaton = next;
 		}
-		this.owner = owner;
-		this.sprites = ImagesConst.ENERGYBALL;
 		this.currentState = this.automaton.initial;
-		this.location.setX((float)(this.owner.location.getX()));
-		this.location.setY((float)(this.owner.location.getY()));
-		
+		this.owner = owner;
+
+		Action acts[] = new Action[] { Action.M };
+		this.anim = new Animation(this,ImagesConst.ENERGYBALL, null, acts);
+
+		this.location.setX((float) (this.owner.location.getX()));
+		this.location.setY((float) (this.owner.location.getY()));
+
 		this.speed = 2;
-		this.hitbox = new Hitbox(this, (float)0.30, (float)0.40);
+		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
 		this.scale = EntitiesConst.ENERGYBALL_SCALE;
 		EntitiesConst.MAP.projectiles.add(this);
 	}
@@ -43,10 +48,7 @@ public class Projectile extends Entity {
 			if (d == null) {
 				d = this.direction;
 			}
-			if (this.action != Action.M) {
-				this.imageIndex = 0;
-				this.action = Action.M;
-			}
+			this.anim.changeAction(Action.M);
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
@@ -72,12 +74,12 @@ public class Projectile extends Entity {
 				break;
 			}
 
-		} else {
-			this.mouvementIndex = 0;
-		}
+		} // else {
+			// this.mouvementIndex = 0;
+			// }
 
 	}
-	
+
 	@Override
 	public void Wizz(Aut_Direction d, Aut_Category c) {
 		// TODO Auto-generated method stub
@@ -108,21 +110,23 @@ public class Projectile extends Entity {
 //		}
 	}
 	// TODO destroy projectile
-	
+
 	@Override
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = this.sprites[this.imageIndex];
-		Location pixel=EntitiesConst.GAME.render.gridToPixel(location,true);
-		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2 )* TileSize)), (int) (pixel.getY() - (((scale - 1) / 2 )* TileSize)), (int) (TileSize * scale), (int) (TileSize * scale), null);
+		BufferedImage img = anim.get_frame();
+		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
+		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2) * TileSize)),
+				(int) (pixel.getY() - (((scale - 1) / 2) * TileSize)), (int) (TileSize * scale),
+				(int) (TileSize * scale), null);
 		g.setColor(Color.red);
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
 		g.drawRect((int) l.getX(), (int) l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.hitbox.width),
 				(int) (EntitiesConst.GAME.render.tileSize * this.hitbox.height));
 	}
-	
+
 	public void tick(long elapsed) {
 		this.automaton.step(this, EntitiesConst.GAME);
-		Entity e = EntitiesConst.MAP_MATRIX[(int)this.destLocation.getX()][(int)this.destLocation.getY()].entity;
+		Entity e = EntitiesConst.MAP_MATRIX[(int) this.destLocation.getX()][(int) this.destLocation.getY()].entity;
 		if (e != null && e != this.owner) {
 			if (this.hitboxOverlap(e)) {
 				System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
@@ -130,19 +134,19 @@ public class Projectile extends Entity {
 			}
 		}
 		if (this.frozen && this.moving) {
-			this.mouvementIndex += elapsed;
-			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
+			this.anim.mouvementIndex += elapsed;
+			if (this.anim.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
 				this.frozen = false;
 				this.moving = false;
-				this.mouvementIndex = 0;
-				this.imageIndex = (this.imageIndex + 1) % this.sprites.length;
+				this.anim.mouvementIndex = 0;
+				this.anim.imageIndex = (this.anim.imageIndex + 1) % this.anim.sprites.length;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
 				this.hitbox.update();
 			} else {
-				if (mouvementIndex != 0) {
-					this.imageIndex = (this.imageIndex + 1) % this.sprites.length;
-					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+				if (anim.mouvementIndex != 0) {
+					this.anim.imageIndex = (this.anim.imageIndex + 1) % this.anim.sprites.length;
+					float progress = (float) this.anim.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
 					this.location
 							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
 									% EntitiesConst.MAP.lenX);
@@ -154,5 +158,5 @@ public class Projectile extends Entity {
 			}
 		}
 	}
-		
-	}
+
+}

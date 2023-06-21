@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import info3.game.automata.*;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
 
 public abstract class Hero extends Entity {
@@ -22,7 +23,7 @@ public abstract class Hero extends Entity {
 	}
 
 	public void paint(Graphics g, int tileSize) {
-		BufferedImage img = sprites[imageIndex];
+		BufferedImage img = anim.get_frame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
 		g.drawImage(img, (int) pixel.getX(), (int) pixel.getY(), tileSize, tileSize, null);
 		g.setColor(Color.blue);

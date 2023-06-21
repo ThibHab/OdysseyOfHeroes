@@ -14,19 +14,12 @@ public abstract class Item extends Entity {
 		super();
 		this.category = Aut_Category.P;
 	}
-	
+
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = sprites[imageIndex];
+		BufferedImage img = anim.get_frame();
 		Location l = EntitiesConst.GAME.render.gridToPixel(location, true);
-		g.drawImage(img, (int) (l.getX() - (((scale - 0.8) / 2 )* TileSize)), (int) (l.getY() - (((scale - 0.8) / 2 )* TileSize)), (int) (scale * TileSize * 1), (int) (scale * TileSize * 1),
-				null);
-	}
-	
-	@Override
-	public void updateSpriteIndex() {
-		imageIndex ++;
-		if (imageIndex >= this.getStandNbSprite()) {
-			imageIndex = 0;
-		}
+		g.drawImage(img, (int) (l.getX() - (((scale - 0.8) / 2) * TileSize)),
+				(int) (l.getY() - (((scale - 0.8) / 2) * TileSize)), (int) (scale * TileSize * 1),
+				(int) (scale * TileSize * 1), null);
 	}
 }

@@ -1,6 +1,9 @@
 package info3.game.entity;
 
+import animations.Action;
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -10,22 +13,18 @@ public class House extends DecorElement {
 		this.name = "House";
 		this.location = l;
 
-		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		// -----------------------------
-
-		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.HOUSE;
-		this.imageIndex = 0;
-		// -----------------------------------
 		
+		Action acts[] = new Action[] { Action.S };
+		this.anim = new Animation(this,ImagesConst.HOUSE, null, acts);
+
 		this.width = 3;
 		this.height = 3;
-		
+
 		this.scale = EntitiesConst.HOUSE_SCALE;
 	}
 }

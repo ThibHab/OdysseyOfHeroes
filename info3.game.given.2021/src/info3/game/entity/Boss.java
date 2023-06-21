@@ -1,6 +1,11 @@
 package info3.game.entity;
 
-import info3.game.automata.*;
+import animations.Action;
+import animations.Animation;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -14,16 +19,17 @@ public class Boss extends Mob {
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
 		this.speed = EntitiesConst.BOSS_SPEED;
 
-		// --- TODO manage automaton ---
-		this.automaton = null;
-		this.currentState = null;
-		// -----------------------------
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				automaton = next;
+		}
+		this.currentState = automaton.initial;
 		this.category = Aut_Category.A;
-
-		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.BOSS;
-		this.imageIndex = 0;
-		// -----------------------------------
+		
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.S, Aut_Direction.E,
+				Aut_Direction.W };
+		Action acts[] = new Action[] { Action.M };
+		this.anim = new Animation(this, ImagesConst.BOSS, dirs, acts);
 	}
 
 	@Override
@@ -56,4 +62,26 @@ public class Boss extends Mob {
 		super.Throw(d, category);
 	}
 
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.BOSS_M;
+		case H:
+			return AnimConst.BOSS_H;
+		case T:
+			return AnimConst.BOSS_T;
+		case D:
+			return AnimConst.BOSS_D;
+		case S:
+			return AnimConst.BOSS_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.BOSS_TOT;
+	}
 }

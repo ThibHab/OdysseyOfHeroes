@@ -1,13 +1,15 @@
 package info3.game.entity;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import info3.game.constants.Action;
-import info3.game.constants.AnimConst;
+import animations.Action;
+import animations.Animation;
 import info3.game.Game;
-import info3.game.automata.*;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
+import info3.game.automata.Aut_State;
 import info3.game.constants.EntitiesConst;
 import info3.game.map.Map;
 import info3.game.map.Tile;
@@ -29,13 +31,10 @@ public abstract class Entity implements IEntity {
 	public boolean frozen;
 	public boolean hitFrozen;
 	public boolean moving;
-	public long mouvementIndex;
 	public long attackIndex;
-	public Action action;
 	public int detectionRadius;
 
-	public BufferedImage[] sprites;
-	public int imageIndex;
+	public Animation anim;
 	public float scale;
 	public Hitbox hitbox;
 
@@ -54,20 +53,17 @@ public abstract class Entity implements IEntity {
 		this.healingPotions = 0;
 		this.strengthPotions = 0;
 
-		// --- TODO manage automaton ---
 		this.automaton = null;
 		this.currentState = null;
-		// -----------------------------
+
 		this.direction = Aut_Direction.N;
 		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
 		this.hitFrozen = false;
 		this.moving = false;
-		this.mouvementIndex = 0;
 		this.attackIndex = 0;
 
 		this.scale = 1;
-
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -80,25 +76,19 @@ public abstract class Entity implements IEntity {
 
 	public void tick(long elapsed) {
 		this.automaton.step(this, EntitiesConst.GAME);
+		this.anim.step(elapsed);
 		if (this.frozen) {
-			this.mouvementIndex += elapsed;
-			if (this.action == Action.M) {
-				if ((mouvementIndex - elapsed)
-						/ (EntitiesConst.MOUVEMENT_INDEX_MAX / this.getMvmtNbSprite()) < mouvementIndex
-								/ (EntitiesConst.MOUVEMENT_INDEX_MAX / this.getMvmtNbSprite())) {
-					this.updateSpriteIndex();
-				}
-				if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX) {
-					this.frozen = false;
+			if (anim.action == Action.M) {
+				if (this.anim.isFinished()) {
 					this.moving = false;
-					this.mouvementIndex = 0;
+					this.anim.resetAnim();
 					this.location.setX(destLocation.getX());
 					this.location.setY(destLocation.getY());
 					this.hitbox.update();
 					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
 							.getY()].entity = null;
-				} else if (mouvementIndex != 0) {
-					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+				} else if (anim.mouvementIndex != 0) {
+					float progress = (float) this.anim.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
 					this.location
 							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
 									% EntitiesConst.MAP.lenX);
@@ -107,64 +97,33 @@ public abstract class Entity implements IEntity {
 									% EntitiesConst.MAP.lenY);
 					this.hitbox.update();
 				}
-			} else if (this.action == Action.H) {
-				if ((mouvementIndex - elapsed) / (EntitiesConst.HIT_INDEX_MAX / this.getHitNbSprite()) < mouvementIndex
-						/ (EntitiesConst.HIT_INDEX_MAX / this.getHitNbSprite())) {
-					this.updateSpriteIndex();
-				}
+			} else if (anim.action == Action.H) {
 				this.attackIndex += elapsed;
 				if (this.attackIndex >= this.attackSpeed) {
-					this.frozen = false;
+					this.anim.resetAnim();
 					this.hitFrozen = false;
-					this.mouvementIndex = 0;
 					this.attackIndex = 0;
 				}
 			}
 		} else {
-			if (this.action != Action.S) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is standing");
-				}
-				this.action = Action.S;
-				this.imageIndex = this.sprites.length;
-				this.updateSpriteIndex();
-			}
-			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
-					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
-				this.updateSpriteIndex();
-			}
+			this.anim.changeAction(Action.S);
 		}
-//		if (this.hitFrozen) {
-//			this.attackIndex += elapsed;
-//			if (this.attackIndex >= this.attackSpeed) {
-//				this.hitFrozen = false;
-//				this.attackIndex = 0;
-//			}
-//		}
 	}
 
 	@Override
 	public void Move(Aut_Direction d) {
 		if (!this.frozen) {
-			this.frozen = true;
 			this.moving = true;
+			this.anim.changeAction(Action.M);
 
 			if (d == null) {
 				d = this.direction;
-			}
-			if (this.action != Action.M) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is moving");
-				}
-				this.action = Action.M;
-				this.imageIndex = this.sprites.length;
-				this.updateSpriteIndex();
 			}
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
-			switch (this.direction) {
+			switch (d) {
 			case N:
 				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
 				relativeMouv.setY(-1);
@@ -185,16 +144,15 @@ public abstract class Entity implements IEntity {
 				break;
 			}
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation,d,EntitiesConst.GAME.m_canvas.getHeight(),EntitiesConst.GAME.m_canvas.getWidth())) {
+			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
+					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
 			}
-
-		} else {
-			this.mouvementIndex = 0;
-		}
-
+		} // else {
+			// this.mouvementIndex = 0;
+			// }
 	}
 
 	@Override
@@ -247,9 +205,6 @@ public abstract class Entity implements IEntity {
 			case 0:
 				new Villager(location);
 				break;
-			case 1:
-				new Merchant(location);
-				break;
 			}
 		case AT:
 			Random randomAT = new Random();
@@ -270,15 +225,10 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Hit(Aut_Direction d) {
 		if (!this.frozen) {
-			this.frozen = true;
-			if (this.action != Action.H) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " hits");
-				}
-				this.imageIndex = this.sprites.length;
-				this.action = Action.H;
-				this.updateSpriteIndex();
+			if (d == null) {
+				d = this.direction;
 			}
+			this.anim.changeAction(Action.H);
 			Location t = frontTileLocation(d);
 
 			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -315,14 +265,7 @@ public abstract class Entity implements IEntity {
 		System.out.println("HEHO CA FAIT MALEUH");
 		if (this.health - dmg > 0) {
 			this.health -= dmg;
-			if (this.action != Action.T) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is touched");
-				}
-				this.imageIndex = this.sprites.length;
-				this.action = Action.T;
-				this.updateSpriteIndex();
-			}
+			this.anim.changeAction(Action.T);
 		} else {
 			this.health = 0;
 			this.die();
@@ -330,15 +273,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void die() {
-		if (this.action != Action.D) {
-			this.imageIndex = this.sprites.length;
-			this.action = Action.D;
-			this.updateSpriteIndex();
-
-			if (EntitiesConst.GAME.debug) {
-				System.out.println(this.name + " is diing");
-			}
-		}
+		this.anim.changeAction(Action.D);
 	}
 
 	@Override
@@ -474,27 +409,11 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-	public void updateSpriteIndex() {
-		imageIndex = 0;
-	}
-
-	public int getHitNbSprite() {
+	public int getNbActionSprite(Action a) {
 		return 1;
 	}
 
-	public int getMvmtNbSprite() {
-		return 1;
-	}
-
-	public int getStandNbSprite() {
-		return 1;
-	}
-
-	public int getDieNbSprite() {
-		return 1;
-	}
-
-	public int getTouchedNbSprite() {
+	public int totSrpitePerDir() {
 		return 1;
 	}
 }

@@ -26,6 +26,12 @@ public class WorldMap extends Map {
 		
 		Coin c = new Coin(new Location(0,0));
 		map[(int)c.location.getX()][(int)c.location.getY()].entity = c;
+		
+		HealingPotion ph = new HealingPotion(new Location(0,1));
+		map[(int)ph.location.getX()][(int)ph.location.getY()].entity = ph;
+		
+		StrengthPotion ps = new StrengthPotion(new Location(0,2));
+		map[(int)ps.location.getX()][(int)ps.location.getY()].entity = ps;
 	}
 
 }

@@ -1,4 +1,4 @@
-package info3.game.constants;
+package animations;
 
 public enum Action {
 	M, // is Moving
@@ -6,5 +6,4 @@ public enum Action {
 	T, // is touched (damaged)
 	D, // is dead
 	S, // is Standing
-	R, //is rotating
 }
