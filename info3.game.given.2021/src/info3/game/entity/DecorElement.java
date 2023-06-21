@@ -22,7 +22,7 @@ public abstract class DecorElement extends Entity {
 	}
 	
 	@Override
-	public void takeDamage(int dmg) {
+	public void takeDamage(Entity attacker) {
 		System.out.println("HEHO CA FAIT MALEUH");
 		
 	}
