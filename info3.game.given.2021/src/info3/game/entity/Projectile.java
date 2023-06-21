@@ -136,7 +136,7 @@ public class Projectile extends Entity {
 		Entity e = EntitiesConst.MAP_MATRIX[(int)this.destLocation.getX()][(int)this.destLocation.getY()].entity;
 		if (e != null && e != this.owner) {
 			if (this.hitboxOverlap(e)) {
-				e.takeDamage(this.owner.weaponDamage);
+				e.takeDamage(this.owner);
 				System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
 				EntitiesConst.MAP.projectiles.remove(this);
 			}

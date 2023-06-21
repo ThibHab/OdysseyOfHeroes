@@ -145,15 +145,19 @@ public abstract class Map implements IMap {
 	public void setSurfaceBackground(int x, int y, int width, int height, String tile) {
 		for (int i = x; i < x + width; i++) {
 			for (int j = y; j < y + height; j++) {
-				Location l = new Location(j, j);
+				Location l = new Location(i, j);
 				if (tile.equals("Water")) {
 					map[i][j] = new WaterTile(l);
 				} else if (tile.equals("Rock")) {
 					map[i][j] = new RockTile(l);
 				} else if (tile.equals("Grass")) {
 					map[i][j] = new GrassTile(l);
-				} else {
+				} else if (tile.equals("Dirt")){
 					map[i][j] = new DirtTile(l);
+				} else if (tile.equals("RockDungeon")) {
+					map[i][j] = new RockDungeonTile(l);
+				} else if (tile.equals("BlackTile")) {
+					map[i][j] = new DungeonWalls(l, 4);
 				}
 			}
 		}

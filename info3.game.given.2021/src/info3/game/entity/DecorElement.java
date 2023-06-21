@@ -12,10 +12,11 @@ public abstract class DecorElement extends Entity {
 	public DecorElement() {
 		super();
 		this.category = Aut_Category.O;
+		this.imageIndex = 0;
 	}
 
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img=sprites[0];
+		BufferedImage img=sprites[this.imageIndex];
 		int diff=(int) (tileSize*(scale-1))/2;
 		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
 	}

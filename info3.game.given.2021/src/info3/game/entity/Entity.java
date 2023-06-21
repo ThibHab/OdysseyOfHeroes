@@ -291,22 +291,22 @@ public abstract class Entity implements IEntity {
 				switch (d) {
 				case N:
 					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() + 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				case S:
 					if (entity.hitbox.location.getY() < t.getY() + 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				case E:
 					if (entity.hitbox.location.getX() < t.getX() + 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				case W:
 					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() + 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				default:
@@ -316,10 +316,10 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-	public void takeDamage(int dmg) {
+	public void takeDamage(Entity ent) {
 		System.out.println("HEHO CA FAIT MALEUH");
-		if (this.health - dmg > 0) {
-			this.health -= dmg;
+		if (this.health - ent.weaponDamage > 0) {
+			this.health -= ent.weaponDamage;
 			if (this.action != Action.T) {
 				if (EntitiesConst.GAME.debug) {
 					System.out.println(this.name + " is touched");

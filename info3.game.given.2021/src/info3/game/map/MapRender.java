@@ -144,7 +144,7 @@ public class MapRender {
 	}
 
 	void paintEntity(Graphics g) {
-		List<TransparentDecorElement> transparent= new LinkedList<TransparentDecorElement>();
+		List<TransparentDecorElement> transparent = new LinkedList<TransparentDecorElement>();
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
 				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
@@ -158,25 +158,26 @@ public class MapRender {
 								roundDeci((j + this.offset.getY()) * tileSize, 3));
 					}
 				}
-				boolean isTDE=(renderTile.entity instanceof TransparentDecorElement && !transparent.contains(renderTile.entity));
-				if(isTDE){
-					transparent.add((TransparentDecorElement)renderTile.entity);
+				boolean isTDE = (renderTile.entity instanceof TransparentDecorElement
+						&& !transparent.contains(renderTile.entity));
+				if (isTDE) {
+					transparent.add((TransparentDecorElement) renderTile.entity);
 				}
-				if(renderTile.tpBlock != null) {
-					Iterator it=renderTile.tpBlock.target.iterator();
-					while(it.hasNext()) {
-						TransparentDecorElement tde=(TransparentDecorElement)it.next();
+				if (renderTile.tpBlock != null) {
+					Iterator it = renderTile.tpBlock.target.iterator();
+					while (it.hasNext()) {
+						TransparentDecorElement tde = (TransparentDecorElement) it.next();
 						tde.checkTransparent();
-						if(!transparent.contains(tde)) {
+						if (!transparent.contains(tde)) {
 							transparent.add(tde);
 						}
 					}
 				}
 			}
 		}
-		Iterator it=transparent.iterator();
-		while(it.hasNext()) {
-			TransparentDecorElement tde=(TransparentDecorElement)it.next();
+		Iterator it = transparent.iterator();
+		while (it.hasNext()) {
+			TransparentDecorElement tde = (TransparentDecorElement) it.next();
 			Location l = this.gridToPixel(tde.location, true);
 			tde.paint(g, tileSize, l.getX(), l.getY());
 		}
