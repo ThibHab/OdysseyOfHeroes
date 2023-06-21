@@ -76,4 +76,7 @@ public class EntitiesConst {
 	
 	// CAVE WALL CONSTANTS
 	public static float CAVE_WALL_SCALE = 1.0f;
+	
+	// STATUE CONSTANTS
+	public static float STATUE_SCALE = 4.0f;
 }
