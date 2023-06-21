@@ -67,7 +67,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = true;
+	public boolean debug = false;
 	JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;

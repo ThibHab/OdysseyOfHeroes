@@ -25,9 +25,9 @@ public class Melee extends Hero{
 		}
 		this.currentState = automaton.initial;
 		
-		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.S, Aut_Direction.E,
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.E, Aut_Direction.N,
 				Aut_Direction.W };
-		Action acts[] = new Action[] { Action.S, Action.H, Action.M, Action.D, Action.T };
+		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
 		this.anim = new Animation(this, ImagesConst.MELEE, dirs, acts);
 	}
 	

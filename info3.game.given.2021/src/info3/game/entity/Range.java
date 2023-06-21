@@ -6,6 +6,7 @@ import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
+import info3.game.automata.ast.Direction;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
@@ -25,15 +26,16 @@ public class Range extends Hero{
 		}
 		this.currentState = automaton.initial;
 		
-		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.S, Aut_Direction.E,
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.E, Aut_Direction.N,
 				Aut_Direction.W };
-		Action acts[] = new Action[] { Action.S, Action.H, Action.M, Action.D, Action.T };
+		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
 		this.anim = new Animation(this, ImagesConst.RANGE, dirs, acts);
-		this.anim.imageIndex = 0;
 	}
 	
 	@Override
 	public void Hit(Aut_Direction d) {
+		if(d == null)
+			d = this.direction;
 		if (!this.hitFrozen) {
 			anim.changeAction(Action.H);
 			this.hitFrozen = true;

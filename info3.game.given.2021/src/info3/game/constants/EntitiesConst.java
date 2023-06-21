@@ -1,5 +1,6 @@
 package info3.game.constants;
 
+import animations.Action;
 import info3.game.Game;
 import info3.game.map.Map;
 import info3.game.map.Tile;
@@ -15,7 +16,7 @@ public class EntitiesConst {
 	
 	public static int MOUVEMENT_INDEX_MAX = 200;
 	public static int HIT_INDEX_MAX = 300;
-	public static int STAND_INDEX_MAX = 50;
+	public static int STAND_INDEX_MAX = 200;
 	public static int TOUCHED_INDEX_MAX = 50;
 	public static int DIE_INDEX_MAX = 50;
 	public static int ROTATING_INDEX_MAX = 50;
@@ -72,4 +73,21 @@ public class EntitiesConst {
 	
 	// ENERGYBALL CONSTANTS
 	public static float ENERGYBALL_SCALE = 1.2f;
+	
+	public static int getActionIndexMax(Action a) {
+		switch (a) {
+		case S:
+			return STAND_INDEX_MAX;
+		case M:
+			return MOUVEMENT_INDEX_MAX;
+		case H:
+			return HIT_INDEX_MAX;
+		case T:
+			return TOUCHED_INDEX_MAX;
+		case D:
+			return DIE_INDEX_MAX;
+		default:
+			return 1;
+		}
+	}
 }

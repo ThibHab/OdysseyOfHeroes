@@ -56,7 +56,7 @@ public abstract class Entity implements IEntity {
 		this.automaton = null;
 		this.currentState = null;
 
-		this.direction = Aut_Direction.N;
+		this.direction = Aut_Direction.S;
 		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
 		this.hitFrozen = false;
@@ -77,11 +77,11 @@ public abstract class Entity implements IEntity {
 	public void tick(long elapsed) {
 		this.automaton.step(this, EntitiesConst.GAME);
 		this.anim.step(elapsed);
+		
 		if (this.frozen) {
 			if (anim.action == Action.M) {
 				if (this.anim.isFinished()) {
 					this.moving = false;
-					this.anim.resetAnim();
 					this.location.setX(destLocation.getX());
 					this.location.setY(destLocation.getY());
 					this.hitbox.update();
@@ -100,10 +100,12 @@ public abstract class Entity implements IEntity {
 			} else if (anim.action == Action.H) {
 				this.attackIndex += elapsed;
 				if (this.attackIndex >= this.attackSpeed) {
-					this.anim.resetAnim();
 					this.hitFrozen = false;
 					this.attackIndex = 0;
 				}
+			}
+			if(this.anim.isFinished()) {
+				this.frozen = false;
 			}
 		} else {
 			this.anim.changeAction(Action.S);
@@ -114,11 +116,10 @@ public abstract class Entity implements IEntity {
 	public void Move(Aut_Direction d) {
 		if (!this.frozen) {
 			this.moving = true;
-			this.anim.changeAction(Action.M);
-
 			if (d == null) {
 				d = this.direction;
 			}
+			this.anim.changeAction(Action.M);
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
@@ -150,9 +151,7 @@ public abstract class Entity implements IEntity {
 			} else {
 				this.frozen = false;
 			}
-		} // else {
-			// this.mouvementIndex = 0;
-			// }
+		}
 	}
 
 	@Override
@@ -161,6 +160,7 @@ public abstract class Entity implements IEntity {
 			d = this.direction;
 		}
 		this.direction = d;
+		this.anim.updateIndex();
 	}
 
 	@Override
