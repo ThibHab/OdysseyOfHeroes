@@ -110,7 +110,7 @@ public class Game {
 		m_canvas = new GameCanvas(m_listener);
 		
 		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
-	    map = new WorldMap(64, 64, player1, player2);
+	    map = new WorldMap(100, 100, player1, player2);
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
