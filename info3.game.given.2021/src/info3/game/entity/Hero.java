@@ -75,4 +75,17 @@ public abstract class Hero extends Entity {
 			}
 		}
 	}
+
+	public static void addExperience(Entity attacker) {
+		Hero.experience += EntitiesConst.DEATH_EXPERIENCE_GIVEN;
+		if (Hero.experience >= Hero.levelUp) {
+			Hero.level++;
+			Hero.experience = 0;
+			Hero.levelUp = Hero.levelUp * 2;
+			
+			EntitiesConst.GAME.player1.updateStats();
+			EntitiesConst.GAME.player2.updateStats();
+		}
+		
+	}
 }

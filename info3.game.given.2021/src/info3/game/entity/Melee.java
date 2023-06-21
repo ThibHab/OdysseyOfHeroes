@@ -113,4 +113,11 @@ public class Melee extends Hero {
 		this.imageIndex = idx;
 		return;
 	}
+
+	@Override
+	public void updateStats() {
+		this.weaponDamage++;
+		this.maxHealth += 1;
+		this.health = this.maxHealth;
+	}
 }
