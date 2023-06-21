@@ -16,7 +16,7 @@ public class Villager extends NPC {
 		this.category = Aut_Category.T;
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.VILLAGER;
+		this.sprites = ImagesConst.VILLAGERGIRL;
 		this.imageIndex = 0;
 		// -----------------------------------
 	}

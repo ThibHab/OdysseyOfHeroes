@@ -14,7 +14,7 @@ public class ImagesConst {
 
 	public static BufferedImage[] HOUSE, ROCK, TREE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
-	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGER;
+	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT;
 	public static BufferedImage[] BUSH, CHEST, CAVE_WALL;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
@@ -43,7 +43,6 @@ public class ImagesConst {
 		GOBLIN = loadSprite("goblin", 3, 11);
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
-		VILLAGER = loadSprite("", 1, 1);
 		
 		BUSH = loadSprite("Bush", 3, 2);
 		CHEST = loadSprite("Chest", 2, 2);
@@ -57,6 +56,9 @@ public class ImagesConst {
 		RED_HEART = loadTile("red_heart");
 		BLUE_HEART = loadTile("blue_heart");
 		BLACK_HEART = loadTile("empty_heart");
+		
+		HERMIT = loadSprite("Hermit",1,1);
+		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 3);
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
