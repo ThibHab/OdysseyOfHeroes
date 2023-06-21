@@ -237,6 +237,7 @@ public abstract class Map implements IMap {
 		setDisqueBackground(x, y, radius, "Rock");
 		setCircleBackground(x, y, radius - 1, "Water");
 		setCircleBackground(x, y, radius + 1, "Dirt");
+		map[x][y].entity = new Statue(new Location(x, y));
 	}
 
 	public void setDistrict(int x, int y) {
