@@ -143,8 +143,13 @@ Bush(Existing){
  }
  
   CaveWall(Existing){
-  *(Existing)
-  | True ? : (Existing)
+	*(Existing)
+	| True ? : (Existing)
+  }
+  
+  Statue(Existing){
+	*(Existing)
+	| True ? : (Existing)
   } 
  
  
