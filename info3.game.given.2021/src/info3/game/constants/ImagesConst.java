@@ -12,10 +12,10 @@ public class ImagesConst {
 	public static BufferedImage GRASS_TILE2, WATER_TILE2, DIRT_TILE2, ROCK_TILE2;
 	public static BufferedImage RED_HEART, BLUE_HEART, BLACK_HEART;
 
-	public static BufferedImage[] HOUSE, ROCK, TREE, FOREST_TREE, DUNGEON_WALL;
+	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGER;
-	public static BufferedImage[] BUSH, CHEST, TORCH, CAVE_WALL;
+	public static BufferedImage[] BUSH, CHEST, TORCH, CAVE_WALL, DUNGEON_WALL;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
 
@@ -35,8 +35,8 @@ public class ImagesConst {
 		HOUSE = loadSprite("House", 1, 1);
 		ROCK = loadSprite("Rock", 2, 2);
 		TREE = loadSprite("Tree", 2, 1);
-		FOREST_TREE = loadSprite("forest_tree", 1, 1);
-
+		STATUE = loadSprite("Statue", 1, 1);
+		
 		COIN = loadSprite("Coin", 3, 2);
 		HEALING_POTION = loadSprite("Healing", 3, 3);
 		STRENGTH_POTION = loadSprite("Strength", 3, 3);

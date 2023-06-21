@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -37,6 +39,25 @@ public class Bush extends DecorElement {
 		this.scale = EntitiesConst.BUSH_SCALE;
 		
 		
+	}
+	
+	@Override
+	public void takeDamage(Entity attacker) {	
+		System.out.println("HEHO CA FAIT MALEUH");
+		if (this.health - attacker.weaponDamage > 0) {
+			this.health -= attacker.weaponDamage;
+			if (this.action != Action.T) {
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is touched");
+				}
+				this.imageIndex = this.sprites.length;
+				this.action = Action.T;
+				this.updateSpriteIndex();
+			}
+		} else {
+			this.health = 0;
+			this.die(attacker);
+		}
 	}
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img=sprites[1];

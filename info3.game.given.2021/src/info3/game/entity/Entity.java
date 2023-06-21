@@ -20,8 +20,6 @@ public abstract class Entity implements IEntity {
 	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed, attackSpeed;
-	public int healingPotions, strengthPotions;
-
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
 	public Aut_Direction direction;
@@ -35,6 +33,7 @@ public abstract class Entity implements IEntity {
 	public int detectionRadius;
 	public int maxHealth;
 	public int range;
+	public int healingPotions, strengthPotions;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -52,10 +51,8 @@ public abstract class Entity implements IEntity {
 		this.speed = 1;
 		this.attackSpeed = 500;
 		this.range = 0;
-
-		EntitiesConst.COINS = 0;
-		this.healingPotions = 0;
-		this.strengthPotions = 0;
+		this.healingPotions = EntitiesConst.HEALING_POTIONS;
+		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;
@@ -77,8 +74,6 @@ public abstract class Entity implements IEntity {
 		EntitiesConst.GAME = g;
 		EntitiesConst.MAP = (Map) g.map;
 		EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
-		EntitiesConst.LEVEL = lvl;
-		EntitiesConst.EXPERIENCE = xp;
 	}
 
 	public void tick(long elapsed) {
@@ -132,18 +127,14 @@ public abstract class Entity implements IEntity {
 			this.imageIndex = this.sprites.length - 1;
 				this.updateSpriteIndex();
 			}
+			this.action = Action.S;
+			this.imageIndex = this.sprites.length;
+			this.updateSpriteIndex();
+		}
 			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
 					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
 				this.updateSpriteIndex();
 			}
-		}
-//		if (this.hitFrozen) {
-//			this.attackIndex += elapsed;
-//			if (this.attackIndex >= this.attackSpeed) {
-//				this.hitFrozen = false;
-//				this.attackIndex = 0;
-//			}
-//		}
 	}
 
 	@Override
@@ -273,7 +264,8 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Hit(Aut_Direction d) {
-		// TODO Melee blocked when touching an enemy, also see for the hits in the border of the maps
+		// TODO Melee blocked when touching an enemy, also see for the hits in the
+		// border of the maps
 		if (!this.frozen) {
 			this.frozen = true;
 			if (this.action != Action.H) {
@@ -290,7 +282,7 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() + 0.5) {
+					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) {
 						entity.takeDamage(this);
 					}
 					break;
@@ -305,7 +297,7 @@ public abstract class Entity implements IEntity {
 					}
 					break;
 				case W:
-					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() + 0.5) {
+					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) {
 						entity.takeDamage(this);
 					}
 					break;
@@ -316,36 +308,34 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-	public void takeDamage(Entity ent) {
+	public void takeDamage(Entity attacker) {
 		System.out.println("HEHO CA FAIT MALEUH");
-		if (this.health - ent.weaponDamage > 0) {
-			this.health -= ent.weaponDamage;
-			if (this.action != Action.T) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is touched");
-				}
-				this.imageIndex = this.sprites.length;
-				this.action = Action.T;
-				this.updateSpriteIndex();
-			}
+		if (this.health - attacker.weaponDamage >= 0) {
+			this.health -= attacker.weaponDamage;
 		} else {
 			this.health = 0;
-			this.die();
+			this.die(attacker);
 		}
 	}
 
-	public void die() {
+	public void die(Entity attacker) {
 		if (this.action != Action.D) {
 			this.imageIndex = this.sprites.length;
 			this.action = Action.D;
 			this.updateSpriteIndex();
-
+			
+			if (attacker.category == Aut_Category.AT) {
+				Hero.addExperience(attacker);
+			}
+			
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
 			}
 			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 		}
 	}
+
+	public void updateStats() {}
 
 	@Override
 	public void Jump() {
@@ -378,12 +368,11 @@ public abstract class Entity implements IEntity {
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin) {
-				EntitiesConst.COINS++;
 				// TODO destroy the coin
 			} else if (entity instanceof HealingPotion) {
-				this.healingPotions++;
+				// TODO destroy the healingPotion
 			} else if (entity instanceof StrengthPotion) {
-				this.strengthPotions++;
+				// TODO destroy the strengthPotion
 			}
 		}
 	}
@@ -397,12 +386,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Power() {
-		if (this.healingPotions > 0) {
-			this.health = -1;
-			this.healingPotions--;
-		}
-	}
+	public void Power() {}
 
 	@Override
 	public void Store(Aut_Category c) {
@@ -458,14 +442,26 @@ public abstract class Entity implements IEntity {
 	}
 
 	public boolean hitboxOverlap(Entity tgt) {
-		float x1 = this.hitbox.location.getX() ;
-		float y1 = this.hitbox.location.getY();
-		float X1 = tgt.hitbox.location.getX();
-		float Y1 = tgt.hitbox.location.getY();
-		float x2 = (x1 + this.hitbox.width+EntitiesConst.MAP.lenX)%EntitiesConst.MAP.lenX;
-		float y2 = (y1 + this.hitbox.height+EntitiesConst.MAP.lenY)%EntitiesConst.MAP.lenY;
-		float X2 = (X1 + tgt.hitbox.width+EntitiesConst.MAP.lenX)%EntitiesConst.MAP.lenX;
-		float Y2 = (Y1 + tgt.hitbox.height+EntitiesConst.MAP.lenY)%EntitiesConst.MAP.lenY;
+		float x1,x2,X1,X2,y1,y2,Y1,Y2;
+		if(tgt instanceof DecorElement) {
+			x1 = this.hitbox.location.getX();
+			y1 = this.hitbox.location.getY();
+			X1 = this.destLocation.getX();
+			Y1 = this.destLocation.getY();
+			x2 = (x1 + this.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
+			y2 = (y1 + this.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
+			X2 = (X1 + tgt.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
+			Y2 = (Y1 + tgt.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
+		}else {
+			x1 = this.hitbox.location.getX();
+			y1 = this.hitbox.location.getY();
+			X1 = tgt.hitbox.location.getX();
+			Y1 = tgt.hitbox.location.getY();
+			x2 = (x1 + this.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
+			y2 = (y1 + this.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
+			X2 = (X1 + tgt.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
+			Y2 = (Y1 + tgt.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
+		}
 		switch (this.direction) {
 		case S:
 			return y2 > Y1 && x1 <= X2 && x2 >= X1;

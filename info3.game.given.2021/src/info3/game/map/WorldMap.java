@@ -6,38 +6,19 @@ public class WorldMap extends Map {
 
 	public WorldMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
-		Location lp1 = new Location(0, 4);
-		Location lp2 = new Location(1, 4);
-		this.player1.location.setX(lp1.getX());
-		this.player1.location.setY(lp1.getY());
-		this.player2.location.setX(lp2.getX());
-		this.player2.location.setY(lp2.getY());
-		GrassTile grass = new GrassTile(null);
+		
 		this.setSurfaceBackground(0, 0, lenX, lenY, "Grass");
-		this.setCircleWaterBackground(12, 12, 3);
-		this.setCircleWaterBackground(14, 14, 3);
-		this.setVillage(0, 4, 12);		
+		this.setLac(9, 12, 3);
+		this.setVillage(30, 30, 25);
+		this.setForest(70, 70, 30, 2);
+			
 		
-		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", 2, 6);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, "Tree", 2, 30);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", 2, 10);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", 2, 15);
-		this.setEntityRandomly(0, 0, lenX - 2, 2, "Tree", 2, 8);
-		Location lgob = new Location(0, 0);
-		Goblin gob = new Goblin(lgob);
-		map[0][0].entity = gob;
-		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
-		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
 		
-		Coin c = new Coin(new Location(0,0));
-		map[(int)c.location.getX()][(int)c.location.getY()].entity = c;
-		
-		createTree(0,13);
-		createTree(2,13);
-		createTree(4,13);
-		createTree(6,13);
-		createTree(1,12);
-		createTree(3,12);
-		createTree(5,12);
-		createTree(7,12);
+		setPlayer(29, 31, p1);
+		setPlayer(31, 31, p2);
 	}
 
 }

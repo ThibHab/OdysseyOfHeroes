@@ -1,9 +1,5 @@
 package info3.game.entity;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.Action;
@@ -54,24 +50,6 @@ public class Melee extends Hero {
 	@Override
 	public int getTouchedNbSprite() {
 		return AnimConst.MELEE_T;
-	}
-
-	@Override
-	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		super.Hit(d);
-	}
-
-	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Pop(d, c);
-	}
-
-	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Wizz(d, c);
 	}
 
 	@Override
@@ -135,8 +113,16 @@ public class Melee extends Hero {
 		this.imageIndex = idx;
 		return;
 	}
+
+	@Override
+	public void updateStats() {
+		this.weaponDamage++;
+		this.maxHealth += 1;
+		this.health = this.maxHealth;
+	}
 	
 	
+    // function called only in the dungeon map
 	public void lightAround() {
 		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].opacity = 0f;
 		

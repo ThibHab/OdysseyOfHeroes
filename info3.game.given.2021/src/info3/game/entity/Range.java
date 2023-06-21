@@ -40,7 +40,12 @@ public class Range extends Hero {
 				this.updateSpriteIndex();
 			}
 			this.hitFrozen = true;
-			Projectile p = new Projectile(this, this.direction);
+			if(d != null) {
+				Projectile p = new Projectile(this, d);
+			}else {
+				Projectile p = new Projectile(this, this.direction);
+			}
+			
 		}
 	}
 	public int getHitNbSprite() {
@@ -139,5 +144,16 @@ public class Range extends Hero {
 		}
 		this.imageIndex = idx;
 		return;
+	}
+	
+	@Override
+	public void updateStats() {
+		this.weaponDamage += 2;
+		
+		if (Hero.level % 2 == 0) {
+			this.maxHealth += 1;
+		}
+		
+		this.health = this.maxHealth;
 	}
 }

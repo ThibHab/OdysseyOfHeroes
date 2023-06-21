@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.*;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 
 public abstract class DecorElement extends Entity {
@@ -19,5 +20,11 @@ public abstract class DecorElement extends Entity {
 		BufferedImage img=sprites[this.imageIndex];
 		int diff=(int) (tileSize*(scale-1))/2;
 		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
+	}
+	
+	@Override
+	public void takeDamage(Entity attacker) {
+		System.out.println("HEHO CA FAIT MALEUH");
+		
 	}
 }
