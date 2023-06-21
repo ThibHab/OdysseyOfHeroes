@@ -4,13 +4,14 @@ import info3.game.automata.Aut_Automaton;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class Rock extends DecorElement {
-	public Rock(Location l) {
+public class CaveWall extends DecorElement {
+	public CaveWall(Location l) {
 		super();
-		this.name = "Rock";
+		this.name = "CaveWall";
 		this.location = l;
-		this.hitbox.update();
 
+		// TODO set walls unbreakable, but keep this idea for a secret place room in the labyrinth ?
+		
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -20,13 +21,14 @@ public class Rock extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites =  ImagesConst.ROCK;
+		this.sprites = ImagesConst.CAVE_WALL;
 		this.imageIndex = 0;
 		// -----------------------------------
 		
 		this.width = 1;
 		this.height = 1;
 		
-		this.scale = EntitiesConst.ROCK_SCALE;
+		this.scale = EntitiesConst.CAVE_WALL_SCALE;
 	}
+
 }

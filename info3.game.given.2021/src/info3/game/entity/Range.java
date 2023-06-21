@@ -16,6 +16,7 @@ public class Range extends Hero {
 		this.weaponRange = EntitiesConst.RANGE_RANGE;
 		this.health = 8;
 		this.maxHealth = this.health;
+		this.range = 3;
         
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))
@@ -25,9 +26,28 @@ public class Range extends Hero {
 
 		this.sprites = ImagesConst.RANGE;
 		this.imageIndex = 0;
+		this.hitbox = new Hitbox(this, (float)0.50, (float)0.60);
 	}
 	
 	@Override
+	public void Hit(Aut_Direction d) {
+		if (!this.hitFrozen) {
+			this.frozen = true;
+			if (this.action != Action.H) {
+				System.out.println(this.name + " hits");
+				this.imageIndex = this.sprites.length;
+				this.action = Action.H;
+				this.updateSpriteIndex();
+			}
+			this.hitFrozen = true;
+			if(d != null) {
+				Projectile p = new Projectile(this, d);
+			}else {
+				Projectile p = new Projectile(this, this.direction);
+			}
+			
+		}
+	}
 	public int getHitNbSprite() {
 		return AnimConst.RANGE_H;
 	}
@@ -84,7 +104,7 @@ public class Range extends Hero {
 		}
 		if (this.action == Action.S) {
 			if (this.imageIndex + 1 < idx + AnimConst.RANGE_S) {
-				this.imageIndex = idx + this.imageIndex + 1;
+				this.imageIndex = this.imageIndex + 1;
 				return;
 			}
 			this.imageIndex = idx;

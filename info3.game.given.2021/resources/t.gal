@@ -1,4 +1,4 @@
-Player1(Stand_S){
+Player2(Stand_S){
   * (Stand_S)
   | Key(o) ? Turn(N) :(Stand_N)
   | Key(l) ? Move(S) :(Stand_S)
@@ -6,6 +6,7 @@ Player1(Stand_S){
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(S)  :(Stand_S)
   | Key(p) ? Power(S) : Stand_S)
+  | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
   | Key(o) ? Move(N) :(Stand_N)
@@ -14,6 +15,7 @@ Player1(Stand_S){
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(N)  :(Stand_N)
   | Key(p) ? Power(N) : Stand_N)
+  | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
   | Key(o) ? Turn(N) :(Stand_N)
@@ -22,6 +24,7 @@ Player1(Stand_S){
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(W)  :(Stand_W)
   | Key(p) ? Power(W) : Stand_W)
+  | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
   | Key(o) ? Turn(N) :(Stand_N)
@@ -30,9 +33,10 @@ Player1(Stand_S){
   | Key(m) ? Move(E) :(Stand_E)
   | Key(i) ? Hit(E)  :(Stand_E)
   | Key(p) ? Power(E) : Stand_E)
+  | Cell(E,P) ? Pick(E) : (Stand_E)
  }
  
- Player2(Stand_S){
+ Player1(Stand_S){
   * (Stand_S)
   | Key(z) ? Turn(N) :(Stand_N)
   | Key(s) ? Move(S) :(Stand_S)
@@ -40,6 +44,7 @@ Player1(Stand_S){
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(S)  :(Stand_S)
   | Key(e) ? Power(S) : Stand_S)
+  | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
   | Key(z) ? Move(N) :(Stand_N)
@@ -48,6 +53,7 @@ Player1(Stand_S){
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(N)  :(Stand_N)
   | Key(e) ? Power(N) : Stand_N)
+  | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
   | Key(z) ? Turn(N) :(Stand_N)
@@ -56,6 +62,7 @@ Player1(Stand_S){
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(W)  :(Stand_W)
   | Key(e) ? Power(W) : Stand_W)
+  | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
   | Key(z) ? Turn(N) :(Stand_N)
@@ -64,6 +71,7 @@ Player1(Stand_S){
   | Key(d) ? Move(E) :(Stand_E)
   | Key(a) ? Hit(E)  :(Stand_E)
   | Key(e) ? Power(E) : Stand_E)
+  | Cell(E,P) ? Pick(E) : (Stand_E)
   
 }
 
@@ -72,13 +80,26 @@ Bush(Existing){
   | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
   
   * ()
-  
  } 
  
- Projectile(Forward){
+ Tree(Existing){
+  *(Existing)
+  | True ? : (Existing)
+  } 
+  
+ House(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
+ 
+  Rock(Existing){
+ 	*(Existing)
+ 	| True ? : (Existing)
+ }
+ 
+ EnergyBall(Forward){
    *(Forward)
-   | Cell(F,V) ? Move : (Forward)
-   | True ? Wizz(F,A) : ()
+   | True ? Move : (Forward)
    
    *()
  }
@@ -98,3 +119,33 @@ Bush(Existing){
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
  }
+ 
+  Goblin(Search) {
+   * (Search)
+   | Cell(@,N) ? Hit(N) : (Search)
+   | Cell(@,S) ? Hit(S) : (Search)
+   | Cell(@,E) ? Hit(E) : (Search)
+   | Cell(@,W) ? Hit(W) : (Search)
+   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
+   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
+   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
+   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+ }
+ 
+ Coin(Exists) {
+   *(Exists)
+   | True ? : (Exists) 
+ }
+ 
+ Chest(Exists) {
+   * (Exists)
+   | True ? : (Exists)
+ }
+ 
+  CaveWall(Existing){
+  *(Existing)
+  | True ? : (Existing)
+  } 
+ 
+ 
+ 

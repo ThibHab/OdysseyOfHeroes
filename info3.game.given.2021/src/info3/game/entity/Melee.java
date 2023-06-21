@@ -28,6 +28,7 @@ public class Melee extends Hero {
 
 		this.sprites = ImagesConst.MELEE;
 		this.imageIndex = 0;
+		this.hitbox = new Hitbox(this, (float)0.50, (float)0.65);
 	}
 	
 	@Override
@@ -93,7 +94,7 @@ public class Melee extends Hero {
 		}
 		if (this.action == Action.S) {
 			if (this.imageIndex + 1 < idx + AnimConst.MELEE_S) {
-				this.imageIndex = idx + this.imageIndex + 1;
+				this.imageIndex = this.imageIndex + 1;
 				return;
 			}
 			this.imageIndex = idx;
