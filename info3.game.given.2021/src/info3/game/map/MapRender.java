@@ -195,6 +195,9 @@ public class MapRender {
 		paintEntity(g);
 
 		// NIGHT
+		if (map instanceof DungeonMap) {
+			((DungeonMap)map).nightFilter(g, tileSize);
+		}
 
 		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),

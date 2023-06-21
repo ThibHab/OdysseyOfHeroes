@@ -1,17 +1,25 @@
 package info3.game.map;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.EntitiesConst;
 import info3.game.entity.Entity;
 import info3.game.entity.Location;
+import info3.game.entity.Melee;
 import info3.game.entity.Torch;
 
 public class DungeonMap extends Map {
+	
+	List<Torch> torches;
 
 	public DungeonMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
+
 		Location loc1 = new Location(4,5);
 		Location loc2 = new Location(4,6);
 		
@@ -24,17 +32,23 @@ public class DungeonMap extends Map {
 		p2.setLocation(loc2);
 		map[(int) loc2.getX()][(int) loc2.getY()].entity = p2;
 		
-		int x;
+		this.torches = new LinkedList<Torch>();
+		int x, y;
 		Location loc;
 		Random r = new Random();
 		for (int i = 0; i < 6; i++) {
-			x = r.nextInt(nb_x - 2) +1;
+			do {
+				x = r.nextInt(nb_x - 1) + 1;
+				y = r.nextInt(3) + 1;
+			} while (map[x][y].entity != null);
 			if (i < 3)
-				loc = new Location(x, 2);
+				loc = new Location(x, y);
 			else
-				loc = new Location(x, nb_y - 3);
+				loc = new Location(x, nb_y -1- y);
 			
-			this.map[x][(int) loc.getY()].entity = new Torch(loc);
+			Torch t = new Torch(loc);
+			torches.add(t);
+			this.map[x][(int) loc.getY()].entity = t;
 		}
 	}
 	
@@ -50,6 +64,29 @@ public class DungeonMap extends Map {
 		}
 		for (int j = y-1; j < y + nbTileY; j++) {
 			map[x+nbTileX][j] = new DungeonWalls(new Location(x+nbTileX, j), 2);
+		}
+	}
+	
+	
+	public void nightFilter(Graphics g, int tileSize) {
+		for (int j = 0; j < lenY; j++) {
+			for (int i = 0; i < lenX; i++) {
+				map[i][j].opacity = 1;
+			}
+		}
+		
+		for (Torch torch : torches) {
+			torch.lightAround();
+		}
+		
+		((Melee)this.player1).lightAround();
+		
+		for (int j = 0; j < lenY; j++) {
+			for (int i = 0; i < lenX; i++) {
+				g.setColor(new Color(0,0,0, map[i][j].opacity));
+				g.fillRect(i*EntitiesConst.GAME.render.tileSize, j*EntitiesConst.GAME.render.tileSize, 
+						EntitiesConst.GAME.render.tileSize, EntitiesConst.GAME.render.tileSize);
+			}
 		}
 	}
 

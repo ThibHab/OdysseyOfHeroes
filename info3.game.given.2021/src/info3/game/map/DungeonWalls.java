@@ -10,7 +10,7 @@ public class DungeonWalls extends Tile {
 	Location loc;
 
 	public DungeonWalls(Location location, int index) {
-		super(location, false, 0.0f, ImagesConst.DUNGEON_WALL[index]);
+		super(location, false, 1.0f, ImagesConst.DUNGEON_WALL[index]);
 	}
 
 }
