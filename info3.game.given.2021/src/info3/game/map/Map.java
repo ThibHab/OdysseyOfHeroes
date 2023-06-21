@@ -84,6 +84,11 @@ public abstract class Map implements IMap {
 		Bush b = new Bush(new Location(x, y));
 		map[x][y].entity = b;
 	}
+	
+	void createChest(int x, int y) {
+		Chest c = new Chest(new Location(x, y));
+		map[x][y].entity = c;
+	}
 
 	void setPlayer(int x, int y, Entity player) {
 		player.location.setX(x);
@@ -295,7 +300,9 @@ public abstract class Map implements IMap {
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 8), 5, 4, "Rock");
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 9), 4, 3, "Dirt");
 		createHouse(x + (radius / 2 - 3), y - (radius / 2 - 10));
+		createChest(x + (radius / 2 - 5), y - (radius / 2 - 9));
 		setBorderForest(x, y, radius / 2);
+		createChest(x, y);
 		setEntityRandomly(x - ((radius / 2)  + 10), y - ((radius / 2) + 10), radius + 15, 1, "Tree", seed, 4);
 	}
 
