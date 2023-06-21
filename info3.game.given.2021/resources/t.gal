@@ -5,6 +5,7 @@ Player2(Stand_S){
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(S)  :(Stand_S)
+  | Key(p) ? Egg(S,D) : (Stand_S)
   | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
@@ -13,6 +14,7 @@ Player2(Stand_S){
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(N)  :(Stand_N)
+  | Key(p) ? Egg(N,D) : (Stand_N)
   | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
@@ -21,6 +23,7 @@ Player2(Stand_S){
   | Key(k) ? Move(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(W)  :(Stand_W)
+  | Key(p) ? Egg(W,D) : (Stand_W)
   | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
@@ -29,6 +32,7 @@ Player2(Stand_S){
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Move(E) :(Stand_E)
   | Key(i) ? Hit(E)  :(Stand_E)
+  | Key(p) ? Egg(E,D) : (Stand_E)
   | Cell(E,P) ? Pick(E) : (Stand_E)
  }
  
@@ -39,6 +43,7 @@ Player2(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(S)  :(Stand_S)
+  | Key(e) ? Egg(S,D) : (Stand_S)
   | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
@@ -47,6 +52,7 @@ Player2(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(N)  :(Stand_N)
+  | Key(e) ? Egg(N,D) : (Stand_N)
   | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
@@ -55,6 +61,7 @@ Player2(Stand_S){
   | Key(q) ? Move(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(W)  :(Stand_W)
+  | Key(e) ? Egg(W,D) : (Stand_W)
   | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
@@ -63,6 +70,7 @@ Player2(Stand_S){
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Move(E) :(Stand_E)
   | Key(a) ? Hit(E)  :(Stand_E)
+  | Key(e) ? Egg(E,D) : (Stand_E)
   | Cell(E,P) ? Pick(E) : (Stand_E)
   
 }
@@ -87,6 +95,13 @@ Bush(Existing){
   Rock(Existing){
  	*(Existing)
  	| True ? : (Existing)
+ }
+ 
+   Bomb(Existing){
+ 	*(Existing)
+ 	| !GotPower ? Explode : ()
+ 	| GotPower ? : (Existing)
+ 	*()
  }
  
  EnergyBall(Forward){

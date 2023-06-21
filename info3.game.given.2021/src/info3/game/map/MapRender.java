@@ -29,52 +29,22 @@ public class MapRender {
 
 	}
 
-	Location mid(Location loc1, Location loc2) {
-		Location a = new Location(loc1.getX() + 0.5f, loc1.getY() + 0.5f);
-		Location b = new Location(loc2.getX() + 0.5f, loc2.getY() + 0.5f);
-		Location res = new Location(0, 0);
-		float tmp = (a.getX() + b.getX()) / 2;
-		float tmp2 = ((Math.min(a.getX(), b.getX()) + map.lenX + Math.max(a.getX(), b.getX())) / 2);
-		if (diff(tmp, a.getX(), map.lenX) < diff(tmp2, a.getX(), map.lenX)) {
-			res.setX((tmp + map.lenX) % map.lenX);
-		} else {
-			res.setX((tmp2 + map.lenX) % map.lenX);
-		}
-		tmp = (a.getY() + b.getY()) / 2;
-		tmp2 = ((Math.min(a.getY(), b.getY()) + map.lenY + Math.max(a.getY(), b.getY())) / 2);
-		if (diff(tmp, a.getY(), map.lenY) < diff(tmp2, a.getY(), map.lenY)) {
-			res.setY((tmp + map.lenY) % map.lenY);
-		} else {
-			res.setY((tmp2 + map.lenY) % map.lenY);
-		}
-		return res;
-	}
-
-	public float diff(float a, float b, int len) {
-		float tmp = Math.abs(a - b);
-		float tmp2 = Math.min(a, b) + len - Math.max(a, b);
-		if (tmp < tmp2) {
-			return tmp;
-		}
-		return tmp2;
-	}
-
 	float roundDeci(float val, int nbDec) {
 		long factor = (long) Math.pow(10, nbDec);
 		return (float) Math.round(val * factor) / factor;
 	}
 
 	public void updateCam(Melee player1, Range player2, int w, int h) {
-		this.camera = mid(player1.location, player2.location);
-		float viewX = diff(player2.location.getX(), player1.location.getX(), map.lenX) + bufferTile;
-		float viewY = diff(player2.location.getY(), player1.location.getY(), map.lenY) + bufferTile;
+		this.camera = map.mid(player1.location, player2.location);
+		float viewX = map.diffX(player2.location.getX(), player1.location.getX()) + bufferTile;
+		float viewY = map.diffY(player2.location.getY(), player1.location.getY()) + bufferTile;
 		if (viewX < EntitiesConst.MAX_DIFFX * 2 + bufferTile && viewY < EntitiesConst.MAX_DIFFY * 2 + bufferTile) {
 			Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
 					(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
-			nbTileX = (int) Math.ceil(diff((float) Math.floor(upLeft.getX()),
-					(float) Math.ceil(upLeft.getX() + viewX) % map.lenX, map.lenX)) + 1;
-			nbTileY = (int) Math.ceil(diff((float) Math.floor(upLeft.getY()),
-					(float) Math.ceil(upLeft.getY() + viewY) % map.lenY, map.lenY)) + 1;
+			nbTileX = (int) Math.ceil(map.diffX((float) Math.floor(upLeft.getX()),
+					(float) Math.ceil(upLeft.getX() + viewX) % map.lenX)) + 1;
+			nbTileY = (int) Math.ceil(map.diffY((float) Math.floor(upLeft.getY()),
+					(float) Math.ceil(upLeft.getY() + viewY) % map.lenY)) + 1;
 			double tempx = w / viewX;
 			double tempy = h / viewY;
 			if (tempx > tempy) {
@@ -181,6 +151,13 @@ public class MapRender {
 			tde.paint(g, tileSize, l.getX(), l.getY());
 		}
 	}
+	
+	void paintProj(Graphics g) {
+		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
+					roundDeci((this.offset.getY()) * tileSize, 3));
+		}
+	}
 
 	public void paint(Graphics g) {
 		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
@@ -190,15 +167,12 @@ public class MapRender {
 		paintBackground(g);
 		// EFFECT
 		paintEffect(g);
+		paintProj(g);
 		// DECOR & PLAYER
 		paintEntity(g);
 
 		// NIGHT
 
-		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
-			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
-					roundDeci((this.offset.getY()) * tileSize, 3));
-		}
 	}
 
 }
