@@ -152,7 +152,14 @@ Bush(Existing){
   CaveWall(Existing){
   *(Existing)
   | True ? : (Existing)
-  } 
+  }
+  
+  BombRock(Existing){
+  *(Existing)
+  | !GotPower ? : ()
+  
+  * ()
+  }
  
  
  

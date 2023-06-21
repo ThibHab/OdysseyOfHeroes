@@ -1,4 +1,4 @@
-package info3.game.entity;
+	package info3.game.entity;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
