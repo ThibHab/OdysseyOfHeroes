@@ -1,9 +1,5 @@
 package info3.game.entity;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.Action;
@@ -28,7 +24,7 @@ public class Melee extends Hero {
 
 		this.sprites = ImagesConst.MELEE;
 		this.imageIndex = 0;
-		this.detectionRadius = 5;
+		this.hitbox = new Hitbox(this, (float)0.50, (float)0.65);
 	}
 	
 	@Override
@@ -57,24 +53,6 @@ public class Melee extends Hero {
 	}
 
 	@Override
-	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		super.Hit(d);
-	}
-
-	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Pop(d, c);
-	}
-
-	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Wizz(d, c);
-	}
-
-	@Override
 	public void updateSpriteIndex() {
 		int idx = 0;
 		switch (this.direction) {
@@ -94,7 +72,7 @@ public class Melee extends Hero {
 		}
 		if (this.action == Action.S) {
 			if (this.imageIndex + 1 < idx + AnimConst.MELEE_S) {
-				this.imageIndex = idx + this.imageIndex + 1;
+				this.imageIndex = this.imageIndex + 1;
 				return;
 			}
 			this.imageIndex = idx;
@@ -134,5 +112,37 @@ public class Melee extends Hero {
 		}
 		this.imageIndex = idx;
 		return;
+	}
+
+	@Override
+	public void updateStats() {
+		this.weaponDamage++;
+		this.maxHealth += 1;
+		this.health = this.maxHealth;
+	}
+	
+	
+    // function called only in the dungeon map
+	public void lightAround() {
+		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].opacity = 0f;
+		
+		int x = (int) this.location.getX() + 1;
+		int y = (int) this.location.getY() - 1;
+		
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
+		x--;
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
+		x--;
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
+		y++;
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
+		y++;
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
+		x++;
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
+		x++;
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
+		y--;
+		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
 	}
 }

@@ -48,6 +48,7 @@ import info3.game.entity.*;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
 import info3.game.map.DebugMap;
+import info3.game.map.DungeonMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
@@ -146,9 +147,8 @@ public class Game {
 		m_canvas = new GameCanvas(m_listener);
 		
 		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
-	    map = new WorldMap(64, 64, player1, player2);
-	    EntitiesConst.MAP = (Map) map;
-	    EntitiesConst.MAP_MATRIX = ((Map)map).map;
+	    //map = new WorldMap(100, 100, player1, player2);
+	    map = new DungeonMap(32, 32, player1, player2);
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
@@ -280,8 +280,6 @@ public class Game {
 		g.fillRect(0, 0, width, height);
 		
 		render.paint(g);
-		player1.paint(g, this.render.tileSize);
-		player2.paint(g, this.render.tileSize);
 		hud.paint(g);
 	}
 

@@ -10,7 +10,7 @@ public interface IEntity {
 	
 	public void Turn(Aut_Direction d);
 	
-	public void Egg(Aut_Direction d, Aut_Category c);
+	public void Egg(Aut_Direction d, Aut_Category c, int id);
 	
 	public void Hit(Aut_Direction d);
 	
@@ -30,7 +30,7 @@ public interface IEntity {
 	
 	public void Throw(Aut_Direction d, Aut_Category c);
 	
-	public void Wait();
+	public void Wait(int time);
 	
-	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY);
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY);
 }

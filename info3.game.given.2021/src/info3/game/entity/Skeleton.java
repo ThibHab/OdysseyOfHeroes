@@ -13,6 +13,7 @@ public class Skeleton extends Mob {
 		this.weaponDamage = EntitiesConst.SKELETON_DAMAGE;
 		this.weaponRange = EntitiesConst.SKELETON_RANGE;
 		this.speed = EntitiesConst.SKELETON_SPEED;
+		this.scale = EntitiesConst.SKELETON_SCALE;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;

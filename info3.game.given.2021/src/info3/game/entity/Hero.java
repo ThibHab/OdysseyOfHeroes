@@ -11,17 +11,18 @@ import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
-	public int maxHealth;
-
+	public static int coins, level, levelUp, experience;
+	public int healingPotions, strengthPotions;
+	
 	public Hero() {
 		super();
 		this.speed = EntitiesConst.HERO_SPEED;
-
 		this.category = Aut_Category.AT;
-
 		this.scale = EntitiesConst.HEROES_SCALE;
-		
-		this.hitbox = new Hitbox(this, (float)0.50, (float)0.75);
+		Hero.coins = EntitiesConst.COINS;
+		Hero.level = EntitiesConst.LEVEL;
+		Hero.levelUp = EntitiesConst.LEVEL_UP;
+		Hero.experience = EntitiesConst.EXPERIENCE;
 	}
 	
 	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int sPotions, Aut_Direction dir, Action act) {
@@ -51,16 +52,17 @@ public abstract class Hero extends Entity {
 	public void paint(Graphics g, int tileSize) {
 		BufferedImage img = sprites[imageIndex];
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
-		g.drawImage(img, (int) (pixel.getX() - (((scale - 1) / 2) * tileSize)), (int) (pixel.getY() - (((scale - 1) / 2) * tileSize)),(int) (tileSize * scale), (int) (tileSize * scale), null);
-		g.setColor(Color.blue);
-		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
-
+		int dimension = (int) (scale * tileSize);
+		float shiftXY = ((scale - 1) / 2) * tileSize;
+		int positionX = (int) (pixel.getX() - shiftXY);
+		int positionY = (int) (pixel.getY() - shiftXY);
+		g.drawImage(img, positionX, positionY, dimension, dimension, null);
 		if (EntitiesConst.GAME.debug) {
+			g.setColor(Color.blue);
+			Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
 			g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
 					(int) (tileSize * this.hitbox.height));
 		}
-		// g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize,
-		// game.render.tileSize);
 	}
 
 	@Override
@@ -85,7 +87,7 @@ public abstract class Hero extends Entity {
 				boolean randomLoot = random.nextBoolean();
 				if (randomLoot) {
 					System.out.println("Looted coins");
-					EntitiesConst.COINS += 5;
+					Hero.coins += 5;
 				} else {
 					System.out.println("Looted healing potion");
 					this.healingPotions++;
@@ -94,5 +96,18 @@ public abstract class Hero extends Entity {
 				tile.entity = null;
 			}
 		}
+	}
+
+	public static void addExperience(Entity attacker) {
+		Hero.experience += EntitiesConst.DEATH_EXPERIENCE_GIVEN;
+		if (Hero.experience >= Hero.levelUp) {
+			Hero.level++;
+			Hero.experience = 0;
+			Hero.levelUp = Hero.levelUp * 2;
+			
+			EntitiesConst.GAME.player1.updateStats();
+			EntitiesConst.GAME.player2.updateStats();
+		}
+		
 	}
 }

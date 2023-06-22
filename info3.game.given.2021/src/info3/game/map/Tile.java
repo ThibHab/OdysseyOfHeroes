@@ -1,9 +1,7 @@
 package info3.game.map;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
@@ -11,6 +9,7 @@ import info3.game.Sound;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.Entity;
 import info3.game.entity.Location;
+import info3.game.entity.TransparencyBlock;
 
 public abstract class Tile implements ITile {
 	public boolean walkable;
@@ -19,6 +18,7 @@ public abstract class Tile implements ITile {
 	public Sound sound;
 	public Image image;
 	public Location location;
+	public TransparencyBlock tpBlock;
 
 	public Tile(Location location, boolean walkable, float opacity, BufferedImage img) {
 		this.walkable = walkable;
@@ -33,7 +33,17 @@ public abstract class Tile implements ITile {
 		g.drawImage(this.image, (int) screenPosX, (int) screenPosY, size, size, null);
 		if (EntitiesConst.GAME.debug) {
 			g.setColor(Color.red);
-			g.drawString(screenPosX + ";" + screenPosY, (int) screenPosX, (int) screenPosY + size / 2);
+			//g.drawString(screenPosX + ";" + screenPosY, (int) screenPosX, (int) screenPosY + size / 2);
+			if (entity == null) {
+				if ((location.getX() + location.getY()) % 2 == 0) {
+					g.setColor(new Color(0, 255, 255, 50));
+				} else {
+					g.setColor(new Color(0, 255, 0, 50));
+				}
+			} else {
+				g.setColor(new Color(255, 0, 0, 50));
+			}
+			g.fillRect((int) screenPosX, (int) screenPosY, size, size);
 		}
 	}
 }
