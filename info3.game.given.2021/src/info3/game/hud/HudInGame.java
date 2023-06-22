@@ -22,7 +22,7 @@ public class HudInGame {
 		m_frame = frame;
 		j1 = EntitiesConst.GAME.player1;
 		j2 = EntitiesConst.GAME.player2;
-		moula = EntitiesConst.COINS;
+		moula = Hero.coins;
 	}
 	
 	public void paint(Graphics g){
@@ -113,7 +113,7 @@ public class HudInGame {
 		int coinWidth = 25;
 		g.drawImage(coinIcone, width/2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
 		g.setColor(Color.YELLOW);
-		String argent = "" + EntitiesConst.COINS;
+		String argent = "" + Hero.coins;
 		g.drawString(argent, width/2 - ((argent.length() * 32) / 4), 55);
 		
 		g.setColor(Color.blue);
