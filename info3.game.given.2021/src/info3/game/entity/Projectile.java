@@ -93,10 +93,11 @@ public class Projectile extends Entity {
 		int positionX = (int) (pixel.getX() - shiftXY);
 		int positionY = (int) (pixel.getY() - shiftXY);
 		g.drawImage(img, positionX, positionY, dimension, dimension, null);
-		g.setColor(Color.red);
+		if(EntitiesConst.GAME.debug) {
+				g.setColor(Color.red);
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
 		g.drawRect((int) l.getX(), (int) l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.hitbox.width),
-				(int) (EntitiesConst.GAME.render.tileSize * this.hitbox.height));
+				(int) (EntitiesConst.GAME.render.tileSize * this.hitbox.height));}
 	}
 
 	public void tick(long elapsed) {
