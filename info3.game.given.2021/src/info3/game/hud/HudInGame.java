@@ -22,7 +22,7 @@ public class HudInGame {
 		m_frame = frame;
 		j1 = EntitiesConst.GAME.player1;
 		j2 = EntitiesConst.GAME.player2;
-		moula = EntitiesConst.GAME.player1.coins;
+		moula = EntitiesConst.COINS;
 	}
 	
 	public void paint(Graphics g){
@@ -113,7 +113,7 @@ public class HudInGame {
 		int coinWidth = 25;
 		g.drawImage(coinIcone, width/2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
 		g.setColor(Color.YELLOW);
-		String argent = "" + j1.coins;
+		String argent = "" + EntitiesConst.COINS;
 		g.drawString(argent, width/2 - ((argent.length() * 32) / 4), 55);
 		
 		g.setColor(Color.blue);
@@ -125,16 +125,16 @@ public class HudInGame {
 		g.fillRoundRect(width/8 + 1, height - 14, width - width/4 - 1, 9, 10, 10);
 		// TODO: Test experience bar
 		g.setColor(Color.cyan);
-		int exp = EntitiesConst.EXPERIENCE;
+		int exp = Hero.experience;
 		if (exp == 0) {
 			g.fillRoundRect(width/8 + 1, height - 14, 0, 9, 10, 10);
 		}
 		else {
-			g.fillRoundRect(width/8 + 1, height - 14, (int) ((width - width/4 - 1) / (EntitiesConst.LEVEL_UP / exp )), 9, 10, 10);
+			g.fillRoundRect(width/8 + 1, height - 14, (int) ((width - width/4 - 1) / ((float) Hero.levelUp / (float) exp )), 9, 10, 10);
 		}
 		
 		g.setColor(Color.blue);
-		String lv = "Level " + EntitiesConst.LEVEL;
+		String lv = "Level " + Hero.level;
 		g.drawString(lv, width/2 - ((lv.length() * 28) / 4), height - 20);
 		
 		

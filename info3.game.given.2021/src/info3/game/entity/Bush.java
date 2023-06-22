@@ -2,20 +2,23 @@ package info3.game.entity;
 
 import animations.Action;
 import animations.Animation;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.AnimConst;
+import info3.game.automata.Aut_Category;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Bush extends DecorElement {
-	public static int BushHealth = 1;
-
 	public Bush(Location l) {
 		super();
 		this.name = "Bush";
 		this.location = l;
-		this.health = Bush.BushHealth;
+		this.health = EntitiesConst.BUSH_HEALTH;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -34,7 +37,34 @@ public class Bush extends DecorElement {
 		}
 
 		this.scale = EntitiesConst.BUSH_SCALE;
+		
+		
 	}
+	
+	@Override
+	public void takeDamage(Entity attacker) {	
+		System.out.println("HEHO CA FAIT MALEUH");
+		if (this.health - attacker.weaponDamage > 0) {
+			this.health -= attacker.weaponDamage;
+			if (this.action != Action.T) {
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is touched");
+				}
+				this.imageIndex = this.sprites.length;
+				this.action = Action.T;
+				this.updateSpriteIndex();
+			}
+		} else {
+			this.health = 0;
+			this.die(attacker);
+		}
+	}
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		BufferedImage img=sprites[1];
+		int diff=(int) (tileSize*(scale-1))/2;
+		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
+	}
+		
 	
 	@Override
 	public int getNbActionSprite(Action a) {

@@ -15,11 +15,13 @@ public abstract class Item extends Entity {
 		this.category = Aut_Category.P;
 	}
 
-	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = anim.get_frame();
-		Location l = EntitiesConst.GAME.render.gridToPixel(location, true);
-		g.drawImage(img, (int) (l.getX() - (((scale - 0.8) / 2) * TileSize)),
-				(int) (l.getY() - (((scale - 0.8) / 2) * TileSize)), (int) (scale * TileSize * 1),
-				(int) (scale * TileSize * 1), null);
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		BufferedImage img = sprites[imageIndex];
+		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
+		int dimension = (int) (scale * tileSize);
+		float shiftXY = ((scale - 1) / 2) * tileSize;
+		int positionX = (int) (pixel.getX() - shiftXY);
+		int positionY = (int) (pixel.getY() - shiftXY);
+		g.drawImage(img, positionX, positionY, dimension, dimension, null);
 	}
 }

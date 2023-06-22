@@ -39,6 +39,7 @@ import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.constants.MapConstants;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
 import info3.game.entity.Location;
@@ -50,6 +51,7 @@ import info3.game.map.DebugMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
+import info3.game.map.MazeMap;
 import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
 
@@ -106,8 +108,9 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
-
-		map = new WorldMap(64, 64, player1, player2);
+		
+		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
+	    map = new WorldMap(100, 100, player1, player2);
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
@@ -234,8 +237,6 @@ public class Game {
 		g.fillRect(0, 0, width, height);
 		
 		render.paint(g);
-		player1.paint(g, this.render.tileSize);
-		player2.paint(g, this.render.tileSize);
 		hud.paint(g);
 	}
 

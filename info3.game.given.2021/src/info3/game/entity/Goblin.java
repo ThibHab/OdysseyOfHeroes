@@ -18,6 +18,7 @@ public class Goblin extends Mob {
 		this.weaponDamage = EntitiesConst.GOBLIN_DAMAGE;
 		this.weaponRange = EntitiesConst.GOBLINE_RANGE;
 		this.speed = EntitiesConst.GOBLIN_SPEED;
+		this.scale = EntitiesConst.GOBLIN_SCALE;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
