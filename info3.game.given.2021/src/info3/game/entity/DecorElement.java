@@ -14,7 +14,6 @@ public abstract class DecorElement extends Entity {
 	public DecorElement() {
 		super();
 		this.category = Aut_Category.O;
-		this.imageIndex = 0;
 	}
 
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {

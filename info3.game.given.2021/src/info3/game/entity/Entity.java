@@ -140,7 +140,7 @@ public abstract class Entity implements IEntity {
 				this.direction = d;
 			}
 			this.direction = d;
-			
+
 			if (this.action != Action.M) {
 				this.action = Action.M;
 			}
@@ -187,8 +187,10 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Egg(Aut_Direction d, Aut_Category c, int id) {
-		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de l'id
-		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la signification de chaque nombre)
+		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de
+		// l'id
+		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la
+		// signification de chaque nombre)
 		if (d == null) {
 			d = this.direction;
 		}
@@ -268,22 +270,24 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
+							&& entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case S:
-					if ((entity.hitbox.location.getY() < t.getY() + 0.5)&& entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case E:
-					if ((entity.hitbox.location.getX() < t.getX() + 0.5)&& entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case W:
-					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)&& entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
+							&& entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
@@ -297,7 +301,7 @@ public abstract class Entity implements IEntity {
 	public void takeDamage(Entity attacker) {
 		if (this.dead && attacker instanceof Hero && this instanceof Hero) {
 			this.revive();
-		} else if (!this.frozen /*&& attacker.category != this.category*/) {
+		} else if (!this.frozen /* && attacker.category != this.category */) {
 			System.out.println("HEHO CA FAIT MALEUH");
 			this.frozen = true;
 			this.action = Action.T;
@@ -342,7 +346,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Explode() {}
+	public void Explode() {
+	}
 
 	@Override
 	public void Pick(Aut_Direction d) {
@@ -485,5 +490,21 @@ public abstract class Entity implements IEntity {
 		default:
 			return true;
 		}
+	}
+
+	public boolean circleIntersect(Location bomb, Entity ent, float radius) {
+		Map map = EntitiesConst.MAP;
+		float w = ent.hitbox.width;
+		float h = ent.hitbox.height;
+		Location hg = ent.hitbox.location;
+		Location hd = map.add(hg, new Location(w, 0));
+		Location bg = map.add(hg, new Location(0, h));
+		Location bd = map.add(hg, new Location(w, h));
+
+		Location circleCenter = map.add(bomb, new Location(0.5f, 0.5f));
+
+		return (map.dist(hg, circleCenter) <= radius) || (map.dist(hd, circleCenter) <= radius)
+				|| (map.dist(bg, circleCenter) <= radius) || (map.dist(bd, circleCenter) <= radius);
+
 	}
 }

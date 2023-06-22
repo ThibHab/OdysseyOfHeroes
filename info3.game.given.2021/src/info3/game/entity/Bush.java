@@ -41,7 +41,7 @@ public class Bush extends DecorElement {
 		
 	}
 	
-	/*@Override
+	@Override
 	public void takeDamage(Entity attacker) {	
 		System.out.println("HEHO CA FAIT MALEUH");
 		if (this.health - attacker.weaponDamage > 0) {
@@ -55,7 +55,7 @@ public class Bush extends DecorElement {
 			this.health = 0;
 			this.die();
 		}
-	}*/
+	}
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img=anim.getFrame();
 		int diff=(int) (tileSize*(scale-1))/2;

@@ -1,5 +1,6 @@
 package info3.game.entity;
 
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.constants.Action;
@@ -21,16 +22,14 @@ public class BombRock extends DecorElement {
 		this.currentState = automaton.initial;
 		// -----------------------------
 
-		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.ROCK;
-		this.imageIndex = 0;
-		// -----------------------------------
+		Action acts[] = new Action[] { Action.S };
+		this.anim = new Animation(this, ImagesConst.ROCK, null, acts);
 
 		this.width = 1;
 		this.height = 1;
 
 		this.scale = EntitiesConst.ROCK_SCALE;
-		
-		this.category=Aut_Category.O;
+
+		this.category = Aut_Category.O;
 	}
 }
