@@ -48,6 +48,7 @@ import info3.game.entity.Range;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
 import info3.game.map.DebugMap;
+import info3.game.map.DungeonMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
@@ -69,7 +70,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
+	public boolean debug = true;
 	JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -108,12 +109,13 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
-
-		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,	MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
-		map = new WorldMap(100, 100, player1, player2);
-		// map=new DebugMap(40,40,player1,player2);
-		render = new MapRender((Map) map, this);
-
+		
+		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
+	    map = new WorldMap(100, 100, player1, player2);
+	    //map = new DungeonMap(32, 32, player1, player2);
+		//map=new DebugMap(40,40,player1,player2);
+		render = new MapRender((Map)map, this);
+		
 		Entity.InitStatics(this, level, xp);
 
 		player1.frozen = false;

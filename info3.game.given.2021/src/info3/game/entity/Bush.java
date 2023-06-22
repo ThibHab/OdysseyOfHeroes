@@ -1,4 +1,4 @@
-package info3.game.entity;
+	package info3.game.entity;
 
 import animations.Animation;
 import java.awt.Graphics;
@@ -18,6 +18,7 @@ public class Bush extends DecorElement {
 		this.name = "Bush";
 		this.location = l;
 		this.health = EntitiesConst.BUSH_HEALTH;
+		this.category = Aut_Category.C;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))

@@ -38,6 +38,10 @@ public class EntitiesConst {
 	public static final int RANGE_DAMAGE = 5;
 	public static final int RANGE_RANGE = 3;
 	
+	// BOMB CONSTANTS
+	public static int BOMB_TIMER = 3000;
+	public static float BOMB_RADIUS =2f;
+	
 	// SKELETON CONSTANTS
 	public static final int SKELETON_HEALTH = 20;
 	public static final int SKELETON_DAMAGE = 2;

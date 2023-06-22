@@ -139,6 +139,8 @@ public abstract class Entity implements IEntity {
 			if (d != null) {
 				this.direction = d;
 			}
+			this.direction = d;
+			
 			if (this.action != Action.M) {
 				this.action = Action.M;
 			}
@@ -184,7 +186,9 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Egg(Aut_Direction d, Aut_Category c) {
+	public void Egg(Aut_Direction d, Aut_Category c, int id) {
+		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de l'id
+		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la signification de chaque nombre)
 		if (d == null) {
 			d = this.direction;
 		}
@@ -203,6 +207,9 @@ public abstract class Entity implements IEntity {
 				break;
 			}
 		case M:
+			break;
+		case D:
+			new Bomb(location, this);
 			break;
 		case P:
 			Random randomP = new Random();
@@ -261,22 +268,22 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case S:
-					if (entity.hitbox.location.getY() < t.getY() + 0.5) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5)&& entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case E:
-					if (entity.hitbox.location.getX() < t.getX() + 0.5) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5)&& entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case W:
-					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)&& entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
@@ -335,20 +342,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Explode() {
-		float xBaseIndex = this.location.getX() - 2, yBaseIndex = this.location.getY() - 2;
-		for (int i = (int) xBaseIndex; i < xBaseIndex + 5; i++) {
-			for (int j = (int) yBaseIndex; j < yBaseIndex + 5; j++) {
-				Entity entity = EntitiesConst.MAP_MATRIX[i][j].entity;
-				if (entity != null) {
-					entity.health -= 5;
-				}
-			}
-		}
-
-		// TODO delete destroyable rocks
-		// TODO add explode method for animation (view)
-	}
+	public void Explode() {}
 
 	@Override
 	public void Pick(Aut_Direction d) {
@@ -391,7 +385,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Wait() {
+	public void Wait(int time) {
 	}
 
 	@Override

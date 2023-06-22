@@ -29,52 +29,22 @@ public class MapRender {
 
 	}
 
-	Location mid(Location loc1, Location loc2) {
-		Location a = new Location(loc1.getX() + 0.5f, loc1.getY() + 0.5f);
-		Location b = new Location(loc2.getX() + 0.5f, loc2.getY() + 0.5f);
-		Location res = new Location(0, 0);
-		float tmp = (a.getX() + b.getX()) / 2;
-		float tmp2 = ((Math.min(a.getX(), b.getX()) + map.lenX + Math.max(a.getX(), b.getX())) / 2);
-		if (diff(tmp, a.getX(), map.lenX) < diff(tmp2, a.getX(), map.lenX)) {
-			res.setX((tmp + map.lenX) % map.lenX);
-		} else {
-			res.setX((tmp2 + map.lenX) % map.lenX);
-		}
-		tmp = (a.getY() + b.getY()) / 2;
-		tmp2 = ((Math.min(a.getY(), b.getY()) + map.lenY + Math.max(a.getY(), b.getY())) / 2);
-		if (diff(tmp, a.getY(), map.lenY) < diff(tmp2, a.getY(), map.lenY)) {
-			res.setY((tmp + map.lenY) % map.lenY);
-		} else {
-			res.setY((tmp2 + map.lenY) % map.lenY);
-		}
-		return res;
-	}
-
-	public float diff(float a, float b, int len) {
-		float tmp = Math.abs(a - b);
-		float tmp2 = Math.min(a, b) + len - Math.max(a, b);
-		if (tmp < tmp2) {
-			return tmp;
-		}
-		return tmp2;
-	}
-
 	float roundDeci(float val, int nbDec) {
 		long factor = (long) Math.pow(10, nbDec);
 		return (float) Math.round(val * factor) / factor;
 	}
 
 	public void updateCam(Melee player1, Range player2, int w, int h) {
-		this.camera = mid(player1.location, player2.location);
-		float viewX = diff(player2.location.getX(), player1.location.getX(), map.lenX) + bufferTile;
-		float viewY = diff(player2.location.getY(), player1.location.getY(), map.lenY) + bufferTile;
+		this.camera = map.mid(player1.location, player2.location);
+		float viewX = map.diffX(player2.location.getX(), player1.location.getX()) + bufferTile;
+		float viewY = map.diffY(player2.location.getY(), player1.location.getY()) + bufferTile;
 		if (viewX < EntitiesConst.MAX_DIFFX * 2 + bufferTile && viewY < EntitiesConst.MAX_DIFFY * 2 + bufferTile) {
 			Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
 					(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
-			nbTileX = (int) Math.ceil(diff((float) Math.floor(upLeft.getX()),
-					(float) Math.ceil(upLeft.getX() + viewX) % map.lenX, map.lenX)) + 1;
-			nbTileY = (int) Math.ceil(diff((float) Math.floor(upLeft.getY()),
-					(float) Math.ceil(upLeft.getY() + viewY) % map.lenY, map.lenY)) + 1;
+			nbTileX = (int) Math.ceil(map.diffX((float) Math.floor(upLeft.getX()),
+					(float) Math.ceil(upLeft.getX() + viewX) % map.lenX)) + 1;
+			nbTileY = (int) Math.ceil(map.diffY((float) Math.floor(upLeft.getY()),
+					(float) Math.ceil(upLeft.getY() + viewY) % map.lenY)) + 1;
 			double tempx = w / viewX;
 			double tempy = h / viewY;
 			if (tempx > tempy) {
@@ -126,6 +96,14 @@ public class MapRender {
 		offset.setX(roundDeci(offset.getX(), 3));
 		offset.setY(roundDeci(offset.getY(), 3));
 	}
+	
+	float opacity(float d) {
+		float opa=1-(float)(Math.pow(Math.E,-(d*d/2)));
+		if(opa>0.95) {
+			return 0.95f;
+		}
+		return opa;
+	}
 
 	void paintBackground(Graphics g) {
 		for (int j = 0; j < nbTileY; j++) {
@@ -144,7 +122,7 @@ public class MapRender {
 	}
 
 	void paintEntity(Graphics g) {
-		List<TransparentDecorElement> transparent= new LinkedList<TransparentDecorElement>();
+		List<TransparentDecorElement> transparent = new LinkedList<TransparentDecorElement>();
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
 				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
@@ -158,27 +136,58 @@ public class MapRender {
 								roundDeci((j + this.offset.getY()) * tileSize, 3));
 					}
 				}
-				boolean isTDE=(renderTile.entity instanceof TransparentDecorElement && !transparent.contains(renderTile.entity));
-				if(isTDE){
-					transparent.add((TransparentDecorElement)renderTile.entity);
+				boolean isTDE = (renderTile.entity instanceof TransparentDecorElement
+						&& !transparent.contains(renderTile.entity));
+				if (isTDE) {
+					transparent.add((TransparentDecorElement) renderTile.entity);
 				}
-				if(renderTile.tpBlock != null) {
-					Iterator it=renderTile.tpBlock.target.iterator();
-					while(it.hasNext()) {
-						TransparentDecorElement tde=(TransparentDecorElement)it.next();
+				if (renderTile.tpBlock != null) {
+					Iterator it = renderTile.tpBlock.target.iterator();
+					while (it.hasNext()) {
+						TransparentDecorElement tde = (TransparentDecorElement) it.next();
 						tde.checkTransparent();
-						if(!transparent.contains(tde)) {
+						if (!transparent.contains(tde)) {
 							transparent.add(tde);
 						}
 					}
 				}
 			}
 		}
-		Iterator it=transparent.iterator();
-		while(it.hasNext()) {
-			TransparentDecorElement tde=(TransparentDecorElement)it.next();
+		Iterator it = transparent.iterator();
+		while (it.hasNext()) {
+			TransparentDecorElement tde = (TransparentDecorElement) it.next();
 			Location l = this.gridToPixel(tde.location, true);
 			tde.paint(g, tileSize, l.getX(), l.getY());
+		}
+	}
+	
+	void paintProj(Graphics g) {
+		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
+					roundDeci((this.offset.getY()) * tileSize, 3));
+		}
+	}
+	
+	void paintDark(Graphics g) {
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
+				int mapY = (int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
+				for(int sj=0;sj<2;sj++) {
+					for(int si=0;si<2;si++) {
+						int Xscreen=(int)roundDeci((i + this.offset.getX()+(float)si/2) * tileSize, 3);
+						int Yscreen=(int)roundDeci((j + this.offset.getY()+(float)sj/2) * tileSize, 3);
+						Location tile=map.add(new Location(mapX,mapY), new Location(si*0.5f+0.25f,sj*0.5f+0.25f));
+						Location player=map.add(game.player1.location,new Location(0.5f,0.5f));
+						float dist=map.dist(player, tile);
+						g.setColor(new Color(0,0,0,(int)(opacity(dist)*255)));
+						g.fillRect(Xscreen, Yscreen, tileSize/2, tileSize/2);
+//						g.setColor(Color.red);
+//						g.drawString(""+opacity(dist), Xscreen, Yscreen+tileSize/8);
+					}
+				}
+				
+			}
 		}
 	}
 
@@ -190,15 +199,11 @@ public class MapRender {
 		paintBackground(g);
 		// EFFECT
 		paintEffect(g);
+		paintProj(g);
 		// DECOR & PLAYER
 		paintEntity(g);
-
 		// NIGHT
-
-		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
-			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
-					roundDeci((this.offset.getY()) * tileSize, 3));
-		}
+		//paintDark(g);
 	}
 
 }

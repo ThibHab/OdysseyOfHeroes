@@ -6,6 +6,7 @@ Player2(Stand_S){
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(S)  :(Stand_S)
   | Key(p) ? Power(S) : (Stand_S)
+  | Key(u) ? Egg(S,D) : (Stand_S)
   | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
@@ -15,6 +16,7 @@ Player2(Stand_S){
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(N)  :(Stand_N)
   | Key(p) ? Power(N) : (Stand_N)
+  | Key(u) ? Egg(N,D) : (Stand_N)
   | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
@@ -24,6 +26,7 @@ Player2(Stand_S){
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(W)  :(Stand_W)
   | Key(p) ? Power(W) : (Stand_W)
+  | Key(u) ? Egg(W,D) : (Stand_W)
   | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
@@ -33,6 +36,7 @@ Player2(Stand_S){
   | Key(m) ? Move(E) :(Stand_E)
   | Key(i) ? Hit(E)  :(Stand_E)
   | Key(p) ? Power(E) : (Stand_E)
+  | Key(u) ? Egg(E,D) : (Stand_E)
   | Cell(E,P) ? Pick(E) : (Stand_E)
  }
  
@@ -55,6 +59,7 @@ Player2(Stand_S){
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(S)  :(Stand_S)
   | Key(e) ? Power(S) : (Stand_S)
+  | Key(r) ? Egg(S,D) : (Stand_S)
   | Cell(S,P) ? Pick(S) : (Stand_S)
 
   * (Stand_N)
@@ -64,6 +69,7 @@ Player2(Stand_S){
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(N)  :(Stand_N)
   | Key(e) ? Power(N) : (Stand_N)
+  | Key(r) ? Egg(N,D) : (Stand_N)
   | Cell(N,P) ? Pick(N) : (Stand_N)
   
   * (Stand_W)
@@ -73,6 +79,7 @@ Player2(Stand_S){
   | Key(d) ? Turn(E) :(Stand_E)
   | Key(a) ? Hit(W)  :(Stand_W)
   | Key(e) ? Power(W) : (Stand_W)
+  | Key(r) ? Egg(W,D) : (Stand_W)
   | Cell(W,P) ? Pick(W) : (Stand_W)
   
   * (Stand_E)
@@ -82,6 +89,7 @@ Player2(Stand_S){
   | Key(d) ? Move(E) :(Stand_E)
   | Key(a) ? Hit(E)  :(Stand_E)
   | Key(e) ? Power(E) : (Stand_E)
+  | Key(r) ? Egg(E,D) : (Stand_E)
   | Cell(E,P) ? Pick(E) : (Stand_E)
   
 }
@@ -106,6 +114,13 @@ Bush(Existing){
   Rock(Existing){
  	*(Existing)
  	| True ? : (Existing)
+ }
+ 
+   Bomb(Existing){
+ 	*(Existing)
+ 	| !GotPower ? Explode : ()
+ 	| GotPower ? : (Existing)
+ 	*()
  }
  
  EnergyBall(Forward){
@@ -161,6 +176,32 @@ Bush(Existing){
   Statue(Existing){
 	*(Existing)
 	| True ? : (Existing)
+  } 
+  
+  Villager (Walking) {
+  * (Walking)
+  | Cell(@, B) ? Turn(B) : (Standing)
+  | Cell(@, L) ? Turn(L) : (Standing)
+  | Cell(@, R) ? Turn(R) : (Standing)
+  | Cell(@, F) ? : (Standing)
+  | True ? 80% Move(F) / 10% Move(L) / 10% Move(R) : (Walking)
+  
+  * (Standing)
+  | !Cell(@, F) ? : (Walking)
+  }
+  
+  BombRock(Existing){
+  *(Existing)
+  | !GotPower ? : ()
+  
+  * ()
+  }
+  
+  Torch(Off){
+  *(Off)
+  | !GotPower ? Pop : (On)
+  
+  * (On)
   } 
  
  
