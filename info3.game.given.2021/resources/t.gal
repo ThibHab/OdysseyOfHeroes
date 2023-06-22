@@ -151,6 +151,19 @@ Bush(Existing){
 	*(Existing)
 	| True ? : (Existing)
   } 
+  
+  Villager (Walking) {
+  * (Walking)
+  | Cell(@, B) ? Turn(B) : (Standing)
+  | Cell(@, L) ? Turn(L) : (Standing)
+  | Cell(@, R) ? Turn(R) : (Standing)
+  | Cell(@, F) ? : (Standing)
+  | True ? 80% Move(F) / 10% Move(L) / 10% Move(R) : (Walking)
+  
+  * (Standing)
+  | !Cell(@, F) ? : (Walking)
+  }
+  
  
  
  
