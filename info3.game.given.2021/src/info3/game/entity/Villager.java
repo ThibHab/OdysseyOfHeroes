@@ -11,7 +11,7 @@ import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class Villager extends NPC {
+public abstract class Villager extends NPC {
 	
 	public LinkedList<String> dialogs;
 	public boolean talking;
@@ -19,25 +19,16 @@ public class Villager extends NPC {
 	
 	public Villager(Location l) {
 		super();
-		this.name = "Rock";
 		this.location = l;
 		this.talking = false;
 		this.dialogIndex = 0;
 		this.dialogs = new LinkedList<>();
-		this.dialogs.add("SALUT TOI");
-		this.dialogs.add("BAISE TA MERE");
 
 		// --- TODO manage automaton ---
-		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
-			if (next.name.equals(name))
-				automaton = next;
-		}
-		this.currentState = automaton.initial;
 		// -----------------------------
 		this.category = Aut_Category.T;
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.MINER;
 		this.imageIndex = 0;
 		this.scale = EntitiesConst.VILLAGER_SCALE;
 		// -----------------------------------
@@ -45,9 +36,21 @@ public class Villager extends NPC {
 	}
 	
 	public void talks() {
-		EntitiesConst.MAP.bubbles.clear();
+		if(dialogIndex > 0) {
+			for (int i = 0; i < EntitiesConst.MAP.bubbles.size() ; i++) {
+				SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
+				if (bubble.v == this) {
+					EntitiesConst.MAP.bubbles.remove(i);
+				}
+			}
+		}
 		if (this.dialogs.size() <= this.dialogIndex) {
-			EntitiesConst.MAP.bubbles.clear();
+			for (int i = 0; i < EntitiesConst.MAP.bubbles.size() ; i++) {
+				SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
+				if (bubble.v == this) {
+					EntitiesConst.MAP.bubbles.remove(i);
+				}
+			}
 			this.dialogIndex = 0;
 		}else {
 			EntitiesConst.MAP.bubbles.add(new SpeechBubble(this, this.dialogs.get(dialogIndex++)));
@@ -68,5 +71,28 @@ public class Villager extends NPC {
 			g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
 					(int) (tileSize * this.hitbox.height));
 		}
+	}
+	
+	@Override
+	public void Move(Aut_Direction d) {
+		float x = this.location.getX();
+		float y =this.location.getY();
+		Aut_Direction dir = d.rightDirection(this);
+		if (x > 35 && dir == Aut_Direction.E  || x < 25 && dir == Aut_Direction.W || y > 35 && dir == Aut_Direction.S || y < 25 && dir == Aut_Direction.N) {
+			dir = Aut_Direction.B;
+			dir = dir.rightDirection(this);
+			super.Move(dir);
+		}else {
+			super.Move(d);
+		}
+		if(dialogIndex > 0) {
+			for (int i = 0; i < EntitiesConst.MAP.bubbles.size() ; i++) {
+				SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
+				if (bubble.v == this) {
+					EntitiesConst.MAP.bubbles.remove(i);
+				}
+			}
+		}
+		this.dialogIndex = 0;
 	}
 }

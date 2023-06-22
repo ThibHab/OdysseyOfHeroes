@@ -252,7 +252,7 @@ public abstract class Entity implements IEntity {
 			int tirageT = randomT.nextInt(3);
 			switch (tirageT) {
 			case 0:
-				new Villager(location);
+				new VillagerGirl(location);
 				break;
 			case 1:
 				new Merchant(location);

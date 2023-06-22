@@ -1,6 +1,7 @@
 package info3.game.entity;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -26,7 +27,6 @@ public class SpeechBubble extends Entity {
 		}
 		this.currentState = automaton.initial;
 		this.sprites = ImagesConst.SPEECHBUBBLE;
-		EntitiesConst.MAP.bubbles.add(this);
 	}
 	
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
@@ -36,8 +36,15 @@ public class SpeechBubble extends Entity {
 		float shiftXY = ((scale - 1) / 2) * tileSize;
 		int positionX = (int) (pixel.getX() - shiftXY);
 		int positionY = (int) (pixel.getY() - shiftXY);
-		g.drawImage(img, positionX - tileSize/2 + tileSize/5, positionY - tileSize/2 -tileSize/4, dimension * 3, (dimension * 2)/2, null);
+		g.drawImage(img, positionX - tileSize + tileSize/3, positionY - tileSize - tileSize/4, dimension * 4, (dimension * 3)/2, null);
+		Font f = new Font(null,0,tileSize/5);
+		g.setFont(f);
 		g.setColor(Color.black);
-		g.drawString(dialog, positionX - tileSize/2 + tileSize/3, positionY - tileSize/2);
+		String[] sentences = dialog.split("\n");
+		int y = positionY - tileSize - tileSize/4 + tileSize/3;
+		for (int i = 0; i < sentences.length; i++) {
+			g.drawString(sentences[i], positionX - tileSize + tileSize/2, y);
+			y += tileSize/5;
+		}
 	}
 }

@@ -20,10 +20,10 @@ public class WorldMap extends Map {
 		
 		setPlayer(29, 31, p1);
 		setPlayer(31, 31, p2);
-		Coin c = new Coin(new Location(0,0));
-		Villager v = new Villager(new Location(0,1));
-		map[(int)c.location.getX()][(int)c.location.getY()].entity = c;
+		Villager v = new VillagerGirl(new Location(30,31));
+		Villager m = new Miner(new Location(29,30));
 		map[(int)v.location.getX()][(int)v.location.getY()].entity = v;
+		map[(int)m.location.getX()][(int)m.location.getY()].entity = m;
 		
 	}
 
