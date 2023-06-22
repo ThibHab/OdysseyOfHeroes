@@ -21,8 +21,8 @@ public class EntitiesConst {
 	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
 	public static final int HIT_INDEX_MAX = 300;
 	public static final int STAND_INDEX_MAX = 200;
-	public static final int TOUCHED_INDEX_MAX = 50;
-	public static final int DIE_INDEX_MAX = 50;
+	public static final int TOUCHED_INDEX_MAX = 200;
+	public static final int DIE_INDEX_MAX = 200;
 	public static final int ROTATING_INDEX_MAX = 50;
 	
 	// HERO CONSTANTS
@@ -87,6 +87,8 @@ public class EntitiesConst {
 	public static final float STATUE_SCALE = 4.0f;
 	
 	public static int getActionIndexMax(Action a) {
+		if(a == null)
+			a = Action.S;
 		switch (a) {
 		case S:
 			return STAND_INDEX_MAX;

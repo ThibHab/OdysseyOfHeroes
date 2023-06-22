@@ -28,8 +28,8 @@ public class Tree extends TransparentDecorElement {
 
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this,ImagesConst.TREE, null, acts);
-		this.width = 2;
-		this.height = 2;
+		this.width = 3;
+		this.height = 3;
 
 		this.scale = EntitiesConst.TREE_SCALE;
 	}

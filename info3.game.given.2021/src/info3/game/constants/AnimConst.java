@@ -46,5 +46,8 @@ public class AnimConst {
 	public static final int CHEST_S = 1;
 	public static final int CHEST_H = 2;
 	public static final int CHEST_TOT = CHEST_S + CHEST_H;
+	
+	public static final int ENERGY_B_M = 4;
+	public static final int ENERGY_B_H = 0;
 
 }

@@ -20,6 +20,7 @@ public abstract class Entity implements IEntity {
 	public float speed, attackSpeed;
 	public Aut_Category category;
 	public int healingPotions, strengthPotions;
+	public boolean dead;
 
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
@@ -27,16 +28,14 @@ public abstract class Entity implements IEntity {
 	public boolean frozen, hitFrozen;
 
 	public Location originLocation, location, destLocation, relativeMouv;
-	public boolean moving;
 
-	public long attackIndex;
+	public long actionIndex;
 	public int detectionRadius;
 	public Hitbox hitbox;
 
 	public Animation anim;
 	public float scale;
 	public Action action;
-	public long mouvementIndex;
 
 	public Entity() {
 		this.name = "";
@@ -60,8 +59,7 @@ public abstract class Entity implements IEntity {
 		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
 		this.hitFrozen = false;
-		this.moving = false;
-		this.attackIndex = 0;
+		this.actionIndex = 0;
 
 		this.scale = 1;
 	}
@@ -73,65 +71,78 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		this.automaton.step(this, EntitiesConst.GAME);
-		this.anim.step(elapsed);
+		if (!this.dead) {
+			this.automaton.step(this, EntitiesConst.GAME);
 
-		if (this.frozen) {
-			if (this.anim.isFinished()) {
-				this.frozen = false;
-			}
-			this.mouvementIndex += elapsed;
-			if (anim.action == Action.M) {
-				if (this.anim.isFinished()) {
-					this.moving = false;
-					this.mouvementIndex = 0;
-					this.location.setX(destLocation.getX());
-					this.location.setY(destLocation.getY());
-					this.hitbox.update();
-					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-							.getY()].entity = null;
-				} else if (mouvementIndex != 0) {
-					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-					this.location
-							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-									% EntitiesConst.MAP.lenX);
-					this.location
-							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-									% EntitiesConst.MAP.lenY);
-					this.hitbox.update();
+			if (this.frozen) {
+				this.actionIndex += elapsed;
+				if (action == Action.M) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.frozen = false;
+						this.location.setX(destLocation.getX());
+						this.location.setY(destLocation.getY());
+						this.hitbox.update();
+						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+								.getY()].entity = null;
+					} else if (actionIndex != 0) {
+						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+						this.location.setX(
+								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location.setY(
+								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitbox.update();
+					}
+				} else if (action == Action.H) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+					if (this.actionIndex >= this.attackSpeed) {
+						this.hitFrozen = false;
+					}
+				} else if (action == Action.T) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+						if (this.health == 0)
+							this.die();
+					}
+				} else if (action == Action.D) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+						this.dead = true;
+					}
 				}
-			} else if (anim.action == Action.H) {
-				this.attackIndex += elapsed;
-				if (this.attackIndex >= this.attackSpeed) {
-					this.hitFrozen = false;
-					this.attackIndex = 0;
+			} else {
+				if (this.action != Action.S) {
+					if (EntitiesConst.GAME.debug) {
+						System.out.println(this.name + " is standing");
+					}
+					this.action = Action.S;
+					this.anim.changeAction(action);
 				}
+				if (!this.dead)
+					this.anim.changeAction(action);
 			}
-		} else {
-			if (this.action != Action.S) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is standing");
-				}
-				this.action = Action.S;
-				this.anim.changeAction(action);
-			}
-			this.action = Action.S;
-			this.anim.changeAction(action);
+			this.anim.step(elapsed);
 		}
 	}
 
 	@Override
 	public void Move(Aut_Direction d) {
 		if (!this.frozen) {
-			this.moving = true;
+			this.frozen = true;
 			if (d != null) {
 				this.direction = d;
 			}
 			if (this.action != Action.M) {
 				this.action = Action.M;
-				this.anim.changeAction(action);
 			}
-
+			this.anim.changeAction(action);
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
@@ -161,18 +172,15 @@ public abstract class Entity implements IEntity {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
-				System.out.println(this.location.getX() + " " + this.location.getY());
 			}
 		}
 	}
 
 	@Override
 	public void Turn(Aut_Direction d) {
-		if (d == null) {
-			d = this.direction;
+		if (d != null) {
+			this.direction = d;
 		}
-		this.direction = d;
-		this.anim.updateIndex();
 	}
 
 	@Override
@@ -239,8 +247,9 @@ public abstract class Entity implements IEntity {
 		// TODO Melee blocked when touching an enemy, also see for the hits in the
 		// border of the maps
 		if (!this.frozen) {
-			if (d == null) {
-				d = this.direction;
+			this.frozen = true;
+			if (d != null) {
+				this.direction = d;
 			}
 			if (this.action != Action.H) {
 				this.action = Action.H;
@@ -279,29 +288,42 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void takeDamage(Entity attacker) {
-		System.out.println("HEHO CA FAIT MALEUH");
-		if (this.health - attacker.weaponDamage >= 0) {
-			this.health -= attacker.weaponDamage;
-		} else {
-			this.health = 0;
-			this.die(attacker);
+		if (this.dead && attacker instanceof Hero && this instanceof Hero) {
+			this.revive();
+		} else if (!this.frozen /*&& attacker.category != this.category*/) {
+			System.out.println("HEHO CA FAIT MALEUH");
+			this.frozen = true;
+			this.action = Action.T;
+			this.anim.changeAction(action);
+			if (this.health - attacker.weaponDamage > 0) {
+				this.health -= attacker.weaponDamage;
+			} else {
+				this.health = 0;
+				if (attacker.category == Aut_Category.AT) {
+					Hero.addExperience(attacker);
+				}
+			}
 		}
 	}
 
-	public void die(Entity attacker) {
+	public void die() {
 		if (this.action != Action.D) {
 			this.action = Action.D;
 			this.anim.changeAction(action);
-
-			if (attacker.category == Aut_Category.AT) {
-				Hero.addExperience(attacker);
-			}
+			this.frozen = true;
 
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
 			}
-			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
+			if (!(this instanceof Hero)) {
+				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
+			}
 		}
+	}
+
+	public void revive() {
+		this.dead = false;
+		this.health = this.maxHealth;
 	}
 
 	public void updateStats() {
@@ -366,7 +388,6 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Throw(Aut_Direction d, Aut_Category category) {
 		// TODO complete method
-
 	}
 
 	@Override
@@ -453,5 +474,22 @@ public abstract class Entity implements IEntity {
 
 	public int totSrpitePerDir() {
 		return 1;
+	}
+
+	public boolean isFinished() {
+		switch (this.action) {
+		case S:
+			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
+		case M:
+			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX;
+		case H:
+			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX;
+		case D:
+			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
+		case T:
+			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+		default:
+			return true;
+		}
 	}
 }

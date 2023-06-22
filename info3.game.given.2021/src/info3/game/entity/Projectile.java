@@ -9,6 +9,7 @@ import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -29,12 +30,12 @@ public class Projectile extends Entity {
 		this.owner = owner;
 		this.tilesCrossed = 0;
 		this.currentState = this.automaton.initial;
-		this.location.setX((float)(this.owner.location.getX()));
-		this.location.setY((float)(this.owner.location.getY()));
-		
+		this.location.setX((float) (this.owner.location.getX()));
+		this.location.setY((float) (this.owner.location.getY()));
 
+		this.action = Action.M;
 		Action acts[] = new Action[] { Action.M };
-		this.anim = new Animation(this,ImagesConst.ENERGYBALL, null, acts);
+		this.anim = new Animation(this, ImagesConst.ENERGYBALL, null, acts);
 
 		this.location.setX((float) (this.owner.location.getX()));
 		this.location.setY((float) (this.owner.location.getY()));
@@ -50,7 +51,6 @@ public class Projectile extends Entity {
 		if (!this.frozen) {
 			this.tilesCrossed++;
 			this.frozen = true;
-			this.moving = true;
 
 			if (d == null) {
 				d = this.direction;
@@ -81,21 +81,19 @@ public class Projectile extends Entity {
 				break;
 			}
 
-		} // else {
-			// this.mouvementIndex = 0;
-			// }
-
+		}
 	}
 
 	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
-		Location pixel=EntitiesConst.GAME.render.gridToPixel(location,true);
+		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
 		int dimension = (int) (scale * tileSize);
 		float shiftXY = ((scale - 1) / 2) * tileSize;
 		int positionX = (int) (pixel.getX() - shiftXY);
 		int positionY = (int) (pixel.getY() - shiftXY);
-		g.drawImage(img, positionX, positionY, dimension, dimension, null);g.setColor(Color.red);
+		g.drawImage(img, positionX, positionY, dimension, dimension, null);
+		g.setColor(Color.red);
 		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
 		g.drawRect((int) l.getX(), (int) l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.hitbox.width),
 				(int) (EntitiesConst.GAME.render.tileSize * this.hitbox.height));
@@ -117,28 +115,57 @@ public class Projectile extends Entity {
 				EntitiesConst.MAP.projectiles.remove(this);
 			}
 		}
-		if (this.frozen && this.moving) {
-			if (this.anim.isFinished()) {
-				this.frozen = false;
-				this.moving = false;
-				this.mouvementIndex = 0;
-				this.anim.imageIndex = (this.anim.imageIndex + 1) % this.anim.sprites.length;
-				this.location.setX(destLocation.getX());
-				this.location.setY(destLocation.getY());
-				this.hitbox.update();
-			} else {
-				if (mouvementIndex != 0) {
-					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
-					this.location
-							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-									% EntitiesConst.MAP.lenX);
-					this.location
-							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-									% EntitiesConst.MAP.lenY);
-					this.hitbox.update();
+		if (this.frozen) {
+			if (this.frozen) {
+				this.actionIndex += elapsed;
+				if (action == Action.M) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.frozen = false;
+						this.location.setX(destLocation.getX());
+						this.location.setY(destLocation.getY());
+						this.hitbox.update();
+					} else if (actionIndex != 0) {
+						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
+						this.location
+								.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location
+								.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitbox.update();
+					}
 				}
 			}
 		}
+	}
+	
+	@Override
+	public boolean isFinished() {
+		return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.ENERGY_B_M;
+		case H:
+			return 0;
+		case T:
+			return 0;
+		case D:
+			return 0;
+		case S:
+			return 0;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.ENERGY_B_M;
 	}
 
 }

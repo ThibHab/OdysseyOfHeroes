@@ -69,7 +69,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = true;
+	public boolean debug = false;
 	JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -90,17 +90,17 @@ public class Game {
 		new ImagesConst();
 		new EntitiesConst();
 		EntitiesConst.GAME = this;
-		//TODO correctly initialize Level and Experience methods /!\
+		// TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
 
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
-		
+
 		player1 = new Melee("Player1", this);
 		player1.name = "player1";
 		player2 = new Range("Player2", this);
-        player2.name = "player2";
+		player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -108,12 +108,12 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
-		
-		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
-	    map = new WorldMap(100, 100, player1, player2);
-		//map=new DebugMap(40,40,player1,player2);
-		render = new MapRender((Map)map, this);
-		
+
+		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,	MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
+		map = new WorldMap(100, 100, player1, player2);
+		// map=new DebugMap(40,40,player1,player2);
+		render = new MapRender((Map) map, this);
+
 		Entity.InitStatics(this, level, xp);
 
 		player1.frozen = false;
@@ -191,11 +191,11 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-		
-		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+
+		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 		}
-		
+
 		((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 
 		// Update every second
@@ -235,7 +235,7 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
-		
+
 		render.paint(g);
 		hud.paint(g);
 	}

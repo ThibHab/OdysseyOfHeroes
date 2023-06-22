@@ -36,6 +36,17 @@ Player2(Stand_S){
   | Cell(E,P) ? Pick(E) : (Stand_E)
  }
  
+ Player2 (Stand) {
+  * (Stand)
+  | Key(o) ? Move(N) :(Stand)
+  | Key(l) ? Move(S) :(Stand)
+  | Key(k) ? Move(W) :(Stand)
+  | Key(m) ? Move(E) :(Stand)
+  | Key(i) ? Hit(F)  :(Stand)
+  | Key(p) ? Power : (Stand)
+  | Cell(S,P) ? Pick(F) : (Stand)
+ }
+ 
  Player1(Stand_S){
   * (Stand_S)
   | Key(z) ? Turn(N) :(Stand_N)
