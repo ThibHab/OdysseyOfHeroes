@@ -324,7 +324,7 @@ public abstract class Entity implements IEntity {
 			this.action = Action.D;
 			this.updateSpriteIndex();
 			
-			if (attacker.category == Aut_Category.AT) {
+			if (attacker.category == Aut_Category.AT && this.category != Aut_Category.D) {
 				Hero.addExperience(attacker);
 			}
 			
