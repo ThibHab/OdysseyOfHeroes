@@ -53,6 +53,7 @@ import info3.game.hud.HudInGame;
 import info3.game.hud.InGameMenu;
 import info3.game.hud.Menu;
 import info3.game.map.DebugMap;
+import info3.game.map.DungeonMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
@@ -103,7 +104,6 @@ public class Game {
 		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
 		
-		
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -146,6 +146,7 @@ public class Game {
         
         //map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
 	    map = new WorldMap(100, 100, player1, player2);
+	    //map = new DungeonMap(32, 32, player1, player2);
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		

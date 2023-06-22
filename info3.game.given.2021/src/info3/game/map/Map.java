@@ -84,6 +84,70 @@ public abstract class Map implements IMap {
 		Bush b = new Bush(new Location(x, y));
 		map[x][y].entity = b;
 	}
+	
+	void createChest(int x, int y) {
+		Chest c = new Chest(new Location(x, y));
+		map[x][y].entity = c;
+	}
+	
+	public void createBomb(int x,int y,Bomb b) {
+		if(map[x][y].entity==null) {
+			this.map[x][y].entity= b;
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		}
+	}
+	
+	public float diffX(float a, float b) {
+		float tmp = Math.abs(a - b);
+		float tmp2 = Math.min(a, b) + lenX - Math.max(a, b);
+		if (tmp < tmp2) {
+			return tmp;
+		}
+		return tmp2;
+	}
+	
+	public float diffY(float a, float b) {
+		float tmp = Math.abs(a - b);
+		float tmp2 = Math.min(a, b) + lenY - Math.max(a, b);
+		if (tmp < tmp2) {
+			return tmp;
+		}
+		return tmp2;
+	}
+	
+	Location mid(Location loc1, Location loc2) {
+		Location a = new Location(loc1.getX() + 0.5f, loc1.getY() + 0.5f);
+		Location b = new Location(loc2.getX() + 0.5f, loc2.getY() + 0.5f);
+		Location res = new Location(0, 0);
+		float tmp = (a.getX() + b.getX()) / 2;
+		float tmp2 = ((Math.min(a.getX(), b.getX()) + lenX + Math.max(a.getX(), b.getX())) / 2);
+		if (diffX(tmp, a.getX()) < diffX(tmp2, a.getX())) {
+			res.setX((tmp + lenX) % lenX);
+		} else {
+			res.setX((tmp2 + lenX) % lenX);
+		}
+		tmp = (a.getY() + b.getY()) / 2;
+		tmp2 = ((Math.min(a.getY(), b.getY()) + lenY + Math.max(a.getY(), b.getY())) / 2);
+		if (diffY(tmp, a.getY()) < diffY(tmp2, a.getY())) {
+			res.setY((tmp + lenY) % lenY);
+		} else {
+			res.setY((tmp2 + lenY) % lenY);
+		}
+		return res;
+	}
+	
+	public Location add(Location l,Location add) {
+		Location res=new Location(0,0);
+		res.setX((l.getX()+add.getX()+lenX)%lenX);
+		res.setY((l.getY()+add.getY()+lenY)%lenY);
+		return res;
+	}
+	
+	public float dist(Location a,Location b) {
+		float dx=diffX(a.getX(),b.getX());
+		float dy=diffY(a.getY(),b.getY());
+		return (float)Math.sqrt((double)dx*dx+dy*dy);
+	}
 
 	void setPlayer(int x, int y, Entity player) {
 		player.location.setX(x);
@@ -169,8 +233,12 @@ public abstract class Map implements IMap {
 					map[i][j] = new RockTile(l);
 				} else if (tile.equals("Grass")) {
 					map[i][j] = new GrassTile(l);
-				} else {
+				} else if (tile.equals("Dirt")){
 					map[i][j] = new DirtTile(l);
+				} else if (tile.equals("RockDungeon")) {
+					map[i][j] = new RockDungeonTile(l);
+				} else if (tile.equals("BlackTile")) {
+					map[i][j] = new DungeonWalls(l, 4);
 				}
 			}
 		}
@@ -237,6 +305,8 @@ public abstract class Map implements IMap {
 		setDisqueBackground(x, y, radius, "Rock");
 		setCircleBackground(x, y, radius - 1, "Water");
 		setCircleBackground(x, y, radius + 1, "Dirt");
+		map[x][y].entity = new Statue(new Location(x, y));
+		// TODO fix statue disappearing
 	}
 
 	public void setDistrict(int x, int y) {
@@ -295,7 +365,9 @@ public abstract class Map implements IMap {
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 8), 5, 4, "Rock");
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 9), 4, 3, "Dirt");
 		createHouse(x + (radius / 2 - 3), y - (radius / 2 - 10));
+		createChest(x + (radius / 2 - 5), y - (radius / 2 - 9));
 		setBorderForest(x, y, radius / 2);
+		createChest(x, y);
 		setEntityRandomly(x - ((radius / 2)  + 10), y - ((radius / 2) + 10), radius + 15, 1, "Tree", seed, 4);
 	}
 
