@@ -38,13 +38,13 @@ public class DungeonMap extends Map {
 		Random r = new Random();
 		for (int i = 0; i < 6; i++) {
 			do {
-				x = r.nextInt(nb_x - 1) + 1;
+				x = r.nextInt(nb_x - 2) + 1;
 				y = r.nextInt(3) + 1;
 			} while (map[x][y].entity != null);
 			if (i < 3)
 				loc = new Location(x, y);
 			else
-				loc = new Location(x, nb_y -1- y);
+				loc = new Location(x, nb_y -1 - y);
 			
 			Torch t = new Torch(loc);
 			torches.add(t);
@@ -68,10 +68,10 @@ public class DungeonMap extends Map {
 	}
 	
 	
-	public void nightFilter(Graphics g, int tileSize) {
+	public void setNightFilter(Graphics g) {
 		for (int j = 0; j < lenY; j++) {
 			for (int i = 0; i < lenX; i++) {
-				map[i][j].opacity = 1;
+				map[i][j].opacity = 0.99f;
 			}
 		}
 		
@@ -80,14 +80,7 @@ public class DungeonMap extends Map {
 		}
 		
 		((Melee)this.player1).lightAround();
-		
-		for (int j = 0; j < lenY; j++) {
-			for (int i = 0; i < lenX; i++) {
-				g.setColor(new Color(0,0,0, map[i][j].opacity));
-				g.fillRect(i*EntitiesConst.GAME.render.tileSize, j*EntitiesConst.GAME.render.tileSize, 
-						EntitiesConst.GAME.render.tileSize, EntitiesConst.GAME.render.tileSize);
-			}
-		}
+
 	}
 
 }

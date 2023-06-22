@@ -182,6 +182,20 @@ public class MapRender {
 			tde.paint(g, tileSize, l.getX(), l.getY());
 		}
 	}
+	
+	// for dungeon
+	void paintFilter(Graphics g) {
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
+				int mapY = (int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
+				Tile renderTile = map.map[mapX][mapY];
+				g.setColor(new Color(0,0,0,renderTile.opacity));
+				g.fillRect((int)roundDeci((i + this.offset.getX()) * tileSize, 3) , 
+						(int)roundDeci((j + this.offset.getY()) * tileSize, 3), tileSize, tileSize);
+			}
+		}
+	}
 
 	public void paint(Graphics g) {
 		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
@@ -196,7 +210,8 @@ public class MapRender {
 
 		// NIGHT
 		if (map instanceof DungeonMap) {
-			((DungeonMap)map).nightFilter(g, tileSize);
+			((DungeonMap)map).setNightFilter(g);
+			paintFilter(g);
 		}
 
 		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {

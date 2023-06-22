@@ -1,6 +1,8 @@
 package info3.game.entity;
 
 import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -36,10 +38,14 @@ public class Torch extends DecorElement {
 	
 	@Override
 	public void takeDamage(Entity ent) {
-		this.health -= ent.weaponDamage;
 		if (ent instanceof Range) {
-			this.imageIndex = 2;
+			this.health -= ent.weaponDamage;
 		}
+	}
+	
+	@Override
+	public void Pop(Aut_Direction d, Aut_Category c) {
+		this.imageIndex = 1;
 	}
 	
 	public void lightAround() {

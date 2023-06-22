@@ -152,9 +152,11 @@ Bush(Existing){
 	| True ? : (Existing)
   } 
   
-  Torch(Existing){
-  *(Existing)
-  | True ? : (Existing)
+  Torch(Off){
+  *(Off)
+  | !GotPower ? Pop : (On)
+  
+  * (On)
   } 
  
  
