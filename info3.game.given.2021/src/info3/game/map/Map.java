@@ -306,6 +306,10 @@ public abstract class Map implements IMap {
 		setCircleBackground(x, y, radius - 1, "Water");
 		setCircleBackground(x, y, radius + 1, "Dirt");
 		map[x][y].entity = new Statue(new Location(x, y));
+		WorldMap.saveTile1 = new SaveTile(null);
+		map[x-radius-1][y] = WorldMap.saveTile1;
+		WorldMap.saveTile2 = new SaveTile(null);
+		map[x+radius+1][y] = WorldMap.saveTile2;
 		// TODO fix statue disappearing
 	}
 

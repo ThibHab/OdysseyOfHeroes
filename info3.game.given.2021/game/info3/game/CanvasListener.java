@@ -112,10 +112,8 @@ public class CanvasListener implements GameCanvasListener {
 		if (m_game.debug) {
 			System.out.println("Key pressed: " + e.getKeyChar() + " code=" + e.getKeyCode());
 		}
-        if (e.getKeyCode() == KeyEvent.VK_R)
+        if (e.getKeyCode() == KeyEvent.VK_SPACE)
     	    m_game.save();
-        if (e.getKeyCode() == KeyEvent.VK_U)
-    	    m_game.unsave();
 		if (!keys.contains((Integer) e.getKeyCode())) {
 			keys.add((Integer) e.getKeyCode());
 		}

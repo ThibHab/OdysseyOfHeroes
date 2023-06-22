@@ -1,8 +1,11 @@
 package info3.game.map;
 
+import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
 
 public class WorldMap extends Map {
+	
+	public static SaveTile saveTile1, saveTile2;
 
 	public WorldMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
@@ -19,6 +22,13 @@ public class WorldMap extends Map {
 		
 		setPlayer(29, 31, p1);
 		setPlayer(31, 31, p2);
+		
+		// laisser en dernier !
+		WorldMap.saveTile1.entity = null;
+		WorldMap.saveTile2.entity = null;
+		
+		EntitiesConst.MAP = this;
+		EntitiesConst.MAP_MATRIX = this.map;
 	}
 
 }

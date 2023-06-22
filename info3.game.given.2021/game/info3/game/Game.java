@@ -53,6 +53,7 @@ import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
 import info3.game.map.MazeMap;
+import info3.game.map.SaveTile;
 import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
 
@@ -81,7 +82,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = true;
+	public boolean debug = false;
 	JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -116,28 +117,27 @@ public class Game {
 			file.createNewFile();
 		}
 		save = new RandomAccessFile(file, "rw");
-		
+
 		if (reload) {
 			buffer = new byte[(int) save.length()];
 			save.readFully(buffer);
 			loadSeed(buffer);
 		}
-		
-		
+
 		new ImagesConst();
 		new EntitiesConst();
 		EntitiesConst.GAME = this;
-		//TODO correctly initialize Level and Experience methods /!\
+		// TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
 
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
-		
+
 		player1 = new Melee("Player1", this);
 		player1.name = "player1";
 		player2 = new Range("Player2", this);
-        player2.name = "player2";
+		player2.name = "player2";
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -145,13 +145,15 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
-		
-		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
-	    //map = new WorldMap(100, 100, player1, player2);
-	    map = new DungeonMap(32, 32, player1, player2);
-		//map=new DebugMap(40,40,player1,player2);
-		render = new MapRender((Map)map, this);
-		
+
+		// map = new MazeMap(MapConstants.MAZE_MAP_SIZE *
+		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE *
+		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
+		map = new WorldMap(100, 100, player1, player2);
+		// map = new DungeonMap(32, 32, player1, player2);
+		// map=new DebugMap(40,40,player1,player2);
+		render = new MapRender((Map) map, this);
+
 		if (reload)
 			reload(buffer);
 		// map=new DebugMap(40,40,player1,player2);
@@ -234,11 +236,11 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-		
-		for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+
+		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 		}
-		
+
 		((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 
 		// Update every second
@@ -278,27 +280,39 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
-		
+
 		render.paint(g);
 		hud.paint(g);
 	}
 
 	public void save() {
-		String data = "";
-		data += EntitiesConst.SEED + "\n";
-		data += player1.location.getX() + "/" + player1.location.getY() + "/" + player1.currentState.name + "/"
-				+ player1.health + "/" + player1.maxHealth + "/" + player1.healingPotions + "/"
-				+ player1.strengthPotions + "/" + player1.direction + "/" + player1.action + "\n";
-		data += player2.location.getX() + "/" + player2.location.getY() + "/" + player2.currentState.name + "/"
-				+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
-				+ player2.strengthPotions + "/" + player2.direction + "/" + player2.action + "\n";
+		if (EntitiesConst.MAP instanceof WorldMap
+				&& EntitiesConst.MAP_MATRIX[(int) player1.location.getX()][(int)player1.location.getY()] instanceof SaveTile
+				&& EntitiesConst.MAP_MATRIX[(int) player2.location.getX()][(int)player2.location.getY()] instanceof SaveTile) {
+			String data = "";
+			data += EntitiesConst.SEED + "\n";
 
-		byte[] buffer = data.getBytes();
-		try {
-			save.seek(0);
-			save.write(buffer);
-		} catch (IOException e) {
-			e.printStackTrace();
+			data += player1.location.getX() + "/" + player1.location.getY() + "/" + player1.currentState.name + "/"
+					+ player1.health + "/" + player1.maxHealth + "/" + player1.healingPotions + "/"
+					+ player1.strengthPotions + "/" + player1.direction + "/" + player1.action + "\n";
+			data += player2.location.getX() + "/" + player2.location.getY() + "/" + player2.currentState.name + "/"
+					+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
+					+ player2.strengthPotions + "/" + player2.direction + "/" + player2.action + "\n";
+
+			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "\n";
+
+			byte[] buffer = data.getBytes();
+			try {
+				save.seek(0);
+				save.write(buffer);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			SaveTile tileP1 = (SaveTile)EntitiesConst.MAP_MATRIX[(int) player1.location.getX()][(int)player1.location.getY()];
+			SaveTile tileP2 = (SaveTile)EntitiesConst.MAP_MATRIX[(int) player2.location.getX()][(int)player2.location.getY()];
+			tileP1.changeTile(true);
+			tileP2.changeTile(true);
 		}
 	}
 
@@ -313,6 +327,7 @@ public class Game {
 
 		String[] p1 = data[1].split("/");
 		String[] p2 = data[2].split("/");
+		String[] hero = data[3].split("/");
 
 		Location loc1 = new Location(Float.valueOf(p1[0]), Float.valueOf(p1[1]));
 		Location loc2 = new Location(Float.valueOf(p2[0]), Float.valueOf(p2[1]));
@@ -322,12 +337,14 @@ public class Game {
 		Action a2 = Action.valueOf(p2[8]);
 
 		player1.saveRestore(loc1, p1[2], Integer.valueOf(p1[3]), Integer.valueOf(p1[4]), Integer.valueOf(p1[5]),
-				Integer.valueOf(p1[6]), dir1, a1);
+				Integer.valueOf(p1[6]), dir1);
 		player2.saveRestore(loc2, p2[2], Integer.valueOf(p2[3]), Integer.valueOf(p2[4]), Integer.valueOf(p2[5]),
-				Integer.valueOf(p2[6]), dir2, a2);
+				Integer.valueOf(p2[6]), dir2);
+
+		Hero.saveRestore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]));
 
 	}
-	
+
 	public void unsave() {
 		File f = new File("save.txt");
 		f.delete();
