@@ -124,17 +124,17 @@ public abstract class Entity implements IEntity {
 					System.out.println(this.name + " is standing");
 				}
 				this.action = Action.S;
-			this.imageIndex = this.sprites.length - 1;
+				this.imageIndex = this.sprites.length - 1;
 				this.updateSpriteIndex();
 			}
 			this.action = Action.S;
 			this.imageIndex = this.sprites.length;
 			this.updateSpriteIndex();
 		}
-			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
-					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
-				this.updateSpriteIndex();
-			}
+		if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
+				/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
+			this.updateSpriteIndex();
+		}
 	}
 
 	@Override
@@ -146,6 +146,8 @@ public abstract class Entity implements IEntity {
 			if (d == null) {
 				d = this.direction;
 			}
+			this.direction = d;
+			
 			if (this.action != Action.M) {
 				if (EntitiesConst.GAME.debug) {
 					System.out.println(this.name + " is moving");
@@ -201,7 +203,9 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Egg(Aut_Direction d, Aut_Category c) {
+	public void Egg(Aut_Direction d, Aut_Category c, int id) {
+		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de l'id
+		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la signification de chaque nombre)
 		if (d == null) {
 			d = this.direction;
 		}
@@ -220,6 +224,9 @@ public abstract class Entity implements IEntity {
 				break;
 			}
 		case M:
+			break;
+		case D:
+			new Bomb(location, this);
 			break;
 		case P:
 			Random randomP = new Random();
@@ -282,22 +289,22 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case S:
-					if (entity.hitbox.location.getY() < t.getY() + 0.5) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5)&& entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case E:
-					if (entity.hitbox.location.getX() < t.getX() + 0.5) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5)&& entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case W:
-					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)&& entity.category!=Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
@@ -343,20 +350,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Explode() {
-		float xBaseIndex = this.location.getX() - 2, yBaseIndex = this.location.getY() - 2;
-		for (int i = (int) xBaseIndex; i < xBaseIndex + 5; i++) {
-			for (int j = (int) yBaseIndex; j < yBaseIndex + 5; j++) {
-				Entity entity = EntitiesConst.MAP_MATRIX[i][j].entity;
-				if (entity != null) {
-					entity.health -= 5;
-				}
-			}
-		}
-
-		// TODO delete destroyable rocks
-		// TODO add explode method for animation (view)
-	}
+	public void Explode() {}
 
 	@Override
 	public void Pick(Aut_Direction d) {
@@ -399,7 +393,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Wait() {
+	public void Wait(int time) {
 	}
 
 	@Override
@@ -442,8 +436,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	public boolean hitboxOverlap(Entity tgt) {
-		float x1,x2,X1,X2,y1,y2,Y1,Y2;
-		if(tgt instanceof DecorElement) {
+		float x1, x2, X1, X2, y1, y2, Y1, Y2;
+		if (tgt instanceof DecorElement) {
 			x1 = this.hitbox.location.getX();
 			y1 = this.hitbox.location.getY();
 			X1 = this.destLocation.getX();
@@ -452,7 +446,7 @@ public abstract class Entity implements IEntity {
 			y2 = (y1 + this.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
 			X2 = (X1 + tgt.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
 			Y2 = (Y1 + tgt.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
-		}else {
+		} else {
 			x1 = this.hitbox.location.getX();
 			y1 = this.hitbox.location.getY();
 			X1 = tgt.hitbox.location.getX();
@@ -498,5 +492,21 @@ public abstract class Entity implements IEntity {
 
 	public int getTouchedNbSprite() {
 		return 1;
+	}
+
+	public boolean circleIntersect(Location bomb, Entity ent, float radius) {
+		Map map = EntitiesConst.MAP;
+		float w = ent.hitbox.width;
+		float h = ent.hitbox.height;
+		Location hg = ent.hitbox.location;
+		Location hd = map.add(hg, new Location(w, 0));
+		Location bg = map.add(hg, new Location(0, h));
+		Location bd = map.add(hg, new Location(w, h));
+
+		Location circleCenter = map.add(bomb, new Location(0.5f, 0.5f));
+
+		return (map.dist(hg, circleCenter) <= radius) || (map.dist(hd, circleCenter) <= radius)
+				|| (map.dist(bg, circleCenter) <= radius) || (map.dist(bd, circleCenter) <= radius);
+
 	}
 }
