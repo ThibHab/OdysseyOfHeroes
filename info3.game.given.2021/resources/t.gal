@@ -185,6 +185,13 @@ Bush(Existing){
   
   * ()
   }
+  
+  Torch(Off){
+  *(Off)
+  | !GotPower ? Pop : (On)
+  
+  * (On)
+  } 
  
  
  

@@ -233,8 +233,12 @@ public abstract class Map implements IMap {
 					map[i][j] = new RockTile(l);
 				} else if (tile.equals("Grass")) {
 					map[i][j] = new GrassTile(l);
-				} else {
+				} else if (tile.equals("Dirt")){
 					map[i][j] = new DirtTile(l);
+				} else if (tile.equals("RockDungeon")) {
+					map[i][j] = new RockDungeonTile(l);
+				} else if (tile.equals("BlackTile")) {
+					map[i][j] = new DungeonWalls(l, 4);
 				}
 			}
 		}
