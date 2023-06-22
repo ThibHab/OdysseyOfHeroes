@@ -14,10 +14,11 @@ public class ImagesConst {
 
 	public static BufferedImage[] HOUSE, ROCK, TREE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
-	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT;
+	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
 	public static BufferedImage[] BUSH, CHEST, CAVE_WALL;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
+	public static BufferedImage[] SPEECHBUBBLE;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -59,6 +60,10 @@ public class ImagesConst {
 		
 		HERMIT = loadSprite("Hermit",1,1);
 		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 3);
+		MINER = loadSprite("Miner", 4, 3);
+		
+		SPEECHBUBBLE = loadSprite("SpeechBubble", 1, 1);
+		
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

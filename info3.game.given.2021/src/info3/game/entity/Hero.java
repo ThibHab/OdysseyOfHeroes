@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import info3.game.automata.*;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
@@ -69,6 +70,27 @@ public abstract class Hero extends Entity {
 				
 				tile.entity = null;
 			}
+		}
+	}
+	
+	@Override
+	public void Pop(Aut_Direction d, Aut_Category c) {
+		this.frozen = true;
+		if (this.action != Action.P) {
+			if (EntitiesConst.GAME.debug) {
+				System.out.println(this.name + " is popping");
+			}
+			this.action = Action.P;
+		}
+		if (d == null) {
+			d = this.direction;
+		}
+
+		Location location = frontTileLocation(d);
+		Tile tile = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()];
+		if (tile.entity instanceof Villager) {
+			Villager v = (Villager) tile.entity;
+			v.talks();
 		}
 	}
 }

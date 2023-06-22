@@ -7,4 +7,5 @@ public enum Action {
 	D, // is dead
 	S, // is Standing
 	R, //is rotating
+	P, //is popping
 }

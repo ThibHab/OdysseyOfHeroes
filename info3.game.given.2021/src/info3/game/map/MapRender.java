@@ -199,6 +199,10 @@ public class MapRender {
 			EntitiesConst.MAP.projectiles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
 					roundDeci((this.offset.getY()) * tileSize, 3));
 		}
+		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
+			EntitiesConst.MAP.bubbles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
+					roundDeci((this.offset.getY()) * tileSize, 3));
+		}
 	}
 
 }

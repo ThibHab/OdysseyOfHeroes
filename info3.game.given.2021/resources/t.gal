@@ -4,6 +4,7 @@ Player2(Stand_S){
   | Key(l) ? Move(S) :(Stand_S)
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) & Cell(S,T) ? Pop(S,T) : (Stand_S)
   | Key(i) ? Hit(S)  :(Stand_S)
   | Cell(S,P) ? Pick(S) : (Stand_S)
 
@@ -12,6 +13,7 @@ Player2(Stand_S){
   | Key(l) ? Turn(S) :(Stand_S)
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) & Cell(N,T) ? Pop(N,T) : (Stand_N)
   | Key(i) ? Hit(N)  :(Stand_N)
   | Cell(N,P) ? Pick(N) : (Stand_N)
   
@@ -22,6 +24,7 @@ Player2(Stand_S){
   | Key(m) ? Turn(E) :(Stand_E)
   | Key(i) ? Hit(W)  :(Stand_W)
   | Cell(W,P) ? Pick(W) : (Stand_W)
+  | Cell(W,T) ? Pop(W,T) : (Stand_W)
   
   * (Stand_E)
   | Key(o) ? Turn(N) :(Stand_N)
@@ -30,6 +33,7 @@ Player2(Stand_S){
   | Key(m) ? Move(E) :(Stand_E)
   | Key(i) ? Hit(E)  :(Stand_E)
   | Cell(E,P) ? Pick(E) : (Stand_E)
+  | Cell(E,T) ? Pop(E,T) : (Stand_E)
  }
  
  Player1(Stand_S){

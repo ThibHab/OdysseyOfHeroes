@@ -122,6 +122,14 @@ public abstract class Entity implements IEntity {
 					this.mouvementIndex = 0;
 					this.attackIndex = 0;
 				}
+			}else if (this.action == Action.P) {
+				this.attackIndex += elapsed;
+				if (this.attackIndex >= this.attackSpeed) {
+					this.frozen = false;
+					this.hitFrozen = false;
+					this.mouvementIndex = 0;
+					this.attackIndex = 0;
+				}
 			}
 		} else {
 			if (this.action != Action.S) {
@@ -136,10 +144,10 @@ public abstract class Entity implements IEntity {
 			this.imageIndex = this.sprites.length;
 			this.updateSpriteIndex();
 		}
-			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
-					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
-				this.updateSpriteIndex();
-			}
+//			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
+//					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
+//				this.updateSpriteIndex();
+//			}
 	}
 //		if (this.hitFrozen) {
 //			this.attackIndex += elapsed;
