@@ -5,23 +5,19 @@ import info3.game.entity.Entity;
 
 public class Egg extends Aut_Action {
 	
-	Aut_Direction dir;
 	Aut_Category c;
 	int id;
 	
 	public Egg(Aut_Direction direction, Aut_Category category, int percent, int id) {
-		this.percent = percent;
-		if (percent == -1) {
-			this.percent = 100;
-		}
-		dir = direction;
+		super(direction, percent);
 		c = category;
 		this.id = id;
 	}
 
 	@Override
 	public void exec(Entity e, Game g) {
-		e.Egg(dir, c);
+		Aut_Direction dir = this.dir.rightDirection(e);
+		e.Egg(dir, c, id);
 	}
 
 }

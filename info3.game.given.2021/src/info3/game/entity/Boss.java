@@ -87,7 +87,7 @@ public class Boss extends Mob {
 	}
 	
 	@Override
-	public void Pop(Aut_Direction d) {
+	public void Pop(Aut_Direction d, Aut_Category c) {
 		Random random = new Random();
 		int randomPosY = random.nextInt(mapHeight);
 		while (randomPosY == 0 || randomPosY == this.mapHeight) {

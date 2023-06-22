@@ -170,10 +170,13 @@ public class AutCreator implements IVisitor {
 			act = new Pick(dir, funcall.percent);
 			break;
 		case "Throw":
-			act = new Throw(dir, funcall.percent);
+			act = new Throw(dir, cat, funcall.percent);
 			break;
 		case "Wait":
-			act = new Wait(funcall.percent);
+			act = new Wait(number, funcall.percent);
+			break;
+		case "Power":
+			act = new Power(funcall.percent);
 			break;
 		}
 		actions.add(act);

@@ -1,13 +1,15 @@
 package info3.game.entity;
 
 import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class Rock extends DecorElement {
-	public Rock(Location l) {
+public class BombRock extends DecorElement {
+	public BombRock(Location l) {
 		super();
-		this.name = "Rock";
+		this.name = "BombRock";
 		this.location = l;
 		this.hitbox.update();
 
@@ -20,13 +22,15 @@ public class Rock extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites =  ImagesConst.ROCK;
+		this.sprites = ImagesConst.ROCK;
 		this.imageIndex = 0;
 		// -----------------------------------
-		
+
 		this.width = 1;
 		this.height = 1;
-		
+
 		this.scale = EntitiesConst.ROCK_SCALE;
+		
+		this.category=Aut_Category.O;
 	}
 }
