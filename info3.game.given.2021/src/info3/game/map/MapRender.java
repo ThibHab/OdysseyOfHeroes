@@ -96,6 +96,14 @@ public class MapRender {
 		offset.setX(roundDeci(offset.getX(), 3));
 		offset.setY(roundDeci(offset.getY(), 3));
 	}
+	
+	float opacity(float d) {
+		float opa=1-(float)(Math.pow(Math.E,-(d*d/2)));
+		if(opa>0.95) {
+			return 0.95f;
+		}
+		return opa;
+	}
 
 	void paintBackground(Graphics g) {
 		for (int j = 0; j < nbTileY; j++) {
@@ -158,6 +166,29 @@ public class MapRender {
 					roundDeci((this.offset.getY()) * tileSize, 3));
 		}
 	}
+	
+	void paintDark(Graphics g) {
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + this.camera.getX() + map.lenX - nbTileX / 2) % map.lenX;
+				int mapY = (int) (j + this.camera.getY() + map.lenY - nbTileY / 2) % map.lenY;
+				for(int sj=0;sj<2;sj++) {
+					for(int si=0;si<2;si++) {
+						int Xscreen=(int)roundDeci((i + this.offset.getX()+(float)si/2) * tileSize, 3);
+						int Yscreen=(int)roundDeci((j + this.offset.getY()+(float)sj/2) * tileSize, 3);
+						Location tile=map.add(new Location(mapX,mapY), new Location(si*0.5f+0.25f,sj*0.5f+0.25f));
+						Location player=map.add(game.player1.location,new Location(0.5f,0.5f));
+						float dist=map.dist(player, tile);
+						g.setColor(new Color(0,0,0,(int)(opacity(dist)*255)));
+						g.fillRect(Xscreen, Yscreen, tileSize/2, tileSize/2);
+//						g.setColor(Color.red);
+//						g.drawString(""+opacity(dist), Xscreen, Yscreen+tileSize/8);
+					}
+				}
+				
+			}
+		}
+	}
 
 	public void paint(Graphics g) {
 		updateCam(game.player1, game.player2, game.m_canvas.getWidth(), game.m_canvas.getHeight());
@@ -170,9 +201,8 @@ public class MapRender {
 		paintProj(g);
 		// DECOR & PLAYER
 		paintEntity(g);
-
 		// NIGHT
-
+		//paintDark(g);
 	}
 
 }
