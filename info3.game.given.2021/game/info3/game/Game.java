@@ -24,6 +24,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -47,6 +50,8 @@ import info3.game.constants.MapConstants;
 import info3.game.entity.*;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
+import info3.game.hud.InGameMenu;
+import info3.game.hud.Menu;
 import info3.game.map.DebugMap;
 import info3.game.map.DungeonMap;
 import info3.game.map.IMap;
@@ -82,8 +87,8 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
-	JFrame m_frame;
+	public boolean debug = true;
+	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
 	public CanvasListener m_listener;
@@ -95,6 +100,8 @@ public class Game {
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
 	public HudInGame hud;
+	public Menu menu;
+	public InGameMenu inMenu;
 	public RandomAccessFile save;
 	boolean reload;
 
@@ -127,17 +134,12 @@ public class Game {
 		new ImagesConst();
 		new EntitiesConst();
 		EntitiesConst.GAME = this;
-		// TODO correctly initialize Level and Experience methods /!\
-		int level = 0, xp = 0;
+		
 
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
 		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
-
-		player1 = new Melee("Player1", this);
-		player1.name = "player1";
-		player2 = new Range("Player2", this);
-		player2.name = "player2";
+		
 		// creating a listener for all the events
 		// from the game canvas, that would be
 		// the controller in the MVC pattern
@@ -145,35 +147,58 @@ public class Game {
 		// creating the game canvas to render the game,
 		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
+		
+		
 
-		// map = new MazeMap(MapConstants.MAZE_MAP_SIZE *
-		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE *
-		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
-		map = new WorldMap(100, 100, player1, player2);
-		// map = new DungeonMap(32, 32, player1, player2);
-		// map=new DebugMap(40,40,player1,player2);
-		render = new MapRender((Map) map, this);
-
-		if (reload)
-			reload(buffer);
-		// map=new DebugMap(40,40,player1,player2);
-		render = new MapRender((Map) map, this);
-
-		Entity.InitStatics(this, level, xp);
-
-		player1.frozen = false;
-		player2.frozen = false;
 
 		System.out.println("  - creating frame...");
-		Dimension d = new Dimension(1024, 768);
+//		Dimension d = new Dimension(1024, 768);
+		Rectangle rec = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		Dimension d = new Dimension((int)rec.getWidth(), (int)rec.getHeight());
 		m_frame = m_canvas.createFrame(d);
-
-		hud = new HudInGame(m_frame);
+		m_frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		m_frame.setResizable(false);
+		m_frame.setUndecorated(true);
+		m_frame.setIconImage(null);			
 
 		System.out.println("  - setting up the frame...");
+				
+		setupFrame();
+		
+		setupMenu();
+	}
+	
+	public void setupMenu() {
+		menu = new Menu(m_frame);
+		menu.setMenuSize();
+		menu.setMenu();
+	}
+	
+	public void setupGame() {
+		player1 = new Melee("Player1", this);
+		player1.name = "player1";
+		player2 = new Range("Player2", this);
+        player2.name = "player2";
+        
+        //map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
+	    map = new WorldMap(100, 100, player1, player2);
+	    //map = new DungeonMap(32, 32, player1, player2);
+		//map=new DebugMap(40,40,player1,player2);
+		render = new MapRender((Map)map, this);
+		
+		player1.frozen = false;
+		player2.frozen = false;
+		//TODO correctly initialize Level and Experience methods /!\
+		int level = 0, xp = 0;
+		Entity.InitStatics(this, level, xp);
+		
+		hud = new HudInGame(m_frame);
+
 		render.updateCam(player1, player2, m_canvas.getWidth(), m_canvas.getHeight());
 		render.setOffsetCam();
-		setupFrame();
+		inMenu = new InGameMenu(m_frame);
+		inMenu.setMenuSize();
+		inMenu.setMenu(); 
 	}
 
 	/*
@@ -195,7 +220,8 @@ public class Game {
 
 		// center the window on the screen
 		m_frame.setLocationRelativeTo(null);
-
+		
+	
 		// make the vindow visible
 		m_frame.setVisible(true);
 	}
@@ -236,35 +262,35 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
+		if (menu.getStarted()) {
+			for(int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+				EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
+			}
+			
+			((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
+			
+			if (EntitiesConst.GAME.debug) {
+				m_textElapsed += elapsed;
+				// TODO modif pour debug
+				if (m_textElapsed > 100) {
+					m_textElapsed = 0;
+					float period = m_canvas.getTickPeriod();
+					int fps = m_canvas.getFPS();
 
-		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
-			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
-		}
-
-		((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
-
-		// Update every second
-		// the text on top of the frame: tick and fps
-
-		if (EntitiesConst.GAME.debug) {
-			m_textElapsed += elapsed;
-			// TODO modif pour debug
-			if (m_textElapsed > 100) {
-				m_textElapsed = 0;
-				float period = m_canvas.getTickPeriod();
-				int fps = m_canvas.getFPS();
-
-				String txt = "Tick=" + period + "ms";
-				while (txt.length() < 15)
-					txt += " ";
-				txt = txt + fps + " fps   ";
-				txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
-				txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
-				txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
-				txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
-				m_text.setText(txt);
+					String txt = "Tick=" + period + "ms";
+					while (txt.length() < 15)
+						txt += " ";
+					txt = txt + fps + " fps   ";
+					txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+					txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+					txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+					txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
+					m_text.setText(txt);
+				}
 			}
 		}
+		// Update every second
+		// the text on top of the frame: tick and fps
 	}
 
 	/*
@@ -280,9 +306,17 @@ public class Game {
 		// erase background
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, width, height);
-
-		render.paint(g);
-		hud.paint(g);
+		
+		if (menu.getStarted()) {
+			render.paint(g);
+			hud.paint(g);
+			if (inMenu.getPause()) {
+				inMenu.paint(g);
+			}
+		}
+		else {
+			menu.paint(g);
+		}
 	}
 
 	public void save() {

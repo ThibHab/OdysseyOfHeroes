@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import info3.game.automata.*;
 import info3.game.constants.Action;
+import info3.game.automata.Aut_Category;
 import info3.game.constants.EntitiesConst;
 
 public abstract class DecorElement extends Entity {
@@ -13,11 +14,10 @@ public abstract class DecorElement extends Entity {
 	public DecorElement() {
 		super();
 		this.category = Aut_Category.O;
-		this.imageIndex = 0;
 	}
 
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img=sprites[this.imageIndex];
+		BufferedImage img=anim.getFrame();
 		int diff=(int) (tileSize*(scale-1))/2;
 		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
 	}

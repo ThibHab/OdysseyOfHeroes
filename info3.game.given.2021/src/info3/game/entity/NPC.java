@@ -11,7 +11,7 @@ public abstract class NPC extends Entity {
 	}
 
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = sprites[imageIndex];
+		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
 		int dimension = (int) (scale * tileSize);
 		float shiftXY = ((scale - 1) / 2) * tileSize;

@@ -49,7 +49,7 @@ public abstract class Hero extends Entity {
 	}
 
 	public void paint(Graphics g, int tileSize) {
-		BufferedImage img = sprites[imageIndex];
+		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
 		int dimension = (int) (scale * tileSize);
 		float shiftXY = ((scale - 1) / 2) * tileSize;
