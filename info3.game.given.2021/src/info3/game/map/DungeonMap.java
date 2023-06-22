@@ -16,21 +16,17 @@ import info3.game.entity.Torch;
 public class DungeonMap extends Map {
 	
 	List<Torch> torches;
+	public boolean lit;
 
 	public DungeonMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
-
-		Location loc1 = new Location(4,5);
-		Location loc2 = new Location(4,6);
 		
 		this.setSurfaceBackground(0, 0, nb_x, nb_y, "BlackTile");
 		this.setSurfaceBackground(1, 1, nb_x - 2, nb_y - 2, "RockDungeon");
 		this.setDongeonWalls(1, 1, lenX - 2, lenY - 2);
 		
-		p1.setLocation(loc1);
-		map[(int) loc1.getX()][(int) loc1.getY()].entity = p1;
-		p2.setLocation(loc2);
-		map[(int) loc2.getX()][(int) loc2.getY()].entity = p2;
+		this.setPlayer(4, 5, p1);
+		this.setPlayer(4, 6, p2);
 		
 		this.torches = new LinkedList<Torch>();
 		int x, y;
@@ -67,20 +63,5 @@ public class DungeonMap extends Map {
 		}
 	}
 	
-	
-	public void setNightFilter(Graphics g) {
-		for (int j = 0; j < lenY; j++) {
-			for (int i = 0; i < lenX; i++) {
-				map[i][j].opacity = 0.99f;
-			}
-		}
-		
-		for (Torch torch : torches) {
-			torch.lightAround();
-		}
-		
-		((Melee)this.player1).lightAround();
-
-	}
 
 }

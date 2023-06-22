@@ -121,28 +121,4 @@ public class Melee extends Hero {
 		this.health = this.maxHealth;
 	}
 	
-	
-    // function called only in the dungeon map
-	public void lightAround() {
-		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].opacity = 0f;
-		
-		int x = (int) this.location.getX() + 1;
-		int y = (int) this.location.getY() - 1;
-		
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		x--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		x--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		y++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		y++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		x++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		x++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		y--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-	}
 }
