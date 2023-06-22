@@ -1,7 +1,6 @@
 package info3.game.entity;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
@@ -95,26 +94,25 @@ public class Boss extends Mob {
 			randomPosY = random.nextInt(mapHeight);
 		}
 		
-		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][randomPosY - 1].entity = new Projectile(this, d);
-		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][randomPosY].entity = new Projectile(this, d);
-		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][randomPosY + 1].entity = new Projectile(this, d);
+		EntitiesConst.MAP_MATRIX[randomPosY - 1][(int) this.location.getX() - 1].entity = new Projectile(this, d);
+		EntitiesConst.MAP_MATRIX[randomPosY][(int) this.location.getX() - 1].entity = new Projectile(this, d);
+		EntitiesConst.MAP_MATRIX[randomPosY + 1][(int) this.location.getX() - 1].entity = new Projectile(this, d);
 	}
 
 	@Override
 	public void Wizz(Aut_Direction d, Aut_Category c) {
-//		boolean endReached = false;
-//		int attackPosX = (int) this.location.getX() - 1;
-//		while (!endReached) {
-//			for (int column = attackPosX; column < EntitiesConst.BOSS_FLAME_ATTACK_SIZE; column--) {
-//				for (int row = 0; row < this.mapHeight; row++) {
-//					
-//				}
-//			}
-//		}
-	}
-
-	@Override
-	public void Power() {
-		this.phase++;
+		for (int row = 0; row < this.mapHeight; row++) {
+			EntitiesConst.MAP_MATRIX[row][(int) (this.location.getX() - 1)].entity = new Projectile(this, d);
+		}
+		
+		int nbHoles = 0;
+		Random random = new Random();
+		while (nbHoles < 2) {
+			int randomPosY = random.nextInt(this.mapHeight);
+			if (EntitiesConst.MAP_MATRIX[randomPosY][(int) this.location.getX() - 1].entity != null) {
+				EntitiesConst.MAP_MATRIX[randomPosY][(int) this.location.getX() - 1].entity = null;
+				nbHoles++;
+			}
+		}
 	}
 }
