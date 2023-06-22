@@ -317,7 +317,7 @@ public abstract class Entity implements IEntity {
 
 	public void takeDamage(Entity attacker) {
 		System.out.println("HEHO CA FAIT MALEUH");
-		if (this.health - attacker.weaponDamage >= 0) {
+		if (this.health - attacker.weaponDamage > 0) {
 			this.health -= attacker.weaponDamage;
 		} else {
 			this.health = 0;
