@@ -146,6 +146,8 @@ public abstract class Entity implements IEntity {
 			if (d == null) {
 				d = this.direction;
 			}
+			this.direction = d;
+			
 			if (this.action != Action.M) {
 				if (EntitiesConst.GAME.debug) {
 					System.out.println(this.name + " is moving");
@@ -201,7 +203,9 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Egg(Aut_Direction d, Aut_Category c) {
+	public void Egg(Aut_Direction d, Aut_Category c, int id) {
+		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de l'id
+		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la signification de chaque nombre)
 		if (d == null) {
 			d = this.direction;
 		}
@@ -399,7 +403,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Wait() {
+	public void Wait(int time) {
 	}
 
 	@Override
