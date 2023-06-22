@@ -15,11 +15,15 @@ public abstract class TransparentDecorElement extends DecorElement {
 		this.lenListe=len;
 	}
 	
+	boolean classEnableTranspa(Entity e) {
+		return (e instanceof Hero)||(e instanceof NPC)||(e instanceof Bomb)||(e instanceof Mob);
+				}
+	
 	public void checkTransparent() {
 		this.transparent=false;
 		int res=0;
 		for(int i=0;i<lenListe;i++) {
-			if(liste[i].entity != null && liste[i].entity instanceof Hero) {
+			if(liste[i].entity != null && (liste[i].entity instanceof Hero || liste[i].entity instanceof NPC)) {
 				this.transparent=true;
 				res=Math.max(res, liste[i].tpBlock.target.size());
 			}

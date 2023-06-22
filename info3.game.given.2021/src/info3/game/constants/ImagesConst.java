@@ -18,6 +18,7 @@ public class ImagesConst {
 	public static BufferedImage[] BUSH, CHEST, TORCH, CAVE_WALL, DUNGEON_WALL;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
+	public static BufferedImage[] BOMB;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -40,6 +41,7 @@ public class ImagesConst {
 		COIN = loadSprite("Coin", 3, 2);
 		HEALING_POTION = loadSprite("Healing", 3, 3);
 		STRENGTH_POTION = loadSprite("Strength", 3, 3);
+		BOMB = loadSprite("bomb", 1, 1);
 
 		BOSS = loadSprite("Boss", 1, 1);
 		GOBLIN = loadSprite("goblin", 3, 11);

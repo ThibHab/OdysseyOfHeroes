@@ -10,7 +10,7 @@ public interface IEntity {
 	
 	public void Turn(Aut_Direction d);
 	
-	public void Egg(Aut_Direction d, Aut_Category c);
+	public void Egg(Aut_Direction d, Aut_Category c, int id);
 	
 	public void Hit(Aut_Direction d);
 	

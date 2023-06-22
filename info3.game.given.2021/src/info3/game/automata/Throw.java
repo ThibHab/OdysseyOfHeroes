@@ -5,19 +5,16 @@ import info3.game.entity.Entity;
 
 public class Throw extends Aut_Action {
 	
-	Aut_Direction dir;
 	Aut_Category cat;
 
-	public Throw(Aut_Direction direction, int percent) {
-		this.percent = percent;
-		if (percent == -1) {
-			this.percent = 100;
-		}
-		this.dir = direction;
+	public Throw(Aut_Direction direction, Aut_Category category, int percent) {
+		super(direction, percent);
+		this.cat = category;
 	}
 
 	@Override
 	public void exec(Entity e, Game g) {
+		Aut_Direction dir = this.dir.rightDirection(e);
 		e.Throw(dir, cat);
 	}
 

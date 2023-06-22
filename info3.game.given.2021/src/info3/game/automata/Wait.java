@@ -7,13 +7,8 @@ public class Wait extends Aut_Action {
 	
 	int time;
 	
-	public Wait(int percent, int time) {
-		this.percent = percent;
-		if (percent == -1) {
-			this.percent = 100;
-		}
-		if (time == 0)
-			time = 1;
+	public Wait(int time, int percent) {
+		super(null, percent);
 		this.time = time;
 	}
 
