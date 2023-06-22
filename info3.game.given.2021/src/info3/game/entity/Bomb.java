@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.map.Map;
@@ -18,6 +19,7 @@ public class Bomb extends Entity {
 		this.owner = owner;
 		this.name = "Bomb";
 		this.location = loc;
+		this.category = Aut_Category.D;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
