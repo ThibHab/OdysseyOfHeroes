@@ -82,37 +82,6 @@ public class Projectile extends Entity {
 	}
 	
 	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		System.out.println("WIZZZZZ");
-		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
-//		super.Wizz(d,c);
-//		Location location = this.frontTileLocation(d);
-//		Entity target = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
-//		if (this.owner.category == Aut_Category.A) {
-//			if (target.category == Aut_Category.AT) {
-//				if (this.direction == null) {
-//					this.direction = d;
-//				}
-//				if (this.hitboxOverlap(target)) {
-//					target.health -= this.owner.weaponDamage;
-//				}
-//			}
-//			// TODO destroy projectile
-//		} else if (this.owner.category == Aut_Category.AT) {
-//			if (target.category == Aut_Category.A) {
-//				if (this.direction == null) {
-//					this.direction = d;
-//				}
-//				if (this.hitboxOverlap(target)) {
-//					target.health -= this.owner.weaponDamage;
-//				}
-//			}
-//		}
-	}
-	// TODO destroy projectile
-	
-	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = this.sprites[this.imageIndex];
 		Location pixel=EntitiesConst.GAME.render.gridToPixel(location,true);
@@ -136,7 +105,7 @@ public class Projectile extends Entity {
 		Entity e = EntitiesConst.MAP_MATRIX[(int)this.destLocation.getX()][(int)this.destLocation.getY()].entity;
 		if (e != null && e != this.owner) {
 			if (this.hitboxOverlap(e)) {
-				e.takeDamage(this.owner.weaponDamage);
+				e.takeDamage(this.owner);
 				System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
 				EntitiesConst.MAP.projectiles.remove(this);
 			}
