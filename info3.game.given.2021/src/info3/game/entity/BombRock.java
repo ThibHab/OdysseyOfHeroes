@@ -33,16 +33,4 @@ public class BombRock extends DecorElement {
 		
 		this.category=Aut_Category.O;
 	}
-	
-	public void takeDamage(int dmg) {
-		System.out.println("HEHO CA FAIT MALEUH");
-		if (this.health - dmg > 0) {
-			this.health -= dmg;
-		} else {
-			this.health = 0;
-			this.die();
-		}
-	}
-	
-	
 }

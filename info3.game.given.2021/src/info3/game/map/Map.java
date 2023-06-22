@@ -92,7 +92,7 @@ public abstract class Map implements IMap {
 	
 	public void createBomb(int x,int y,Bomb b) {
 		if(map[x][y].entity==null) {
-			this.map[x][y].entity=(Entity)b;
+			this.map[x][y].entity= b;
 			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		}
 	}

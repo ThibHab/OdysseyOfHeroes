@@ -6,14 +6,16 @@ import java.awt.image.BufferedImage;
 import info3.game.automata.Aut_Automaton;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.map.Map;
 
 public class Bomb extends Entity {
-
+	public Entity owner;
 	public int timer;
 
-	public Bomb(Location loc) {
+	public Bomb(Location loc, Entity owner) {
 		super();
 
+		this.owner = owner;
 		this.name = "Bomb";
 		this.location = loc;
 
@@ -46,5 +48,21 @@ public class Bomb extends Entity {
 					(int) (TileSize * EntitiesConst.BOMB_RADIUS * 2), (int) (TileSize * EntitiesConst.BOMB_RADIUS * 2));
 		}
 	}
-
+	
+	@Override
+	public void Explode() {
+		Map map = EntitiesConst.MAP;
+		for (int i = 0; i < EntitiesConst.BOMB_RADIUS * 2 + 1; i++) {
+			for (int j = 0; j < EntitiesConst.BOMB_RADIUS * 2 + 1; j++) {
+				Entity entity = EntitiesConst.MAP_MATRIX[(int) (this.location.getX() - 2 + i + map.lenX)
+						% map.lenX][(int) (this.location.getY() - 2 + j + map.lenY) % map.lenY].entity;
+				if (entity != null && circleIntersect(this.location, entity, EntitiesConst.BOMB_RADIUS)) {
+					entity.takeDamage(this.owner);
+				}
+			}
+		}
+		this.die(this.owner);
+		// TODO delete destroyable rocks
+		// TODO add explode method for animation (view)
+	}
 }

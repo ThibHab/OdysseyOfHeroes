@@ -226,7 +226,7 @@ public abstract class Entity implements IEntity {
 		case M:
 			break;
 		case D:
-			new Bomb(location);
+			new Bomb(location, this);
 			break;
 		case P:
 			Random randomP = new Random();
@@ -350,21 +350,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Explode() {
-		Map map = EntitiesConst.MAP;
-		for (int i = 0; i < EntitiesConst.BOMB_RADIUS * 2 + 1; i++) {
-			for (int j = 0; j < EntitiesConst.BOMB_RADIUS * 2 + 1; j++) {
-				Entity entity = EntitiesConst.MAP_MATRIX[(int) (this.location.getX() - 2 + i + map.lenX)
-						% map.lenX][(int) (this.location.getY() - 2 + j + map.lenY) % map.lenY].entity;
-				if (entity != null && circleIntersect(this.location, entity, EntitiesConst.BOMB_RADIUS)) {
-					entity.takeDamage(5);
-				}
-			}
-		}
-		this.die();
-		// TODO delete destroyable rocks
-		// TODO add explode method for animation (view)
-	}
+	public void Explode() {}
 
 	@Override
 	public void Pick(Aut_Direction d) {
