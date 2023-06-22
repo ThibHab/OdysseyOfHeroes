@@ -145,4 +145,15 @@ public class Range extends Hero {
 		this.imageIndex = idx;
 		return;
 	}
+	
+	@Override
+	public void updateStats() {
+		this.weaponDamage += 2;
+		
+		if (Hero.level % 2 == 0) {
+			this.maxHealth += 1;
+		}
+		
+		this.health = this.maxHealth;
+	}
 }

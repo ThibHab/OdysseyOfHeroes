@@ -20,8 +20,6 @@ public abstract class Entity implements IEntity {
 	public Location originLocation;
 	public int health, weaponDamage, weaponRange;
 	public float speed, attackSpeed;
-	public int healingPotions, strengthPotions;
-
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
 	public Aut_Direction direction;
@@ -35,6 +33,7 @@ public abstract class Entity implements IEntity {
 	public int detectionRadius;
 	public int maxHealth;
 	public int range;
+	public int healingPotions, strengthPotions;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -52,10 +51,8 @@ public abstract class Entity implements IEntity {
 		this.speed = 1;
 		this.attackSpeed = 500;
 		this.range = 0;
-
-		EntitiesConst.COINS = 0;
-		this.healingPotions = 0;
-		this.strengthPotions = 0;
+		this.healingPotions = EntitiesConst.HEALING_POTIONS;
+		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
 
 		// --- TODO manage automaton ---
 		this.automaton = null;
@@ -77,8 +74,6 @@ public abstract class Entity implements IEntity {
 		EntitiesConst.GAME = g;
 		EntitiesConst.MAP = (Map) g.map;
 		EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
-		EntitiesConst.LEVEL = lvl;
-		EntitiesConst.EXPERIENCE = xp;
 	}
 
 	public void tick(long elapsed) {
@@ -149,13 +144,6 @@ public abstract class Entity implements IEntity {
 //				this.updateSpriteIndex();
 //			}
 	}
-//		if (this.hitFrozen) {
-//			this.attackIndex += elapsed;
-//			if (this.attackIndex >= this.attackSpeed) {
-//				this.hitFrozen = false;
-//				this.attackIndex = 0;
-//			}
-//		}
 
 	@Override
 	public void Move(Aut_Direction d) {
@@ -166,6 +154,8 @@ public abstract class Entity implements IEntity {
 			if (d == null) {
 				d = this.direction;
 			}
+			this.direction = d;
+			
 			if (this.action != Action.M) {
 				if (EntitiesConst.GAME.debug) {
 					System.out.println(this.name + " is moving");
@@ -221,7 +211,9 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Egg(Aut_Direction d, Aut_Category c) {
+	public void Egg(Aut_Direction d, Aut_Category c, int id) {
+		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de l'id
+		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la signification de chaque nombre)
 		if (d == null) {
 			d = this.direction;
 		}
@@ -303,22 +295,22 @@ public abstract class Entity implements IEntity {
 				switch (d) {
 				case N:
 					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				case S:
 					if (entity.hitbox.location.getY() < t.getY() + 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				case E:
 					if (entity.hitbox.location.getX() < t.getX() + 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				case W:
 					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) {
-						entity.takeDamage(this.weaponDamage);
+						entity.takeDamage(this);
 					}
 					break;
 				default:
@@ -328,28 +320,34 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-	public void takeDamage(int dmg) {
+	public void takeDamage(Entity attacker) {
 		System.out.println("HEHO CA FAIT MALEUH");
-		if (this.health - dmg > 0) {
-			this.health -= dmg;
+		if (this.health - attacker.weaponDamage >= 0) {
+			this.health -= attacker.weaponDamage;
 		} else {
 			this.health = 0;
-			this.die();
+			this.die(attacker);
 		}
 	}
 
-	public void die() {
+	public void die(Entity attacker) {
 		if (this.action != Action.D) {
 			this.imageIndex = this.sprites.length;
 			this.action = Action.D;
 			this.updateSpriteIndex();
-
+			
+			if (attacker.category == Aut_Category.AT) {
+				Hero.addExperience(attacker);
+			}
+			
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
 			}
 			EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 		}
 	}
+
+	public void updateStats() {}
 
 	@Override
 	public void Jump() {
@@ -382,12 +380,11 @@ public abstract class Entity implements IEntity {
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin) {
-				EntitiesConst.COINS++;
 				// TODO destroy the coin
 			} else if (entity instanceof HealingPotion) {
-				this.healingPotions++;
+				// TODO destroy the healingPotion
 			} else if (entity instanceof StrengthPotion) {
-				this.strengthPotions++;
+				// TODO destroy the strengthPotion
 			}
 		}
 	}
@@ -401,12 +398,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Power() {
-		if (this.healingPotions > 0) {
-			this.health = -1;
-			this.healingPotions--;
-		}
-	}
+	public void Power() {}
 
 	@Override
 	public void Store(Aut_Category c) {
@@ -419,7 +411,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Wait() {
+	public void Wait(int time) {
 	}
 
 	@Override
