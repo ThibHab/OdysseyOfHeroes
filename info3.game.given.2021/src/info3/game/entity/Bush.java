@@ -1,15 +1,14 @@
 package info3.game.entity;
 
-import animations.Action;
 import animations.Animation;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.automata.Aut_Category;
-import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -50,9 +49,6 @@ public class Bush extends DecorElement {
 				if (EntitiesConst.GAME.debug) {
 					System.out.println(this.name + " is touched");
 				}
-				this.imageIndex = this.sprites.length;
-				this.action = Action.T;
-				this.updateSpriteIndex();
 			}
 		} else {
 			this.health = 0;
@@ -60,7 +56,7 @@ public class Bush extends DecorElement {
 		}
 	}
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img=sprites[1];
+		BufferedImage img=anim.getFrame();
 		int diff=(int) (tileSize*(scale-1))/2;
 		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
 	}

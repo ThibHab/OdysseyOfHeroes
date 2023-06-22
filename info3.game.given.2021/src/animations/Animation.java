@@ -3,6 +3,7 @@ package animations;
 import java.awt.image.BufferedImage;
 
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.Entity;
@@ -12,7 +13,7 @@ public class Animation {
 	public Entity owner;
 	public BufferedImage sprites[];
 	public Action action;
-	public long mouvementIndex;
+	public long actionIndex;
 	public int imageIndex;
 	public Aut_Direction[] dirOrder;
 	public Action[] actOrder;
@@ -21,7 +22,7 @@ public class Animation {
 		this.owner = e;
 		this.sprites = spr;
 		this.action = Action.S;
-		
+		this.actionIndex = 0;
 		this.imageIndex = 0;
 		if (dirs != null) {
 			dirOrder = dirs;
@@ -29,7 +30,7 @@ public class Animation {
 		actOrder = acts;
 	}
 
-	public BufferedImage get_frame() {
+	public BufferedImage getFrame() {
 		return sprites[imageIndex];
 	}
 
@@ -54,8 +55,8 @@ public class Animation {
 	}
 
 	public void changeAction(Action a) {
-		if(owner instanceof Melee) {
-			int b = 1+1;
+		if (owner instanceof Melee) {
+			int b = 1 + 1;
 		}
 		if (a != this.action) {
 			if (a != Action.S) {
@@ -63,7 +64,7 @@ public class Animation {
 			}
 			System.out.println(a.toString());
 			this.action = a;
-			mouvementIndex = 0;
+			actionIndex = 0;
 			this.imageIndex = sprites.length;
 			updateIndex();
 			if (EntitiesConst.GAME.debug) {
@@ -73,7 +74,7 @@ public class Animation {
 	}
 
 	public void step(long elapsed) {
-		this.mouvementIndex += elapsed;
+		this.actionIndex += elapsed;
 		if (this.nextAnim(elapsed)) {
 			updateIndex();
 		}
@@ -82,15 +83,15 @@ public class Animation {
 	public boolean isFinished() {
 		switch (this.action) {
 		case S:
-			return this.mouvementIndex >= EntitiesConst.STAND_INDEX_MAX;
+			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
 		case M:
-			return this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX;
+			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX;
 		case H:
-			return this.mouvementIndex >= EntitiesConst.HIT_INDEX_MAX;
+			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX;
 		case D:
-			return this.mouvementIndex >= EntitiesConst.DIE_INDEX_MAX;
+			return false;
 		case T:
-			return this.mouvementIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
 		default:
 			return true;
 		}
@@ -103,7 +104,7 @@ public class Animation {
 			divide = EntitiesConst.getActionIndexMax(this.action) / nb_sprite;
 		else
 			divide = 1;
-		return (mouvementIndex - elapsed) / divide < mouvementIndex / divide;
+		return (actionIndex - elapsed) / divide < actionIndex / divide;
 	}
 
 	public void updateIndex() {
@@ -122,7 +123,7 @@ public class Animation {
 				if (this.imageIndex + 1 < idx + owner.getNbActionSprite(actOrder[i])) {
 					this.imageIndex = this.imageIndex + 1;
 				} else {
-					this.imageIndex = idx;
+						this.imageIndex = idx;
 				}
 			} else {
 				idx += owner.getNbActionSprite(actOrder[i]);

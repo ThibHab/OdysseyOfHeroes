@@ -1,4 +1,4 @@
-package animations;
+package info3.game.constants;
 
 public enum Action {
 	M, // is Moving

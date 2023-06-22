@@ -3,41 +3,40 @@ package info3.game.entity;
 import java.awt.Graphics;
 import java.util.Random;
 
-import animations.Action;
 import animations.Animation;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.automata.Aut_State;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.map.Map;
 import info3.game.map.Tile;
 
 public abstract class Entity implements IEntity {
 	public String name;
-	public Location location;
-	public Location destLocation;
-	public Location relativeMouv;
-	public Location originLocation;
-	public int health, weaponDamage, weaponRange;
+	public int health, weaponDamage, weaponRange, maxHealth, range;
 	public float speed, attackSpeed;
+	public Aut_Category category;
+	public int healingPotions, strengthPotions;
+
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
 	public Aut_Direction direction;
-	public Aut_Category category;
-	public boolean frozen;
-	public boolean hitFrozen;
+	public boolean frozen, hitFrozen;
+
+	public Location originLocation, location, destLocation, relativeMouv;
 	public boolean moving;
+
 	public long attackIndex;
 	public int detectionRadius;
-	public int maxHealth;
-	public int range;
-	public int healingPotions, strengthPotions;
+	public Hitbox hitbox;
 
 	public Animation anim;
 	public float scale;
-	public Hitbox hitbox;
+	public Action action;
+	public long mouvementIndex;
 
 	public Entity() {
 		this.name = "";
@@ -53,7 +52,7 @@ public abstract class Entity implements IEntity {
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
 
-		// --- TODO manage automaton ---
+		// TODO assign default automaton
 		this.automaton = null;
 		this.currentState = null;
 
@@ -76,18 +75,23 @@ public abstract class Entity implements IEntity {
 	public void tick(long elapsed) {
 		this.automaton.step(this, EntitiesConst.GAME);
 		this.anim.step(elapsed);
-		
+
 		if (this.frozen) {
+			if (this.anim.isFinished()) {
+				this.frozen = false;
+			}
+			this.mouvementIndex += elapsed;
 			if (anim.action == Action.M) {
 				if (this.anim.isFinished()) {
 					this.moving = false;
+					this.mouvementIndex = 0;
 					this.location.setX(destLocation.getX());
 					this.location.setY(destLocation.getY());
 					this.hitbox.update();
 					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
 							.getY()].entity = null;
-				} else if (anim.mouvementIndex != 0) {
-					float progress = (float) this.anim.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+				} else if (mouvementIndex != 0) {
+					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
 					this.location
 							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
 									% EntitiesConst.MAP.lenX);
@@ -109,27 +113,24 @@ public abstract class Entity implements IEntity {
 					System.out.println(this.name + " is standing");
 				}
 				this.action = Action.S;
-			this.imageIndex = this.sprites.length - 1;
-				this.updateSpriteIndex();
+				this.anim.changeAction(action);
 			}
 			this.action = Action.S;
-			this.imageIndex = this.sprites.length;
-			this.updateSpriteIndex();
+			this.anim.changeAction(action);
 		}
-			if ((mouvementIndex - elapsed) / (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite()) < mouvementIndex
-					/ (EntitiesConst.STAND_INDEX_MAX / this.getStandNbSprite())) {
-				this.updateSpriteIndex();
-			}
 	}
 
 	@Override
 	public void Move(Aut_Direction d) {
 		if (!this.frozen) {
 			this.moving = true;
-			if (d == null) {
-				d = this.direction;
+			if (d != null) {
+				this.direction = d;
 			}
-			this.anim.changeAction(Action.M);
+			if (this.action != Action.M) {
+				this.action = Action.M;
+				this.anim.changeAction(action);
+			}
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
@@ -160,6 +161,7 @@ public abstract class Entity implements IEntity {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
+				System.out.println(this.location.getX() + " " + this.location.getY());
 			}
 		}
 	}
@@ -240,7 +242,10 @@ public abstract class Entity implements IEntity {
 			if (d == null) {
 				d = this.direction;
 			}
-			this.anim.changeAction(Action.H);
+			if (this.action != Action.H) {
+				this.action = Action.H;
+				this.anim.changeAction(action);
+			}
 			Location t = frontTileLocation(d);
 
 			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -285,14 +290,13 @@ public abstract class Entity implements IEntity {
 
 	public void die(Entity attacker) {
 		if (this.action != Action.D) {
-			this.imageIndex = this.sprites.length;
 			this.action = Action.D;
-			this.updateSpriteIndex();
-			
+			this.anim.changeAction(action);
+
 			if (attacker.category == Aut_Category.AT) {
 				Hero.addExperience(attacker);
 			}
-			
+
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
 			}
@@ -300,7 +304,8 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-	public void updateStats() {}
+	public void updateStats() {
+	}
 
 	@Override
 	public void Jump() {
@@ -351,7 +356,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Power() {}
+	public void Power() {
+	}
 
 	@Override
 	public void Store(Aut_Category c) {
@@ -407,8 +413,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	public boolean hitboxOverlap(Entity tgt) {
-		float x1,x2,X1,X2,y1,y2,Y1,Y2;
-		if(tgt instanceof DecorElement) {
+		float x1, x2, X1, X2, y1, y2, Y1, Y2;
+		if (tgt instanceof DecorElement) {
 			x1 = this.hitbox.location.getX();
 			y1 = this.hitbox.location.getY();
 			X1 = this.destLocation.getX();
@@ -417,7 +423,7 @@ public abstract class Entity implements IEntity {
 			y2 = (y1 + this.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
 			X2 = (X1 + tgt.hitbox.width + EntitiesConst.MAP.lenX) % EntitiesConst.MAP.lenX;
 			Y2 = (Y1 + tgt.hitbox.height + EntitiesConst.MAP.lenY) % EntitiesConst.MAP.lenY;
-		}else {
+		} else {
 			x1 = this.hitbox.location.getX();
 			y1 = this.hitbox.location.getY();
 			X1 = tgt.hitbox.location.getX();

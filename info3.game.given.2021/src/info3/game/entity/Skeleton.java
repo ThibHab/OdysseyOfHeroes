@@ -1,9 +1,9 @@
 package info3.game.entity;
 
-import animations.Action;
 import animations.Animation;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 

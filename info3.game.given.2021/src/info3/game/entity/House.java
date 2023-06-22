@@ -5,10 +5,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import animations.Action;
 import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -37,7 +37,7 @@ public class House extends TransparentDecorElement {
 	}
 	
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img=sprites[0];
+		BufferedImage img=anim.getFrame();
 		if(this.transparent) {
 			Graphics2D gr=(Graphics2D)g;
 			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float)(EntitiesConst.HOUSE_OPACITY/this.opacityDiv)));

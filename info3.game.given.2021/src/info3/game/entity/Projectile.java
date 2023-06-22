@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import animations.Action;
 import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -89,7 +89,7 @@ public class Projectile extends Entity {
 
 	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = this.sprites[this.imageIndex];
+		BufferedImage img = anim.getFrame();
 		Location pixel=EntitiesConst.GAME.render.gridToPixel(location,true);
 		int dimension = (int) (scale * tileSize);
 		float shiftXY = ((scale - 1) / 2) * tileSize;
@@ -108,6 +108,7 @@ public class Projectile extends Entity {
 			return;
 		}
 		this.automaton.step(this, EntitiesConst.GAME);
+		this.anim.step(elapsed);
 		Entity e = EntitiesConst.MAP_MATRIX[(int) this.destLocation.getX()][(int) this.destLocation.getY()].entity;
 		if (e != null && e != this.owner) {
 			if (this.hitboxOverlap(e)) {
@@ -117,18 +118,16 @@ public class Projectile extends Entity {
 			}
 		}
 		if (this.frozen && this.moving) {
-			this.mouvementIndex += elapsed;
-			if (this.mouvementIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ) {
+			if (this.anim.isFinished()) {
 				this.frozen = false;
 				this.moving = false;
-				this.anim.mouvementIndex = 0;
+				this.mouvementIndex = 0;
 				this.anim.imageIndex = (this.anim.imageIndex + 1) % this.anim.sprites.length;
 				this.location.setX(destLocation.getX());
 				this.location.setY(destLocation.getY());
 				this.hitbox.update();
 			} else {
 				if (mouvementIndex != 0) {
-					this.imageIndex = (this.imageIndex + 1) % this.sprites.length;
 					float progress = (float) this.mouvementIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
 					this.location
 							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())

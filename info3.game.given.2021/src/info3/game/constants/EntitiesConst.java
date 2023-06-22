@@ -1,6 +1,5 @@
 package info3.game.constants;
 
-import animations.Action;
 import info3.game.Game;
 import info3.game.map.Map;
 import info3.game.map.Tile;
@@ -13,25 +12,19 @@ public class EntitiesConst {
 	public static Tile[][] MAP_MATRIX;	
 	
 	public static final int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10, COINS = 0;
-	public static final int MOUVEMENT_INDEX_MAX = 200;
-	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
-	public static final int HIT_INDEX_MAX = 300;
-	public static final int STAND_INDEX_MAX = 50;
 	public static final int DEATH_EXPERIENCE_GIVEN = 5;
     
 	public static final int MAX_DIFFX=7;
 	public static final int MAX_DIFFY=3;
 	
-	public static int MOUVEMENT_INDEX_MAX = 200;
-	public static int HIT_INDEX_MAX = 300;
-	public static int STAND_INDEX_MAX = 200;
-	public static int TOUCHED_INDEX_MAX = 50;
-	public static int DIE_INDEX_MAX = 50;
-	public static int ROTATING_INDEX_MAX = 50;
+	public static final int MOUVEMENT_INDEX_MAX = 200;
+	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
+	public static final int HIT_INDEX_MAX = 300;
+	public static final int STAND_INDEX_MAX = 200;
+	public static final int TOUCHED_INDEX_MAX = 50;
+	public static final int DIE_INDEX_MAX = 50;
+	public static final int ROTATING_INDEX_MAX = 50;
 	
-    
-	public static int MAX_DIFFX=7;
-	public static int MAX_DIFFY=3;
 	// HERO CONSTANTS
 	public static final int HERO_SPEED = 2;
 	public static final int HEALING_POTIONS = 0;
@@ -88,6 +81,10 @@ public class EntitiesConst {
 	
 	// ENERGYBALL CONSTANTS
 	public static float ENERGYBALL_SCALE = 1.2f;
+	
+	public static final float CAVE_WALL_SCALE = 1.0f;
+	
+	public static final float STATUE_SCALE = 4.0f;
 	
 	public static int getActionIndexMax(Action a) {
 		switch (a) {
