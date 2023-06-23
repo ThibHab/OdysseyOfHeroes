@@ -20,7 +20,10 @@ public class EntitiesConst {
 	
 	public static final int MOUVEMENT_INDEX_MAX = 200;
 	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
+	public static final int MOUVEMENT_INDEX_MAX_VILLAGER = 1500;
+	public static final int MOUVEMENT_INDEX_MAX_MOB = 1000;
 	public static final int HIT_INDEX_MAX = 300;
+	public static final int HIT_INDEX_MAX_MOB = 1000;
 	public static final int STAND_INDEX_MAX = 200;
 	public static final int TOUCHED_INDEX_MAX = 200;
 	public static final int DIE_INDEX_MAX = 500;
@@ -52,8 +55,8 @@ public class EntitiesConst {
 	public static final float SKELETON_SCALE = 1.3f;
 	
 	// GOBLIN CONSTANTS
-	public static final int GOBLIN_HEALTH = 20;
-	public static final int GOBLIN_DAMAGE = 2;
+	public static final int GOBLIN_HEALTH = 12;
+	public static final int GOBLIN_DAMAGE = 1;
 	public static final int GOBLINE_RANGE = 2;
 	public static final int GOBLIN_SPEED = 6;
 	public static final float GOBLIN_SCALE = 1.3f;

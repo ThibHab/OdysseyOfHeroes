@@ -38,18 +38,6 @@ public class VillagerGirl extends Villager {
 	}
 	
 	@Override
-	public int getNbActionSprite(Action a) {
-		switch (a) {
-		case M:
-			return AnimConst.VILLAGERGIRL_M;
-		case S:
-			return AnimConst.VILLAGERGIRL_S;
-		default:
-			return 0;
-		}
-	}
-	
-	@Override
 	public void Move(Aut_Direction d) {
 		float x = this.location.getX();
 		float y =this.location.getY();
