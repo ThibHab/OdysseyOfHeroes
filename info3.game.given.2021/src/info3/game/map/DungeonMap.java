@@ -54,6 +54,7 @@ public class DungeonMap extends Map {
 			torches.add(t);
 			this.map[x][(int) loc.getY()].entity = t;
 		}
+		
 		EntitiesConst.MAP = this;
 		EntitiesConst.MAP_MATRIX = this.map;
 	}

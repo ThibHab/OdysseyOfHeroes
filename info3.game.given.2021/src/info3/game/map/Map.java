@@ -1,12 +1,13 @@
 package info3.game.map;
 
-import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import info3.game.constants.Action;
 import animations.Effect;
 import info3.game.Game;
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.MapConstants;
 import info3.game.entity.*;
 
 public abstract class Map implements IMap {
@@ -209,10 +210,80 @@ public abstract class Map implements IMap {
 	}
 
 	public void setPlayer(int x, int y, Entity player) {
+		if (player.action != Action.D) {
+			player.action = Action.S;
+		}
+		
 		player.location.setX(x);
 		player.location.setY(y);
 		player.hitbox.update();
 		map[x][y].entity = player;
+		
+		if (player.action != Action.D) {
+			player.frozen = false;
+		}
+	}
+	
+	public void setDungeonEntrance(int x, int y) {
+		Location location = new Location(x, y);
+		if (map[x][y].entity != null) {
+			if (map[x][y].entity instanceof Tree) {
+				this.delTree(x, y);
+			} else {
+				map[x][y].entity = null;
+			}
+		}
+		
+		map[x][y].entity = new DungeonEntrance(location);
+		
+		if (map[x][y + 1].entity instanceof Tree) {
+			this.delTree(x, y + 1);
+		} else {
+			map[x][y + 1].entity = null;
+		}
+		
+		if (map[x - 1][y + 1].entity instanceof Tree) {
+			this.delTree(x - 1, y + 1);
+		} else {
+			map[x - 1][y + 1].entity = null;
+		}
+		
+		if (map[x + 1][y + 1].entity instanceof Tree) {
+			this.delTree(x + 1, y + 1);
+		} else {
+			map[x + 1][y + 1].entity = null;
+		}
+	}
+	
+	public void setMazeEntrance(int x, int y) {
+		Location location = new Location(x, y);
+		if (map[x][y].entity != null) {
+			if (map[x][y].entity instanceof Tree) {
+				this.delTree(x, y);
+			} else {
+				map[x][y].entity = null;
+			}
+		}
+		
+		map[x][y].entity = new MazeEntrance(location);
+		
+		if (map[x][y + 1].entity instanceof Tree) {
+			this.delTree(x, y + 1);
+		} else {
+			map[x][y + 1].entity = null;
+		}
+		
+		if (map[x - 1][y + 1].entity instanceof Tree) {
+			this.delTree(x - 1, y + 1);
+		} else {
+			map[x - 1][y + 1].entity = null;
+		}
+		
+		if (map[x + 1][y + 1].entity instanceof Tree) {
+			this.delTree(x + 1, y + 1);
+		} else {
+			map[x + 1][y + 1].entity = null;
+		}
 	}
 
 	/**
@@ -470,5 +541,41 @@ public abstract class Map implements IMap {
 				}
 			}
 		}
-	}	
+	}
+	
+	public void freezeEntities() {
+		MapRender rend = EntitiesConst.GAME.render;
+		int nbTileY = rend.nbTileY + 4;
+		int nbTileX = rend.nbTileX + 4;
+
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
+				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
+				Tile renderTile = map[mapX][mapY];
+				Entity ent = renderTile.entity;
+				if (ent != null) {
+					ent.frozen = true;
+				}
+			}
+		}
+	}
+	
+	public void unFreezeEntities() {
+		MapRender rend = EntitiesConst.GAME.render;
+		int nbTileY = rend.nbTileY + 4;
+		int nbTileX = rend.nbTileX + 4;
+
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
+				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
+				Tile renderTile = map[mapX][mapY];
+				Entity ent = renderTile.entity;
+				if (ent != null) {
+					ent.frozen = false;;
+				}
+			}
+		}
+	}
 }
