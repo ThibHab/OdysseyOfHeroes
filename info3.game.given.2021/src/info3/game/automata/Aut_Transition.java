@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Aut_Transition {
 
-	Aut_State src;
-	Cond condition;
-	List<Aut_Action> actions;
-	Aut_State dest;
+	public Aut_State src;
+	public Cond condition;
+	public List<Aut_Action> actions;
+	public Aut_State dest;
 	
 	public Aut_Transition(Aut_State s, Cond c, List<Aut_Action> a, Aut_State d) {
 		this.src = s;
