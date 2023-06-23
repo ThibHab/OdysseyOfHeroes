@@ -92,7 +92,9 @@ public class EntitiesConst {
 	
 	public static float SPEECHBUBBLE_SCALE = 1.0f;
 	public static float VILLAGER_SCALE = 1.0f;
-	public static final float STATUE_SCALE = 4.0f;
+	
+	public static final float STATUE_SCALE =4f;
+	public static final float STATUE_OPACITY =0.75f;
 	
 	public static int getActionIndexMax(Action a) {
 		if(a == null)
