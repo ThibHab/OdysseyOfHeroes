@@ -14,15 +14,15 @@ import info3.game.constants.ImagesConst;
 public abstract class Villager extends NPC {
 	
 	public LinkedList<String> dialogs;
-	public boolean talking;
+	public boolean completed;
 	public int dialogIndex;
 	
 	public Villager(Location l) {
 		super();
 		this.location = l;
-		this.talking = false;
 		this.dialogIndex = 0;
 		this.dialogs = new LinkedList<>();
+		this.completed = false;
 
 		// --- TODO manage automaton ---
 		// -----------------------------
@@ -36,7 +36,8 @@ public abstract class Villager extends NPC {
 	}
 	
 	public void talks() {
-		if(dialogIndex > 0) {
+		
+		if (this.dialogIndex > 0) {
 			for (int i = 0; i < EntitiesConst.MAP.bubbles.size() ; i++) {
 				SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
 				if (bubble.v == this) {
@@ -44,6 +45,7 @@ public abstract class Villager extends NPC {
 				}
 			}
 		}
+		
 		if (this.dialogs.size() <= this.dialogIndex) {
 			for (int i = 0; i < EntitiesConst.MAP.bubbles.size() ; i++) {
 				SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
@@ -71,28 +73,5 @@ public abstract class Villager extends NPC {
 			g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
 					(int) (tileSize * this.hitbox.height));
 		}
-	}
-	
-	@Override
-	public void Move(Aut_Direction d) {
-		float x = this.location.getX();
-		float y =this.location.getY();
-		Aut_Direction dir = d.rightDirection(this);
-		if (x > 35 && dir == Aut_Direction.E  || x < 25 && dir == Aut_Direction.W || y > 35 && dir == Aut_Direction.S || y < 25 && dir == Aut_Direction.N) {
-			dir = Aut_Direction.B;
-			dir = dir.rightDirection(this);
-			super.Move(dir);
-		}else {
-			super.Move(d);
-		}
-		if(dialogIndex > 0) {
-			for (int i = 0; i < EntitiesConst.MAP.bubbles.size() ; i++) {
-				SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
-				if (bubble.v == this) {
-					EntitiesConst.MAP.bubbles.remove(i);
-				}
-			}
-		}
-		this.dialogIndex = 0;
 	}
 }

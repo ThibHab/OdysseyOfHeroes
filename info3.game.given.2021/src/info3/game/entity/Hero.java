@@ -11,7 +11,8 @@ import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
-	public static int coins, level, levelUp, experience;
+	public static int coins, level, levelUp, experience, bushesCut;
+	public static boolean firePowerUnlocked;
 	public int healingPotions, strengthPotions;
 	
 	public Hero() {
@@ -23,6 +24,8 @@ public abstract class Hero extends Entity {
 		Hero.level = EntitiesConst.LEVEL;
 		Hero.levelUp = EntitiesConst.LEVEL_UP;
 		Hero.experience = EntitiesConst.EXPERIENCE;
+		Hero.firePowerUnlocked = false;
+		Hero.bushesCut = 0;
 	}
 
 	public void paint(Graphics g, int tileSize) {

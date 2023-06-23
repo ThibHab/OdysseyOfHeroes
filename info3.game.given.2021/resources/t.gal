@@ -172,6 +172,14 @@ Bush(Existing){
   | !Cell(@, F) ? : (Walking)
   }
   
+  Hermit (Thinking) {
+  * (Thinking)
+  | Cell(R, V) ? Turn(R) : (Turned)
+  
+  * (Turned)
+  | Cell(F, V) ? Move(F) : (Thinking)
+  }
+  
  
  
  

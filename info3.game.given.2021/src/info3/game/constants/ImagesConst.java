@@ -59,7 +59,7 @@ public class ImagesConst {
 		BLUE_HEART = loadTile("blue_heart");
 		BLACK_HEART = loadTile("empty_heart");
 		
-		HERMIT = loadSprite("Hermit",1,1);
+		HERMIT = loadSprite("Hermite",2,6);
 		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 3);
 		MINER = loadSprite("Miner", 4, 3);
 		
