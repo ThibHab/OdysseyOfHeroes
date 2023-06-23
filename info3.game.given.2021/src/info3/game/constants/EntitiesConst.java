@@ -97,4 +97,5 @@ public class EntitiesConst {
 	public static final float MAZE_ENTRANCE_SCALE = 1.0f;
 	public static final int MAZE_ENTRANCE_X_POS = 30;
 	public static final int MAZE_ENTRANCE_Y_POS = 70;
+	public static final int MAZE_COUNTER_LIMIT = 300000;
 }

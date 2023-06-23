@@ -9,8 +9,13 @@ import info3.game.constants.AnimConst;
 import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.MapConstants;
+import info3.game.map.DungeonMap;
 import info3.game.map.Map;
+import info3.game.map.MapRender;
+import info3.game.map.MazeMap;
 import info3.game.map.Tile;
+import info3.game.map.WorldMap;
 
 public abstract class Entity implements IEntity {
 	public String name;
@@ -34,6 +39,8 @@ public abstract class Entity implements IEntity {
 	public int maxHealth;
 	public int range;
 	public int healingPotions, strengthPotions;
+	public int mazeCounter;
+	public boolean mazeCounterActivated;
 
 	public BufferedImage[] sprites;
 	public int imageIndex;
@@ -68,6 +75,8 @@ public abstract class Entity implements IEntity {
 
 		this.scale = 1;
 
+		this.mazeCounter = 0;
+		this.mazeCounterActivated = false;
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -77,6 +86,20 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
+		if (this.mazeCounterActivated) {
+			this.mazeCounter += elapsed;
+			if (this.mazeCounter >= EntitiesConst.MAZE_COUNTER_LIMIT) {
+				EntitiesConst.GAME.player1.action = Action.S;
+				EntitiesConst.GAME.player2.action = Action.S;
+				EntitiesConst.GAME.map = new WorldMap(100, 100, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+				EntitiesConst.GAME.render = new MapRender((Map) EntitiesConst.GAME.map, EntitiesConst.GAME);
+				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2, EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+				EntitiesConst.GAME.render.setOffsetCam();
+				this.mazeCounterActivated = false;
+				this.mazeCounter = 0;
+			}
+		}
+
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen) {
 			this.mouvementIndex += elapsed;
@@ -147,7 +170,7 @@ public abstract class Entity implements IEntity {
 				d = this.direction;
 			}
 			this.direction = d;
-			
+
 			if (this.action != Action.M) {
 				if (EntitiesConst.GAME.debug) {
 					System.out.println(this.name + " is moving");
@@ -158,36 +181,53 @@ public abstract class Entity implements IEntity {
 			}
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
-			originLocation = new Location(this.location.getX(), this.location.getY());
-			relativeMouv = new Location(0, 0);
+			this.originLocation = new Location(this.location.getX(), this.location.getY());
+			this.relativeMouv = new Location(0, 0);
 			switch (d) {
 			case N:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(-1);
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(-1);
 				break;
 			case S:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(1);
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(1);
 				break;
 			case W:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(-1);
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(-1);
 				break;
 			case E:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(1);
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(1);
 				break;
 			default:
 				break;
 			}
+
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
+			if ((destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
+				if (destTile.entity instanceof DungeonEntrance) {
+					EntitiesConst.GAME.map = new DungeonMap(32, 32, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+					
+				} else if (destTile.entity instanceof MazeEntrance) {
+					EntitiesConst.GAME.map = new MazeMap(
+							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+							EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+					this.mazeCounterActivated = true;
+				}
+				
+				EntitiesConst.GAME.render = new MapRender((Map) EntitiesConst.GAME.map, EntitiesConst.GAME);
+				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2, EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+				EntitiesConst.GAME.render.setOffsetCam();
+			}
+
 			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
 					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
 			}
-
 		} else {
 			this.mouvementIndex = 0;
 		}
@@ -204,8 +244,10 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Egg(Aut_Direction d, Aut_Category c, int id) {
-		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de l'id
-		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la signification de chaque nombre)
+		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de
+		// l'id
+		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la
+		// signification de chaque nombre)
 		if (d == null) {
 			d = this.direction;
 		}
@@ -289,22 +331,24 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
+							&& entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case S:
-					if ((entity.hitbox.location.getY() < t.getY() + 0.5)&& entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case E:
-					if ((entity.hitbox.location.getX() < t.getX() + 0.5)&& entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
 				case W:
-					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)&& entity.category!=Aut_Category.O) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
+							&& entity.category != Aut_Category.O) {
 						entity.takeDamage(this);
 					}
 					break;
@@ -330,11 +374,11 @@ public abstract class Entity implements IEntity {
 			this.imageIndex = this.sprites.length;
 			this.action = Action.D;
 			this.updateSpriteIndex();
-			
+
 			if (attacker.category == Aut_Category.AT && this.category != Aut_Category.D) {
 				Hero.addExperience(attacker);
 			}
-			
+
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
 			}
@@ -342,7 +386,8 @@ public abstract class Entity implements IEntity {
 		}
 	}
 
-	public void updateStats() {}
+	public void updateStats() {
+	}
 
 	@Override
 	public void Jump() {
@@ -350,7 +395,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Explode() {}
+	public void Explode() {
+	}
 
 	@Override
 	public void Pick(Aut_Direction d) {
@@ -380,7 +426,8 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void Power() {}
+	public void Power() {
+	}
 
 	@Override
 	public void Store(Aut_Category c) {
