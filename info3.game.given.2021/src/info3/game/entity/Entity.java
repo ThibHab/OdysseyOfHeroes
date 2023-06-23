@@ -12,12 +12,9 @@ import info3.game.automata.Aut_State;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.MapConstants;
-import info3.game.map.DungeonMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
-import info3.game.map.MazeMap;
 import info3.game.map.Tile;
-import info3.game.map.WorldMap;
 
 public abstract class Entity implements IEntity {
 	public String name;
@@ -86,7 +83,7 @@ public abstract class Entity implements IEntity {
 			if (this.mazeCounter >= EntitiesConst.MAZE_COUNTER_LIMIT) {
 				EntitiesConst.GAME.player1.action = Action.S;
 				EntitiesConst.GAME.player2.action = Action.S;
-				EntitiesConst.GAME.map = new WorldMap(100, 100, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+				EntitiesConst.GAME.map = MapConstants.WORLD_MAP;
 				EntitiesConst.GAME.render = new MapRender((Map) EntitiesConst.GAME.map, EntitiesConst.GAME);
 				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2, EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
 				EntitiesConst.GAME.render.setOffsetCam();
@@ -195,13 +192,9 @@ public abstract class Entity implements IEntity {
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
 			if ((destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
 				if (destTile.entity instanceof DungeonEntrance) {
-					EntitiesConst.GAME.map = new DungeonMap(32, 32, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
-					
+					EntitiesConst.GAME.map = MapConstants.DUNGEON_MAP;
 				} else if (destTile.entity instanceof MazeEntrance) {
-					EntitiesConst.GAME.map = new MazeMap(
-							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
-							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
-							EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+					EntitiesConst.GAME.map = MapConstants.MAZE_MAP;
 					this.mazeCounterActivated = true;
 				}
 				

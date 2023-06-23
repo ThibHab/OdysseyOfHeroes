@@ -198,11 +198,7 @@ public class Game {
 		player2 = new Range("Player2", this);
 		player2.name = "player2";
 
-		// map = new MazeMap(MapConstants.MAZE_MAP_SIZE *
-		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE *
-		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
 		map = new WorldMap(100, 100, player1, player2);
-		// map = new DungeonMap(32, 32, player1, player2);
 		// map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map) map, this);
 
