@@ -26,7 +26,7 @@ public class MapRender {
 	public MapRender(Map map, Game game) {
 		this.map = map;
 		this.game = game;
-
+		this.camera = new Location(0, 0);
 	}
 
 	float roundDeci(float val, int nbDec) {
