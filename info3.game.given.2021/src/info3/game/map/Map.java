@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import animations.Effect;
 import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
@@ -13,6 +14,7 @@ public abstract class Map implements IMap {
 	public int lenX, lenY;
 	Entity player1, player2;
 	public LinkedList<Projectile> projectiles;
+	public LinkedList<Effect> effects;
 
 	public Map(int nb_x, int nb_y, Entity p1, Entity p2) {
 		this.lenX = nb_x;
@@ -21,6 +23,7 @@ public abstract class Map implements IMap {
 		this.player2 = p2;
 		this.map = new Tile[lenX][lenY];
 		this.projectiles = new LinkedList<>();
+		//this.effects = new LinkedList<>();
 	}
 
 	void createTree(int x, int y) {

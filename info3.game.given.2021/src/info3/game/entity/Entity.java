@@ -145,6 +145,7 @@ public abstract class Entity implements IEntity {
 				this.action = Action.M;
 			}
 			this.anim.changeAction(action);
+			
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
@@ -182,6 +183,7 @@ public abstract class Entity implements IEntity {
 	public void Turn(Aut_Direction d) {
 		if (d != null) {
 			this.direction = d;
+			this.anim.changeAction(action);
 		}
 	}
 
@@ -262,8 +264,8 @@ public abstract class Entity implements IEntity {
 			}
 			if (this.action != Action.H) {
 				this.action = Action.H;
-				this.anim.changeAction(action);
 			}
+			this.anim.changeAction(action);
 			Location t = frontTileLocation(d);
 
 			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -320,12 +322,13 @@ public abstract class Entity implements IEntity {
 	public void die() {
 		if (this.action != Action.D) {
 			this.action = Action.D;
-			this.anim.changeAction(action);
+			
 			this.frozen = true;
 
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
 			}
+			this.anim.changeAction(action);
 			if (!(this instanceof Hero)) {
 				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 			}
