@@ -22,9 +22,9 @@ public abstract class DecorElement extends Entity {
 		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
 	}
 	
-	@Override
-	public void takeDamage(Entity attacker) {
-		System.out.println("HEHO CA FAIT MALEUH");
-		
-	}
+//	@Override
+//	public void takeDamage(Entity attacker) {
+//		System.out.println("HEHO CA FAIT MALEUH");
+//		
+//	}
 }

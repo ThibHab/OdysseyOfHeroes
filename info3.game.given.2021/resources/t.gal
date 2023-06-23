@@ -42,13 +42,13 @@ Player2(Stand_S){
  
  Player2 (Stand) {
   * (Stand)
+  | Cell(H,P) ? Pick(H) : (Stand)
+  | Key(i) ? Hit(F)  :(Stand)
   | Key(o) ? Move(N) :(Stand)
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
-  | Key(i) ? Hit(F)  :(Stand)
   | Key(p) ? Power : (Stand)
-  | Cell(S,P) ? Pick(F) : (Stand)
  }
  
  Player1(Stand_S){
@@ -116,11 +116,14 @@ Bush(Existing){
  	| True ? : (Existing)
  }
  
-   Bomb(Existing){
+ Bomb(Existing){
  	*(Existing)
- 	| !GotPower ? Explode : ()
- 	| GotPower ? : (Existing)
- 	*()
+ 	| True ? Wait(5000) : (Explosion)
+
+ 	*(Explosion)
+ 	| True ? Explode : ()
+ 	
+ 	* ()
  }
  
  EnergyBall(Forward){

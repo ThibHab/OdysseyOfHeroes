@@ -22,7 +22,7 @@ public class EntitiesConst {
 	public static final int HIT_INDEX_MAX = 300;
 	public static final int STAND_INDEX_MAX = 200;
 	public static final int TOUCHED_INDEX_MAX = 200;
-	public static final int DIE_INDEX_MAX = 200;
+	public static final int DIE_INDEX_MAX = 1000;
 	public static final int ROTATING_INDEX_MAX = 50;
 	
 	// HERO CONSTANTS

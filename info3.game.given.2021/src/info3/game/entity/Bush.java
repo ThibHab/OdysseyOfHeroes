@@ -41,21 +41,21 @@ public class Bush extends DecorElement {
 		
 	}
 	
-	@Override
-	public void takeDamage(Entity attacker) {	
-		System.out.println("HEHO CA FAIT MALEUH");
-		if (this.health - attacker.weaponDamage > 0) {
-			this.health -= attacker.weaponDamage;
-			if (this.action != Action.T) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is touched");
-				}
-			}
-		} else {
-			this.health = 0;
-			this.die();
-		}
-	}
+//	@Override
+//	public void takeDamage(Entity attacker) {	
+//		System.out.println("HEHO CA FAIT MALEUH");
+//		if (this.health - attacker.weaponDamage > 0) {
+//			this.health -= attacker.weaponDamage;
+//			if (this.action != Action.T) {
+//				if (EntitiesConst.GAME.debug) {
+//					System.out.println(this.name + " is touched");
+//				}
+//			}
+//		} else {
+//			this.health = 0;
+//			this.die();
+//		}
+//	}
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img=anim.getFrame();
 		int diff=(int) (tileSize*(scale-1))/2;

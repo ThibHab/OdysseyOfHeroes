@@ -7,6 +7,7 @@ import java.util.Random;
 
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
@@ -56,21 +57,16 @@ public abstract class Hero extends Entity {
 		}
 
 		Location location = frontTileLocation(d);
-		Tile tile = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()];
-		if (tile.entity.category == Aut_Category.P) {
-			if (tile.entity instanceof Chest) {
-				Random random = new Random();
-				boolean randomLoot = random.nextBoolean();
-				if (randomLoot) {
-					System.out.println("Looted coins");
-					Hero.coins += 5;
-				} else {
-					System.out.println("Looted healing potion");
-					this.healingPotions++;
-				}
-				
-				tile.entity = null;
-			}
+		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
+		if (entity.category == Aut_Category.P) {
+			if (entity instanceof Coin)
+				this.coins ++;
+			else if (entity instanceof HealingPotion)
+				this.healingPotions++;
+			else if (entity instanceof StrengthPotion)
+				this.strengthPotions++;
+			
+			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
 	}
 
@@ -85,5 +81,26 @@ public abstract class Hero extends Entity {
 			EntitiesConst.GAME.player2.updateStats();
 		}
 		
+	}
+	
+	@Override
+	public void takeDamage(Entity attacker) {
+		this.health -= attacker.weaponDamage;
+		if (this.health <= 0) {
+			this.die();
+		}
+	}
+	
+	@Override
+	public void die() {
+		if (this.action != Action.D) {
+			this.action = Action.D;
+			this.anim.changeAction(action);
+			this.frozen = true;
+
+			if (EntitiesConst.GAME.debug) {
+				System.out.println(this.name + " has died");
+			}
+		}
 	}
 }

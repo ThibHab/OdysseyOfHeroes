@@ -37,11 +37,6 @@ public class Bomb extends Entity {
 		EntitiesConst.MAP.createBomb((int) loc.getX(), (int) loc.getY(), this);
 	}
 
-	public void tick(long elapsed) {
-		this.automaton.step(this, EntitiesConst.GAME);
-		timer -= elapsed;
-		System.out.println(timer);
-	}
 
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
@@ -65,7 +60,6 @@ public class Bomb extends Entity {
 				}
 			}
 		}
-		this.die();
 		// TODO delete destroyable rocks
 		// TODO add explode method for animation (view)
 	}

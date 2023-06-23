@@ -149,7 +149,7 @@ public abstract class Map implements IMap {
 		return (float)Math.sqrt((double)dx*dx+dy*dy);
 	}
 
-	void setPlayer(int x, int y, Entity player) {
+	public void setPlayer(int x, int y, Entity player) {
 		player.location.setX(x);
 		player.location.setY(y);
 		player.hitbox.update();
