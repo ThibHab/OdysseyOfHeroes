@@ -56,23 +56,11 @@ public class Melee extends Hero{
 	}
 
 	@Override
-	public void Hit(Aut_Direction d) {
-		// TODO Auto-generated method stub
-		super.Hit(d);
+	public void updateStats() {
+		this.weaponDamage++;
+		this.maxHealth += 1;
+		this.health = this.maxHealth;
 	}
-
-	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Pop(d, c);
-	}
-
-	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Wizz(d, c);
-	}
-	
 	
     // function called only in the dungeon map
 	public void lightAround() {
