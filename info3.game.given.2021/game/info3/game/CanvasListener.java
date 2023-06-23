@@ -77,7 +77,6 @@ public class CanvasListener implements GameCanvasListener {
 			if (!menu.getStarted()) {
 				if (m_focused == menu.selected(e.getX(), e.getY())) {
 					if (m_focused.getName().equals("Resume")) {
-						System.out.println("Resume !");
 					} else if (m_focused.getName().equals("New Game")) {
 						menu.setStarted();
 						m_game.setupGame();
@@ -93,11 +92,9 @@ public class CanvasListener implements GameCanvasListener {
 				if (m_focused == inMenu.selected(e.getX(), e.getY())) {
 					if (m_focused.getName().equals("Resume")) {
 						inMenu.setPause(false);
-						((Map)m_game.map).unFreezeEntities();
 					} else if (m_focused.getName().equals("Controls")) {
 						// TODO
 					} else if (m_focused.getName().equals("Quit")) {
-						System.out.println("dfghjkl");
 						this.exit();
 					} else {
 						m_focused.m_bgColor = Color.red;
@@ -199,7 +196,6 @@ public class CanvasListener implements GameCanvasListener {
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && m_game.inMenu != null) {
 			boolean b = m_game.inMenu.getPause();
-			((Map)m_game.map).freezeEntities();
 			m_game.inMenu.setPause(!b);
 		}
 		if (m_game.debug) {

@@ -150,8 +150,6 @@ public class Game {
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
-		player1.frozen = false;
-		player2.frozen = false;
 		//TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
 		Entity.InitStatics(this, level, xp);

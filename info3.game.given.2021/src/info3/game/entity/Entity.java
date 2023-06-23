@@ -71,7 +71,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		if (!this.dead) {
+		if (!this.dead && !EntitiesConst.GAME.inMenu.isPaused) {
 			this.automaton.step(this, EntitiesConst.GAME);
 
 			if (this.frozen) {
