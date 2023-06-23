@@ -17,27 +17,32 @@ public class HudInGame {
 	Melee j1;
 	Range j2;
 	int moula;
+	Image redHeart, blueHeart, blackHeart, potion, melee, range, coinIcone;
 
 	public HudInGame(JFrame frame) {
 		m_frame = frame;
 		j1 = EntitiesConst.GAME.player1;
 		j2 = EntitiesConst.GAME.player2;
 		moula = Hero.coins;
+		redHeart = ImagesConst.RED_HEART;
+		blueHeart = ImagesConst.BLUE_HEART;
+		blackHeart = ImagesConst.BLACK_HEART;
+		potion = ImagesConst.HEALING_POTION[0];
+		melee = ImagesConst.MELEE[0];
+		range = ImagesConst.RANGE[0];
+		coinIcone = ImagesConst.COIN[0];
 	}
 	
 	public void paint(Graphics g){
 		int width = EntitiesConst.GAME.m_canvas.getWidth();
 		int height = EntitiesConst.GAME.m_canvas.getHeight();
-		Image redHeart = ImagesConst.RED_HEART;
-		Image blueHeart = ImagesConst.BLUE_HEART;
-		Image blackHeart = ImagesConst.BLACK_HEART;
+
 		
 		Font f = new Font(null, 0, 25);
 		g.setFont(f);
 		
 		g.setColor(Color.blue);
 		g.drawRect(7, 7, 55, 55);
-		Image melee = ImagesConst.MELEE[0];
 		g.drawImage(melee, 5, 7, 60,  60, m_frame);
 		// TODO: Mettre le nombre de vie max en gris (Besoind de l'inforamtion de vie max)
 		
@@ -67,7 +72,6 @@ public class HudInGame {
 			}			
 		}
 		
-		Image potion = ImagesConst.HEALING_POTION[0];
 		g.drawImage(potion, 7, 70, 25, 25, m_frame);
 		String potionJ1 = "X" + j1.healingPotions;
 		g.drawString(potionJ1, 7 + 28, 93);
@@ -75,7 +79,6 @@ public class HudInGame {
 		
 		g.setColor(Color.red);
 		g.drawRect(width - 62, 5, 55, 55);
-		Image range = ImagesConst.RANGE[0];
 		g.drawImage(range, width - 64, 7, 60,  60, m_frame);
 		// TODO: Mettre le nombre de vie max en gris (Besoind de l'inforamtion de vie max)
 		
@@ -109,7 +112,6 @@ public class HudInGame {
 		String potionJ2 = j2.healingPotions + "X";
 		g.drawString(potionJ2, width - (7 + 28 + (17 * potionJ2.length())), 93);
 		
-		Image coinIcone = ImagesConst.COIN[0];
 		int coinWidth = 25;
 		g.drawImage(coinIcone, width/2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
 		g.setColor(Color.YELLOW);
