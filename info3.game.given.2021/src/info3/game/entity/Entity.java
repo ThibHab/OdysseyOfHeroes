@@ -183,7 +183,7 @@ public abstract class Entity implements IEntity {
 				if (destTile.entity instanceof DungeonEntrance) {
 					EntitiesConst.GAME.previousMap = 2;
 					EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1].entity = null;
-					EntitiesConst.GAME.map = new DungeonMap(32, 32, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+					EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
 				} else if (destTile.entity instanceof MazeEntrance) {
 					EntitiesConst.GAME.previousMap = 1;
 					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS + 1].entity = null;
