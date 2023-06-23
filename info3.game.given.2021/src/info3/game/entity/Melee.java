@@ -55,9 +55,6 @@ public class Melee extends Hero {
 				EntitiesConst.GAME.render.setOffsetCam();
 				this.mazeCounterActivated = false;
 				this.mazeCounter = 0;
-				System.out.println("Player 1 : x : " + EntitiesConst.GAME.player1.location.getX() + ", y : " + EntitiesConst.GAME.player1.location.getY());
-				System.out.println("Player 2 : x : " + EntitiesConst.GAME.player2.location.getX() + ", y : " + EntitiesConst.GAME.player2.location.getY());
-				System.out.println("entity : " + EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS + 1].entity);
 			}
 		}
 		
