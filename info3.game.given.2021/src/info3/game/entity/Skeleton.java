@@ -1,6 +1,9 @@
 package info3.game.entity;
 
-import info3.game.automata.*;
+import animations.Animation;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -24,9 +27,11 @@ public class Skeleton extends Mob {
 		// -----------------------------
 		this.category = Aut_Category.A;
 
-		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.SKELETON;
-		this.imageIndex = 0;
-		// -----------------------------------
+		this.category = Aut_Category.A;
+		
+		//TODO add sprites and actions
+		Aut_Direction dirs[] = new Aut_Direction[] {};
+		Action acts[] = new Action[] {};
+		this.anim = new Animation(this,ImagesConst.SKELETON, dirs, acts);
 	}
 }

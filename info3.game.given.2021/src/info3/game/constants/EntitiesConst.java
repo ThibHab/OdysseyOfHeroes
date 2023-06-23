@@ -8,18 +8,27 @@ public class EntitiesConst {
 	
 	// GLOBAL ENTITY CONSTANTS
 	public static Game GAME;
+	public static int SEED;
 	public static Map MAP;
 	public static Tile[][] MAP_MATRIX;	
 	
 	public static final int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10, COINS = 0;
-	public static final int MOUVEMENT_INDEX_MAX = 200;
-	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
-	public static final int HIT_INDEX_MAX = 300;
-	public static final int STAND_INDEX_MAX = 50;
 	public static final int DEATH_EXPERIENCE_GIVEN = 5;
     
 	public static final int MAX_DIFFX=7;
 	public static final int MAX_DIFFY=3;
+	
+	public static final int MOUVEMENT_INDEX_MAX = 200;
+	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
+	public static final int MOUVEMENT_INDEX_MAX_VILLAGER = 1500;
+	public static final int MOUVEMENT_INDEX_MAX_MOB = 1000;
+	public static final int HIT_INDEX_MAX = 300;
+	public static final int HIT_INDEX_MAX_MOB = 1000;
+	public static final int STAND_INDEX_MAX = 200;
+	public static final int TOUCHED_INDEX_MAX = 200;
+	public static final int DIE_INDEX_MAX = 500;
+	public static final int ROTATING_INDEX_MAX = 50;
+	public static final int INTERACT_INDEX_MAX = 300;
 	
 	// HERO CONSTANTS
 	public static final int HERO_SPEED = 2;
@@ -35,8 +44,8 @@ public class EntitiesConst {
 	public static final int RANGE_RANGE = 3;
 	
 	// BOMB CONSTANTS
-	public static int BOMB_TIMER = 3000;
-	public static float BOMB_RADIUS =2f;
+	public static final int BOMB_TIMER = 3000;
+	public static final float BOMB_RADIUS =2f;
 	
 	// SKELETON CONSTANTS
 	public static final int SKELETON_HEALTH = 20;
@@ -46,10 +55,10 @@ public class EntitiesConst {
 	public static final float SKELETON_SCALE = 1.3f;
 	
 	// GOBLIN CONSTANTS
-	public static final int GOBLIN_HEALTH = 20;
-	public static final int GOBLIN_DAMAGE = 2;
+	public static final int GOBLIN_HEALTH = 12;
+	public static final int GOBLIN_DAMAGE = 1;
 	public static final int GOBLINE_RANGE = 2;
-	public static final int GOBLIN_SPEED = 2;
+	public static final int GOBLIN_SPEED = 6;
 	public static final float GOBLIN_SCALE = 1.3f;
 	
 	// BOSS CONSTANTS
@@ -86,9 +95,44 @@ public class EntitiesConst {
 	// ENERGYBALL CONSTANTS
 	public static final float ENERGYBALL_SCALE = 1.2f;
 	
-	// CAVE WALL CONSTANTS
-	public static float CAVE_WALL_SCALE = 1.0f;
+	// MAZE WALL CONSTANTS
+	public static final float MAZE_WALL_SCALE = 1.0f;
+	
+	// SPEECH CONSTANTS
+	public static final float SPEECHBUBBLE_SCALE = 1.0f;
+	public static final float VILLAGER_SCALE = 1.0f;
 	
 	// STATUE CONSTANTS
-	public static float STATUE_SCALE = 4.0f;
+	public static final float STATUE_SCALE =4f;
+	public static final float STATUE_OPACITY =0.75f;
+	
+	// DUNGEON ENTRANCE CONSTANTS
+	public static final float DUNGEON_ENTRANCE_SCALE = 1.0f;
+	public static final int DUNGEON_ENTRANCE_X_POS = 70;
+	public static final int DUNGEON_ENTRANCE_Y_POS = 30;
+	
+	// MAZE ENTRANCE CONSTANTS
+	public static final float MAZE_ENTRANCE_SCALE = 1.0f;
+	public static final int MAZE_ENTRANCE_X_POS = 30;
+	public static final int MAZE_ENTRANCE_Y_POS = 70;
+	public static final int MAZE_COUNTER_LIMIT = 120000;
+	
+	public static int getActionIndexMax(Action a) {
+		if(a == null)
+			a = Action.S;
+		switch (a) {
+		case S:
+			return STAND_INDEX_MAX;
+		case M:
+			return MOUVEMENT_INDEX_MAX;
+		case H:
+			return HIT_INDEX_MAX;
+		case T:
+			return TOUCHED_INDEX_MAX;
+		case D:
+			return DIE_INDEX_MAX;
+		default:
+			return 1;
+		}
+	}
 }

@@ -1,11 +1,19 @@
 package info3.game.entity;
 
+import animations.Animation;
+import animations.SpearEffect;
+import animations.SwordEffect;
 import info3.game.Game;
-import info3.game.automata.*;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.constants.MapConstants;
+import info3.game.map.Map;
+import info3.game.map.MapRender;
 
 public class Melee extends Hero {
 	public Melee(String name, Game g) {
@@ -21,128 +29,77 @@ public class Melee extends Hero {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-
-		this.sprites = ImagesConst.MELEE;
-		this.imageIndex = 0;
+		
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.E, Aut_Direction.N,
+				Aut_Direction.W };
+		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
+		this.anim = new Animation(this, ImagesConst.MELEE, dirs, acts);
 		this.hitbox = new Hitbox(this, (float)0.50, (float)0.65);
 	}
 	
 	@Override
-	public int getHitNbSprite() {
-		return AnimConst.MELEE_H;
+	public void tick(long elapsed) {
+		if (this.mazeCounterActivated) {
+			this.mazeCounter += elapsed;
+			if (this.mazeCounter >= EntitiesConst.MAZE_COUNTER_LIMIT) {
+				EntitiesConst.GAME.map = MapConstants.WORLD_MAP;
+				EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
+				EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+				if (EntitiesConst.GAME.previousMap == 1) {
+					EntitiesConst.MAP.setPlayer(EntitiesConst.MAZE_ENTRANCE_X_POS - 1, EntitiesConst.MAZE_ENTRANCE_Y_POS + 1, this);
+					EntitiesConst.MAP.setPlayer(EntitiesConst.MAZE_ENTRANCE_X_POS + 1, EntitiesConst.MAZE_ENTRANCE_Y_POS + 1, EntitiesConst.GAME.player2);
+				} else if (EntitiesConst.GAME.previousMap == 2) {
+					EntitiesConst.MAP.setPlayer(EntitiesConst.DUNGEON_ENTRANCE_X_POS - 1, EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1, this);
+					EntitiesConst.MAP.setPlayer(EntitiesConst.DUNGEON_ENTRANCE_X_POS + 1, EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1, EntitiesConst.GAME.player2);
+				}
+				EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
+				EntitiesConst.GAME.render.updateCam(this, EntitiesConst.GAME.player2, EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+				EntitiesConst.GAME.render.setOffsetCam();
+				this.mazeCounterActivated = false;
+				this.mazeCounter = 0;
+			}
+		}
+		
+		super.tick(elapsed);
 	}
 	
 	@Override
-	public int getMvmtNbSprite() {
-		return AnimConst.MELEE_M;
-	}
-	
-	@Override
-	public int getStandNbSprite() {
-		return AnimConst.MELEE_S;
-	}
-	
-	@Override
-	public int getDieNbSprite() {
-		return AnimConst.MELEE_D;
-	}
-	
-	@Override
-	public int getTouchedNbSprite() {
-		return AnimConst.MELEE_T;
-	}
-
-	@Override
-	public void updateSpriteIndex() {
-		int idx = 0;
-		switch (this.direction) {
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.MELEE_M;
+		case H:
+			return AnimConst.MELEE_H;
+		case T:
+			return AnimConst.MELEE_T;
+		case D:
+			return AnimConst.MELEE_D;
 		case S:
-			break;
-		case E:
-			idx += (1 * AnimConst.MELEE_TOT);
-			break;
-		case N:
-			idx += (2 * AnimConst.MELEE_TOT);
-			break;
-		case W:
-			idx += (3 * AnimConst.MELEE_TOT);
-			break;
+			return AnimConst.MELEE_S;
 		default:
-			break;
+			return 0;
 		}
-		if (this.action == Action.S) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_S) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_S;
-		if (this.action == Action.M) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_M) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_M;
-		if (this.action == Action.H) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_H) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_H;
-		if (this.action == Action.T) {
-			if (this.imageIndex + 1 < idx + AnimConst.MELEE_T) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.MELEE_T;
-		if (this.imageIndex + 1 < idx + AnimConst.MELEE_D) {
-			this.imageIndex = this.imageIndex + 1;
-			return;
-		}
-		this.imageIndex = idx;
-		return;
 	}
 
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.MELEE_TOT;
+	}
+	
 	@Override
 	public void updateStats() {
-		this.weaponDamage++;
-		this.maxHealth += 1;
+		this.weaponDamage += 2;
+
+		if (Hero.level % 2 == 0 && this.maxHealth < 20) {
+			this.maxHealth += 1;
+		}
+
 		this.health = this.maxHealth;
 	}
 	
-	
-    // function called only in the dungeon map
-	public void lightAround() {
-		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].opacity = 0f;
-		
-		int x = (int) this.location.getX() + 1;
-		int y = (int) this.location.getY() - 1;
-		
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		x--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		x--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		y++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		y++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		x++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		x++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		y--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
+	@Override
+	public void attackEffect(Location t) {
+		new SwordEffect(t, this.direction);
 	}
+	
 }

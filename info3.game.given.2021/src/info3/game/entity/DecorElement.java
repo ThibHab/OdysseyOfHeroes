@@ -3,9 +3,7 @@ package info3.game.entity;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import info3.game.automata.*;
-import info3.game.constants.Action;
-import info3.game.constants.EntitiesConst;
+import info3.game.automata.Aut_Category;
 
 public abstract class DecorElement extends Entity {
 	public int width, height;
@@ -13,18 +11,17 @@ public abstract class DecorElement extends Entity {
 	public DecorElement() {
 		super();
 		this.category = Aut_Category.O;
-		this.imageIndex = 0;
 	}
 
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img=sprites[this.imageIndex];
+		BufferedImage img=anim.getFrame();
 		int diff=(int) (tileSize*(scale-1))/2;
 		g.drawImage(img, (int)screenPosX-diff, (int)screenPosY-diff, (int)(tileSize*scale), (int)(tileSize*scale), null);
 	}
 	
-	@Override
-	public void takeDamage(Entity attacker) {
-		System.out.println("HEHO CA FAIT MALEUH");
-		
-	}
+//	@Override
+//	public void takeDamage(Entity attacker) {
+//		System.out.println("HEHO CA FAIT MALEUH");
+//		
+//	}
 }

@@ -19,6 +19,10 @@ public class TransparencyBlock extends DecorElement {
 		}
 	}
 	
+	public void del(TransparentDecorElement tde) {
+		this.target.remove(tde);
+	}
+	
 	public void paint(Graphics g, int tileSize, float screenPosX ,float screenPosY) {
 		g.setColor(new Color(255, 175, 175,150));
 		g.fillRect((int)screenPosX, (int)screenPosY, tileSize, tileSize);

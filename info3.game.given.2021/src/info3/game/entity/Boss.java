@@ -1,8 +1,11 @@
 package info3.game.entity;
 
-import java.util.Random;
-
-import info3.game.automata.*;
+import animations.Animation;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.map.Tile;
@@ -23,17 +26,16 @@ public class Boss extends Mob {
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
-				this.automaton = next;
+				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		// -----------------------------
 		this.category = Aut_Category.A;
-		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.BOSS;
-		this.imageIndex = 0;
-		// -----------------------------------
-		this.phase = 0;
 		
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.S, Aut_Direction.E,
+				Aut_Direction.W };
+		Action acts[] = new Action[] { Action.M };
+		this.anim = new Animation(this, ImagesConst.BOSS, dirs, acts);
+		this.phase = 0;
 		this.mapHeight = EntitiesConst.MAP.lenY;
 		this.mapWidth = EntitiesConst.MAP.lenX;
 	}
@@ -114,5 +116,40 @@ public class Boss extends Mob {
 				nbHoles++;
 			}
 		}
+	}
+
+	@Override
+	public void Power() {
+		// TODO Auto-generated method stub
+		super.Power();
+	}
+
+	@Override
+	public void Throw(Aut_Direction d, Aut_Category category) {
+		// TODO Auto-generated method stub
+		super.Throw(d, category);
+	}
+
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.BOSS_M;
+		case H:
+			return AnimConst.BOSS_H;
+		case T:
+			return AnimConst.BOSS_T;
+		case D:
+			return AnimConst.BOSS_D;
+		case S:
+			return AnimConst.BOSS_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.BOSS_TOT;
 	}
 }
