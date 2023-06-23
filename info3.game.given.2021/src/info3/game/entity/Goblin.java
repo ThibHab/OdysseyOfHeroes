@@ -34,6 +34,74 @@ public class Goblin extends Mob {
 
 		this.category = Aut_Category.A;
 	}
+	
+	@Override
+	public void tick(long elapsed) {
+		if (!this.dead) {
+			this.automaton.step(this, EntitiesConst.GAME);
+
+			if (this.frozen) {
+				this.actionIndex += elapsed;
+				if (action == Action.M) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.frozen = false;
+						this.location.setX(destLocation.getX());
+						this.location.setY(destLocation.getY());
+						this.hitbox.update();
+						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+								.getY()].entity = null;
+					} else if (actionIndex != 0) {
+						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_MOB;
+						this.location.setX(
+								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location.setY(
+								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitbox.update();
+					}
+				} else if (action == Action.H) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+					if (this.actionIndex >= this.attackSpeed) {
+						this.hitFrozen = false;
+					}
+				} else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+				} else if (action == Action.T) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+						if (this.health == 0)
+							this.die();
+					}
+				} else if (action == Action.D) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+						this.dead = true;
+					}
+				}
+			} else {
+				if (this.action != Action.S) {
+					if (EntitiesConst.GAME.debug) {
+						System.out.println(this.name + " is standing");
+					}
+					this.action = Action.S;
+					this.anim.changeAction(action);
+				}
+				if (!this.dead)
+					this.anim.changeAction(action);
+			}
+			this.anim.step(elapsed);
+		}
+	}
 
 	@Override
 	public void Hit(Aut_Direction d) {
@@ -63,6 +131,26 @@ public class Goblin extends Mob {
 	public void Throw(Aut_Direction d, Aut_Category category) {
 		// TODO Auto-generated method stub
 		super.Throw(d, category);
+	}
+	
+	@Override
+	public boolean isFinished() {
+		switch (this.action) {
+		case S:
+			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
+		case M:
+			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_MOB;
+		case H:
+			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX;
+		case D:
+			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
+		case T:
+			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+		case I:
+			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
+		default:
+			return true;
+		}
 	}
 	
 	@Override
