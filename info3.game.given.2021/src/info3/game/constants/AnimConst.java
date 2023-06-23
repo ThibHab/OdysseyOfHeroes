@@ -50,6 +50,17 @@ public class AnimConst {
 	public static final int ENERGY_B_M = 4;
 	public static final int ENERGY_B_H = 0;
 	
+	public static final int MINER_M = 3;
+	public static final int MINER_S = 0;
+	
+	public static final int VILLAGERGIRL_M = 3;
+	public static final int VILLAGERGIRL_S = 0;
+	
+	public static final int HERMIT_M = 3;
+	public static final int HERMIT_S = 0;
+	
+	public static final int SPEECHBUBBLE_S = 1;
+	
 	//Timed Effects
 	public static final int TIME_SWORD_EFFECT = 100;
 	public static final int TIME_SPEAR_EFFECT = 100;

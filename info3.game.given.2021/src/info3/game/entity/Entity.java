@@ -103,6 +103,11 @@ public abstract class Entity implements IEntity {
 					if (this.actionIndex >= this.attackSpeed) {
 						this.hitFrozen = false;
 					}
+				} else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
 				} else if (action == Action.T) {
 					if (this.isFinished()) {
 						this.frozen = false;
@@ -234,7 +239,7 @@ public abstract class Entity implements IEntity {
 			int tirageT = randomT.nextInt(3);
 			switch (tirageT) {
 			case 0:
-				new Villager(location);
+				new VillagerGirl(location);
 				break;
 			}
 		case AT:
@@ -257,6 +262,8 @@ public abstract class Entity implements IEntity {
 	public void Hit(Aut_Direction d) {
 		// TODO Melee blocked when touching an enemy, also see for the hits in the
 		// border of the maps
+		Hero.bushesCut = 20;
+		Hero.coins = 50;
 		if (!this.frozen) {
 			this.frozen = true;
 			if (d != null) {
@@ -490,6 +497,8 @@ public abstract class Entity implements IEntity {
 			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
 		case T:
 			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+		case I:
+			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
 		default:
 			return true;
 		}

@@ -174,7 +174,14 @@ public class MapRender {
 					roundDeci((this.offset.getY()) * tileSize, 3));
 		}
 	}
-
+    
+    void paintBubbles(Graphics g) {
+		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
+			EntitiesConst.MAP.bubbles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
+					roundDeci((this.offset.getY()) * tileSize, 3));
+		}
+	}
+	
 	void paintDark(Graphics g) {
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
@@ -206,10 +213,11 @@ public class MapRender {
 		// BACKGGROUND
 		paintBackground(g);
 		// EFFECT
-		//paintEffect(g);
+		paintEffect(g);
 		paintProj(g);
 		// DECOR & PLAYER
 		paintEntity(g);
+        paintBubbles(g);
 		// NIGHT
 		// paintDark(g);
 	}

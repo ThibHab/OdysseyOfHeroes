@@ -4,6 +4,7 @@ Player2(Stand_S){
   | Key(l) ? Move(S) :(Stand_S)
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) & Cell(S,T) ? Pop(S,T) : (Stand_S)
   | Key(i) ? Hit(S)  :(Stand_S)
   | Key(p) ? Power(S) : (Stand_S)
   | Key(u) ? Egg(S,D) : (Stand_S)
@@ -14,6 +15,7 @@ Player2(Stand_S){
   | Key(l) ? Turn(S) :(Stand_S)
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) & Cell(N,T) ? Pop(N,T) : (Stand_N)
   | Key(i) ? Hit(N)  :(Stand_N)
   | Key(p) ? Power(N) : (Stand_N)
   | Key(u) ? Egg(N,D) : (Stand_N)
@@ -24,6 +26,7 @@ Player2(Stand_S){
   | Key(l) ? Turn(S) :(Stand_S)
   | Key(k) ? Move(W) :(Stand_W)
   | Key(m) ? Turn(E) :(Stand_E)
+  | Key(i) & Cell(W,T) ? Pop(W,T) : (Stand_W)
   | Key(i) ? Hit(W)  :(Stand_W)
   | Key(p) ? Power(W) : (Stand_W)
   | Key(u) ? Egg(W,D) : (Stand_W)
@@ -34,6 +37,7 @@ Player2(Stand_S){
   | Key(l) ? Turn(S) :(Stand_S)
   | Key(k) ? Turn(W) :(Stand_W)
   | Key(m) ? Move(E) :(Stand_E)
+  | Key(i) & Cell(E,T) ? Pop(E,T) : (Stand_E)
   | Key(i) ? Hit(E)  :(Stand_E)
   | Key(p) ? Power(E) : (Stand_E)
   | Key(u) ? Egg(E,D) : (Stand_E)
@@ -46,9 +50,11 @@ Player2(Stand_S){
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
+  | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(i) ? Hit(F)  :(Stand)
   | Key(p) ? Power : (Stand)
-  | Cell(S,P) ? Pick(F) : (Stand)
+  | Key(u) ? Egg(F, D) : (Stand)
+  | Cell(F,P) ? Pick(F) : (Stand)
  }
  
  Player1(Stand_S){
@@ -57,6 +63,7 @@ Player2(Stand_S){
   | Key(s) ? Move(S) :(Stand_S)
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) & Cell(S,T) ? Pop(S,T) : (Stand_S)
   | Key(a) ? Hit(S)  :(Stand_S)
   | Key(e) ? Power(S) : (Stand_S)
   | Key(r) ? Egg(S,D) : (Stand_S)
@@ -67,6 +74,7 @@ Player2(Stand_S){
   | Key(s) ? Turn(S) :(Stand_S)
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) & Cell(N,T) ? Pop(N,T) : (Stand_N)
   | Key(a) ? Hit(N)  :(Stand_N)
   | Key(e) ? Power(N) : (Stand_N)
   | Key(r) ? Egg(N,D) : (Stand_N)
@@ -77,6 +85,7 @@ Player2(Stand_S){
   | Key(s) ? Turn(S) :(Stand_S)
   | Key(q) ? Move(W) :(Stand_W)
   | Key(d) ? Turn(E) :(Stand_E)
+  | Key(a) & Cell(W,T) ? Pop(W,T) : (Stand_W)
   | Key(a) ? Hit(W)  :(Stand_W)
   | Key(e) ? Power(W) : (Stand_W)
   | Key(r) ? Egg(W,D) : (Stand_W)
@@ -87,6 +96,7 @@ Player2(Stand_S){
   | Key(s) ? Turn(S) :(Stand_S)
   | Key(q) ? Turn(W) :(Stand_W)
   | Key(d) ? Move(E) :(Stand_E)
+  | Key(a) & Cell(E,T) ? Pop(E,T) : (Stand_E)
   | Key(a) ? Hit(E)  :(Stand_E)
   | Key(e) ? Power(E) : (Stand_E)
   | Key(r) ? Egg(E,D) : (Stand_E)
@@ -136,10 +146,6 @@ Bush(Existing){
    | True ? : (DontStart)
    
    * (Search)
-   | Cell(@,N,3) ? Hit(N) : (Search)
-   | Cell(@,S,3) ? Hit(S) : (Search)
-   | Cell(@,E,3) ? Hit(E) : (Search)
-   | Cell(@,W,3) ? Hit(W) : (Search)
    | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
@@ -203,6 +209,14 @@ Bush(Existing){
   
   * (On)
   } 
- 
+  
+  Hermit (Thinking) {
+  * (Thinking)
+  | Cell(R, V) ? Turn(R) : (Turned)
+  
+  * (Turned)
+  | Cell(F, V) ? Move(F) : (Thinking)
+  }
+  
  
  

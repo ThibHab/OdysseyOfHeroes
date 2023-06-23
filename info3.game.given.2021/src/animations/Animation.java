@@ -89,7 +89,7 @@ public class Animation {
 	}
 
 	public void changeAction(Action a) {
-		this.imageIndex = sprites.length -1;
+		this.imageIndex = sprites.length - 1;
 		updateIndex();
 	}
 }
