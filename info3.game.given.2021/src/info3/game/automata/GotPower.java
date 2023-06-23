@@ -14,9 +14,6 @@ public class GotPower extends Aut_Condition {
 
 	@Override
 	public boolean eval(Entity e, Game g) {
-		if(e instanceof Bomb) {
-			return ((Bomb)e).timer>0;
-		}
 		return (e.health > power);
 	}
 

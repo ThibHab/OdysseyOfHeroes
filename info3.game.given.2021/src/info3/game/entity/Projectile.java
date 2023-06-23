@@ -93,11 +93,12 @@ public class Projectile extends Entity {
 		int positionX = (int) (pixel.getX() - shiftXY);
 		int positionY = (int) (pixel.getY() - shiftXY);
 		g.drawImage(img, positionX, positionY, dimension, dimension, null);
-		if(EntitiesConst.GAME.debug) {
-				g.setColor(Color.red);
-		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
-		g.drawRect((int) l.getX(), (int) l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.hitbox.width),
-				(int) (EntitiesConst.GAME.render.tileSize * this.hitbox.height));}
+		if (EntitiesConst.GAME.debug) {
+			g.setColor(Color.red);
+			Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
+			g.drawRect((int) l.getX(), (int) l.getY(), (int) (EntitiesConst.GAME.render.tileSize * this.hitbox.width),
+					(int) (EntitiesConst.GAME.render.tileSize * this.hitbox.height));
+		}
 	}
 
 	public void tick(long elapsed) {
@@ -116,33 +117,35 @@ public class Projectile extends Entity {
 			}
 		}
 		if (this.frozen) {
-			this.actionIndex += elapsed;
-			if (action == Action.M) {
-				if (this.isFinished()) {
-					this.actionIndex = 0;
-					this.frozen = false;
-					this.location.setX(destLocation.getX());
-					this.location.setY(destLocation.getY());
-					this.hitbox.update();
-				} else if (actionIndex != 0) {
-					float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
-					this.location
-							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-									% EntitiesConst.MAP.lenX);
-					this.location
-							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-									% EntitiesConst.MAP.lenY);
-					this.hitbox.update();
+			if (this.frozen) {
+				this.actionIndex += elapsed;
+				if (action == Action.M) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.frozen = false;
+						this.location.setX(destLocation.getX());
+						this.location.setY(destLocation.getY());
+						this.hitbox.update();
+					} else if (actionIndex != 0) {
+						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
+						this.location.setX(
+								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location.setY(
+								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitbox.update();
+					}
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isFinished() {
 		return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {

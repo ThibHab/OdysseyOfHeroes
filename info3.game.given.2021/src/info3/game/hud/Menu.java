@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JFrame;
 
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.ImagesConst;
 import info3.game.graphics.GameCanvas;
 
 public class Menu extends Button {
@@ -16,7 +17,7 @@ public class Menu extends Button {
 	public Button[] buttons;
 	boolean isStarted;
 	public int nbChild;
-	Image img; // TODO trouver une image pour le menu
+	Image imgBackground; // TODO trouver une image pour le menu
 	
 	public Menu(String name) {
 		super(name);
@@ -40,6 +41,7 @@ public class Menu extends Button {
 		nbChild = 0;
 		buttons = new Button[3];
 		m_bgColor = Color.blue;
+		imgBackground = ImagesConst.MENU_PICTURE;
 	}
 	
 	
@@ -98,6 +100,7 @@ public class Menu extends Button {
 		GameCanvas c = EntitiesConst.GAME.m_canvas;
 		g.setColor(m_bgColor);
 		g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		g.drawImage(imgBackground, def_x, def_y, m_width, m_height, null);
 		for (int i = 0; i < nbChild; i++) {
 			buttons[i].paint(g);
 		}

@@ -13,6 +13,8 @@ public class BombRock extends DecorElement {
 		this.name = "BombRock";
 		this.location = l;
 		this.hitbox.update();
+		
+		this.health = 1;
 
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
@@ -31,5 +33,11 @@ public class BombRock extends DecorElement {
 		this.scale = EntitiesConst.ROCK_SCALE;
 
 		this.category = Aut_Category.O;
+		
+	}
+
+	@Override
+	public void takeDamage(Entity attacker) {
+		this.health = health - attacker.weaponDamage;
 	}
 }

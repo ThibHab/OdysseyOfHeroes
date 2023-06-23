@@ -25,7 +25,7 @@ public class EntitiesConst {
 	public static final int HIT_INDEX_MAX = 300;
 	public static final int STAND_INDEX_MAX = 200;
 	public static final int TOUCHED_INDEX_MAX = 200;
-	public static final int DIE_INDEX_MAX = 200;
+	public static final int DIE_INDEX_MAX = 500;
 	public static final int ROTATING_INDEX_MAX = 50;
 	public static final int INTERACT_INDEX_MAX = 300;
 	
@@ -57,7 +57,7 @@ public class EntitiesConst {
 	public static final int GOBLIN_HEALTH = 20;
 	public static final int GOBLIN_DAMAGE = 2;
 	public static final int GOBLINE_RANGE = 2;
-	public static final int GOBLIN_SPEED = 2;
+	public static final int GOBLIN_SPEED = 6;
 	public static final float GOBLIN_SCALE = 1.3f;
 	
 	// BOSS CONSTANTS

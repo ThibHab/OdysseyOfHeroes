@@ -5,8 +5,8 @@ public class AnimConst {
 	public static final int MELEE_S = 1;
 	public static final int MELEE_M = 3;
 	public static final int MELEE_H = 4;
-	public static final int MELEE_T = 3;
-	public static final int MELEE_D = 3;
+	public static final int MELEE_T = 1;
+	public static final int MELEE_D = 5;
 	public static final int MELEE_TOT = MELEE_S + MELEE_M + MELEE_H + MELEE_T + MELEE_D;
 
 	// Range
@@ -23,7 +23,7 @@ public class AnimConst {
 	public static final int GOBLIN_H = 4;
 	public static final int GOBLIN_T = 3;
 	public static final int GOBLIN_D = 4;
-	public static final int GOBLIN_TOT = RANGE_S + RANGE_M + RANGE_H + RANGE_T + RANGE_D;
+	public static final int GOBLIN_TOT = GOBLIN_S + GOBLIN_M + GOBLIN_H + GOBLIN_T + GOBLIN_D;
 
 	// Boss
 	public static final int BOSS_S = 0;
@@ -60,5 +60,11 @@ public class AnimConst {
 	public static final int HERMIT_S = 0;
 	
 	public static final int SPEECHBUBBLE_S = 1;
+	
+	//Timed Effects
+	public static final int TIME_SWORD_EFFECT = 100;
+	public static final int TIME_SPEAR_EFFECT = 100;
+	public static final int TIME_BOMB_EFFECT = 100;
+	public static final int TIME_HEAL_EFFECT = 100;
 
 }
