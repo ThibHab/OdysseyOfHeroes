@@ -97,6 +97,7 @@ public class Game {
 	public Range player2;
 	Sound m_music;
 	public IMap map;
+	public int previousMap;
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
 	public HudInGame hud;
@@ -198,7 +199,7 @@ public class Game {
 		player2 = new Range("Player2", this);
 		player2.name = "player2";
 
-		map = new WorldMap(100, 100, player1, player2);
+		map = MapConstants.WORLD_MAP;
 		// map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map) map, this);
 
