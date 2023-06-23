@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,9 +78,29 @@ public class CanvasListener implements GameCanvasListener {
 			if (!menu.getStarted()) {
 				if (m_focused == menu.selected(e.getX(), e.getY())) {
 					if (m_focused.getName().equals("Resume")) {
+						File f = new File("save.txt");
+						long length = f.length();
+						if (length == 0)
+							try {
+								m_game.setupGame(null);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						else
+							try {
+								m_game.setupGame(f);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+						menu.setStarted();
+						System.out.println("Resume !");
 					} else if (m_focused.getName().equals("New Game")) {
 						menu.setStarted();
-						m_game.setupGame();
+						try {
+							m_game.setupGame(null);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					} else if (m_focused.getName().equals("Credits")) {
 						System.out.println("Credits !");
 					} else {
@@ -87,8 +108,7 @@ public class CanvasListener implements GameCanvasListener {
 						m_focused = null;
 					}
 				}
-			} 
-			else if (inMenu.getPause()) {
+			} else if (inMenu.getPause()) {
 				if (m_focused == inMenu.selected(e.getX(), e.getY())) {
 					if (m_focused.getName().equals("Resume")) {
 						inMenu.setPause(false);
@@ -153,8 +173,7 @@ public class CanvasListener implements GameCanvasListener {
 						menu.buttons[i].m_bgColor = Color.red;
 					}
 				}
-			}
-			else if (inMenu.getPause()) {
+			} else if (inMenu.getPause()) {
 				m_focused = inMenu.selected(e.getX(), e.getY());
 				int nChild = inMenu.nbChild;
 				for (int i = 0; i < nChild; i++) {
@@ -167,7 +186,7 @@ public class CanvasListener implements GameCanvasListener {
 				}
 			}
 		}
-		
+
 		if (m_game.debug) {
 			System.out.println("Mouse moved: (" + e.getX() + "," + e.getY() + ")");
 			System.out.println("   modifiers=" + e.getModifiersEx());
@@ -187,6 +206,8 @@ public class CanvasListener implements GameCanvasListener {
 		if (m_game.debug) {
 			System.out.println("Key pressed: " + e.getKeyChar() + " code=" + e.getKeyCode());
 		}
+		if (e.getKeyCode() == KeyEvent.VK_SPACE)
+			m_game.save();
 		if (!keys.contains((Integer) e.getKeyCode())) {
 			keys.add((Integer) e.getKeyCode());
 		}

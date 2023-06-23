@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 import animations.Animation;
 import info3.game.automata.Aut_Automaton;
-import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;

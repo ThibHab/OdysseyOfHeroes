@@ -19,6 +19,7 @@ public class ImagesConst {
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
 	public static BufferedImage[] BOMB;
+	public static BufferedImage[] SAVE_TILES;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -32,6 +33,7 @@ public class ImagesConst {
 		DIRT_TILE2 = loadTile("");
 		ROCK_TILE2 = loadTile("");
 		ROCK_DUNGEON = loadTile("rock_tile_boss");
+		SAVE_TILES = loadSprite("SaveTiles", 2, 1);
 
 		HOUSE = loadSprite("House", 1, 1);
 		ROCK = loadSprite("Rock", 2, 2);

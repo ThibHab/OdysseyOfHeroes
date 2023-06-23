@@ -137,10 +137,6 @@ Bush(Existing){
    | True ? : (DontStart)
    
    * (Search)
-   | Cell(@,N,3) ? Hit(N) : (Search)
-   | Cell(@,S,3) ? Hit(S) : (Search)
-   | Cell(@,E,3) ? Hit(E) : (Search)
-   | Cell(@,W,3) ? Hit(W) : (Search)
    | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
@@ -204,6 +200,6 @@ Bush(Existing){
   
   * (On)
   } 
- 
+  
  
  
