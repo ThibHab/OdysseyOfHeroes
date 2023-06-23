@@ -20,6 +20,7 @@ public class WorldMap extends Map {
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", 2, 10);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", 2, 15);
 		
+		
 		setPlayer(29, 31, p1);
 		setPlayer(31, 31, p2);
 		
@@ -29,6 +30,13 @@ public class WorldMap extends Map {
 		
 		EntitiesConst.MAP = this;
 		EntitiesConst.MAP_MATRIX = this.map;
+		Villager v = new VillagerGirl(new Location(30,31));
+		Villager m = new Miner(new Location(29,30));
+		Villager h = new Hermit(new Location(78,66));
+		map[(int)v.location.getX()][(int)v.location.getY()].entity = v;
+		map[(int)m.location.getX()][(int)m.location.getY()].entity = m;
+		map[(int)h.location.getX()][(int)h.location.getY()].entity = h;
+		
 	}
 
 }

@@ -25,6 +25,7 @@ public class EntitiesConst {
 	public static final int TOUCHED_INDEX_MAX = 200;
 	public static final int DIE_INDEX_MAX = 200;
 	public static final int ROTATING_INDEX_MAX = 50;
+	public static final int INTERACT_INDEX_MAX = 300;
 	
 	// HERO CONSTANTS
 	public static final int HERO_SPEED = 2;
@@ -89,6 +90,8 @@ public class EntitiesConst {
 	
 	public static final float CAVE_WALL_SCALE = 1.0f;
 	
+	public static float SPEECHBUBBLE_SCALE = 1.0f;
+	public static float VILLAGER_SCALE = 1.0f;
 	public static final float STATUE_SCALE = 4.0f;
 	
 	public static int getActionIndexMax(Action a) {

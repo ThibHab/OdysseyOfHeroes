@@ -11,7 +11,8 @@ import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
-	public static int coins, level, levelUp, experience;
+	public static int coins, level, levelUp, experience, bushesCut;
+	public static boolean firePowerUnlocked;
 	public int healingPotions, strengthPotions;
 	
 	public Hero() {
@@ -23,6 +24,8 @@ public abstract class Hero extends Entity {
 		Hero.level = EntitiesConst.LEVEL;
 		Hero.levelUp = EntitiesConst.LEVEL_UP;
 		Hero.experience = EntitiesConst.EXPERIENCE;
+		Hero.firePowerUnlocked = false;
+		Hero.bushesCut = 0;
 	}
 	
 	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int sPotions, Aut_Direction dir) {
@@ -108,6 +111,27 @@ public abstract class Hero extends Entity {
 			EntitiesConst.GAME.player2.updateStats();
 		}
 		
+	}
+	
+	@Override
+	public void Pop(Aut_Direction d, Aut_Category c) {
+		this.frozen = true;
+		if (this.action != Action.I) {
+			if (EntitiesConst.GAME.debug) {
+				System.out.println(this.name + " is popping");
+			}
+			this.action = Action.I;
+		}
+		if (d == null) {
+			d = this.direction;
+		}
+
+		Location location = frontTileLocation(d);
+		Tile tile = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()];
+		if (tile.entity instanceof Villager) {
+			Villager v = (Villager) tile.entity;
+			v.talks();
+		}
 	}
 	
 	public static void saveRestore(int lvl, int xp, int coins) {
