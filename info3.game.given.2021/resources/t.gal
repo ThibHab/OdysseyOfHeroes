@@ -47,12 +47,12 @@ Player2(Stand_S){
  Player2 (Stand) {
   * (Stand)
   | Cell(F,P) ? Pick(F) : (Stand)
+  | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(i) ? Hit(F)  :(Stand)
   | Key(o) ? Move(N) :(Stand)
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
-  | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)
  }

@@ -226,10 +226,10 @@ public abstract class Entity implements IEntity {
 				Goblin gob = new Goblin(location);
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
-			case 2:
-				Skeleton s = new Skeleton(location);
-				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
-				break;
+//			case 2:
+//				Skeleton s = new Skeleton(location);
+//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+//				break;
 			}
 		case D:
 			if (this.bombs > 0) {
