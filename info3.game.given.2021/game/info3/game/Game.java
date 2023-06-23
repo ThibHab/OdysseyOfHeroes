@@ -25,8 +25,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -171,6 +174,9 @@ public class Game {
 	}
 
 	public void setupGame(File file) throws Exception {
+		m_frame.setCursor(m_frame.getToolkit().createCustomCursor(
+	            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+	            "null"));
 		byte[] buffer = null;
 		if (file == null) {
 			file = new File("save.txt");

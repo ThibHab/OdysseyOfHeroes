@@ -21,9 +21,12 @@
 package info3.game;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,6 +77,7 @@ public class CanvasListener implements GameCanvasListener {
 	public void mouseReleased(MouseEvent e) {
 		Menu menu = EntitiesConst.GAME.menu;
 		InGameMenu inMenu = EntitiesConst.GAME.inMenu;
+		Game game = EntitiesConst.GAME;
 		if (m_focused != null) {
 			if (!menu.getStarted()) {
 				if (m_focused == menu.selected(e.getX(), e.getY())) {
@@ -111,6 +115,9 @@ public class CanvasListener implements GameCanvasListener {
 			} else if (inMenu.getPause()) {
 				if (m_focused == inMenu.selected(e.getX(), e.getY())) {
 					if (m_focused.getName().equals("Resume")) {
+						game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
+					            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+					            "null"));
 						inMenu.setPause(false);
 					} else if (m_focused.getName().equals("Controls")) {
 						// TODO
@@ -215,8 +222,17 @@ public class CanvasListener implements GameCanvasListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		Game game = EntitiesConst.GAME;
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && m_game.inMenu != null) {
 			boolean b = m_game.inMenu.getPause();
+			if (!b) {
+				game.m_frame.setCursor(Cursor.getDefaultCursor());
+			}
+			else {
+				game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
+			            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+			            "null"));
+			}
 			m_game.inMenu.setPause(!b);
 		}
 		if (m_game.debug) {
