@@ -52,6 +52,24 @@ public abstract class Map implements IMap {
 			}
 		}
 	}
+	
+	void delTree(int x, int y) {
+		if(map[x][y].entity instanceof Tree) {
+			Tree tr=(Tree) map[x][y].entity;
+			for (int tr_j = 0; tr_j < 3; tr_j++) {
+				for (int tr_i = 0; tr_i < 3; tr_i++) {
+					int tr_x = (x - 1 + tr_i + lenX) % lenX;
+					int tr_y = (y - 2 + tr_j + lenY) % lenY;
+					if (x != tr_x || y != tr_y) {
+						if (map[tr_x][tr_y].tpBlock != null) {
+							map[tr_x][tr_y].tpBlock.del(tr);
+						}
+					}
+				}
+			}
+			map[x][y].entity=null;
+		}
+	}
 
 	void createHouse(int x, int y) {
 		House h = new House(new Location(x, y));
