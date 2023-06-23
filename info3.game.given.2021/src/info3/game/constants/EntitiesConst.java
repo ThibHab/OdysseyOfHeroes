@@ -8,18 +8,23 @@ public class EntitiesConst {
 	
 	// GLOBAL ENTITY CONSTANTS
 	public static Game GAME;
+	public static int SEED;
 	public static Map MAP;
 	public static Tile[][] MAP_MATRIX;	
 	
 	public static final int LEVEL = 1, EXPERIENCE = 0, LEVEL_UP = 10, COINS = 0;
-	public static final int MOUVEMENT_INDEX_MAX = 200;
-	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
-	public static final int HIT_INDEX_MAX = 300;
-	public static final int STAND_INDEX_MAX = 50;
 	public static final int DEATH_EXPERIENCE_GIVEN = 5;
     
 	public static final int MAX_DIFFX=7;
 	public static final int MAX_DIFFY=3;
+	
+	public static final int MOUVEMENT_INDEX_MAX = 200;
+	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
+	public static final int HIT_INDEX_MAX = 300;
+	public static final int STAND_INDEX_MAX = 200;
+	public static final int TOUCHED_INDEX_MAX = 200;
+	public static final int DIE_INDEX_MAX = 200;
+	public static final int ROTATING_INDEX_MAX = 50;
 	
 	// HERO CONSTANTS
 	public static final int HERO_SPEED = 2;
@@ -33,6 +38,10 @@ public class EntitiesConst {
 	// RANGE CONSTANTS
 	public static final int RANGE_DAMAGE = 5;
 	public static final int RANGE_RANGE = 3;
+	
+	// BOMB CONSTANTS
+	public static int BOMB_TIMER = 3000;
+	public static float BOMB_RADIUS =2f;
 	
 	// SKELETON CONSTANTS
 	public static final int SKELETON_HEALTH = 20;
@@ -76,16 +85,30 @@ public class EntitiesConst {
 	public static final float COWBOY_SCALE = 1.3f;
 	
 	// ENERGYBALL CONSTANTS
-	public static final float ENERGYBALL_SCALE = 1.2f;
+	public static float ENERGYBALL_SCALE = 1.2f;
 	
-	// CAVE WALL CONSTANTS
-	public static float CAVE_WALL_SCALE = 1.0f;
-	
-	// STATUE CONSTANTS
-	public static float STATUE_SCALE = 4.0f;
-	
-	//VILLAGER CONSTANTS
-	public static float VILLAGER_SCALE = 1.0f;
+	public static final float CAVE_WALL_SCALE = 1.0f;
 	
 	public static float SPEECHBUBBLE_SCALE = 1.0f;
+	public static float VILLAGER_SCALE = 1.0f;
+	public static final float STATUE_SCALE = 4.0f;
+	
+	public static int getActionIndexMax(Action a) {
+		if(a == null)
+			a = Action.S;
+		switch (a) {
+		case S:
+			return STAND_INDEX_MAX;
+		case M:
+			return MOUVEMENT_INDEX_MAX;
+		case H:
+			return HIT_INDEX_MAX;
+		case T:
+			return TOUCHED_INDEX_MAX;
+		case D:
+			return DIE_INDEX_MAX;
+		default:
+			return 1;
+		}
+	}
 }

@@ -4,6 +4,8 @@ import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
 
 public class WorldMap extends Map {
+	
+	public static SaveTile saveTile1, saveTile2;
 
 	public WorldMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
@@ -18,8 +20,16 @@ public class WorldMap extends Map {
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", 2, 10);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", 2, 15);
 		
-		setPlayer(30, 32, p1);
-		setPlayer(33, 32, p2);
+		
+		setPlayer(29, 31, p1);
+		setPlayer(31, 31, p2);
+		
+		// laisser en dernier !
+		WorldMap.saveTile1.entity = null;
+		WorldMap.saveTile2.entity = null;
+		
+		EntitiesConst.MAP = this;
+		EntitiesConst.MAP_MATRIX = this.map;
 		Villager v = new VillagerGirl(new Location(30,31));
 		Villager m = new Miner(new Location(29,30));
 		Villager h = new Hermit(new Location(78,66));

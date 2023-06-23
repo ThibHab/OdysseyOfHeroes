@@ -27,24 +27,44 @@ public abstract class Hero extends Entity {
 		Hero.firePowerUnlocked = false;
 		Hero.bushesCut = 0;
 	}
+	
+	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int sPotions, Aut_Direction dir) {
+		this.location = loc;
+		this.destLocation = loc;
+		EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity = this;
+		EntitiesConst.MAP_MATRIX[0][4].entity = null;		// remove players from the tiles where they are created in world map
+		EntitiesConst.MAP_MATRIX[1][4].entity = null;
+		if (this.automaton.initial.name.equals(state))
+			this.currentState = this.automaton.initial;
+		for (Aut_Transition next : this.automaton.transitions) {
+			if (next.dest.name.equals(state)) {
+				this.currentState = next.dest;
+				break;
+			}	
+		}
+		
+		this.healingPotions = hPotions;
+		this.strengthPotions = sPotions;
+		this.health = health;
+		this.maxHealth = maxHealth;
+		this.direction = dir;
+	
+	}
 
 	public void paint(Graphics g, int tileSize) {
-		BufferedImage img = sprites[imageIndex];
+		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
 		int dimension = (int) (scale * tileSize);
 		float shiftXY = ((scale - 1) / 2) * tileSize;
 		int positionX = (int) (pixel.getX() - shiftXY);
 		int positionY = (int) (pixel.getY() - shiftXY);
 		g.drawImage(img, positionX, positionY, dimension, dimension, null);
-		g.setColor(Color.blue);
-		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
-
 		if (EntitiesConst.GAME.debug) {
+			g.setColor(Color.blue);
+			Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
 			g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
 					(int) (tileSize * this.hitbox.height));
 		}
-		// g.drawRect((int)pixel.getX(), (int)pixel.getY(), game.render.tileSize,
-		// game.render.tileSize);
 	}
 
 	@Override
@@ -112,5 +132,17 @@ public abstract class Hero extends Entity {
 			Villager v = (Villager) tile.entity;
 			v.talks();
 		}
+	}
+	
+	public static void saveRestore(int lvl, int xp, int coins) {
+		Hero.coins += coins;
+		int i = 0;
+		while (i < lvl) {
+			Hero.levelUp *= 2;
+			i++;
+		}
+		Hero.level = lvl;
+		Hero.experience = xp;
+		
 	}
 }

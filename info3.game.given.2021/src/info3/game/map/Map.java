@@ -91,6 +91,65 @@ public abstract class Map implements IMap {
 		Chest c = new Chest(new Location(x, y));
 		map[x][y].entity = c;
 	}
+	
+	public void createBomb(int x,int y,Bomb b) {
+		if(map[x][y].entity==null) {
+			this.map[x][y].entity= b;
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		}
+	}
+	
+	public float diffX(float a, float b) {
+		float tmp = Math.abs(a - b);
+		float tmp2 = Math.min(a, b) + lenX - Math.max(a, b);
+		if (tmp < tmp2) {
+			return tmp;
+		}
+		return tmp2;
+	}
+	
+	public float diffY(float a, float b) {
+		float tmp = Math.abs(a - b);
+		float tmp2 = Math.min(a, b) + lenY - Math.max(a, b);
+		if (tmp < tmp2) {
+			return tmp;
+		}
+		return tmp2;
+	}
+	
+	Location mid(Location loc1, Location loc2) {
+		Location a = new Location(loc1.getX() + 0.5f, loc1.getY() + 0.5f);
+		Location b = new Location(loc2.getX() + 0.5f, loc2.getY() + 0.5f);
+		Location res = new Location(0, 0);
+		float tmp = (a.getX() + b.getX()) / 2;
+		float tmp2 = ((Math.min(a.getX(), b.getX()) + lenX + Math.max(a.getX(), b.getX())) / 2);
+		if (diffX(tmp, a.getX()) < diffX(tmp2, a.getX())) {
+			res.setX((tmp + lenX) % lenX);
+		} else {
+			res.setX((tmp2 + lenX) % lenX);
+		}
+		tmp = (a.getY() + b.getY()) / 2;
+		tmp2 = ((Math.min(a.getY(), b.getY()) + lenY + Math.max(a.getY(), b.getY())) / 2);
+		if (diffY(tmp, a.getY()) < diffY(tmp2, a.getY())) {
+			res.setY((tmp + lenY) % lenY);
+		} else {
+			res.setY((tmp2 + lenY) % lenY);
+		}
+		return res;
+	}
+	
+	public Location add(Location l,Location add) {
+		Location res=new Location(0,0);
+		res.setX((l.getX()+add.getX()+lenX)%lenX);
+		res.setY((l.getY()+add.getY()+lenY)%lenY);
+		return res;
+	}
+	
+	public float dist(Location a,Location b) {
+		float dx=diffX(a.getX(),b.getX());
+		float dy=diffY(a.getY(),b.getY());
+		return (float)Math.sqrt((double)dx*dx+dy*dy);
+	}
 
 	void setPlayer(int x, int y, Entity player) {
 		player.location.setX(x);
@@ -110,7 +169,7 @@ public abstract class Map implements IMap {
 		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree"))) {
 			return;
 		}
-		Random r = new Random(seed);
+		Random r = new Random(EntitiesConst.SEED);
 		for (int i = x; i < x + areaSize; i++) {
 			for (int j = y; j < y + areaSize; j++) {
 				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile) && !(map[i][j] instanceof DirtTile)
@@ -176,8 +235,12 @@ public abstract class Map implements IMap {
 					map[i][j] = new RockTile(l);
 				} else if (tile.equals("Grass")) {
 					map[i][j] = new GrassTile(l);
-				} else {
+				} else if (tile.equals("Dirt")){
 					map[i][j] = new DirtTile(l);
+				} else if (tile.equals("RockDungeon")) {
+					map[i][j] = new RockDungeonTile(l);
+				} else if (tile.equals("BlackTile")) {
+					map[i][j] = new DungeonWalls(l, 4);
 				}
 			}
 		}
@@ -245,6 +308,10 @@ public abstract class Map implements IMap {
 		setCircleBackground(x, y, radius - 1, "Water");
 		setCircleBackground(x, y, radius + 1, "Dirt");
 		map[x][y].entity = new Statue(new Location(x, y));
+		WorldMap.saveTile1 = new SaveTile(new Location(x - radius - 1, y));
+		map[x-radius-1][y] = WorldMap.saveTile1;
+		WorldMap.saveTile2 = new SaveTile(new Location(x + radius + 1, y));
+		map[x+radius+1][y] = WorldMap.saveTile2;
 		// TODO fix statue disappearing
 	}
 
@@ -342,4 +409,41 @@ public abstract class Map implements IMap {
 			}
 		}
 	}
+	
+	public void freezeEntities() {
+		MapRender rend = EntitiesConst.GAME.render;
+		int nbTileY = rend.nbTileY + 4;
+		int nbTileX = rend.nbTileX + 4;
+
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
+				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
+				Tile renderTile = map[mapX][mapY];
+				Entity ent = renderTile.entity;
+				if (ent != null) {
+					ent.frozen = true;
+				}
+			}
+		}
+	}
+	
+	public void unFreezeEntities() {
+		MapRender rend = EntitiesConst.GAME.render;
+		int nbTileY = rend.nbTileY + 4;
+		int nbTileX = rend.nbTileX + 4;
+
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
+				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
+				Tile renderTile = map[mapX][mapY];
+				Entity ent = renderTile.entity;
+				if (ent != null) {
+					ent.frozen = false;;
+				}
+			}
+		}
+	}
+	
 }

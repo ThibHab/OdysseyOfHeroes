@@ -18,8 +18,9 @@
 
 package info3.game.automata.ast;
 
-import info3.game.automata.util.Dot;
 import java.util.List;
+
+import info3.game.automata.util.Dot;
 
 public class AstPrinter implements IVisitor {
 
