@@ -289,7 +289,8 @@ public class Game {
 			}
 
 			((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
-
+			((Map)map).tickEffects(elapsed);
+			
 			if (EntitiesConst.GAME.debug) {
 				m_textElapsed += elapsed;
 				// TODO modif pour debug

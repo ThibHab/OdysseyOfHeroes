@@ -18,7 +18,7 @@ public class EntitiesConst {
 	public static final int MAX_DIFFX=7;
 	public static final int MAX_DIFFY=3;
 	
-	public static final int MOUVEMENT_INDEX_MAX = 200;
+	public static final int MOUVEMENT_INDEX_MAX = 600;
 	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
 	public static final int HIT_INDEX_MAX = 300;
 	public static final int STAND_INDEX_MAX = 200;

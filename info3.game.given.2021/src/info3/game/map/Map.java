@@ -1,6 +1,7 @@
 package info3.game.map;
 
 import java.awt.Graphics;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -175,9 +176,8 @@ public abstract class Map implements IMap {
 		Random r = new Random(EntitiesConst.SEED);
 		for (int i = x; i < x + areaSize; i++) {
 			for (int j = y; j < y + areaSize; j++) {
-				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile)
-						&& !(map[i][j] instanceof DirtTile) && !(map[i][j] instanceof SaveTile)
-						&& !(map[i][j] instanceof RockTile)) {
+				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile) && !(map[i][j] instanceof DirtTile)
+						&& !(map[i][j] instanceof SaveTile) && !(map[i][j] instanceof RockTile)) {
 					int n = r.nextInt(rareness);
 					if (n == 1) {
 						boolean already = false;
@@ -410,6 +410,16 @@ public abstract class Map implements IMap {
 					}
 					alreadyTicked = false;
 				}
+			}
+		}
+	}
+
+	public void tickEffects(long elapsed) {
+		Iterator<Effect> it = this.effects.iterator();
+		while (it.hasNext()) {
+			Effect eff = it.next();
+			if (eff != null) {
+				eff.step(elapsed);
 			}
 		}
 	}

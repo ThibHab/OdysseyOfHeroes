@@ -1,6 +1,8 @@
 package info3.game.entity;
 
 import animations.Animation;
+import animations.SpearEffect;
+import animations.SwordEffect;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
@@ -84,5 +86,9 @@ public class Melee extends Hero{
 		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
 		y--;
 		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
+	}
+	
+	public void attackEffect(Location t){
+		new SwordEffect(t, this.direction);
 	}
 }

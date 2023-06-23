@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import animations.Animation;
+import animations.ExplosionEffect;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.constants.Action;
@@ -65,6 +66,7 @@ public class Bomb extends Entity {
 				}
 			}
 		}
+		new ExplosionEffect(this.location);
 		this.die();
 		// TODO delete destroyable rocks
 		// TODO add explode method for animation (view)

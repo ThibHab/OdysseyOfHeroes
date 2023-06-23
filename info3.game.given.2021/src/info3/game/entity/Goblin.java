@@ -1,6 +1,8 @@
 package info3.game.entity;
 
 import animations.Animation;
+import animations.SpearEffect;
+import animations.SwordEffect;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
@@ -87,5 +89,9 @@ public class Goblin extends Mob {
 	@Override
 	public int totSrpitePerDir() {
 		return AnimConst.GOBLIN_TOT;
+	}
+	
+	public void attackEffect(Location t){
+		new SpearEffect(t, this.direction);
 	}
 }

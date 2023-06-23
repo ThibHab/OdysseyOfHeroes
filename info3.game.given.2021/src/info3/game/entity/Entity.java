@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.util.Random;
 
 import animations.Animation;
+import animations.Effect;
+import animations.SpearEffect;
+import animations.SwordEffect;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
@@ -150,7 +153,7 @@ public abstract class Entity implements IEntity {
 				this.action = Action.M;
 			}
 			this.anim.changeAction(action);
-			
+
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
@@ -274,6 +277,7 @@ public abstract class Entity implements IEntity {
 			}
 			this.anim.changeAction(action);
 			Location t = frontTileLocation(d);
+			this.attackEffect(t);
 
 			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 			if (entity != null) {
@@ -329,7 +333,7 @@ public abstract class Entity implements IEntity {
 	public void die() {
 		if (this.action != Action.D) {
 			this.action = Action.D;
-			
+
 			this.frozen = true;
 
 			if (EntitiesConst.GAME.debug) {
@@ -518,5 +522,8 @@ public abstract class Entity implements IEntity {
 		return (map.dist(hg, circleCenter) <= radius) || (map.dist(hd, circleCenter) <= radius)
 				|| (map.dist(bg, circleCenter) <= radius) || (map.dist(bd, circleCenter) <= radius);
 
+	}
+
+	public void attackEffect(Location t) {
 	}
 }
