@@ -1,6 +1,8 @@
 package info3.game.entity;
 
 import animations.Animation;
+import animations.SpearEffect;
+import animations.SwordEffect;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
@@ -93,6 +95,11 @@ public class Melee extends Hero {
 		}
 
 		this.health = this.maxHealth;
+	}
+	
+	@Override
+	public void attackEffect(Location t) {
+		new SwordEffect(t, this.direction);
 	}
 	
 }
