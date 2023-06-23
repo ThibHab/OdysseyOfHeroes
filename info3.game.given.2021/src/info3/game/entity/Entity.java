@@ -19,7 +19,7 @@ public abstract class Entity implements IEntity {
 	public int health, weaponDamage, weaponRange, maxHealth, range;
 	public float speed, attackSpeed;
 	public Aut_Category category;
-	public int healingPotions, strengthPotions, bombs;
+	public int healingPotions, strengthPotions;
 	public boolean dead;
 
 	public Aut_Automaton automaton;
@@ -51,7 +51,6 @@ public abstract class Entity implements IEntity {
 		this.range = 0;
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
-		this.bombs = 0;
 
 		// TODO assign default automaton
 		this.automaton = null;
@@ -232,9 +231,11 @@ public abstract class Entity implements IEntity {
 //				break;
 			}
 		case D:
-			if (this.bombs > 0) {
+			if (this instanceof Hero && Hero.bombs < 0) {
+				break;
+			} else {
 				new Bomb(location, this);
-				this.bombs--;
+				Hero.bombs--;
 			}
 			break;
 		case P:
@@ -344,6 +345,12 @@ public abstract class Entity implements IEntity {
 
 	public void revive() {
 		this.dead = false;
+		this.frozen = false;
+		this.actionIndex = 0;
+		this.health = this.maxHealth/2;
+	}
+	
+	public void heal() {
 		this.health = this.maxHealth;
 	}
 

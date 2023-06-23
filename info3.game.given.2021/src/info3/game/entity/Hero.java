@@ -11,7 +11,7 @@ import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
-	public static int coins, level, levelUp, experience, bushesCut;
+	public static int coins, level, levelUp, experience, bushesCut, bombs;
 	public static boolean firePowerUnlocked;
 	public int healingPotions, strengthPotions;
 	
@@ -149,6 +149,7 @@ public abstract class Hero extends Entity {
 			v.talks();
 		}
 	}
+	
 	
 	public static void saveRestore(int lvl, int xp, int coins) {
 		Hero.coins += coins;
