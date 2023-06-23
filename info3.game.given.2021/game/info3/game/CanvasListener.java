@@ -21,14 +21,20 @@
 package info3.game;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.ImagesConst;
 import info3.game.graphics.GameCanvasListener;
 import info3.game.hud.Button;
 import info3.game.hud.InGameMenu;
@@ -74,6 +80,7 @@ public class CanvasListener implements GameCanvasListener {
 	public void mouseReleased(MouseEvent e) {
 		Menu menu = EntitiesConst.GAME.menu;
 		InGameMenu inMenu = EntitiesConst.GAME.inMenu;
+		Game game = EntitiesConst.GAME;
 		if (m_focused != null) {
 			if (!menu.getStarted()) {
 				if (m_focused == menu.selected(e.getX(), e.getY())) {
@@ -111,12 +118,13 @@ public class CanvasListener implements GameCanvasListener {
 			} else if (inMenu.getPause()) {
 				if (m_focused == inMenu.selected(e.getX(), e.getY())) {
 					if (m_focused.getName().equals("Resume")) {
+						game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
+					            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+					            "null"));
 						inMenu.setPause(false);
-						((Map) m_game.map).unFreezeEntities();
 					} else if (m_focused.getName().equals("Controls")) {
 						// TODO
 					} else if (m_focused.getName().equals("Quit")) {
-						System.out.println("dfghjkl");
 						this.exit();
 					} else {
 						m_focused.m_bgColor = Color.red;
@@ -217,9 +225,21 @@ public class CanvasListener implements GameCanvasListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		Game game = EntitiesConst.GAME;
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && m_game.inMenu != null) {
 			boolean b = m_game.inMenu.getPause();
-			((Map) m_game.map).freezeEntities();
+			if (!b) {
+				Toolkit tkit = Toolkit.getDefaultToolkit();
+				Point point = new Point(25,25);
+				Image agrou = ImagesConst.CURSOR[0];
+				Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
+				game.m_frame.setCursor(curs);
+			}
+			else {
+				game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
+			            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+			            "null"));
+			}
 			m_game.inMenu.setPause(!b);
 		}
 		if (m_game.debug) {

@@ -85,8 +85,12 @@ public class Range extends Hero {
 	public void updateStats() {
 		this.weaponDamage += 2;
 
-		if (Hero.level % 2 == 0) {
+		if (Hero.level % 2 == 0 && this.maxHealth < 13) {
 			this.maxHealth += 1;
+		}
+		
+		if (Hero.level % 5 == 0) {
+			this.range += 1;
 		}
 
 		this.health = this.maxHealth;

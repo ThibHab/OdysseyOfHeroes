@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 
 public class InGameMenu  extends Menu {
-	boolean isPaused;
+	public boolean isPaused;
 
 	public InGameMenu(String name) {
 		super(name);

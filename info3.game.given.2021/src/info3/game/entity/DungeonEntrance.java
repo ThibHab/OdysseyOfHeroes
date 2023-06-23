@@ -7,14 +7,12 @@ import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class BombRock extends DecorElement {
-	public BombRock(Location l) {
+public class DungeonEntrance extends DecorElement {
+	public DungeonEntrance(Location location) {
 		super();
-		this.name = "BombRock";
-		this.location = l;
-		this.hitbox.update();
-		
-		this.health = 1;
+		this.name = "DungeonEntrance";
+		this.location = location;
+		this.category = Aut_Category.G;
 
 		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
@@ -25,19 +23,17 @@ public class BombRock extends DecorElement {
 		// -----------------------------
 
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this, ImagesConst.ROCK, null, acts);
+		this.anim = new Animation(this,ImagesConst.DUNGEON_ENTRANCE, null, acts);
+		// -----------------------------------
 
 		this.width = 1;
 		this.height = 1;
 
-		this.scale = EntitiesConst.ROCK_SCALE;
+		if (this.location != null) {
+			this.hitbox = new Hitbox(this, (float) 0.90, (float) 0.90);
+		}
 
-		this.category = Aut_Category.O;
-		
+		this.scale = EntitiesConst.DUNGEON_ENTRANCE_SCALE;
 	}
 
-	@Override
-	public void takeDamage(Entity attacker) {
-		this.health = health - attacker.weaponDamage;
-	}
 }

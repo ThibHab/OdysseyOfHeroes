@@ -22,11 +22,16 @@ package info3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -97,6 +102,7 @@ public class Game {
 	public Range player2;
 	Sound m_music;
 	public IMap map;
+	public int previousMap;
 	public MapRender render;
 	public List<Aut_Automaton> listAutomata;
 	public HudInGame hud;
@@ -171,6 +177,9 @@ public class Game {
 	}
 
 	public void setupGame(File file) throws Exception {
+		m_frame.setCursor(m_frame.getToolkit().createCustomCursor(
+	            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+	            "null"));
 		byte[] buffer = null;
 		if (file == null) {
 			file = new File("save.txt");
@@ -198,11 +207,7 @@ public class Game {
 		player2 = new Range("Player2", this);
 		player2.name = "player2";
 
-		// map = new MazeMap(MapConstants.MAZE_MAP_SIZE *
-		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE *
-		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
-		map = new WorldMap(100, 100, player1, player2);
-		// map = new DungeonMap(32, 32, player1, player2);
+		map = MapConstants.WORLD_MAP;
 		// map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map) map, this);
 
@@ -211,7 +216,7 @@ public class Game {
 		Entity.InitStatics(this, level, xp);
 
 		hud = new HudInGame(m_frame);
-		
+
 		if (reload) {
 			this.reload(buffer);
 		}
@@ -228,7 +233,11 @@ public class Game {
 	 * and the game canvas to the center.
 	 */
 	private void setupFrame() {
-
+		Toolkit tkit = Toolkit.getDefaultToolkit();
+		Point point = new Point(25,25);
+		Image agrou = ImagesConst.CURSOR[0];
+		Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
+		m_frame.setCursor(curs);
 		m_frame.setTitle("Game");
 		m_frame.setLayout(new BorderLayout());
 
@@ -283,33 +292,38 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-		if (menu.getStarted()) {
-			for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
-				EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
-			}
+		try {
+			if (menu.getStarted()) {
+				for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+					EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
+				}
 
-			((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
-			((Map)map).tickEffects(elapsed);
-			
-			if (EntitiesConst.GAME.debug) {
-				m_textElapsed += elapsed;
-				// TODO modif pour debug
-				if (m_textElapsed > 100) {
-					m_textElapsed = 0;
-					float period = m_canvas.getTickPeriod();
-					int fps = m_canvas.getFPS();
+		        for (Bush b : EntitiesConst.MAP.deadBush) {
+		        	b.tick(elapsed);
+		        }
+				((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 
-					String txt = "Tick=" + period + "ms";
-					while (txt.length() < 15)
-						txt += " ";
-					txt = txt + fps + " fps   ";
-					txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
-					txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
-					txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
-					txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
-					m_text.setText(txt);
+				if (EntitiesConst.GAME.debug) {
+					m_textElapsed += elapsed;
+					// TODO modif pour debug
+					if (m_textElapsed > 100) {
+						m_textElapsed = 0;
+						float period = m_canvas.getTickPeriod();
+						int fps = m_canvas.getFPS();
+
+						String txt = "Tick=" + period + "ms";
+						while (txt.length() < 15)
+							txt += " ";
+						txt = txt + fps + " fps   ";
+						txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+						txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+						txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+						txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
+						m_text.setText(txt);
+					}
 				}
 			}
+		} catch (Exception e) {
 		}
 		// Update every second
 		// the text on top of the frame: tick and fps
@@ -326,7 +340,7 @@ public class Game {
 		int height = m_canvas.getHeight();
 
 		// erase background
-		g.setColor(Color.gray);
+		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
 
 		if (menu.getStarted()) {

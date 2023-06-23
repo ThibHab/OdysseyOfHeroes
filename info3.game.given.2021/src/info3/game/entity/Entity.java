@@ -14,7 +14,11 @@ import info3.game.automata.Aut_Direction;
 import info3.game.automata.Aut_State;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.MapConstants;
+import info3.game.map.DungeonMap;
 import info3.game.map.Map;
+import info3.game.map.MapRender;
+import info3.game.map.MazeMap;
 import info3.game.map.Tile;
 
 public abstract class Entity implements IEntity {
@@ -22,19 +26,22 @@ public abstract class Entity implements IEntity {
 	public int health, weaponDamage, weaponRange, maxHealth, range;
 	public float speed, attackSpeed;
 	public Aut_Category category;
-	public int healingPotions, strengthPotions;
+	public int healingPotions, strengthPotions, bombs;
 	public boolean dead;
 
 	public Aut_Automaton automaton;
 	public Aut_State currentState;
 	public Aut_Direction direction;
 	public boolean frozen, hitFrozen;
+	public int timer;
 
 	public Location originLocation, location, destLocation, relativeMouv;
 
 	public long actionIndex;
 	public int detectionRadius;
 	public Hitbox hitbox;
+	public int mazeCounter;
+	public boolean mazeCounterActivated;
 
 	public Animation anim;
 	public float scale;
@@ -53,18 +60,24 @@ public abstract class Entity implements IEntity {
 		this.range = 0;
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
+		this.bombs = 0;
 
 		// TODO assign default automaton
 		this.automaton = null;
 		this.currentState = null;
+		this.timer = Integer.MIN_VALUE;
 
 		this.direction = Aut_Direction.S;
 		this.category = Aut_Category.UNDERSCORE;
 		this.frozen = false;
 		this.hitFrozen = false;
 		this.actionIndex = 0;
+		this.dead = false;
 
 		this.scale = 1;
+
+		this.mazeCounter = 0;
+		this.mazeCounterActivated = false;
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -74,70 +87,82 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		if (!this.dead) {
-			this.automaton.step(this, EntitiesConst.GAME);
-
-			if (this.frozen) {
-				this.actionIndex += elapsed;
-				if (action == Action.M) {
-					if (this.isFinished()) {
-						this.actionIndex = 0;
-						this.frozen = false;
-						this.location.setX(destLocation.getX());
-						this.location.setY(destLocation.getY());
-						this.hitbox.update();
-						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-								.getY()].entity = null;
-					} else if (actionIndex != 0) {
-						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-						this.location.setX(
-								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-										% EntitiesConst.MAP.lenX);
-						this.location.setY(
-								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-										% EntitiesConst.MAP.lenY);
-						this.hitbox.update();
-					}
-				} else if (action == Action.H) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-					}
-					if (this.actionIndex >= this.attackSpeed) {
-						this.hitFrozen = false;
-					}
-				} else if (action == Action.I) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-					}
-				} else if (action == Action.T) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-						if (this.health == 0)
-							this.die();
-					}
-				} else if (action == Action.D) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-						this.dead = true;
-					}
-				}
-			} else {
-				if (this.action != Action.S) {
-					if (EntitiesConst.GAME.debug) {
-						System.out.println(this.name + " is standing");
-					}
-					this.action = Action.S;
-					this.anim.changeAction(action);
-				}
-				if (!this.dead)
-					this.anim.changeAction(action);
-			}
-			this.anim.step(elapsed);
+		if (currentState.name.equals("")) {
+			this.die();
 		}
+		this.automaton.step(this, EntitiesConst.GAME);
+
+		if (this.frozen) {
+			this.actionIndex += elapsed;
+			if (action == Action.M) {
+				if (this.isFinished()) {
+					this.actionIndex = 0;
+					this.frozen = false;
+					this.location.setX(destLocation.getX());
+					this.location.setY(destLocation.getY());
+					this.hitbox.update();
+					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+							.getY()].entity = null;
+				} else if (actionIndex != 0) {
+					float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+					this.location
+							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+									% EntitiesConst.MAP.lenX);
+					this.location
+							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+									% EntitiesConst.MAP.lenY);
+					this.hitbox.update();
+				}
+			} else if (action == Action.H) {
+				if (this.isFinished()) {
+					this.frozen = false;
+					this.actionIndex = 0;
+				}
+				if (this.actionIndex >= this.attackSpeed) {
+					this.hitFrozen = false;
+				}
+            } else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+//			} else if (action == Action.T) {
+//				if (this.isFinished()) {
+//					this.frozen = false;
+//					this.actionIndex = 0;
+////					if (this.health == 0)
+////						this.die();
+//				}
+			} else if (action == Action.D) {
+				if (this.isFinished()) {
+					this.actionIndex = 0;
+					this.dead = true;
+					if (!(this instanceof Hero))
+						EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
+					
+				}
+			} else if (timer != Integer.MIN_VALUE) {
+				this.timer -= elapsed;
+				if (timer < 0) {
+					this.frozen = false;
+					timer = Integer.MIN_VALUE;
+					waited();
+				}
+			}
+		} else {
+			if (this.action != Action.S) {
+				if (EntitiesConst.GAME.debug) {
+					System.out.println(this.name + " is standing");
+				}
+				this.action = Action.S;
+				this.anim.changeAction(action);
+			}
+			if (!this.dead)
+				this.anim.changeAction(action);
+		}
+		if (!this.dead)
+			this.anim.step(elapsed);
+
 	}
 
 	@Override
@@ -155,29 +180,50 @@ public abstract class Entity implements IEntity {
 			this.anim.changeAction(action);
 
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
-			originLocation = new Location(this.location.getX(), this.location.getY());
-			relativeMouv = new Location(0, 0);
+			this.originLocation = new Location(this.location.getX(), this.location.getY());
+			this.relativeMouv = new Location(0, 0);
 			switch (d) {
 			case N:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(-1);
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(-1);
 				break;
 			case S:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(1);
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(1);
 				break;
 			case W:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(-1);
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(-1);
 				break;
 			case E:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(1);
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(1);
 				break;
 			default:
 				break;
 			}
+
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
+			if (this instanceof Hero && (destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
+				if (destTile.entity instanceof DungeonEntrance) {
+					EntitiesConst.GAME.previousMap = 2;
+					EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1].entity = null;
+					EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+				} else if (destTile.entity instanceof MazeEntrance) {
+					EntitiesConst.GAME.previousMap = 1;
+					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS + 1].entity = null;
+					EntitiesConst.GAME.map = new MazeMap(
+							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+							EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+					EntitiesConst.GAME.player1.mazeCounterActivated = true;
+				}
+				
+				EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
+				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2, EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+				EntitiesConst.GAME.render.setOffsetCam();
+			}
+
 			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
 					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
 				destTile.entity = this;
@@ -197,10 +243,6 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Egg(Aut_Direction d, Aut_Category c, int id) {
-		// TODO garder l'aléatoire si id pas reconnu mais sinon faire en fonction de
-		// l'id
-		// (id à partir de 1 pour ce qui a un sens : se mettre d'accord sur la
-		// signification de chaque nombre)
 		if (d == null) {
 			d = this.direction;
 		}
@@ -208,54 +250,46 @@ public abstract class Entity implements IEntity {
 		Location location = this.frontTileLocation(d);
 		switch (c) {
 		case A:
-			Random randomA = new Random();
-			int tirageA = randomA.nextInt(2);
-			switch (tirageA) {
-			case 0:
-				new Goblin(location);
-				break;
-			case 1:
-				new Skeleton(location);
-				break;
+			if (id == 0) {
+				Random randomA = new Random();
+				id = randomA.nextInt(2) + 1;
 			}
-		case M:
-			break;
+			switch (id) {
+			case 1:
+				Goblin gob = new Goblin(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
+				break;
+//			case 2:
+//				Skeleton s = new Skeleton(location);
+//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+//				break;
+			}
 		case D:
-			new Bomb(location, this);
+			if (this.bombs > 0) {
+				new Bomb(location, this);
+				this.bombs--;
+			}
 			break;
 		case P:
-			Random randomP = new Random();
-			int tirageP = randomP.nextInt(3);
-			switch (tirageP) {
-			case 0:
-				new Coin(location);
-				break;
+			if (id == 0) {
+				Random randomP = new Random();
+				id = randomP.nextInt(3) + 1;
+			}
+			switch (id) {
 			case 1:
-				new HealingPotion(location);
+				Coin coin = new Coin(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = coin;
 				break;
 			case 2:
-				new StrengthPotion(location);
+				HealingPotion hp = new HealingPotion(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = hp;
+				break;
+			case 3:
+				StrengthPotion sp = new StrengthPotion(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = sp;
 				break;
 			}
-		case T:
-			Random randomT = new Random();
-			int tirageT = randomT.nextInt(3);
-			switch (tirageT) {
-			case 0:
-				new VillagerGirl(location);
-				break;
-			}
-		case AT:
-			Random randomAT = new Random();
-			int tirageAT = randomAT.nextInt(3);
-			switch (tirageAT) {
-			case 0:
-				new Melee("melee", EntitiesConst.GAME);
-				break;
-			case 1:
-				new Range("range", EntitiesConst.GAME);
-				break;
-			}
+
 		default:
 			break;
 		}
@@ -283,24 +317,22 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
-							&& entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;
 				case S:
-					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;
 				case E:
-					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;
 				case W:
-					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
-							&& entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;
@@ -314,20 +346,22 @@ public abstract class Entity implements IEntity {
 	public void takeDamage(Entity attacker) {
 		if (this.dead && attacker instanceof Hero && this instanceof Hero) {
 			this.revive();
-		} else if (!this.frozen /* && attacker.category != this.category */) {
-			System.out.println("HEHO CA FAIT MALEUH");
-			this.frozen = true;
-			this.action = Action.T;
-			this.anim.changeAction(action);
-			if (this.health - attacker.weaponDamage > 0) {
-				this.health -= attacker.weaponDamage;
-			} else {
-				this.health = 0;
-				if (attacker.category == Aut_Category.AT) {
-					Hero.addExperience(attacker);
-				}
-			}
 		}
+//		else if (!this.frozen /* && attacker.category != this.category */) {
+		System.out.println("HEHO CA FAIT MALEUH");
+//			this.frozen = true;
+//			this.action = Action.T;
+//			this.anim.changeAction(action);
+		this.health -= attacker.weaponDamage;
+//			if (this.health - attacker.weaponDamage > 0) {
+//				this.health -= attacker.weaponDamage;
+//			} else {
+//				this.health = 0;
+//				if (attacker.category == Aut_Category.AT) {
+//					Hero.addExperience(attacker);
+//				}
+//			}
+//		}
 	}
 
 	public void die() {
@@ -338,10 +372,6 @@ public abstract class Entity implements IEntity {
 
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
-			}
-			this.anim.changeAction(action);
-			if (!(this instanceof Hero)) {
-				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 			}
 		}
 	}
@@ -372,13 +402,7 @@ public abstract class Entity implements IEntity {
 		Location location = frontTileLocation(d);
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
-			if (entity instanceof Coin) {
-				// TODO destroy the coin
-			} else if (entity instanceof HealingPotion) {
-				// TODO destroy the healingPotion
-			} else if (entity instanceof StrengthPotion) {
-				// TODO destroy the strengthPotion
-			}
+			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
 	}
 
@@ -392,6 +416,7 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Power() {
+		this.health = maxHealth;
 	}
 
 	@Override
@@ -405,6 +430,12 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Wait(int time) {
+		this.timer = time;
+		this.frozen = true;
+	}
+	
+	public void waited() {
+		
 	}
 
 	@Override
@@ -437,6 +468,10 @@ public abstract class Entity implements IEntity {
 			break;
 		case E:
 			xIndex = (this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX;
+			yIndex = this.location.getY();
+			break;
+		case H:
+			xIndex = this.location.getX();
 			yIndex = this.location.getY();
 			break;
 		default:

@@ -46,15 +46,15 @@ Player2(Stand_S){
  
  Player2 (Stand) {
   * (Stand)
+  | Cell(F,P) ? Pick(F) : (Stand)
+  | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
+  | Key(i) ? Hit(F)  :(Stand)
   | Key(o) ? Move(N) :(Stand)
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
-  | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
-  | Key(i) ? Hit(F)  :(Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)
-  | Cell(F,P) ? Pick(F) : (Stand)
  }
  
  Player1(Stand_S){
@@ -106,9 +106,10 @@ Player2(Stand_S){
 
 Bush(Existing){
   *(Existing)
-  | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
+  | !GotPower ? 5% Egg(H,A) / 50% Egg(H,P,1) / 10% Egg(H,P,2) / 10% Egg(H,P,3) : (Growing)
   
-  * ()
+  * (Growing)
+  | True ? Wait(10000) : (Existing)
  } 
  
  Tree(Existing){
@@ -126,11 +127,14 @@ Bush(Existing){
  	| True ? : (Existing)
  }
  
-   Bomb(Existing){
+ Bomb(Existing){
  	*(Existing)
- 	| !GotPower ? Explode : ()
- 	| GotPower ? : (Existing)
- 	*()
+ 	| True ? Wait(5000) : (Explosion)
+
+ 	*(Explosion)
+ 	| True ? Explode : ()
+ 	
+ 	* ()
  }
  
  EnergyBall(Forward){
@@ -208,7 +212,7 @@ Bush(Existing){
   | !GotPower ? Pop : (On)
   
   * (On)
-  } 
+  }
   
   Hermit (Thinking) {
   * (Thinking)
@@ -218,5 +222,14 @@ Bush(Existing){
   | Cell(F, V) ? Move(F) : (Thinking)
   }
   
+  DungeonEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
+  
+  MazeEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
  
  
