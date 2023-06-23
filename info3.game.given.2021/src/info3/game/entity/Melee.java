@@ -97,4 +97,9 @@ public class Melee extends Hero {
 		this.health = this.maxHealth;
 	}
 	
+	@Override
+	public void attackEffect(Location t) {
+		new SwordEffect(t, this.direction);
+	}
+	
 }
