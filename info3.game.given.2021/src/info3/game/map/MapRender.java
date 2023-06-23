@@ -42,9 +42,9 @@ public class MapRender {
 			Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
 					(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
 			nbTileX = (int) Math.ceil(map.diffX((float) Math.floor(upLeft.getX()),
-					(float) Math.ceil(upLeft.getX() + viewX) % map.lenX)) + 1;
+					(float) Math.ceil(upLeft.getX() + viewX) % map.lenX)) + 3;
 			nbTileY = (int) Math.ceil(map.diffY((float) Math.floor(upLeft.getY()),
-					(float) Math.ceil(upLeft.getY() + viewY) % map.lenY)) + 1;
+					(float) Math.ceil(upLeft.getY() + viewY) % map.lenY)) + 3;
 			double tempx = w / viewX;
 			double tempy = h / viewY;
 			if (tempx > tempy) {
