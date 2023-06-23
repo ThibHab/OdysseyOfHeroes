@@ -5,7 +5,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
+import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -26,11 +29,24 @@ public class SpeechBubble extends Entity {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		this.sprites = ImagesConst.SPEECHBUBBLE;
+		Action acts[] = new Action[] { Action.S };
+		this.anim = new Animation(this, ImagesConst.SPEECHBUBBLE, null, acts);
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.SPEECHBUBBLE_S;
+		case S:
+			return 0;
+		default:
+			return 0;
+		}
 	}
 	
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = this.sprites[0];
+		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(this.v.location, true);
 		int dimension = (int) (scale * tileSize);
 		float shiftXY = ((scale - 1) / 2) * tileSize;

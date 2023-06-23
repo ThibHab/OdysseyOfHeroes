@@ -116,11 +116,11 @@ public abstract class Hero extends Entity {
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
 		this.frozen = true;
-		if (this.action != Action.P) {
+		if (this.action != Action.I) {
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " is popping");
 			}
-			this.action = Action.P;
+			this.action = Action.I;
 		}
 		if (d == null) {
 			d = this.direction;

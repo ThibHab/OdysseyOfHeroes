@@ -29,7 +29,6 @@ public abstract class Villager extends NPC {
 		this.category = Aut_Category.T;
 
 		// --- TODO manage sprite properly ---
-		this.imageIndex = 0;
 		this.scale = EntitiesConst.VILLAGER_SCALE;
 		// -----------------------------------
 		this.hitbox = new Hitbox(this, (float)0.80,(float)0.90);
@@ -59,19 +58,4 @@ public abstract class Villager extends NPC {
 		}
 	}
 	
-	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = sprites[imageIndex];
-		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
-		int dimension = (int) (scale * tileSize);
-		float shiftXY = ((scale - 1) / 2) * tileSize;
-		int positionX = (int) (pixel.getX() - shiftXY);
-		int positionY = (int) (pixel.getY() - shiftXY);
-		g.drawImage(img, positionX, positionY, dimension, dimension, null);
-		Location l = EntitiesConst.GAME.render.gridToPixel(this.hitbox.location, true);
-
-		if (EntitiesConst.GAME.debug) {
-			g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
-					(int) (tileSize * this.hitbox.height));
-		}
-	}
 }

@@ -103,6 +103,11 @@ public abstract class Entity implements IEntity {
 					if (this.actionIndex >= this.attackSpeed) {
 						this.hitFrozen = false;
 					}
+				} else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
 				} else if (action == Action.T) {
 					if (this.isFinished()) {
 						this.frozen = false;
@@ -489,6 +494,8 @@ public abstract class Entity implements IEntity {
 			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
 		case T:
 			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+		case I:
+			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
 		default:
 			return true;
 		}

@@ -2,8 +2,11 @@ package info3.game.entity;
 
 import java.util.LinkedList;
 
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -29,12 +32,27 @@ public class Miner extends Villager {
 		this.sellingDialogs
 				.add("50 pièces d'or pour une bombe, \ncrois-moi c'est une bonne affaire ! \n Fais en bon usage !");
 		// TODO Auto-generated constructor stub
-		this.sprites = ImagesConst.MINER;
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.N, Aut_Direction.E,
+				Aut_Direction.W };
+		Action acts[] = new Action[] { Action.S, Action.M };
+		this.anim = new Animation(this, ImagesConst.MINER, dirs, acts);
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.MINER_M;
+		case S:
+			return AnimConst.MINER_S;
+		default:
+			return 0;
+		}
 	}
 
 	@Override

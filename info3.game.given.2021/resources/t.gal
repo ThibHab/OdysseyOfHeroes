@@ -50,6 +50,7 @@ Player2(Stand_S){
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
+  | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(i) ? Hit(F)  :(Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)

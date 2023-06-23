@@ -2,8 +2,11 @@ package info3.game.entity;
 
 import java.util.LinkedList;
 
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -22,13 +25,28 @@ public class VillagerGirl extends Villager {
 		this.completedDialogs.add("Si vous voulez trouver des potions et \ndes pièces d'or ou encore augmenter \nvotre expérience, vous pouvez \nvous rendre dans le labyrinthe.");
 		this.completedDialogs.add("Mais attention ! Ca grouille d'orcs là \ndedans !");
 		// TODO Auto-generated constructor stub
-		this.sprites = ImagesConst.VILLAGERGIRL;
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.N, Aut_Direction.E,
+				Aut_Direction.W };
+		Action acts[] = new Action[] { Action.S, Action.M };
+		this.anim = new Animation(this, ImagesConst.VILLAGERGIRL, dirs, acts);
 		
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.VILLAGERGIRL_M;
+		case S:
+			return AnimConst.VILLAGERGIRL_S;
+		default:
+			return 0;
+		}
 	}
 	
 	@Override
