@@ -63,12 +63,7 @@ public class CanvasListener implements GameCanvasListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Menu menu = EntitiesConst.GAME.menu;
-		if (m_focused != null) {
-			if (!menu.getStarted()) {
-				m_focused.m_bgColor = Color.cyan;
-			}
-		} else if (m_game.debug) {
+		if (m_game.debug) {
 			System.out.println("Mouse pressed: (" + e.getX() + "," + e.getY() + ")");
 			System.out.println("   modifiers=" + e.getModifiersEx());
 			System.out.println("   buttons=" + e.getButton());
@@ -84,7 +79,7 @@ public class CanvasListener implements GameCanvasListener {
 		if (m_focused != null) {
 			if (!menu.getStarted()) {
 				if (m_focused == menu.selected(e.getX(), e.getY())) {
-					if (m_focused.getName().equals("Resume")) {
+					if (m_focused.getName().equals("Reprendre la partie")) {
 						File f = new File("save.txt");
 						long length = f.length();
 						if (length == 0)
@@ -100,8 +95,7 @@ public class CanvasListener implements GameCanvasListener {
 								e1.printStackTrace();
 							}
 						menu.setStarted();
-						System.out.println("Resume !");
-					} else if (m_focused.getName().equals("New Game")) {
+					} else if (m_focused.getName().equals("Nouvelle partie")) {
 						menu.setStarted();
 						try {
 							m_game.setupGame(null);
@@ -111,20 +105,18 @@ public class CanvasListener implements GameCanvasListener {
 					} else if (m_focused.getName().equals("Credits")) {
 						System.out.println("Credits !");
 					} else {
-						m_focused.m_bgColor = Color.red;
 						m_focused = null;
 					}
 				}
 			} else if (inMenu.getPause()) {
 				if (m_focused == inMenu.selected(e.getX(), e.getY())) {
-					if (m_focused.getName().equals("Resume")) {
+					if (m_focused.getName().equals("Reprendre")) {
 						game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
-					            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
-					            "null"));
+								new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
 						inMenu.setPause(false);
 					} else if (m_focused.getName().equals("Controls")) {
 						// TODO
-					} else if (m_focused.getName().equals("Quit")) {
+					} else if (m_focused.getName().equals("Quitter")) {
 						this.exit();
 					} else {
 						m_focused.m_bgColor = Color.red;
@@ -169,18 +161,23 @@ public class CanvasListener implements GameCanvasListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		Game game = EntitiesConst.GAME;
 		Menu menu = EntitiesConst.GAME.menu;
 		InGameMenu inMenu = EntitiesConst.GAME.inMenu;
 		if (menu != null) {
 			if (!menu.getStarted()) {
-				m_focused = menu.selected(e.getX(), e.getY());
+				if (menu.selected(e.getX(), e.getY()) == null
+						|| menu.selected(e.getX(), e.getY()).m_bgColor == Color.LIGHT_GRAY) {
+					m_focused = null;
+				} else {
+					m_focused = menu.selected(e.getX(), e.getY());
+				}
 				int nChild = menu.nbChild;
 				for (int i = 0; i < nChild; i++) {
 					if (menu.buttons[i] == m_focused) {
 						m_focused.grow();
 					} else {
 						menu.buttons[i].shrink();
-						menu.buttons[i].m_bgColor = Color.red;
 					}
 				}
 			} else if (inMenu.getPause()) {
@@ -191,7 +188,6 @@ public class CanvasListener implements GameCanvasListener {
 						m_focused.grow();
 					} else {
 						inMenu.buttons[i].shrink();
-						inMenu.buttons[i].m_bgColor = Color.red;
 					}
 				}
 			}
@@ -230,15 +226,13 @@ public class CanvasListener implements GameCanvasListener {
 			boolean b = m_game.inMenu.getPause();
 			if (!b) {
 				Toolkit tkit = Toolkit.getDefaultToolkit();
-				Point point = new Point(25,25);
+				Point point = new Point(25, 25);
 				Image agrou = ImagesConst.CURSOR[0];
 				Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
 				game.m_frame.setCursor(curs);
-			}
-			else {
+			} else {
 				game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
-			            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
-			            "null"));
+						new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
 			}
 			m_game.inMenu.setPause(!b);
 		}

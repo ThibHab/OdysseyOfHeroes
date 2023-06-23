@@ -27,8 +27,8 @@ public class Menu extends Button {
 		m_bgColor = Color.blue;
 	}
 
-	public Menu(Menu parent) {
-		super(parent);
+	public Menu(Menu parent, Color col) {
+		super(parent, col);
 		isStarted = false;
 		nbChild = 0;
 		buttons = new Button[3];
@@ -60,9 +60,13 @@ public class Menu extends Button {
 	}
 
 	public void setMenu() {
-		Button resume = new Button(this);
-		Button newGame = new Button(this);
-		Button credits = new Button(this);
+		Color col = Color.red;
+		if (!EntitiesConst.GAME.saveExist) {
+			col = Color.lightGray;
+		}
+		Button resume = new Button(this, col);
+		Button newGame = new Button(this, Color.red);
+		Button credits = new Button(this, Color.red);
 		
 		buttons[0] = resume;
 		buttons[1] = newGame;
@@ -70,8 +74,8 @@ public class Menu extends Button {
 		
 		nbChild = 3;
 		
-		resume.setName("Resume");
-		newGame.setName("New Game");
+		resume.setName("Reprendre la partie");
+		newGame.setName("Nouvelle partie");
 		credits.setName("Credits");
 		
 		resume.setBounds(m_width / 3, m_height -  3 * (m_height / 5), m_width / 3, 50);
