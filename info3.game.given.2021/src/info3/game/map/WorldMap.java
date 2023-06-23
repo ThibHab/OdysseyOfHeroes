@@ -29,6 +29,7 @@ public class WorldMap extends Map {
 		
 		EntitiesConst.MAP = this;
 		EntitiesConst.MAP_MATRIX = this.map;
+		
 		Villager v = new VillagerGirl(new Location(30,31));
 		Villager m = new Miner(new Location(29,30));
 		Villager h = new Hermit(new Location(78,66));

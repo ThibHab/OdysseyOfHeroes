@@ -222,7 +222,7 @@ public abstract class Map implements IMap {
 		Location location = new Location(x, y);
 		if (map[x][y].entity != null) {
 			if (map[x][y].entity instanceof Tree) {
-				
+				this.delTree(x, y);
 			} else {
 				map[x][y].entity = null;
 			}
@@ -231,13 +231,13 @@ public abstract class Map implements IMap {
 		map[x][y].entity = new DungeonEntrance(location);
 		
 		if (map[x - 1][y + 1].entity instanceof Tree) {
-			
+			this.delTree(x - 1, y + 1);
 		} else {
 			map[x - 1][y + 1].entity = null;
 		}
 		
 		if (map[x + 1][y + 1].entity instanceof Tree) {
-			
+			this.delTree(x + 1, y + 1);
 		} else {
 			map[x + 1][y + 1].entity = null;
 		}
@@ -247,7 +247,7 @@ public abstract class Map implements IMap {
 		Location location = new Location(x, y);
 		if (map[x][y].entity != null) {
 			if (map[x][y].entity instanceof Tree) {
-				
+				this.delTree(x, y);
 			} else {
 				map[x][y].entity = null;
 			}
@@ -256,13 +256,13 @@ public abstract class Map implements IMap {
 		map[x][y].entity = new MazeEntrance(location);
 		
 		if (map[x - 1][y + 1].entity instanceof Tree) {
-			
+			this.delTree(x - 1, y + 1);
 		} else {
 			map[x - 1][y + 1].entity = null;
 		}
 		
 		if (map[x + 1][y + 1].entity instanceof Tree) {
-			
+			this.delTree(x + 1, y + 1);
 		} else {
 			map[x + 1][y + 1].entity = null;
 		}
