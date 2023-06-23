@@ -97,4 +97,16 @@ public class Melee extends Hero{
 		y--;
 		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
 	}
+
+	@Override
+	public void updateStats() {
+		this.weaponDamage += 2;
+
+		if (Hero.level % 2 == 0 && this.maxHealth < 20) {
+			this.maxHealth += 1;
+		}
+
+		this.health = this.maxHealth;
+	}
+	
 }
