@@ -22,6 +22,7 @@ public class StrengthPotion extends Item {
 
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this,ImagesConst.STRENGTH_POTION, null, acts);
+		this.scale = 0.3f;
 	}
 	
 	@Override
