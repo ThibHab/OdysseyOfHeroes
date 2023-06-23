@@ -20,6 +20,7 @@ public class Goblin extends Mob {
 		this.speed = EntitiesConst.GOBLIN_SPEED;
 		this.scale = EntitiesConst.GOBLIN_SCALE;
 		this.detectionRadius = 5;
+		this.attackSpeed = 5000;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -38,6 +39,10 @@ public class Goblin extends Mob {
 	@Override
 	public void tick(long elapsed) {
 		if (!this.dead) {
+			if (currentState.name.equals("")) {
+				this.dead = true;
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
+			}
 			this.automaton.step(this, EntitiesConst.GAME);
 
 			if (this.frozen) {
@@ -81,13 +86,7 @@ public class Goblin extends Mob {
 						if (this.health == 0)
 							this.die();
 					}
-				} else if (action == Action.D) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-						this.dead = true;
-					}
-				}
+				} 
 			} else {
 				if (this.action != Action.S) {
 					if (EntitiesConst.GAME.debug) {
@@ -141,7 +140,7 @@ public class Goblin extends Mob {
 		case M:
 			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_MOB;
 		case H:
-			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX;
+			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX_MOB;
 		case D:
 			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
 		case T:
