@@ -22,9 +22,11 @@ package info3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -234,7 +236,11 @@ public class Game {
 	 * and the game canvas to the center.
 	 */
 	private void setupFrame() {
-
+		Toolkit tkit = Toolkit.getDefaultToolkit();
+		Point point = new Point(25,25);
+		Image agrou = ImagesConst.CURSOR[0];
+		Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
+		m_frame.setCursor(curs);
 		m_frame.setTitle("Game");
 		m_frame.setLayout(new BorderLayout());
 

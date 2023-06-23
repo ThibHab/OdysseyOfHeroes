@@ -23,7 +23,9 @@ package info3.game;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -32,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.ImagesConst;
 import info3.game.graphics.GameCanvasListener;
 import info3.game.hud.Button;
 import info3.game.hud.InGameMenu;
@@ -226,7 +229,11 @@ public class CanvasListener implements GameCanvasListener {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && m_game.inMenu != null) {
 			boolean b = m_game.inMenu.getPause();
 			if (!b) {
-				game.m_frame.setCursor(Cursor.getDefaultCursor());
+				Toolkit tkit = Toolkit.getDefaultToolkit();
+				Point point = new Point(25,25);
+				Image agrou = ImagesConst.CURSOR[0];
+				Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
+				game.m_frame.setCursor(curs);
 			}
 			else {
 				game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
