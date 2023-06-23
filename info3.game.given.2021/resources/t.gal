@@ -158,6 +158,7 @@ Bush(Existing){
  
   Goblin(Search) {
    * (Search)
+   | !GotPower ? : ()
    | Cell(@,N) ? Hit(N) : (Search)
    | Cell(@,S) ? Hit(S) : (Search)
    | Cell(@,E) ? Hit(E) : (Search)
@@ -166,6 +167,8 @@ Bush(Existing){
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+   
+   * ()
  }
  
  Coin(Exists) {

@@ -104,7 +104,6 @@ public class Projectile extends Entity {
 	public void tick(long elapsed) {
 		if (this.owner.range < this.tilesCrossed) {
 			EntitiesConst.MAP.projectiles.remove(this);
-			System.out.println("dead proj");
 			return;
 		}
 		this.automaton.step(this, EntitiesConst.GAME);

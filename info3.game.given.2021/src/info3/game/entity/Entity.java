@@ -296,8 +296,6 @@ public abstract class Entity implements IEntity {
 	public void Hit(Aut_Direction d) {
 		// TODO Melee blocked when touching an enemy, also see for the hits in the
 		// border of the maps
-		Hero.bushesCut = 20;
-		Hero.coins = 50;
 		if (!this.frozen) {
 			this.frozen = true;
 			if (d != null) {
@@ -344,7 +342,7 @@ public abstract class Entity implements IEntity {
 			this.revive();
 		}
 //		else if (!this.frozen /* && attacker.category != this.category */) {
-		System.out.println("HEHO CA FAIT MALEUH");
+		System.out.println("victim has " + this.health + " hearts");
 //			this.frozen = true;
 //			this.action = Action.T;
 //			this.anim.changeAction(action);
