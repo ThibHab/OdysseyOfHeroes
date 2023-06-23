@@ -3,13 +3,29 @@ package info3.game.automata.parser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
-import info3.game.automata.ast.* ;
-import info3.game.automata.util.* ;
+import info3.game.automata.ast.AST;
+import info3.game.automata.ast.Action;
+import info3.game.automata.ast.AstPrinter;
+import info3.game.automata.ast.AutPrinter;
+import info3.game.automata.ast.Automaton;
+import info3.game.automata.ast.Behaviour;
+import info3.game.automata.ast.BinaryOp;
+import info3.game.automata.ast.Category;
+import info3.game.automata.ast.Condition;
+import info3.game.automata.ast.Direction;
+import info3.game.automata.ast.Expression;
+import info3.game.automata.ast.FunCall;
+import info3.game.automata.ast.Key;
+import info3.game.automata.ast.Mode;
+import info3.game.automata.ast.Parameter;
+import info3.game.automata.ast.State;
+import info3.game.automata.ast.Terminal;
+import info3.game.automata.ast.Transition;
+import info3.game.automata.ast.UnaryOp;
+import info3.game.automata.ast.Value;
 
 public class AutomataParser implements AutomataParserConstants {
 

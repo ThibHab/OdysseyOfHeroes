@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import animations.Effect;
 import info3.game.Game;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
@@ -147,7 +148,11 @@ public class MapRender {
 	}
 
 	void paintEffect(Graphics g) {
-
+		Iterator<Effect> it = this.map.effects.iterator();
+		while (it.hasNext()) {
+			it.next().paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
+					roundDeci((this.offset.getY()) * tileSize, 3));
+		}
 	}
 
 	void paintEntity(Graphics g) {
@@ -196,6 +201,13 @@ public class MapRender {
 					roundDeci((this.offset.getY()) * tileSize, 3));
 		}
 	}
+    
+    void paintBubbles(Graphics g) {
+		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
+			EntitiesConst.MAP.bubbles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
+					roundDeci((this.offset.getY()) * tileSize, 3));
+		}
+	}
 
 	void paintDark(Graphics g,DungeonMap dmap) {
 		int resolution = 3;
@@ -232,6 +244,7 @@ public class MapRender {
 		paintProj(g);
 		// DECOR & PLAYER
 		paintEntity(g);
+        paintBubbles(g);
 		// NIGHT
 		if (map instanceof DungeonMap) {
 			DungeonMap dmap=(DungeonMap)map;
