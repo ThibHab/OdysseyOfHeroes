@@ -49,7 +49,7 @@ public class HudInGame {
 		int textWidth = (int) rec.getWidth();
 		int textHeight = (int) rec.getHeight();
 
-		g.drawString(setTimer, (m_frame.getWidth() / 2) - (int) (textWidth / 2), 100);
+		g.drawString(setTimer, (m_frame.getWidth() / 2) - (int) (textWidth / 2), 200);
 	}
 
 	public void setBomb(Graphics g, Font f, int width, int height) {
