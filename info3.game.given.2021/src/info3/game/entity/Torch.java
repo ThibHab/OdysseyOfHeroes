@@ -10,6 +10,8 @@ import info3.game.constants.ImagesConst;
 
 public class Torch extends DecorElement {
 
+	public boolean lit=false;
+	
 	public Torch(Location l) {
 		super();
 		this.name = "Torch";
@@ -31,7 +33,8 @@ public class Torch extends DecorElement {
 		if(this.location != null) {
 			this.hitbox = new Hitbox(this, (float)0.90, (float)0.90);
 		}
-		this.health = -1;
+		this.health = 1;
+		this.lit=false;
 		
 	}
 	
@@ -44,31 +47,9 @@ public class Torch extends DecorElement {
 	
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
-		//TODO resolve animation problem
-	}
-	
-	public void lightAround() {
-		EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].opacity = 0f;
-
-		int x = (int) this.location.getX() + 1;
-		int y = (int) this.location.getY() - 1;
-		
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		x--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		x--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		y++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		y++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		x++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		x++;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0.5f;
-		y--;
-		EntitiesConst.MAP_MATRIX[x][y].opacity = 0f;
-		x--;
+		//TODO UPDATE ANIM
+		//this.imageIndex = 1;
+		this.lit=true;
 	}
 
 }

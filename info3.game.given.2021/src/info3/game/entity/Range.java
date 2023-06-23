@@ -5,7 +5,6 @@ import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
-import info3.game.automata.ast.Direction;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
@@ -86,8 +85,12 @@ public class Range extends Hero {
 	public void updateStats() {
 		this.weaponDamage += 2;
 
-		if (Hero.level % 2 == 0) {
+		if (Hero.level % 2 == 0 && this.maxHealth < 13) {
 			this.maxHealth += 1;
+		}
+		
+		if (Hero.level % 5 == 0) {
+			this.range += 1;
 		}
 
 		this.health = this.maxHealth;

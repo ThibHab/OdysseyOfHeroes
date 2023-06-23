@@ -3,7 +3,7 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.Entity;
-import info3.game.map.*;
+import info3.game.map.Tile;
 
 public class Closest extends Aut_Condition {
 

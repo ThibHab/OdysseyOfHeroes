@@ -27,11 +27,10 @@
 package info3.game.automata.ast;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
-import info3.game.automata.ast.Node;
 import info3.game.automata.util.Dot;
 
 public class AutPrinter implements IVisitor {

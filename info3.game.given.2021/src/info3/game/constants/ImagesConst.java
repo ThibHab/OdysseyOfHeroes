@@ -11,14 +11,18 @@ public class ImagesConst {
 	public static BufferedImage GRASS_TILE, WATER_TILE, DIRT_TILE, ROCK_TILE, ROCK_DUNGEON;
 	public static BufferedImage GRASS_TILE2, WATER_TILE2, DIRT_TILE2, ROCK_TILE2;
 	public static BufferedImage RED_HEART, BLUE_HEART, BLACK_HEART;
+	public static BufferedImage MENU_PICTURE;
+	public static BufferedImage SWORD;
 
 	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
-	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGER;
+	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
 	public static BufferedImage[] BUSH, CHEST, TORCH, CAVE_WALL, DUNGEON_WALL;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
+	public static BufferedImage[] SPEECHBUBBLE;
 	public static BufferedImage[] BOMB;
+	public static BufferedImage[] SAVE_TILES;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -32,6 +36,7 @@ public class ImagesConst {
 		DIRT_TILE2 = loadTile("");
 		ROCK_TILE2 = loadTile("");
 		ROCK_DUNGEON = loadTile("rock_tile_boss");
+		SAVE_TILES = loadSprite("SaveTiles", 2, 1);
 
 		HOUSE = loadSprite("House", 1, 1);
 		ROCK = loadSprite("Rock", 2, 2);
@@ -47,7 +52,6 @@ public class ImagesConst {
 		GOBLIN = loadSprite("Orc", 8, 8);
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
-		VILLAGER = loadSprite("", 1, 1);
 		
 		BUSH = loadSprite("Bush", 3, 2);
 		CHEST = loadSprite("Chest", 2, 2);
@@ -63,6 +67,17 @@ public class ImagesConst {
 		RED_HEART = loadTile("red_heart");
 		BLUE_HEART = loadTile("blue_heart");
 		BLACK_HEART = loadTile("empty_heart");
+		
+		MENU_PICTURE = loadTile("menu_picture");
+		
+		SWORD = loadTile("weapon");
+		
+		HERMIT = loadSprite("Hermite",2,6);
+		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 3);
+		MINER = loadSprite("Miner", 4, 3);
+		
+		SPEECHBUBBLE = loadSprite("SpeechBubble", 1, 1);
+		
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

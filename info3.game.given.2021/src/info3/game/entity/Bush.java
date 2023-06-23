@@ -1,14 +1,13 @@
 package info3.game.entity;
 
-import animations.Animation;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
-import info3.game.automata.Aut_Direction;
+import info3.game.automata.Aut_Category;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
-import info3.game.automata.Aut_Category;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -21,7 +20,7 @@ public class Bush extends DecorElement {
 		this.name = "Bush";
 		this.location = l;
 		this.health = EntitiesConst.BUSH_HEALTH;
-		this.category = Aut_Category.C;
+		this.category = Aut_Category.O;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))

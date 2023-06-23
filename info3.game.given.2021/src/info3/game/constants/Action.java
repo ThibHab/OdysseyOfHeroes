@@ -6,4 +6,5 @@ public enum Action {
 	T, // is touched (damaged)
 	D, // is dead
 	S, // is Standing
+	I, // is Interacting
 }
