@@ -328,7 +328,7 @@ public class Game {
 		int height = m_canvas.getHeight();
 
 		// erase background
-		g.setColor(Color.gray);
+		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
 
 		if (menu.getStarted()) {

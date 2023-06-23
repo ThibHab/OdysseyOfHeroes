@@ -103,6 +103,11 @@ public abstract class Entity implements IEntity {
 					if (this.actionIndex >= this.attackSpeed) {
 						this.hitFrozen = false;
 					}
+				} else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
 				} else if (action == Action.T) {
 					if (this.isFinished()) {
 						this.frozen = false;
@@ -145,6 +150,7 @@ public abstract class Entity implements IEntity {
 				this.action = Action.M;
 			}
 			this.anim.changeAction(action);
+			
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
 			originLocation = new Location(this.location.getX(), this.location.getY());
 			relativeMouv = new Location(0, 0);
@@ -182,6 +188,7 @@ public abstract class Entity implements IEntity {
 	public void Turn(Aut_Direction d) {
 		if (d != null) {
 			this.direction = d;
+			this.anim.changeAction(action);
 		}
 	}
 
@@ -232,7 +239,7 @@ public abstract class Entity implements IEntity {
 			int tirageT = randomT.nextInt(3);
 			switch (tirageT) {
 			case 0:
-				new Villager(location);
+				new VillagerGirl(location);
 				break;
 			}
 		case AT:
@@ -255,6 +262,8 @@ public abstract class Entity implements IEntity {
 	public void Hit(Aut_Direction d) {
 		// TODO Melee blocked when touching an enemy, also see for the hits in the
 		// border of the maps
+		Hero.bushesCut = 20;
+		Hero.coins = 50;
 		if (!this.frozen) {
 			this.frozen = true;
 			if (d != null) {
@@ -262,8 +271,8 @@ public abstract class Entity implements IEntity {
 			}
 			if (this.action != Action.H) {
 				this.action = Action.H;
-				this.anim.changeAction(action);
 			}
+			this.anim.changeAction(action);
 			Location t = frontTileLocation(d);
 
 			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
@@ -318,12 +327,13 @@ public abstract class Entity implements IEntity {
 	public void die() {
 		if (this.action != Action.D) {
 			this.action = Action.D;
-			this.anim.changeAction(action);
+			
 			this.frozen = true;
 
 			if (EntitiesConst.GAME.debug) {
 				System.out.println(this.name + " has died");
 			}
+			this.anim.changeAction(action);
 			if (!(this instanceof Hero)) {
 				EntitiesConst.MAP_MATRIX[(int) this.location.getX()][(int) this.location.getY()].entity = null;
 			}
@@ -485,6 +495,8 @@ public abstract class Entity implements IEntity {
 			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
 		case T:
 			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+		case I:
+			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
 		default:
 			return true;
 		}

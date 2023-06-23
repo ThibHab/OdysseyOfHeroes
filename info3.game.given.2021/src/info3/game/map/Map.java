@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import animations.Effect;
 import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
@@ -13,6 +14,8 @@ public abstract class Map implements IMap {
 	public int lenX, lenY;
 	Entity player1, player2;
 	public LinkedList<Projectile> projectiles;
+	public LinkedList<SpeechBubble> bubbles;
+	public LinkedList<Effect> effects;
 
 	public Map(int nb_x, int nb_y, Entity p1, Entity p2) {
 		this.lenX = nb_x;
@@ -21,6 +24,8 @@ public abstract class Map implements IMap {
 		this.player2 = p2;
 		this.map = new Tile[lenX][lenY];
 		this.projectiles = new LinkedList<>();
+		this.bubbles = new LinkedList<>();
+		this.effects = new LinkedList<>();
 	}
 
 	void createTree(int x, int y) {
@@ -84,7 +89,7 @@ public abstract class Map implements IMap {
 		Bush b = new Bush(new Location(x, y));
 		map[x][y].entity = b;
 	}
-	
+
 	void createChest(int x, int y) {
 		Chest c = new Chest(new Location(x, y));
 		map[x][y].entity = c;
@@ -93,7 +98,6 @@ public abstract class Map implements IMap {
 	public void createBomb(int x,int y,Bomb b) {
 		if(map[x][y].entity==null) {
 			this.map[x][y].entity= b;
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		}
 	}
 	
@@ -110,7 +114,7 @@ public abstract class Map implements IMap {
 		}
 		return tmp2;
 	}
-	
+
 	public float diffY(float a, float b) {
 		float tmp = Math.abs(a - b);
 		float tmp2 = Math.min(a, b) + lenY - Math.max(a, b);
@@ -119,7 +123,7 @@ public abstract class Map implements IMap {
 		}
 		return tmp2;
 	}
-	
+
 	Location mid(Location loc1, Location loc2) {
 		Location a = new Location(loc1.getX() + 0.5f, loc1.getY() + 0.5f);
 		Location b = new Location(loc2.getX() + 0.5f, loc2.getY() + 0.5f);
@@ -140,18 +144,18 @@ public abstract class Map implements IMap {
 		}
 		return res;
 	}
-	
-	public Location add(Location l,Location add) {
-		Location res=new Location(0,0);
-		res.setX((l.getX()+add.getX()+lenX)%lenX);
-		res.setY((l.getY()+add.getY()+lenY)%lenY);
+
+	public Location add(Location l, Location add) {
+		Location res = new Location(0, 0);
+		res.setX((l.getX() + add.getX() + lenX) % lenX);
+		res.setY((l.getY() + add.getY() + lenY) % lenY);
 		return res;
 	}
-	
-	public float dist(Location a,Location b) {
-		float dx=diffX(a.getX(),b.getX());
-		float dy=diffY(a.getY(),b.getY());
-		return (float)Math.sqrt((double)dx*dx+dy*dy);
+
+	public float dist(Location a, Location b) {
+		float dx = diffX(a.getX(), b.getX());
+		float dy = diffY(a.getY(), b.getY());
+		return (float) Math.sqrt((double) dx * dx + dy * dy);
 	}
 
 	void setPlayer(int x, int y, Entity player) {
@@ -175,7 +179,8 @@ public abstract class Map implements IMap {
 		Random r = new Random(EntitiesConst.SEED);
 		for (int i = x; i < x + areaSize; i++) {
 			for (int j = y; j < y + areaSize; j++) {
-				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile) && !(map[i][j] instanceof DirtTile)
+				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile)
+						&& !(map[i][j] instanceof DirtTile) && !(map[i][j] instanceof SaveTile)
 						&& !(map[i][j] instanceof RockTile)) {
 					int n = r.nextInt(rareness);
 					if (n == 1) {
@@ -238,7 +243,7 @@ public abstract class Map implements IMap {
 					map[i][j] = new RockTile(l);
 				} else if (tile.equals("Grass")) {
 					map[i][j] = new GrassTile(l);
-				} else if (tile.equals("Dirt")){
+				} else if (tile.equals("Dirt")) {
 					map[i][j] = new DirtTile(l);
 				} else if (tile.equals("RockDungeon")) {
 					map[i][j] = new RockDungeonTile(l);
@@ -312,9 +317,9 @@ public abstract class Map implements IMap {
 		setCircleBackground(x, y, radius + 1, "Dirt");
 		map[x][y].entity = new Statue(new Location(x, y));
 		WorldMap.saveTile1 = new SaveTile(new Location(x - radius - 1, y));
-		map[x-radius-1][y] = WorldMap.saveTile1;
+		map[x - radius - 1][y] = WorldMap.saveTile1;
 		WorldMap.saveTile2 = new SaveTile(new Location(x + radius + 1, y));
-		map[x+radius+1][y] = WorldMap.saveTile2;
+		map[x + radius + 1][y] = WorldMap.saveTile2;
 		// TODO fix statue disappearing
 	}
 
@@ -377,7 +382,7 @@ public abstract class Map implements IMap {
 		createChest(x + (radius / 2 - 5), y - (radius / 2 - 9));
 		setBorderForest(x, y, radius / 2);
 		createChest(x, y);
-		setEntityRandomly(x - ((radius / 2)  + 10), y - ((radius / 2) + 10), radius + 15, 1, "Tree", seed, 4);
+		setEntityRandomly(x - ((radius / 2) + 10), y - ((radius / 2) + 10), radius + 15, 1, "Tree", seed, 4);
 	}
 
 	public void tickEntities(int x, int y, long elapsed) {
@@ -388,6 +393,10 @@ public abstract class Map implements IMap {
 		Entity tab[] = new Entity[tabSize];
 		int indexTab = 0;
 		boolean alreadyTicked = false;
+		if(this instanceof DungeonMap) {
+			DungeonMap dmap=(DungeonMap)this;
+			dmap.tick(elapsed);
+		}
 
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
