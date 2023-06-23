@@ -61,7 +61,7 @@ public class Bomb extends Entity {
 			for (int j = 0; j < EntitiesConst.BOMB_RADIUS * 2 + 1; j++) {
 				Entity entity = EntitiesConst.MAP_MATRIX[(int) (this.location.getX() - 2 + i + map.lenX)
 						% map.lenX][(int) (this.location.getY() - 2 + j + map.lenY) % map.lenY].entity;
-				if (entity != null && circleIntersect(this.location, entity, EntitiesConst.BOMB_RADIUS)) {
+				if (entity != null && circleIntersect(this.location, entity, EntitiesConst.BOMB_RADIUS) && (entity instanceof Mob || entity instanceof Hero || entity.category == Aut_Category.O || entity instanceof Bush)) {
 					entity.takeDamage(this.owner);
 				}
 			}

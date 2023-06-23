@@ -71,7 +71,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void tick(long elapsed) {
-		if (!this.dead) {
+		if (!this.dead && !EntitiesConst.GAME.inMenu.isPaused) {
 			this.automaton.step(this, EntitiesConst.GAME);
 
 			if (this.frozen) {
@@ -279,24 +279,22 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
-							&& entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;
 				case S:
-					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;
 				case E:
-					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;
 				case W:
-					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
-							&& entity.category != Aut_Category.O) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
 					}
 					break;

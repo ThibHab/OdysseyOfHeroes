@@ -17,7 +17,7 @@ public class Bush extends DecorElement {
 		this.name = "Bush";
 		this.location = l;
 		this.health = EntitiesConst.BUSH_HEALTH;
-		this.category = Aut_Category.C;
+		this.category = Aut_Category.O;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))

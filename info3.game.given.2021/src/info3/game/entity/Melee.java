@@ -54,11 +54,15 @@ public class Melee extends Hero{
 	public int totSrpitePerDir() {
 		return AnimConst.MELEE_TOT;
 	}
-
+	
 	@Override
 	public void updateStats() {
-		this.weaponDamage++;
-		this.maxHealth += 1;
+		this.weaponDamage += 2;
+
+		if (Hero.level % 2 == 0 && this.maxHealth < 20) {
+			this.maxHealth += 1;
+		}
+
 		this.health = this.maxHealth;
 	}
 	
