@@ -4,7 +4,10 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -16,19 +19,14 @@ public class Tree extends TransparentDecorElement {
 		this.location = l;
 		this.hitbox.update();
 
-		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		// -----------------------------
 
-		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.TREE;
-		this.imageIndex = 0;
-		// -----------------------------------
-
+		Action acts[] = new Action[] { Action.S };
+		this.anim = new Animation(this,ImagesConst.TREE, null, acts);
 		this.width = 3;
 		this.height = 3;
 
@@ -36,7 +34,7 @@ public class Tree extends TransparentDecorElement {
 	}
 
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = sprites[0];
+		BufferedImage img = anim.getFrame();
 		if (this.transparent) {
 			Graphics2D gr = (Graphics2D) g;
 			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,

@@ -4,6 +4,8 @@ import info3.game.constants.EntitiesConst;
 import info3.game.entity.*;
 
 public class WorldMap extends Map {
+	
+	public static SaveTile saveTile1, saveTile2;
 
 	public WorldMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
@@ -33,5 +35,8 @@ public class WorldMap extends Map {
 		
 		EntitiesConst.MAP = this;
 		EntitiesConst.MAP_MATRIX = this.map;
+        
+		WorldMap.saveTile1.entity = null;
+		WorldMap.saveTile2.entity = null;
 	}
 }

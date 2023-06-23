@@ -1,8 +1,10 @@
 package info3.game.entity;
 
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -20,12 +22,9 @@ public class Torch extends DecorElement {
 		}
 		this.currentState = automaton.initial;
 		// -----------------------------
-
-		// --- TODO manage sprite properly ---
-		this.sprites =  ImagesConst.TORCH;
-		this.imageIndex = 0;
-		// -----------------------------------
 		
+		Action acts[] = new Action[] { Action.S };
+		this.anim = new Animation(this,ImagesConst.TORCH, null, acts);		
 		this.width = 1;
 		this.height = 1;
 		
@@ -45,7 +44,7 @@ public class Torch extends DecorElement {
 	
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
-		this.imageIndex = 1;
+		//TODO resolve animation problem
 	}
 	
 	public void lightAround() {

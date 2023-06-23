@@ -3,8 +3,10 @@ package info3.game.entity;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.map.Map;
@@ -26,9 +28,9 @@ public class Bomb extends Entity {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-
-		this.sprites = ImagesConst.BOMB;
-		this.imageIndex = 0;
+		
+		Action acts[] = new Action[] { Action.S };
+		this.anim = new Animation(this,ImagesConst.BOMB, null, acts);
 
 		this.scale = 1;
 		timer = EntitiesConst.BOMB_TIMER;
@@ -42,7 +44,7 @@ public class Bomb extends Entity {
 	}
 
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = sprites[0];
+		BufferedImage img = anim.getFrame();
 		g.drawImage(img, (int) screenPosX, (int) screenPosY, TileSize, TileSize, null);
 		if (EntitiesConst.GAME.debug) {
 			int diff = (int) (TileSize * (2 * EntitiesConst.BOMB_RADIUS - 1)) / 2;
@@ -63,7 +65,7 @@ public class Bomb extends Entity {
 				}
 			}
 		}
-		this.die(this.owner);
+		this.die();
 		// TODO delete destroyable rocks
 		// TODO add explode method for animation (view)
 	}

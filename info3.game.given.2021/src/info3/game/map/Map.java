@@ -181,7 +181,7 @@ public abstract class Map implements IMap {
 		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree"))) {
 			return;
 		}
-		Random r = new Random(seed);
+		Random r = new Random(EntitiesConst.SEED);
 		for (int i = x; i < x + areaSize; i++) {
 			for (int j = y; j < y + areaSize; j++) {
 				if (map[i][j].entity == null && !(map[i][j] instanceof WaterTile) && !(map[i][j] instanceof DirtTile)
@@ -320,6 +320,10 @@ public abstract class Map implements IMap {
 		setCircleBackground(x, y, radius - 1, "Water");
 		setCircleBackground(x, y, radius + 1, "Dirt");
 		map[x][y].entity = new Statue(new Location(x, y));
+		WorldMap.saveTile1 = new SaveTile(new Location(x - radius - 1, y));
+		map[x-radius-1][y] = WorldMap.saveTile1;
+		WorldMap.saveTile2 = new SaveTile(new Location(x + radius + 1, y));
+		map[x+radius+1][y] = WorldMap.saveTile2;
 		// TODO fix statue disappearing
 	}
 
@@ -417,4 +421,41 @@ public abstract class Map implements IMap {
 			}
 		}
 	}
+	
+	public void freezeEntities() {
+		MapRender rend = EntitiesConst.GAME.render;
+		int nbTileY = rend.nbTileY + 4;
+		int nbTileX = rend.nbTileX + 4;
+
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
+				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
+				Tile renderTile = map[mapX][mapY];
+				Entity ent = renderTile.entity;
+				if (ent != null) {
+					ent.frozen = true;
+				}
+			}
+		}
+	}
+	
+	public void unFreezeEntities() {
+		MapRender rend = EntitiesConst.GAME.render;
+		int nbTileY = rend.nbTileY + 4;
+		int nbTileX = rend.nbTileX + 4;
+
+		for (int j = 0; j < nbTileY; j++) {
+			for (int i = 0; i < nbTileX; i++) {
+				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
+				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
+				Tile renderTile = map[mapX][mapY];
+				Entity ent = renderTile.entity;
+				if (ent != null) {
+					ent.frozen = false;;
+				}
+			}
+		}
+	}
+	
 }
