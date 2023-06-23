@@ -21,7 +21,7 @@ public class MapRender {
 	public int tileSize;
 	int bufferTile = 6;
 
-	public Location camera;
+	public Location camera= new Location(0.0f, 0.0f);;
 	public Location offset = new Location(0.0f, 0.0f);
 
 	public MapRender(Map map, Game game) {
@@ -34,29 +34,43 @@ public class MapRender {
 		long factor = (long) Math.pow(10, nbDec);
 		return (float) Math.round(val * factor) / factor;
 	}
+	
+	public void bossCam(int w,int h) {
+		DungeonMap dmap=(DungeonMap)map;
+		this.camera=map.mid(new Location((float)dmap.sizeX,(float)dmap.sizeY), new Location(1,1));
+		nbTileY=dmap.sizeY+bufferTile;
+		nbTileX = (int) Math.ceil(nbTileY * (double) w / h);
+		double tempx = w / dmap.sizeX;
+		double tempy = h / (dmap.sizeY+2);
+		this.tileSize = (int) Math.min(Math.ceil(tempy), Math.ceil(tempx));
+	}
 
 	public void updateCam(Melee player1, Range player2, int w, int h) {
-		this.camera = map.mid(player1.location, player2.location);
-		float viewX = map.diffX(player2.location.getX(), player1.location.getX()) + bufferTile;
-		float viewY = map.diffY(player2.location.getY(), player1.location.getY()) + bufferTile;
-		if (viewX < EntitiesConst.MAX_DIFFX * 2 + bufferTile && viewY < EntitiesConst.MAX_DIFFY * 2 + bufferTile) {
-			Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
-					(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
-			nbTileX = (int) Math.ceil(
-					map.diffX((float) Math.floor(upLeft.getX()), (float) Math.ceil(upLeft.getX() + viewX) % map.lenX))
-					+ 1;
-			nbTileY = (int) Math.ceil(
-					map.diffY((float) Math.floor(upLeft.getY()), (float) Math.ceil(upLeft.getY() + viewY) % map.lenY))
-					+ 1;
-			double tempx = w / viewX;
-			double tempy = h / viewY;
-			if (tempx > tempy) {
-				nbTileX = (int) Math.ceil(nbTileY * (double) w / h);
+		if(map instanceof DungeonMap) {
+			bossCam(w,h);
+		}else {
+			this.camera = map.mid(player1.location, player2.location);
+			float viewX = map.diffX(player2.location.getX(), player1.location.getX()) + bufferTile;
+			float viewY = map.diffY(player2.location.getY(), player1.location.getY()) + bufferTile;
+			if (viewX < EntitiesConst.MAX_DIFFX * 2 + bufferTile && viewY < EntitiesConst.MAX_DIFFY * 2 + bufferTile) {
+				Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
+						(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
+				nbTileX = (int) Math.ceil(
+						map.diffX((float) Math.floor(upLeft.getX()), (float) Math.ceil(upLeft.getX() + viewX) % map.lenX))
+						+ 1;
+				nbTileY = (int) Math.ceil(
+						map.diffY((float) Math.floor(upLeft.getY()), (float) Math.ceil(upLeft.getY() + viewY) % map.lenY))
+						+ 1;
+				double tempx = w / viewX;
+				double tempy = h / viewY;
+				if (tempx > tempy) {
+					nbTileX = (int) Math.ceil(nbTileY * (double) w / h);
+				}
+				if (tempy > tempx) {
+					nbTileY = (int) Math.ceil(nbTileX * (double) h / w);
+				}
+				this.tileSize = (int) Math.min(Math.ceil(tempy), Math.ceil(tempx));
 			}
-			if (tempy > tempx) {
-				nbTileY = (int) Math.ceil(nbTileX * (double) h / w);
-			}
-			this.tileSize = (int) Math.min(Math.ceil(tempy), Math.ceil(tempx));
 		}
 	}
 
@@ -183,7 +197,7 @@ public class MapRender {
 		}
 	}
 
-	void paintDark(Graphics g) {
+	void paintDark(Graphics g,DungeonMap dmap) {
 		int resolution = 3;
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
@@ -196,9 +210,10 @@ public class MapRender {
 						float d = 2 * resolution;
 						Location tile = map.add(new Location(mapX, mapY), new Location(
 								(float) si / resolution + (float) 1 / d, (float) sj / resolution + (float) 1 / d));
-						g.setColor(new Color(0, 0, 0, (int) (opacity(closestLight(tile)) * 255)));
-						int sizeX =1+ tileSize / resolution;
-						int sizeY =1+ tileSize / resolution;
+						int opa=(int) (opacity(closestLight(tile)) * 255*dmap.transiPercent);
+						g.setColor(new Color(0, 0, 0,opa));
+						int sizeX = 1+tileSize / resolution;
+						int sizeY = 1+tileSize / resolution;
 						g.fillRect((int)Xscreen, (int)Yscreen, sizeX, sizeY);
 					}
 				}
@@ -219,8 +234,10 @@ public class MapRender {
 		paintEntity(g);
 		// NIGHT
 		if (map instanceof DungeonMap) {
-			if(!((DungeonMap)map).lit)
-			paintDark(g);
+			DungeonMap dmap=(DungeonMap)map;
+			dmap.torchLit();
+			if((!dmap.lit) )
+			paintDark(g,dmap);
 		}
 	}
 

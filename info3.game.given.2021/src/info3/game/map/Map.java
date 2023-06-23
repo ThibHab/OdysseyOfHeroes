@@ -93,7 +93,6 @@ public abstract class Map implements IMap {
 	public void createBomb(int x,int y,Bomb b) {
 		if(map[x][y].entity==null) {
 			this.map[x][y].entity= b;
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		}
 	}
 	
@@ -379,6 +378,10 @@ public abstract class Map implements IMap {
 		Entity tab[] = new Entity[tabSize];
 		int indexTab = 0;
 		boolean alreadyTicked = false;
+		if(this instanceof DungeonMap) {
+			DungeonMap dmap=(DungeonMap)this;
+			dmap.tick(elapsed);
+		}
 
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {

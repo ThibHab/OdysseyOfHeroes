@@ -17,13 +17,21 @@ public class DungeonMap extends Map {
 	
 	List<Torch> torches;
 	public boolean lit;
-
+	public int sizeX=20;
+	public int sizeY=12;
+	boolean initLit=false;
+	public boolean finish;
+	int transiMax=5000;
+	int transi;
+	float transiPercent;
+	
 	public DungeonMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
+		this.transi=transiMax;
 		
 		this.setSurfaceBackground(0, 0, nb_x, nb_y, "BlackTile");
-		this.setSurfaceBackground(1, 1, nb_x - 2, nb_y - 2, "RockDungeon");
-		this.setDongeonWalls(1, 1, lenX - 2, lenY - 2);
+		this.setSurfaceBackground(1, 1, sizeX, sizeY, "RockDungeon");
+		this.setDongeonWalls(1, 1, sizeX , sizeY);
 		
 		this.setPlayer(4, 5, p1);
 		this.setPlayer(4, 6, p2);
@@ -34,13 +42,13 @@ public class DungeonMap extends Map {
 		Random r = new Random();
 		for (int i = 0; i < 6; i++) {
 			do {
-				x = r.nextInt(nb_x - 2) + 1;
-				y = r.nextInt(3) + 1;
+				x = r.nextInt(sizeX - 2) + 1;
+				y = r.nextInt(sizeY - 2) + 1;
 			} while (map[x][y].entity != null);
 			if (i < 3)
 				loc = new Location(x, y);
 			else
-				loc = new Location(x, nb_y -1 - y);
+				loc = new Location(x, sizeY -1 - y);
 			
 			Torch t = new Torch(loc);
 			torches.add(t);
@@ -63,5 +71,26 @@ public class DungeonMap extends Map {
 		}
 	}
 	
-
+	public boolean torchLit() {
+		for (Torch torch : torches) {
+			if (!torch.lit) {
+				this.lit=false;
+				this.initLit=false;
+				return false;
+			}
+		}
+		this.initLit=true;
+		return true;
+	}
+	
+	public void tick(long elapsed) {
+		transiPercent=(float)transi/transiMax;
+		if(!finish && initLit) {
+			transi-=elapsed;
+			if(transi<=0) {
+				finish=true;
+				this.lit=true;
+			}
+		}
+	}
 }

@@ -112,7 +112,7 @@ public class Game {
 		
 		//map = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
 	    //map = new WorldMap(100, 100, player1, player2);
-	    map = new DungeonMap(32, 32, player1, player2);
+	    map = new DungeonMap(40, 40, player1, player2);
 		//map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map)map, this);
 		
@@ -234,7 +234,7 @@ public class Game {
 		int height = m_canvas.getHeight();
 
 		// erase background
-		g.setColor(Color.gray);
+		g.setColor(Color.black);
 		g.fillRect(0, 0, width, height);
 		
 		render.paint(g);
