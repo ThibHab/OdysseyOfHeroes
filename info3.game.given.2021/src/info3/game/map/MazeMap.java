@@ -3,6 +3,7 @@ package info3.game.map;
 import java.awt.Graphics;
 import java.util.Random;
 
+import info3.game.constants.EntitiesConst;
 import info3.game.constants.MapConstants;
 import info3.game.entity.MazeWall;
 import info3.game.entity.Chest;
@@ -52,5 +53,12 @@ public class MazeMap extends Map {
 		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
 		
 		this.maze.pretty_print(MapConstants.MAZE_MAP_CORRIDOR_SIZE);
+		
+		this.setPlayer(1, 1, p1);
+		this.setPlayer(1, 3, p2);
+		this.map[1][2].entity = null;
+		
+		EntitiesConst.MAP = this;
+		EntitiesConst.MAP_MATRIX = this.map;
 	}
 }
