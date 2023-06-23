@@ -5,8 +5,8 @@ public class AnimConst {
 	public static final int MELEE_S = 1;
 	public static final int MELEE_M = 3;
 	public static final int MELEE_H = 4;
-	public static final int MELEE_T = 0;
-	public static final int MELEE_D = 6;
+	public static final int MELEE_T = 1;
+	public static final int MELEE_D = 5;
 	public static final int MELEE_TOT = MELEE_S + MELEE_M + MELEE_H + MELEE_T + MELEE_D;
 
 	// Range
