@@ -12,6 +12,7 @@ public class ImagesConst {
 	public static BufferedImage GRASS_TILE2, WATER_TILE2, DIRT_TILE2, ROCK_TILE2;
 	public static BufferedImage RED_HEART, BLUE_HEART, BLACK_HEART;
 	public static BufferedImage MENU_PICTURE;
+	public static BufferedImage SWORD;
 
 	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
@@ -68,6 +69,8 @@ public class ImagesConst {
 		BLACK_HEART = loadTile("empty_heart");
 		
 		MENU_PICTURE = loadTile("menu_picture");
+		
+		SWORD = loadTile("weapon");
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

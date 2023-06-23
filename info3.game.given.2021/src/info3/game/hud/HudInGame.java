@@ -17,7 +17,7 @@ public class HudInGame {
 	Melee j1;
 	Range j2;
 	int moula;
-	Image redHeart, blueHeart, blackHeart, potion, melee, range, coinIcone;
+	Image redHeart, blueHeart, blackHeart, potion, melee, range, coinIcone, sword;
 
 	public HudInGame(JFrame frame) {
 		m_frame = frame;
@@ -31,6 +31,7 @@ public class HudInGame {
 		melee = ImagesConst.MELEE[0];
 		range = ImagesConst.RANGE[0];
 		coinIcone = ImagesConst.COIN[0];
+		sword = ImagesConst.SWORD;
 	}
 	
 	public void paint(Graphics g){
@@ -72,9 +73,13 @@ public class HudInGame {
 			}			
 		}
 		
-		g.drawImage(potion, 7, 70, 25, 25, m_frame);
+		g.drawImage(sword, 7, 70, 25, 25, m_frame);
+		String strenght = "" + j1.weaponDamage;
+		g.drawString(strenght, 7 + 28, 93);
+		
+		g.drawImage(potion, 7, 100, 25, 25, m_frame);
 		String potionJ1 = "X" + j1.healingPotions;
-		g.drawString(potionJ1, 7 + 28, 93);
+		g.drawString(potionJ1, 7 + 28, 123);
 		
 		
 		g.setColor(Color.red);
@@ -108,9 +113,13 @@ public class HudInGame {
 			}
 		}
 		
-		g.drawImage(potion, width - 32, 70, 25, 25, m_frame);
+		g.drawImage(sword, width - 32, 70, 25, 25, m_frame);
+		String strenght2 = "" + j2.weaponDamage;
+		g.drawString(strenght2, width - (7 + 28 + (17 * strenght2.length())), 93);
+		
+		g.drawImage(potion, width - 32, 100, 25, 25, m_frame);
 		String potionJ2 = j2.healingPotions + "X";
-		g.drawString(potionJ2, width - (7 + 28 + (17 * potionJ2.length())), 93);
+		g.drawString(potionJ2, width - (7 + 28 + (17 * potionJ2.length())), 123);
 		
 		int coinWidth = 25;
 		g.drawImage(coinIcone, width/2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
@@ -138,8 +147,6 @@ public class HudInGame {
 		g.setColor(Color.blue);
 		String lv = "Level " + Hero.level;
 		g.drawString(lv, width/2 - ((lv.length() * 28) / 4), height - 20);
-		
-		
 		
 		return;
 	}
