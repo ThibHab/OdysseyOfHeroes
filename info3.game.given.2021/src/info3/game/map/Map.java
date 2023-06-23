@@ -16,6 +16,7 @@ public abstract class Map implements IMap {
 	public LinkedList<Projectile> projectiles;
 	public LinkedList<SpeechBubble> bubbles;
 	public LinkedList<Effect> effects;
+	public LinkedList<Bush> deadBush;
 
 	public Map(int nb_x, int nb_y, Entity p1, Entity p2) {
 		this.lenX = nb_x;
@@ -26,6 +27,7 @@ public abstract class Map implements IMap {
 		this.projectiles = new LinkedList<>();
 		this.bubbles = new LinkedList<>();
 		this.effects = new LinkedList<>();
+		this.deadBush = new LinkedList<Bush>();
 	}
 
 	void createTree(int x, int y) {
@@ -158,7 +160,7 @@ public abstract class Map implements IMap {
 		return (float) Math.sqrt((double) dx * dx + dy * dy);
 	}
 
-	void setPlayer(int x, int y, Entity player) {
+	public void setPlayer(int x, int y, Entity player) {
 		player.location.setX(x);
 		player.location.setY(y);
 		player.hitbox.update();

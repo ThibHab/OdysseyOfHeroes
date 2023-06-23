@@ -301,6 +301,9 @@ public class Game {
 					EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 				}
 
+		        for (Bush b : EntitiesConst.MAP.deadBush) {
+		        	b.tick(elapsed);
+		        }
 				((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 
 				if (EntitiesConst.GAME.debug) {
