@@ -149,11 +149,25 @@ public abstract class Map implements IMap {
 		return (float)Math.sqrt((double)dx*dx+dy*dy);
 	}
 
-	void setPlayer(int x, int y, Entity player) {
+	public void setPlayer(int x, int y, Entity player) {
 		player.location.setX(x);
 		player.location.setY(y);
 		player.hitbox.update();
 		map[x][y].entity = player;
+	}
+	
+	public void setDungeonEntrance(int x, int y) {
+		Location location = new Location(x, y);
+		map[x][y].entity = new DungeonEntrance(location);
+		map[x][y + 1].entity = null;
+		map[x + 1][y + 1].entity = null;
+	}
+	
+	public void setMazeEntrance(int x, int y) {
+		Location location = new Location(x, y);
+		map[x][y].entity = new MazeEntrance(location);
+		map[x][y + 1].entity = null;
+		map[x + 1][y + 1].entity = null;
 	}
 
 	/**
