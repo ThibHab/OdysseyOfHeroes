@@ -47,7 +47,8 @@ public class Torch extends DecorElement {
 	
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
-		this.imageIndex = 1;
+		//TODO UPDATE ANIM
+		//this.imageIndex = 1;
 		this.lit=true;
 	}
 
