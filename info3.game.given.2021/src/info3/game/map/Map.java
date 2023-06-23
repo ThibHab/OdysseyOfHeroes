@@ -1,11 +1,11 @@
 package info3.game.map;
 
-import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
-import info3.game.Game;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.MapConstants;
 import info3.game.entity.*;
 
 public abstract class Map implements IMap {
@@ -150,23 +150,33 @@ public abstract class Map implements IMap {
 	}
 
 	public void setPlayer(int x, int y, Entity player) {
+		player.action = Action.S;
 		player.location.setX(x);
 		player.location.setY(y);
 		player.hitbox.update();
 		map[x][y].entity = player;
+		player.frozen = false;
 	}
 	
 	public void setDungeonEntrance(int x, int y) {
 		Location location = new Location(x, y);
+		if (map[x][y].entity != null) {
+			map[x][y].entity = null;
+		}
+		
 		map[x][y].entity = new DungeonEntrance(location);
-		map[x][y + 1].entity = null;
+		map[x - 1][y + 1].entity = null;
 		map[x + 1][y + 1].entity = null;
 	}
 	
 	public void setMazeEntrance(int x, int y) {
 		Location location = new Location(x, y);
+		if (map[x][y].entity != null) {
+			map[x][y].entity = null;
+		}
+		
 		map[x][y].entity = new MazeEntrance(location);
-		map[x][y + 1].entity = null;
+		map[x - 1][y + 1].entity = null;
 		map[x + 1][y + 1].entity = null;
 	}
 
@@ -457,5 +467,4 @@ public abstract class Map implements IMap {
 			}
 		}
 	}
-	
 }
