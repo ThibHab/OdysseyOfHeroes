@@ -22,46 +22,44 @@ public class MapRender {
 	public int tileSize;
 	int bufferTile = 6;
 
-	public Location camera= new Location(0.0f, 0.0f);;
+	public Location camera = new Location(0.0f, 0.0f);;
 	public Location offset = new Location(0.0f, 0.0f);
 
 	public MapRender(Map map, Game game) {
 		this.map = map;
 		this.game = game;
-
+		this.camera = new Location(0, 0);
 	}
 
 	float roundDeci(float val, int nbDec) {
 		long factor = (long) Math.pow(10, nbDec);
 		return (float) Math.round(val * factor) / factor;
 	}
-	
-	public void bossCam(int w,int h) {
-		DungeonMap dmap=(DungeonMap)map;
-		this.camera=map.mid(new Location((float)dmap.sizeX,(float)dmap.sizeY), new Location(1,1));
-		nbTileY=dmap.sizeY+bufferTile;
+
+	public void bossCam(int w, int h) {
+		DungeonMap dmap = (DungeonMap) map;
+		this.camera = map.mid(new Location((float) dmap.sizeX, (float) dmap.sizeY), new Location(1, 1));
+		nbTileY = dmap.sizeY + bufferTile;
 		nbTileX = (int) Math.ceil(nbTileY * (double) w / h);
 		double tempx = w / dmap.sizeX;
-		double tempy = h / (dmap.sizeY+2);
+		double tempy = h / (dmap.sizeY + 2);
 		this.tileSize = (int) Math.min(Math.ceil(tempy), Math.ceil(tempx));
 	}
 
 	public void updateCam(Melee player1, Range player2, int w, int h) {
-		if(map instanceof DungeonMap) {
-			bossCam(w,h);
-		}else {
+		if (map instanceof DungeonMap) {
+			bossCam(w, h);
+		} else {
 			this.camera = map.mid(player1.location, player2.location);
 			float viewX = map.diffX(player2.location.getX(), player1.location.getX()) + bufferTile;
 			float viewY = map.diffY(player2.location.getY(), player1.location.getY()) + bufferTile;
 			if (viewX < EntitiesConst.MAX_DIFFX * 2 + bufferTile && viewY < EntitiesConst.MAX_DIFFY * 2 + bufferTile) {
 				Location upLeft = new Location((camera.getX() - viewX / 2 + map.lenX) % map.lenX,
 						(camera.getY() - viewY / 2 + map.lenY) % map.lenY);
-				nbTileX = (int) Math.ceil(
-						map.diffX((float) Math.floor(upLeft.getX()), (float) Math.ceil(upLeft.getX() + viewX) % map.lenX))
-						+ 1;
-				nbTileY = (int) Math.ceil(
-						map.diffY((float) Math.floor(upLeft.getY()), (float) Math.ceil(upLeft.getY() + viewY) % map.lenY))
-						+ 1;
+				nbTileX = (int) Math.ceil(map.diffX((float) Math.floor(upLeft.getX()),
+						(float) Math.ceil(upLeft.getX() + viewX) % map.lenX)) + 3;
+				nbTileY = (int) Math.ceil(map.diffY((float) Math.floor(upLeft.getY()),
+						(float) Math.ceil(upLeft.getY() + viewY) % map.lenY)) + 3;
 				double tempx = w / viewX;
 				double tempy = h / viewY;
 				if (tempx > tempy) {
@@ -116,7 +114,7 @@ public class MapRender {
 	}
 
 	float opacity(float d) {
-		float opa = 1 - (float) (Math.pow(Math.E, -(d * d*10 / 26)));
+		float opa = 1 - (float) (Math.pow(Math.E, -(d * d * 10 / 26)));
 		if (opa > 0.90) {
 			return 0.97f;
 		}
@@ -176,6 +174,11 @@ public class MapRender {
 					transparent.add((TransparentDecorElement) renderTile.entity);
 				}
 				if (renderTile.tpBlock != null) {
+					if (EntitiesConst.GAME.debug) {
+						Location loc = this.gridToPixel(renderTile.location, true);
+						renderTile.tpBlock.paint(g, tileSize, roundDeci((i + this.offset.getX()) * tileSize, 3),
+								roundDeci((j + this.offset.getY()) * tileSize, 3));
+					}
 					Iterator it = renderTile.tpBlock.target.iterator();
 					while (it.hasNext()) {
 						TransparentDecorElement tde = (TransparentDecorElement) it.next();
@@ -201,15 +204,15 @@ public class MapRender {
 					roundDeci((this.offset.getY()) * tileSize, 3));
 		}
 	}
-    
-    void paintBubbles(Graphics g) {
+
+	void paintBubbles(Graphics g) {
 		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
 			EntitiesConst.MAP.bubbles.get(i).paint(g, tileSize, roundDeci((this.offset.getX()) * tileSize, 3),
 					roundDeci((this.offset.getY()) * tileSize, 3));
 		}
 	}
 
-	void paintDark(Graphics g,DungeonMap dmap) {
+	void paintDark(Graphics g, DungeonMap dmap) {
 		int resolution = 3;
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {
@@ -222,11 +225,11 @@ public class MapRender {
 						float d = 2 * resolution;
 						Location tile = map.add(new Location(mapX, mapY), new Location(
 								(float) si / resolution + (float) 1 / d, (float) sj / resolution + (float) 1 / d));
-						int opa=(int) (opacity(closestLight(tile)) * 255*dmap.transiPercent);
-						g.setColor(new Color(0, 0, 0,opa));
-						int sizeX = 1+tileSize / resolution;
-						int sizeY = 1+tileSize / resolution;
-						g.fillRect((int)Xscreen, (int)Yscreen, sizeX, sizeY);
+						int opa = (int) (opacity(closestLight(tile)) * 255 * dmap.transiPercent);
+						g.setColor(new Color(0, 0, 0, opa));
+						int sizeX = 1 + tileSize / resolution;
+						int sizeY = 1 + tileSize / resolution;
+						g.fillRect((int) Xscreen, (int) Yscreen, sizeX, sizeY);
 					}
 				}
 			}
@@ -244,13 +247,13 @@ public class MapRender {
 		paintProj(g);
 		// DECOR & PLAYER
 		paintEntity(g);
-        paintBubbles(g);
+		paintBubbles(g);
 		// NIGHT
 		if (map instanceof DungeonMap) {
-			DungeonMap dmap=(DungeonMap)map;
+			DungeonMap dmap = (DungeonMap) map;
 			dmap.torchLit();
-			if((!dmap.lit) )
-			paintDark(g,dmap);
+			if ((!dmap.lit))
+				paintDark(g, dmap);
 		}
 	}
 

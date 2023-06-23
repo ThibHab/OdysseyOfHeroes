@@ -215,7 +215,7 @@ Bush(Existing){
   | !GotPower ? Pop : (On)
   
   * (On)
-  } 
+  }
   
   Hermit (Thinking) {
   * (Thinking)
@@ -225,5 +225,14 @@ Bush(Existing){
   | Cell(F, V) ? Move(F) : (Thinking)
   }
   
+  DungeonEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
+  
+  MazeEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
  
  

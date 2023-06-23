@@ -14,29 +14,30 @@ public class WorldMap extends Map {
 		this.setLac(9, 12, 3);
 		this.setVillage(30, 30, 25);
 		this.setForest(70, 70, 30, 2);
-			
 		
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Tree", 2, 30);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", 2, 10);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", 2, 15);
 		
+		this.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
+		this.setMazeEntrance(EntitiesConst.MAZE_ENTRANCE_X_POS, EntitiesConst.MAZE_ENTRANCE_Y_POS);
 		
-		setPlayer(29, 31, p1);
-		setPlayer(31, 31, p2);
-		
-		// laisser en dernier !
-		WorldMap.saveTile1.entity = null;
-		WorldMap.saveTile2.entity = null;
+		if (EntitiesConst.MAP == null) {
+			setPlayer(29, 31, p1);
+			setPlayer(31, 31, p2);
+		}
 		
 		EntitiesConst.MAP = this;
 		EntitiesConst.MAP_MATRIX = this.map;
+		
 		Villager v = new VillagerGirl(new Location(30,31));
 		Villager m = new Miner(new Location(29,30));
 		Villager h = new Hermit(new Location(78,66));
 		map[(int)v.location.getX()][(int)v.location.getY()].entity = v;
 		map[(int)m.location.getX()][(int)m.location.getY()].entity = m;
 		map[(int)h.location.getX()][(int)h.location.getY()].entity = h;
-		
+        
+		WorldMap.saveTile1.entity = null;
+		WorldMap.saveTile2.entity = null;
 	}
-
 }
