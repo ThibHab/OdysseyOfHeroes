@@ -161,23 +161,51 @@ public abstract class Map implements IMap {
 	public void setDungeonEntrance(int x, int y) {
 		Location location = new Location(x, y);
 		if (map[x][y].entity != null) {
-			map[x][y].entity = null;
+			if (map[x][y].entity instanceof Tree) {
+				
+			} else {
+				map[x][y].entity = null;
+			}
 		}
 		
 		map[x][y].entity = new DungeonEntrance(location);
-		map[x - 1][y + 1].entity = null;
-		map[x + 1][y + 1].entity = null;
+		
+		if (map[x - 1][y + 1].entity instanceof Tree) {
+			
+		} else {
+			map[x - 1][y + 1].entity = null;
+		}
+		
+		if (map[x + 1][y + 1].entity instanceof Tree) {
+			
+		} else {
+			map[x + 1][y + 1].entity = null;
+		}
 	}
 	
 	public void setMazeEntrance(int x, int y) {
 		Location location = new Location(x, y);
 		if (map[x][y].entity != null) {
-			map[x][y].entity = null;
+			if (map[x][y].entity instanceof Tree) {
+				
+			} else {
+				map[x][y].entity = null;
+			}
 		}
 		
 		map[x][y].entity = new MazeEntrance(location);
-		map[x - 1][y + 1].entity = null;
-		map[x + 1][y + 1].entity = null;
+		
+		if (map[x - 1][y + 1].entity instanceof Tree) {
+			
+		} else {
+			map[x - 1][y + 1].entity = null;
+		}
+		
+		if (map[x + 1][y + 1].entity instanceof Tree) {
+			
+		} else {
+			map[x + 1][y + 1].entity = null;
+		}
 	}
 
 	/**
