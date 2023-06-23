@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
 
@@ -32,6 +33,21 @@ public class HudInGame {
 		range = ImagesConst.RANGE[0];
 		coinIcone = ImagesConst.COIN[0];
 		sword = ImagesConst.SWORD;
+	}
+	
+	public void setTimer(Graphics g) {
+		int timer = EntitiesConst.MAZE_COUNTER_LIMIT - EntitiesConst.GAME.player1.mazeCounter;
+		int timerSec = (timer / 1000) % 60;
+		int timerMin = (timer / 1000) / 60;
+		String setTimer = String.format("%02d", timerMin) + ":" + String.format("%02d", timerSec);
+		Font f = new Font(null, 0, 50);
+		g.setColor(Color.red);
+		g.setFont(f);
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(setTimer, g);
+		int textWidth = (int) rec.getWidth();
+		int textHeight = (int) rec.getHeight();
+		
+		g.drawString(setTimer, (m_frame.getWidth() / 2)  - (int) (textWidth / 2), 100);
 	}
 	
 	public void paint(Graphics g){
@@ -147,6 +163,10 @@ public class HudInGame {
 		g.setColor(Color.blue);
 		String lv = "Level " + Hero.level;
 		g.drawString(lv, width/2 - ((lv.length() * 28) / 4), height - 20);
+		
+		if (EntitiesConst.GAME.player1.mazeCounterActivated) {
+			setTimer(g);
+		}
 		
 		return;
 	}
