@@ -22,11 +22,16 @@ package info3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -171,6 +176,9 @@ public class Game {
 	}
 
 	public void setupGame(File file) throws Exception {
+		m_frame.setCursor(m_frame.getToolkit().createCustomCursor(
+	            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+	            "null"));
 		byte[] buffer = null;
 		if (file == null) {
 			file = new File("save.txt");
@@ -228,7 +236,11 @@ public class Game {
 	 * and the game canvas to the center.
 	 */
 	private void setupFrame() {
-
+		Toolkit tkit = Toolkit.getDefaultToolkit();
+		Point point = new Point(25,25);
+		Image agrou = ImagesConst.CURSOR[0];
+		Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
+		m_frame.setCursor(curs);
 		m_frame.setTitle("Game");
 		m_frame.setLayout(new BorderLayout());
 
