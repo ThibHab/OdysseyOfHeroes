@@ -191,9 +191,9 @@ Bush(Existing){
    | True ? : (Exists) 
  }
  
- Chest(Exists) {
-   * (Exists)
-   | True ? : (Exists)
+ Chest(Existing) {
+   *(Exists)
+   | True ? : (Exists) 
  }
  
   CaveWall(Existing){
