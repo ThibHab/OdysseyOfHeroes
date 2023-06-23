@@ -25,8 +25,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
-import java.nio.CharBuffer;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -39,20 +37,15 @@ import info3.game.automata.ast.IVisitor;
 import info3.game.automata.parser.AutomataParser;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.constants.MapConstants;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
-import info3.game.entity.Location;
 import info3.game.entity.Melee;
 import info3.game.entity.Range;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
-import info3.game.map.DebugMap;
-import info3.game.map.DungeonMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
-import info3.game.map.MazeMap;
 import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
 
@@ -70,7 +63,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
+	public boolean debug = true;
 	JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
