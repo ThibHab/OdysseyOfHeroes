@@ -1,6 +1,5 @@
 package info3.game.map;
 
-import java.awt.Graphics;
 import java.util.Random;
 
 import info3.game.constants.EntitiesConst;
@@ -16,17 +15,7 @@ public class MazeMap extends Map {
 	
 	public MazeMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
-		this.maze = new Maze(MapConstants.MAZE_MAP_SIZE);
-		
-		Location lp1 = new Location(1, 1);
-		Location lp2 = new Location(1, 2);
-		this.player1.location.setX(lp1.getX());
-		this.player1.location.setY(lp1.getY());
-		this.player2.location.setX(lp2.getX());
-		this.player2.location.setY(lp2.getY());
-		this.player1.hitbox.update();
-		this.player2.hitbox.update();
-		
+		this.maze = new Maze(MapConstants.MAZE_MAP_SIZE);		
 		boolean[][] mazeMatrix = this.maze.get_matrice(MapConstants.MAZE_MAP_CORRIDOR_SIZE);
 		int nbChestSpawned = 0;
 		for (int row = 0; row < mazeMatrix.length; row++) {
@@ -49,15 +38,11 @@ public class MazeMap extends Map {
 			}
 		}
 		
-		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
-		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
-		
-		this.maze.pretty_print(MapConstants.MAZE_MAP_CORRIDOR_SIZE);
+		//this.maze.pretty_print(MapConstants.MAZE_MAP_CORRIDOR_SIZE);
 		
 		this.setPlayer(1, 1, p1);
 		this.setPlayer(1, 3, p2);
-		this.map[1][2].entity = null;
-		
+	
 		EntitiesConst.MAP = this;
 		EntitiesConst.MAP_MATRIX = this.map;
 	}

@@ -25,12 +25,6 @@ public class WorldMap extends Map {
 		if (EntitiesConst.MAP == null) {
 			setPlayer(29, 31, p1);
 			setPlayer(31, 31, p2);
-		} else if (EntitiesConst.MAP instanceof MazeMap) {
-			setPlayer(EntitiesConst.MAZE_ENTRANCE_X_POS, EntitiesConst.MAZE_ENTRANCE_Y_POS + 1, p1);
-			setPlayer(EntitiesConst.MAZE_ENTRANCE_X_POS + 1, EntitiesConst.MAZE_ENTRANCE_Y_POS + 1, p2);
-		} else if (EntitiesConst.MAP instanceof DungeonMap) {
-			setPlayer(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1, p1);
-			setPlayer(EntitiesConst.DUNGEON_ENTRANCE_X_POS + 1, EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1, p2);
 		}
 		
 		EntitiesConst.MAP = this;
