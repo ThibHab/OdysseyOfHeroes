@@ -85,11 +85,13 @@ public abstract class Hero extends Entity {
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin)
-				this.coins ++;
+				Hero.coins ++;
 			else if (entity instanceof HealingPotion)
 				this.healingPotions++;
 			else if (entity instanceof StrengthPotion)
 				this.strengthPotions++;
+			else if (entity instanceof Chest)
+				Hero.coins += 5;
 			
 			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
