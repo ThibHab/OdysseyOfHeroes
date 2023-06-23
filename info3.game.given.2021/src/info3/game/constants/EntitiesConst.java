@@ -41,8 +41,8 @@ public class EntitiesConst {
 	public static final int RANGE_RANGE = 3;
 	
 	// BOMB CONSTANTS
-	public static int BOMB_TIMER = 3000;
-	public static float BOMB_RADIUS =2f;
+	public static final int BOMB_TIMER = 3000;
+	public static final float BOMB_RADIUS =2f;
 	
 	// SKELETON CONSTANTS
 	public static final int SKELETON_HEALTH = 20;
@@ -86,10 +86,14 @@ public class EntitiesConst {
 	public static final float COWBOY_SCALE = 1.3f;
 	
 	// ENERGYBALL CONSTANTS
-	public static float ENERGYBALL_SCALE = 1.2f;
+	public static final float ENERGYBALL_SCALE = 1.2f;
 	
 	// MAZE WALL CONSTANTS
 	public static final float MAZE_WALL_SCALE = 1.0f;
+	
+	// SPEECH CONSTANTS
+	public static final float SPEECHBUBBLE_SCALE = 1.0f;
+	public static final float VILLAGER_SCALE = 1.0f;
 	
 	// STATUE CONSTANTS
 	public static final float STATUE_SCALE =4f;
