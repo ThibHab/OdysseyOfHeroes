@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.util.Random;
 
 import info3.game.constants.MapConstants;
-import info3.game.entity.CaveWall;
+import info3.game.entity.MazeWall;
 import info3.game.entity.Chest;
 import info3.game.entity.Entity;
 import info3.game.entity.Goblin;
@@ -33,7 +33,7 @@ public class MazeMap extends Map {
 				Location location = new Location(row, column);
 				this.map[row][column] = new DirtTile(location);
 				if (mazeMatrix[row][column]) {
-					this.map[row][column].entity = new CaveWall(location);
+					this.map[row][column].entity = new MazeWall(location);
 				} else {
 					Random random = new Random();
 					int randomSpawn = random.nextInt(100);

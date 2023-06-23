@@ -52,7 +52,7 @@ public class ImagesConst {
 		BUSH = loadSprite("Bush", 3, 2);
 		CHEST = loadSprite("Chest", 2, 2);
 		TORCH = loadSprite("torch", 2, 3);
-		CAVE_WALL = loadSprite("cave_wall", 1, 1);
+		MAZE_WALL = loadSprite("MazeWall", 1, 1);
 		DUNGEON_WALL = loadSprite("DungeonWall", 3, 2);
 
 		MELEE = loadSprite("Melee", 8, 7);

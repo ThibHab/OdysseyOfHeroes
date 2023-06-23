@@ -4,8 +4,8 @@ import info3.game.automata.Aut_Automaton;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class CaveWall extends DecorElement {
-	public CaveWall(Location l) {
+public class MazeWall extends DecorElement {
+	public MazeWall(Location l) {
 		super();
 		this.name = "CaveWall";
 		this.location = l;
@@ -21,14 +21,14 @@ public class CaveWall extends DecorElement {
 		// -----------------------------
 
 		// --- TODO manage sprite properly ---
-		this.sprites = ImagesConst.CAVE_WALL;
+		this.sprites = ImagesConst.MAZE_WALL;
 		this.imageIndex = 0;
 		// -----------------------------------
 		
 		this.width = 1;
 		this.height = 1;
 		
-		this.scale = EntitiesConst.CAVE_WALL_SCALE;
+		this.scale = EntitiesConst.MAZE_WALL_SCALE;
 	}
 
 }
