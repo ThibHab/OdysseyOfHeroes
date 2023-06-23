@@ -87,7 +87,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
+	public boolean debug = true;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -202,7 +202,7 @@ public class Game {
 		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, MapConstants.MAZE_MAP_SIZE *
 		// (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1, player1, player2);
 		map = new WorldMap(100, 100, player1, player2);
-		// map = new DungeonMap(32, 32, player1, player2);
+		// map = new DungeonMap(40, 40, player1, player2);
 		// map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map) map, this);
 
