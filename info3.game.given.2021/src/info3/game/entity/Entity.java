@@ -343,9 +343,6 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void takeDamage(Entity attacker) {
-		if (this.dead && attacker instanceof Hero && this instanceof Hero) {
-			this.revive();
-		}
 //		else if (!this.frozen /* && attacker.category != this.category */) {
 		System.out.println("victim has " + this.health + " hearts");
 //			this.frozen = true;
