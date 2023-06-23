@@ -86,5 +86,15 @@ public class EntitiesConst {
 	public static final float MAZE_WALL_SCALE = 1.0f;
 	
 	// STATUE CONSTANTS
-	public static float STATUE_SCALE = 4.0f;
+	public static final float STATUE_SCALE = 4.0f;
+	
+	// DUNGEON ENTRANCE CONSTANTS
+	public static final float DUNGEON_ENTRANCE_SCALE = 1.0f;
+	public static final int DUNGEON_ENTRANCE_X_POS = 70;
+	public static final int DUNGEON_ENTRANCE_Y_POS = 30;
+	
+	// MAZE ENTRANCE CONSTANTS
+	public static final float MAZE_ENTRANCE_SCALE = 1.0f;
+	public static final int MAZE_ENTRANCE_X_POS = 30;
+	public static final int MAZE_ENTRANCE_Y_POS = 70;
 }

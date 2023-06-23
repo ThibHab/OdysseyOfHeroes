@@ -15,7 +15,7 @@ public class ImagesConst {
 	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGER;
-	public static BufferedImage[] BUSH, CHEST, TORCH, CAVE_WALL, DUNGEON_WALL;
+	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL, DUNGEON_ENTRANCE;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
 	public static BufferedImage[] BOMB;
@@ -53,7 +53,9 @@ public class ImagesConst {
 		CHEST = loadSprite("Chest", 2, 2);
 		TORCH = loadSprite("torch", 2, 3);
 		MAZE_WALL = loadSprite("MazeWall", 1, 1);
+		MAZE_ENTRANCE = loadSprite("MazeEntrance", 1, 1);
 		DUNGEON_WALL = loadSprite("DungeonWall", 3, 2);
+		DUNGEON_ENTRANCE = loadSprite("DungeonEntrance", 1, 1);
 
 		MELEE = loadSprite("Melee", 8, 7);
 		RANGE = loadSprite("Range", 8, 7);

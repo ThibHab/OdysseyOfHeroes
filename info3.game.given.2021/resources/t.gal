@@ -191,7 +191,17 @@ Bush(Existing){
   | !GotPower ? Pop : (On)
   
   * (On)
-  } 
+  }
+  
+  DungeonEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
+  
+  MazeEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
  
  
  
