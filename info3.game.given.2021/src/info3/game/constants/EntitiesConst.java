@@ -55,7 +55,7 @@ public class EntitiesConst {
 	public static final int GOBLIN_HEALTH = 20;
 	public static final int GOBLIN_DAMAGE = 2;
 	public static final int GOBLINE_RANGE = 2;
-	public static final int GOBLIN_SPEED = 2;
+	public static final int GOBLIN_SPEED = 6;
 	public static final float GOBLIN_SCALE = 1.3f;
 	
 	// BOSS CONSTANTS
