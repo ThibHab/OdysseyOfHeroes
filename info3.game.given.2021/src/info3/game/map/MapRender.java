@@ -168,6 +168,7 @@ public class MapRender {
 		}
 	}
 	
+	
 	void paintDark(Graphics g) {
 		for (int j = 0; j < nbTileY; j++) {
 			for (int i = 0; i < nbTileX; i++) {

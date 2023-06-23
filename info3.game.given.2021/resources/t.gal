@@ -42,7 +42,7 @@ Player2(Stand_S){
  
  Player2 (Stand) {
   * (Stand)
-  | Cell(H,P) ? Pick(H) : (Stand)
+  | Cell(F,P) ? Pick(F) : (Stand)
   | Key(i) ? Hit(F)  :(Stand)
   | Key(o) ? Move(N) :(Stand)
   | Key(l) ? Move(S) :(Stand)
@@ -96,9 +96,10 @@ Player2(Stand_S){
 
 Bush(Existing){
   *(Existing)
-  | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
+  | !GotPower ? 5% Egg(H,A) / 50% Egg(H,P,1) / 10% Egg(H,P,2) / 10% Egg(H,P,3) : (Growing)
   
-  * ()
+  * (Growing)
+  | True ? Wait(10000) : (Existing)
  } 
  
  Tree(Existing){

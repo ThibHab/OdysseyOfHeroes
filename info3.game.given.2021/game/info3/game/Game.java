@@ -40,6 +40,7 @@ import info3.game.automata.parser.AutomataParser;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.constants.MapConstants;
+import info3.game.entity.Bush;
 import info3.game.entity.Cowboy;
 import info3.game.entity.Entity;
 import info3.game.entity.Location;
@@ -196,6 +197,10 @@ public class Game {
 
 		for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
 			EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
+		}
+		
+		for (Bush b : EntitiesConst.MAP.deadBush) {
+			b.tick(elapsed);
 		}
 
 		((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);

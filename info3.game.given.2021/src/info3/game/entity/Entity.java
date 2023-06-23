@@ -124,11 +124,12 @@ public abstract class Entity implements IEntity {
 						EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 					
 				}
-			} else if (timer > 0) {
+			} else if (timer != Integer.MIN_VALUE) {
 				this.timer -= elapsed;
 				if (timer < 0) {
 					this.frozen = false;
 					timer = Integer.MIN_VALUE;
+					waited();
 				}
 			}
 		} else {
@@ -390,6 +391,10 @@ public abstract class Entity implements IEntity {
 	public void Wait(int time) {
 		this.timer = time;
 		this.frozen = true;
+	}
+	
+	public void waited() {
+		
 	}
 
 	@Override
