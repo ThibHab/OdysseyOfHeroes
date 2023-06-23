@@ -211,7 +211,7 @@ public class Game {
 		Entity.InitStatics(this, level, xp);
 
 		hud = new HudInGame(m_frame);
-		
+
 		if (reload) {
 			this.reload(buffer);
 		}
@@ -283,32 +283,35 @@ public class Game {
 	 * that elapsed since the last time this method was invoked.
 	 */
 	void tick(long elapsed) {
-		if (menu.getStarted()) {
-			for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
-				EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
-			}
+		try {
+			if (menu.getStarted()) {
+				for (int i = 0; i < EntitiesConst.MAP.projectiles.size(); i++) {
+					EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
+				}
 
-			((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
+				((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 
-			if (EntitiesConst.GAME.debug) {
-				m_textElapsed += elapsed;
-				// TODO modif pour debug
-				if (m_textElapsed > 100) {
-					m_textElapsed = 0;
-					float period = m_canvas.getTickPeriod();
-					int fps = m_canvas.getFPS();
+				if (EntitiesConst.GAME.debug) {
+					m_textElapsed += elapsed;
+					// TODO modif pour debug
+					if (m_textElapsed > 100) {
+						m_textElapsed = 0;
+						float period = m_canvas.getTickPeriod();
+						int fps = m_canvas.getFPS();
 
-					String txt = "Tick=" + period + "ms";
-					while (txt.length() < 15)
-						txt += " ";
-					txt = txt + fps + " fps   ";
-					txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
-					txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
-					txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
-					txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
-					m_text.setText(txt);
+						String txt = "Tick=" + period + "ms";
+						while (txt.length() < 15)
+							txt += " ";
+						txt = txt + fps + " fps   ";
+						txt = txt + "P1:" + player1.location.getX() + ";" + player1.location.getY() + "     ";
+						txt = txt + "P2:" + player2.location.getX() + ";" + player2.location.getY() + "     ";
+						txt = txt + "Cam:" + render.camera.getX() + ";" + render.camera.getY() + "     ";
+						txt = txt + "offset" + render.offset.getX() + ";" + render.offset.getY() + "     ";
+						m_text.setText(txt);
+					}
 				}
 			}
+		} catch (Exception e) {
 		}
 		// Update every second
 		// the text on top of the frame: tick and fps

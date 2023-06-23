@@ -54,13 +54,6 @@ public class Melee extends Hero{
 	public int totSrpitePerDir() {
 		return AnimConst.MELEE_TOT;
 	}
-
-	@Override
-	public void updateStats() {
-		this.weaponDamage++;
-		this.maxHealth += 1;
-		this.health = this.maxHealth;
-	}
 	
     // function called only in the dungeon map
 	public void lightAround() {
