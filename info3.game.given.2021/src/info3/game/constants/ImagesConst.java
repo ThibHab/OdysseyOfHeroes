@@ -14,7 +14,7 @@ public class ImagesConst {
 	public static BufferedImage MENU_PICTURE;
 	public static BufferedImage SWORD;
 
-	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE;
+	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
 	public static BufferedImage[] BUSH, CHEST, TORCH, CAVE_WALL, DUNGEON_WALL;
@@ -77,6 +77,8 @@ public class ImagesConst {
 		MINER = loadSprite("Miner", 4, 3);
 		
 		SPEECHBUBBLE = loadSprite("SpeechBubble", 1, 1);
+		
+		CURSOR = loadSprite("agrou_vert", 1, 1);
 		
 	}
 
