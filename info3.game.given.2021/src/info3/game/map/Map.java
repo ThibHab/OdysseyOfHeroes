@@ -210,12 +210,18 @@ public abstract class Map implements IMap {
 	}
 
 	public void setPlayer(int x, int y, Entity player) {
-		player.action = Action.S;
+		if (player.action != Action.D) {
+			player.action = Action.S;
+		}
+		
 		player.location.setX(x);
 		player.location.setY(y);
 		player.hitbox.update();
 		map[x][y].entity = player;
-		player.frozen = false;
+		
+		if (player.action != Action.D) {
+			player.frozen = false;
+		}
 	}
 	
 	public void setDungeonEntrance(int x, int y) {
@@ -231,7 +237,7 @@ public abstract class Map implements IMap {
 		map[x][y].entity = new DungeonEntrance(location);
 		
 		if (map[x][y + 1].entity instanceof Tree) {
-			this.delTree(x - 1, y + 1);
+			this.delTree(x, y + 1);
 		} else {
 			map[x][y + 1].entity = null;
 		}
@@ -262,7 +268,7 @@ public abstract class Map implements IMap {
 		map[x][y].entity = new MazeEntrance(location);
 		
 		if (map[x][y + 1].entity instanceof Tree) {
-			this.delTree(x - 1, y + 1);
+			this.delTree(x, y + 1);
 		} else {
 			map[x][y + 1].entity = null;
 		}
