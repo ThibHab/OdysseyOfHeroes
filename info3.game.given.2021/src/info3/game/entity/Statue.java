@@ -6,9 +6,9 @@ import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
-public class Statue extends DecorElement {
+public class Statue extends TransparentDecorElement {
 	public Statue(Location l) {
-		super();
+		super(15);
 		this.name = "Statue";
 		this.location = l;
 
@@ -21,8 +21,8 @@ public class Statue extends DecorElement {
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this,ImagesConst.STATUE, null, acts);
 		
-		this.width = 1;
-		this.height = 1;
+		this.width = 5;
+		this.height = 5;
 		
 		this.scale = EntitiesConst.STATUE_SCALE;
 	}

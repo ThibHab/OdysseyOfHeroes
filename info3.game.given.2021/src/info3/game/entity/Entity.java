@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.util.Random;
 
 import animations.Animation;
+import animations.Effect;
+import animations.SpearEffect;
+import animations.SwordEffect;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
@@ -11,7 +14,11 @@ import info3.game.automata.Aut_Direction;
 import info3.game.automata.Aut_State;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.MapConstants;
+import info3.game.map.DungeonMap;
 import info3.game.map.Map;
+import info3.game.map.MapRender;
+import info3.game.map.MazeMap;
 import info3.game.map.Tile;
 
 public abstract class Entity implements IEntity {
@@ -33,6 +40,8 @@ public abstract class Entity implements IEntity {
 	public long actionIndex;
 	public int detectionRadius;
 	public Hitbox hitbox;
+	public int mazeCounter;
+	public boolean mazeCounterActivated;
 
 	public Animation anim;
 	public float scale;
@@ -65,6 +74,9 @@ public abstract class Entity implements IEntity {
 		this.dead = false;
 
 		this.scale = 1;
+
+		this.mazeCounter = 0;
+		this.mazeCounterActivated = false;
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -165,31 +177,52 @@ public abstract class Entity implements IEntity {
 				this.action = Action.M;
 			}
 			this.anim.changeAction(action);
-			
+
 			this.destLocation = new Location(this.location.getX(), this.location.getY());
-			originLocation = new Location(this.location.getX(), this.location.getY());
-			relativeMouv = new Location(0, 0);
+			this.originLocation = new Location(this.location.getX(), this.location.getY());
+			this.relativeMouv = new Location(0, 0);
 			switch (d) {
 			case N:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(-1);
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(-1);
 				break;
 			case S:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(1);
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(1);
 				break;
 			case W:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(-1);
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(-1);
 				break;
 			case E:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(1);
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(1);
 				break;
 			default:
 				break;
 			}
+
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
+			if (this instanceof Hero && (destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
+				if (destTile.entity instanceof DungeonEntrance) {
+					EntitiesConst.GAME.previousMap = 2;
+					EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1].entity = null;
+					EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+				} else if (destTile.entity instanceof MazeEntrance) {
+					EntitiesConst.GAME.previousMap = 1;
+					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS + 1].entity = null;
+					EntitiesConst.GAME.map = new MazeMap(
+							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+							EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+					EntitiesConst.GAME.player1.mazeCounterActivated = true;
+				}
+				
+				EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
+				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2, EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+				EntitiesConst.GAME.render.setOffsetCam();
+			}
+
 			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
 					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
 				destTile.entity = this;
@@ -267,8 +300,6 @@ public abstract class Entity implements IEntity {
 	public void Hit(Aut_Direction d) {
 		// TODO Melee blocked when touching an enemy, also see for the hits in the
 		// border of the maps
-		Hero.bushesCut = 20;
-		Hero.coins = 50;
 		if (!this.frozen) {
 			this.frozen = true;
 			if (d != null) {
@@ -279,6 +310,7 @@ public abstract class Entity implements IEntity {
 			}
 			this.anim.changeAction(action);
 			Location t = frontTileLocation(d);
+			this.attackEffect(t);
 
 			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
 			if (entity != null) {
@@ -315,7 +347,7 @@ public abstract class Entity implements IEntity {
 			this.revive();
 		}
 //		else if (!this.frozen /* && attacker.category != this.category */) {
-		System.out.println("HEHO CA FAIT MALEUH");
+		System.out.println("victim has " + this.health + " hearts");
 //			this.frozen = true;
 //			this.action = Action.T;
 //			this.anim.changeAction(action);
@@ -334,7 +366,7 @@ public abstract class Entity implements IEntity {
 	public void die() {
 		if (this.action != Action.D) {
 			this.action = Action.D;
-			
+
 			this.frozen = true;
 
 			if (EntitiesConst.GAME.debug) {
@@ -530,5 +562,8 @@ public abstract class Entity implements IEntity {
 		return (map.dist(hg, circleCenter) <= radius) || (map.dist(hd, circleCenter) <= radius)
 				|| (map.dist(bg, circleCenter) <= radius) || (map.dist(bd, circleCenter) <= radius);
 
+	}
+
+	public void attackEffect(Location t) {
 	}
 }

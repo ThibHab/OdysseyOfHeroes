@@ -173,6 +173,7 @@ Bush(Existing){
  
   Goblin(Search) {
    * (Search)
+   | !GotPower ? : ()
    | Cell(@,N) ? Hit(N) : (Search)
    | Cell(@,S) ? Hit(S) : (Search)
    | Cell(@,E) ? Hit(E) : (Search)
@@ -181,6 +182,8 @@ Bush(Existing){
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+   
+   * ()
  }
  
  Coin(Exists) {
@@ -227,7 +230,7 @@ Bush(Existing){
   | !GotPower ? Pop : (On)
   
   * (On)
-  } 
+  }
   
   Hermit (Thinking) {
   * (Thinking)
@@ -237,5 +240,14 @@ Bush(Existing){
   | Cell(F, V) ? Move(F) : (Thinking)
   }
   
+  DungeonEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
+  
+  MazeEntrance(Existing){
+	*(Existing)
+	| True ? : (Existing)
+  }
  
  

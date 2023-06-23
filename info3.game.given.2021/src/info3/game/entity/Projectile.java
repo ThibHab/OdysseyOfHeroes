@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import animations.Animation;
+import animations.SmokeEffect;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
@@ -104,7 +105,6 @@ public class Projectile extends Entity {
 	public void tick(long elapsed) {
 		if (this.owner.range < this.tilesCrossed) {
 			EntitiesConst.MAP.projectiles.remove(this);
-			System.out.println("dead proj");
 			return;
 		}
 		this.automaton.step(this, EntitiesConst.GAME);
@@ -112,6 +112,7 @@ public class Projectile extends Entity {
 		Entity e = EntitiesConst.MAP_MATRIX[(int) this.destLocation.getX()][(int) this.destLocation.getY()].entity;
 		if (e != null && e != this.owner) {
 			if (this.hitboxOverlap(e)) {
+				new SmokeEffect(this.location);
 				e.takeDamage(this.owner);
 				System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
 				EntitiesConst.MAP.projectiles.remove(this);

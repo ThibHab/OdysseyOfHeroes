@@ -14,15 +14,16 @@ public class ImagesConst {
 	public static BufferedImage MENU_PICTURE;
 	public static BufferedImage SWORD;
 
-	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE;
+	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
-	public static BufferedImage[] BUSH, CHEST, TORCH, CAVE_WALL, DUNGEON_WALL;
+	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL, DUNGEON_ENTRANCE;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
 	public static BufferedImage[] SPEECHBUBBLE;
 	public static BufferedImage[] BOMB;
 	public static BufferedImage[] SAVE_TILES;
+	public static BufferedImage[] SWORD_EFFECT, SPEAR_EFFECT, HEAL_EFFECT, EXPLOSION_EFFECT, SMOKE_EFFECT;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -56,8 +57,10 @@ public class ImagesConst {
 		BUSH = loadSprite("Bush", 3, 2);
 		CHEST = loadSprite("Chest", 2, 2);
 		TORCH = loadSprite("torch", 2, 3);
-		CAVE_WALL = loadSprite("cave_wall", 1, 1);
+		MAZE_WALL = loadSprite("MazeWall", 1, 1);
+		MAZE_ENTRANCE = loadSprite("MazeEntrance", 1, 1);
 		DUNGEON_WALL = loadSprite("DungeonWall", 3, 2);
+		DUNGEON_ENTRANCE = loadSprite("DungeonEntrance", 1, 1);
 
 		MELEE = loadSprite("Melee", 8, 7);
 		RANGE = loadSprite("Range", 8, 7);
@@ -77,6 +80,13 @@ public class ImagesConst {
 		MINER = loadSprite("Miner", 4, 3);
 		
 		SPEECHBUBBLE = loadSprite("SpeechBubble", 1, 1);
+		SWORD_EFFECT = loadSprite("SwordAttackV2", 5, 1);
+		SPEAR_EFFECT = loadSprite("SpearAttack", 3, 2);
+		HEAL_EFFECT = loadSprite("Heal", 4, 4);
+		EXPLOSION_EFFECT = loadSprite("Explosion", 3, 2);
+		SMOKE_EFFECT = loadSprite("Smoke", 3, 2);
+		
+		CURSOR = loadSprite("agrou_vert", 1, 1);
 		
 	}
 
