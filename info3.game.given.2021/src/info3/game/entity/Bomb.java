@@ -33,6 +33,7 @@ public class Bomb extends Entity {
 		this.anim = new Animation(this,ImagesConst.BOMB, null, acts);
 
 		this.scale = 1;
+		this.category = Aut_Category.D;
 		timer = EntitiesConst.BOMB_TIMER;
 		EntitiesConst.MAP.createBomb((int) loc.getX(), (int) loc.getY(), this);
 	}
