@@ -122,23 +122,21 @@ public class Boss extends Mob {
 		boolean yPosValid = false;
 		Random random = new Random();
 		for (int i = 0; i < EntitiesConst.BOSS_NUMBER_PROJECTILES_TO_BE_FIRED; i++) {
-			int randomPosY = random.nextInt(12);
-			randomPosY++;
-			
+			int randomPosY = 0;
 			while (!yPosValid) {
+				randomPosY = random.nextInt(12);
+				randomPosY++;
 				yPosValid = true;
-				for (int j = 0; j < yPosAlreadyUsed.length; j++) {
+				for (int j = 0; j < i; j++) {
 					if (yPosAlreadyUsed[j] == randomPosY) {
 						yPosValid = false;
 					}
-					
-					randomPosY = random.nextInt(12);
-					randomPosY++;
 				}
 			}
 			
 			Location projectileLocation = new Location(projectileXPos, randomPosY);
 			EntitiesConst.MAP_MATRIX[randomPosY][projectileXPos].entity = new Projectile(this, d, projectileLocation);
+			yPosAlreadyUsed[i] = randomPosY;
 		}
 		
 		for (int row = 1; row < 13; row++) {
