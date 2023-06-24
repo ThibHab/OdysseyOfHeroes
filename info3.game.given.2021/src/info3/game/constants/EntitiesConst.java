@@ -89,7 +89,7 @@ public class EntitiesConst {
 	public static final float COWBOY_SCALE = 1.3f;
 	
 	// ENERGYBALL CONSTANTS
-	public static final float ENERGYBALL_SCALE = 1.2f;
+	public static float ENERGYBALL_SCALE = 1.2f;
 	
 	// MAZE WALL CONSTANTS
 	public static final float MAZE_WALL_SCALE = 1.0f;

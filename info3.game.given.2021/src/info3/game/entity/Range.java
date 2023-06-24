@@ -109,4 +109,10 @@ public class Range extends Hero {
 	public int totSrpitePerDir() {
 		return AnimConst.RANGE_TOT;
 	}
+	
+	public static void unlockFire() {
+		Hero.firePowerUnlocked = true;
+		ImagesConst.loadFire();
+		EntitiesConst.ENERGYBALL_SCALE = 0.8f;
+	}
 }

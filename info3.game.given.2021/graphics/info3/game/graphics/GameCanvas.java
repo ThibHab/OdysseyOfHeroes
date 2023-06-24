@@ -471,7 +471,7 @@ public class GameCanvas extends Canvas {
     }
   }
 
-  AudioPlayer m_players[] = new AudioPlayer[10];
+  AudioPlayer m_players[] = new AudioPlayer[40];
   int m_nplayers;
 
   public void stopped(AudioPlayer player) {

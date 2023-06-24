@@ -2,6 +2,7 @@ package info3.game.entity;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.RandomAccessFile;
 
 import animations.Animation;
 import animations.ExplosionEffect;
@@ -11,6 +12,7 @@ import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.map.Map;
+import info3.game.sound.RandomFileInputStream;
 
 public class Bomb extends Entity {
 	public Entity owner;
@@ -53,6 +55,14 @@ public class Bomb extends Entity {
 	@Override
 	public void Explode() {
 		Map map = EntitiesConst.MAP;
+		try {
+			RandomAccessFile file = new RandomAccessFile("resources/bomb.ogg", "r");
+			RandomFileInputStream fis = new RandomFileInputStream(file);
+			EntitiesConst.GAME.m_canvas.playSound("bomb",fis, 0, 0.8F);
+		} catch (Throwable th) {
+			th.printStackTrace(System.err);
+			System.exit(-1);
+		}
 		for (int i = 0; i < EntitiesConst.BOMB_RADIUS * 2 + 1; i++) {
 			for (int j = 0; j < EntitiesConst.BOMB_RADIUS * 2 + 1; j++) {
 				Entity entity = EntitiesConst.MAP_MATRIX[(int) (this.location.getX() - 2 + i + map.lenX)

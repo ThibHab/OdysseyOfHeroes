@@ -1,5 +1,7 @@
 package info3.game.entity;
 
+import java.io.RandomAccessFile;
+
 import animations.Animation;
 import animations.SpearEffect;
 import animations.SwordEffect;
@@ -14,6 +16,7 @@ import info3.game.constants.ImagesConst;
 import info3.game.constants.MapConstants;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
+import info3.game.sound.RandomFileInputStream;
 
 public class Melee extends Hero {
 	public Melee(String name, Game g) {
@@ -116,5 +119,4 @@ public class Melee extends Hero {
 	public void attackEffect(Location t) {
 		new SwordEffect(t, this.direction);
 	}
-	
 }

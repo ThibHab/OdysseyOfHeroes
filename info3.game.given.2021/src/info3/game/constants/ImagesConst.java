@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImagesConst {
-	String path;
+	static String path;
 
 	public static BufferedImage GRASS_TILE, WATER_TILE, DIRT_TILE, ROCK_TILE, ROCK_DUNGEON;
 	public static BufferedImage GRASS_TILE2, WATER_TILE2, DIRT_TILE2, ROCK_TILE2;
@@ -93,10 +93,10 @@ public class ImagesConst {
 
 	}
 
-	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
-		File imageFile = new File(this.path + filename + ".png");
+	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
+		File imageFile = new File(path + filename + ".png");
 		if (!imageFile.exists()) {
-			imageFile = new File(this.path + "default.png");
+			imageFile = new File(path + "default.png");
 		}
 		BufferedImage image = ImageIO.read(imageFile);
 		int width = image.getWidth(null) / ncols;
@@ -113,11 +113,19 @@ public class ImagesConst {
 		return images;
 	}
 
-	public BufferedImage loadTile(String filename) throws IOException {
-		File imageFile = new File(this.path + filename + ".png");
+	public static BufferedImage loadTile(String filename) throws IOException {
+		File imageFile = new File(path + filename + ".png");
 		if (!imageFile.exists()) {
-			imageFile = new File(this.path + "default.png");
+			imageFile = new File(path + "default.png");
 		}
 		return ImageIO.read(imageFile);
+	}
+
+	public static void loadFire() {
+		try {
+			ImagesConst.ENERGYBALL = loadSprite("FireEnergyBall", 2, 2);
+		} catch (Exception e) {
+			System.out.println("failed to load fire sprites");
+		}
 	}
 }
