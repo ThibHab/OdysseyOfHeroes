@@ -49,7 +49,7 @@ public class Bush extends DecorElement {
 		try {
 			RandomAccessFile file = new RandomAccessFile("resources/bush.ogg", "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("bush",fis, 0, 1.0F);
+			EntitiesConst.GAME.m_canvas.playSound("bush",fis, 0, 0.8F);
 		} catch (Throwable th) {
 			th.printStackTrace(System.err);
 			System.exit(-1);

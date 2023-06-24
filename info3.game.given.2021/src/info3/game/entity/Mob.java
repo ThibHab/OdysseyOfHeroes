@@ -28,7 +28,7 @@ public abstract class Mob extends Entity {
 		try {
 			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 1.0F);
+			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
 		} catch (Throwable th) {
 			th.printStackTrace(System.err);
 			System.exit(-1);

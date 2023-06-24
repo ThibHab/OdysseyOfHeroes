@@ -75,6 +75,14 @@ public abstract class Hero extends Entity {
 		if (this.healingPotions > 0) {
 			this.health = this.maxHealth;
 			this.healingPotions--;
+			try {
+				RandomAccessFile file = new RandomAccessFile("resources/heal.ogg", "r");
+				RandomFileInputStream fis = new RandomFileInputStream(file);
+				EntitiesConst.GAME.m_canvas.playSound("heal",fis, 0, 0.8F);
+			} catch (Throwable th) {
+				th.printStackTrace(System.err);
+				System.exit(-1);
+			}
 		}
 	}
 
@@ -92,7 +100,7 @@ public abstract class Hero extends Entity {
 				try {
 					RandomAccessFile file = new RandomAccessFile("resources/coin.ogg", "r");
 					RandomFileInputStream fis = new RandomFileInputStream(file);
-					EntitiesConst.GAME.m_canvas.playSound("coin",fis, 0, 1.0F);
+					EntitiesConst.GAME.m_canvas.playSound("coin",fis, 0, 0.8F);
 				} catch (Throwable th) {
 					th.printStackTrace(System.err);
 					System.exit(-1);
@@ -100,10 +108,20 @@ public abstract class Hero extends Entity {
 			}
 			else if (entity instanceof HealingPotion)
 				this.healingPotions++;
+			
 			else if (entity instanceof StrengthPotion)
 				this.strengthPotions++;
-			else if (entity instanceof Chest)
+			else if (entity instanceof Chest) {
 				Hero.coins += 5;
+				try {
+					RandomAccessFile file = new RandomAccessFile("resources/chest.ogg", "r");
+					RandomFileInputStream fis = new RandomFileInputStream(file);
+					EntitiesConst.GAME.m_canvas.playSound("chest",fis, 0, 0.8F);
+				} catch (Throwable th) {
+					th.printStackTrace(System.err);
+					System.exit(-1);
+				}
+			}
 			
 			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
@@ -128,7 +146,7 @@ public abstract class Hero extends Entity {
 		try {
 			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 1.0F);
+			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
 		} catch (Throwable th) {
 			th.printStackTrace(System.err);
 			System.exit(-1);

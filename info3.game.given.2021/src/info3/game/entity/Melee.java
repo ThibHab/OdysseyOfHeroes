@@ -14,7 +14,6 @@ import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.constants.MapConstants;
-import info3.game.constants.SoundsConst;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
 import info3.game.sound.RandomFileInputStream;

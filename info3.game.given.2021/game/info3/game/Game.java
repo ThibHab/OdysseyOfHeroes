@@ -51,7 +51,6 @@ import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.constants.MapConstants;
-import info3.game.constants.SoundsConst;
 import info3.game.entity.*;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
@@ -149,7 +148,6 @@ public class Game {
 
 		new ImagesConst();
 		new EntitiesConst();
-		new SoundsConst();
 		EntitiesConst.GAME = this;
 
 		IVisitor visitor = new AutCreator();
@@ -285,7 +283,7 @@ public class Game {
 		try {
 			RandomAccessFile file = new RandomAccessFile(filename, "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
-			m_canvas.playMusic(fis, 0, 0.7F);
+			m_canvas.playMusic(fis, 0, 0.65F);
 		} catch (Throwable th) {
 			th.printStackTrace(System.err);
 			System.exit(-1);
