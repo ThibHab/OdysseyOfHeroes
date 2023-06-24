@@ -2,6 +2,7 @@ package info3.game.entity;
 
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import animations.Animation;
@@ -129,13 +130,6 @@ public abstract class Entity implements IEntity {
 					this.frozen = false;
 					this.actionIndex = 0;
 				}
-//			} else if (action == Action.T) {
-//				if (this.isFinished()) {
-//					this.frozen = false;
-//					this.actionIndex = 0;
-////					if (this.health == 0)
-////						this.die();
-//				}
 			} else if (action == Action.D) {
 				if (this.isFinished()) {
 					this.actionIndex = 0;
@@ -158,6 +152,7 @@ public abstract class Entity implements IEntity {
 					System.out.println(this.name + " is standing");
 				}
 				this.action = Action.S;
+				this.anim.imageIndex = anim.sprites.length - 1;
 				this.anim.changeAction(action);
 			}
 			if (!this.dead)
@@ -207,38 +202,7 @@ public abstract class Entity implements IEntity {
 			}
 
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if (this instanceof Hero
-					&& (destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance)
-					&& this.direction == Aut_Direction.N) {
-				if (destTile.entity instanceof DungeonEntrance) {
-					if (Hero.firePowerUnlocked) {
-						EntitiesConst.GAME.previousMap = 2;
-						EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS
-								+ 1].entity = null;
-						EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1,
-								EntitiesConst.GAME.player2);
-					} else {
-						System.out.println("Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu");
-					}
-				} else if (destTile.entity instanceof MazeEntrance) {
-					EntitiesConst.GAME.previousMap = 1;
-					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS
-							+ 1].entity = null;
-					EntitiesConst.GAME.map = new MazeMap(
-							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
-							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
-							EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
-					EntitiesConst.GAME.player1.mazeCounterActivated = true;
-				}
-
-				EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
-				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2,
-						EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
-				EntitiesConst.GAME.render.setOffsetCam();
-			}
-
-			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
-					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
+			if (destTile.walkable && destTile.entity == null) {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
@@ -275,16 +239,16 @@ public abstract class Entity implements IEntity {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
 			case 2:
-				Skeleton s = new Skeleton(location);
-				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+//				Skeleton s = new Skeleton(location);
+//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
 				break;
 			}
+			break;
 		case D:
-			if (this instanceof Hero && Hero.bombs < 0) {
+			if (!(this instanceof Hero) || Hero.bombs <= 0) {
 				break;
 			} else {
 				new Bomb(location, this);
-				Hero.bombs--;
 			}
 			break;
 		case P:
@@ -333,21 +297,21 @@ public abstract class Entity implements IEntity {
 				switch (d) {
 				case N:
 					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
-							&& !(entity instanceof BombRock)) {
+							&& !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.N);
 					}
 					break;
 				case S:
-					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.S);
 					}
 					break;
 				case E:
-					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.E);
@@ -355,7 +319,7 @@ public abstract class Entity implements IEntity {
 					break;
 				case W:
 					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
-							&& !(entity instanceof BombRock)) {
+							&& !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.W);
@@ -400,12 +364,13 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void revive() {
+		this.currentState = automaton.initial;
 		this.dead = false;
 		this.frozen = false;
 		this.actionIndex = 0;
-		this.health = this.maxHealth/2;
+		this.health = this.maxHealth / 2;
 	}
-	
+
 	public void heal() {
 		this.health = this.maxHealth;
 	}
@@ -468,8 +433,11 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		// TODO Auto-generated method stub
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		BufferedImage img = anim.getFrame();
+		int diff = (int) (tileSize * (scale - 1)) / 2;
+		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
+				(int) (tileSize * scale), null);
 	}
 
 	public void setLocation(Location location) {

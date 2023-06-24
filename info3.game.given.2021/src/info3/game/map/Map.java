@@ -58,7 +58,7 @@ public abstract class Map implements IMap {
 		}
 	}
 	
-	void delTree(int x, int y) {
+	public void delTree(int x, int y) {
 		if(map[x][y].entity instanceof Tree) {
 			Tree tr=(Tree) map[x][y].entity;
 			for (int tr_j = 0; tr_j < 3; tr_j++) {
@@ -142,6 +142,11 @@ public abstract class Map implements IMap {
 		Bush b = new Bush(new Location(x, y));
 		map[x][y].entity = b;
 	}
+	
+	void createPortal(int x, int y) {
+		Portal b = new Portal(new Location(x, y));
+		map[x][y].entity = b;
+	}
 
 	void createChest(int x, int y) {
 		Chest c = new Chest(new Location(x, y));
@@ -151,14 +156,9 @@ public abstract class Map implements IMap {
 	public void createBomb(int x,int y,Bomb b) {
 		if(map[x][y].entity==null) {
 			this.map[x][y].entity= b;
+			Hero.bombs--;
 		}
 	}
-	
-	public void createBombRock(int x, int y) {
-		BombRock br = new BombRock(new Location(x,y));
-		map[x][y].entity = br;
-	}
-	
 	public float diffX(float a, float b) {
 		float tmp = Math.abs(a - b);
 		float tmp2 = Math.min(a, b) + lenX - Math.max(a, b);
@@ -296,7 +296,7 @@ public abstract class Map implements IMap {
 	 * @param spaceBetween the distance between two entity
 	 */
 	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, String ent, long seed, int rareness) {
-		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree"))) {
+		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree")) && !(ent.equals("Portal"))) {
 			return;
 		}
 		Random r = new Random(EntitiesConst.SEED);
@@ -345,8 +345,10 @@ public abstract class Map implements IMap {
 								this.createBush(i, j);
 							} else if (ent.equals("Rock")) {
 								this.createRock(i, j);
-							} else {
+							} else if (ent.equals("Tree")) {
 								createTree(i, j);
+							} else if(ent.equals("Portal")) {
+								createPortal(i, j);
 							}
 						}
 					}
@@ -495,7 +497,7 @@ public abstract class Map implements IMap {
 	}
 
 	public void setForest(int x, int y, int radius, int seed) {
-		createBombRock(x, y + (radius / 2));
+		createRock(x, y + (radius / 2));
 		setDisqueBackground(x + (radius / 2 - 3), y - (radius / 2 - 6), 3, "Water");
 		setDisqueBackground(x + (radius / 2 + 2), y - (radius / 2 - 10), 4, "Water");
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 8), 5, 4, "Rock");
@@ -518,6 +520,10 @@ public abstract class Map implements IMap {
 		if(this instanceof DungeonMap) {
 			DungeonMap dmap=(DungeonMap)this;
 			dmap.tick(elapsed);
+		}
+		if(this instanceof MazeMap) {
+			MazeMap mmap=(MazeMap)this;
+			mmap.tick(elapsed);
 		}
 
 		for (int j = 0; j < nbTileY; j++) {

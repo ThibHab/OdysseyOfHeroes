@@ -1,5 +1,6 @@
 Player2 (Stand) {
   * (Stand)
+  | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
   | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(i) ? Hit(F)  :(Stand)
@@ -7,13 +8,15 @@ Player2 (Stand) {
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
-  | Key(p) & Cell(F,@) ? Wizz : (Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)
+  
+  *()
  }
 
 Player1 (Stand) {
   * (Stand)
+  | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
   | Key(a) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(a) ? Hit(F)  :(Stand)
@@ -21,9 +24,10 @@ Player1 (Stand) {
   | Key(s) ? Move(S) :(Stand)
   | Key(q) ? Move(W) :(Stand)
   | Key(d) ? Move(E) :(Stand)
-  | Key(e) & Cell(F,@) ? Wizz : (Stand)
   | Key(e) ? Power : (Stand)
   | Key(r) ? Egg(F, D) : (Stand)
+  
+  *()
  }
 
 Bush(Existing){
@@ -89,6 +93,7 @@ Goblin(Search) {
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+   | True ? 50% Move(F) / 25% Move(R) / 25% Move(L) : (Search)
    
    * ()
  }
@@ -170,6 +175,15 @@ Goblin(Search) {
   MazeEntrance(Existing){
 	*(Existing)
 	| True ? : (Existing)
+  }
+  
+  Portal (Waiting) {
+  	* (Waiting)
+  	| True ? 25% Wait(5000) / 25% Wait(10000) / 25% Wait(15000) / 25% Wait(20000) : (Drop)
+  	
+  	* (Drop)
+  	| True ? Egg(F,A,1) / Egg(R,A,1) / Egg(L,A,1) / Egg(B,A,1) : (Waiting) 
+  
   }
   
   Boss(Stand){

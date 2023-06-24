@@ -35,6 +35,7 @@ import java.util.List;
 
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.entity.Hero;
 import info3.game.graphics.GameCanvasListener;
 import info3.game.hud.Button;
 import info3.game.hud.InGameMenu;
@@ -252,8 +253,14 @@ public class CanvasListener implements GameCanvasListener {
 		if (m_game.debug) {
 			System.out.println("Key pressed: " + e.getKeyChar() + " code=" + e.getKeyCode());
 		}
-		if (e.getKeyCode() == KeyEvent.VK_SPACE)
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			m_game.save();
+			if(m_game.debug) {
+				Hero.bombs=100;
+				m_game.player1.healingPotions=100;
+				m_game.player2.healingPotions=100;
+			}
+		}
 		if (!keys.contains((Integer) e.getKeyCode())) {
 			keys.add((Integer) e.getKeyCode());
 		}

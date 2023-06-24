@@ -89,7 +89,8 @@ public class Animation {
 	}
 
 	public void changeAction(Action a) {
-		this.imageIndex = sprites.length - 1;
+		if (this.owner.action != Action.S)
+			this.imageIndex = sprites.length - 1;
 		updateIndex();
 	}
 }

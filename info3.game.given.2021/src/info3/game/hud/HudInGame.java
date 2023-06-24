@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.*;
+import info3.game.map.MazeMap;
 
 public class HudInGame {
 
@@ -39,7 +40,7 @@ public class HudInGame {
 	}
 
 	public void setTimer(Graphics g) {
-		int timer = EntitiesConst.MAZE_COUNTER_LIMIT - EntitiesConst.GAME.player1.mazeCounter;
+		int timer = EntitiesConst.MAZE_COUNTER_LIMIT - ((MazeMap)EntitiesConst.MAP).mazeCounter;
 		int timerSec = (timer / 1000) % 60;
 		int timerMin = (timer / 1000) / 60;
 		String setTimer = String.format("%02d", timerMin) + ":" + String.format("%02d", timerSec);
@@ -94,6 +95,22 @@ public class HudInGame {
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(lv, g);
 		int textWidth = (int) rec.getWidth();
 		g.drawString(lv, (width / 2) - (textWidth / 2), height - 20);
+	}
+	
+	public void setBushQuest(Graphics g, Font f, int width, int height) {
+		String quest = "Buissons détruits :";
+		String advancement = "" + Hero.bushesCut + " / " + 20;
+		
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(quest, g);
+		int textWidth = (int) rec.getWidth();
+		
+		g.drawString(quest, width - (15 + textWidth), height);
+		
+		rec = g.getFontMetrics().getStringBounds(advancement, g);
+		textWidth = (int) rec.getWidth();
+		int textHeight = (int) rec.getHeight();
+		
+		g.drawString(advancement, width - (15 + textWidth), height + textHeight);		
 	}
 
 	public void paint(Graphics g) {
@@ -187,8 +204,16 @@ public class HudInGame {
 		setBomb(g, f, width, height);
 		
 		setLevel(g, f, width, height);
+		
+		if (VillagerGirl.started) {
+			Font fQuest = new Font(null, 1, 20);
+			g.setFont(fQuest);
+			g.setColor(Color.magenta);
+			setBushQuest(g, fQuest, width, height / 3);
+		}
+		
 
-		if (EntitiesConst.GAME.player1.mazeCounterActivated) {
+		if (EntitiesConst.MAP instanceof MazeMap) {
 			setTimer(g);
 		}
 
