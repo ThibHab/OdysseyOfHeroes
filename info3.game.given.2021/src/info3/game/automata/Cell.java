@@ -109,9 +109,9 @@ public class Cell extends Aut_Condition {
 
 			x = (x + ((Map) g.map).lenX) % ((Map) g.map).lenX;
 			y = (y + ((Map) g.map).lenY) % ((Map) g.map).lenY;
-			if (cat == Aut_Category.V && map[x][y].entity == null)
+			if (cat == Aut_Category.V && (map[x][y].entity == null || map[x][y].entity.dead == true))
 				return true;
-			if (map[x][y].entity != null && map[x][y].entity.category == cat)
+			if (map[x][y].entity != null && map[x][y].entity.category == cat && map[x][y].entity.dead == false)
 				return true;
 		}
 		return false;
