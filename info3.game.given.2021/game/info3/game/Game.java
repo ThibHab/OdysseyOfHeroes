@@ -70,6 +70,9 @@ public class Game {
 
 	static Game game;
 	static boolean newGame;
+	public static final int WORLD = 0;
+	public static final int MAZE = 1;
+	public static final int BOSS = 2;
 
 	public static void main(String args[]) throws Exception {
 		try {
@@ -92,7 +95,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
+	public boolean debug = true;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -312,6 +315,10 @@ public class Game {
 				((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 				((Map) map).tickEffects(elapsed);
 
+				if (player1.action == Action.D && player2.action == Action.D) {
+					gameOVER();
+				}
+
 				if (EntitiesConst.GAME.debug) {
 					m_textElapsed += elapsed;
 					// TODO modif pour debug
@@ -360,6 +367,19 @@ public class Game {
 			}
 		} else {
 			menu.paint(g);
+		}
+	}
+
+	void gameOVER() throws Exception {
+		Map m = ((Map) this.map);
+		if (m instanceof WorldMap) {
+
+		}
+		if (m instanceof DungeonMap) {
+
+		}
+		if (m instanceof MazeMap) {
+
 		}
 	}
 
@@ -430,6 +450,68 @@ public class Game {
 	public void unsave() {
 		File f = new File("save.txt");
 		f.delete();
+	}
+
+	void doublePlayerPlace(int i, int j) {
+		int x = i - 1;
+		int y = j + 1;
+		if (EntitiesConst.MAP_MATRIX[x][y].entity instanceof Tree) {
+			EntitiesConst.MAP.delTree(x, y);
+		}
+		EntitiesConst.MAP.setPlayer(x, y, EntitiesConst.GAME.player1);
+		x = i + 1;
+		if (EntitiesConst.MAP_MATRIX[x][y].entity instanceof Tree) {
+			EntitiesConst.MAP.delTree(x, y);
+		}
+		EntitiesConst.MAP.setPlayer(x, y, EntitiesConst.GAME.player2);
+	}
+
+	public void openMap(int map) {
+		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.location
+				.getX()][(int) EntitiesConst.GAME.player1.location.getY()].entity = null;
+		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+				.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity instanceof Hero) {
+			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+					.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity = null;
+		}
+		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.location
+				.getX()][(int) EntitiesConst.GAME.player2.location.getY()].entity = null;
+		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+				.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity instanceof Hero) {
+			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+					.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity = null;
+		}
+		switch (map) {
+		case WORLD:
+			Map previous=(Map) EntitiesConst.GAME.map;
+			EntitiesConst.GAME.map = MapConstants.WORLD_MAP;
+			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
+			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			if (previous instanceof MazeMap) {
+				doublePlayerPlace(EntitiesConst.MAZE_ENTRANCE_X_POS, EntitiesConst.MAZE_ENTRANCE_Y_POS);
+			} else {
+				doublePlayerPlace(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
+			}
+			break;
+		case MAZE:
+			MazeMap mm = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+					MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+					EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+			EntitiesConst.GAME.map = mm;
+			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
+			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			mm.mazeCounterActivated = true;
+			break;
+		case BOSS:
+			EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
+			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			break;
+		}
+		EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
+		EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2,
+				EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+		EntitiesConst.GAME.render.setOffsetCam();
 	}
 
 }

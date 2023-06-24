@@ -5,9 +5,14 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import info3.game.Game;
 import info3.game.automata.*;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
+import info3.game.constants.MapConstants;
+import info3.game.map.DungeonMap;
+import info3.game.map.MapRender;
+import info3.game.map.MazeMap;
 import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
@@ -27,6 +32,63 @@ public abstract class Hero extends Entity {
 		Hero.firePowerUnlocked = false;
 		Hero.bushesCut = 0;
 	}
+	
+	@Override
+	public void Move(Aut_Direction d) {
+		if (!this.frozen) {
+			this.frozen = true;
+			if (d != null) {
+				this.direction = d;
+			}
+			this.direction = d;
+
+			if (this.action != Action.M) {
+				this.action = Action.M;
+			}
+			this.anim.changeAction(action);
+
+			this.destLocation = new Location(this.location.getX(), this.location.getY());
+			this.originLocation = new Location(this.location.getX(), this.location.getY());
+			this.relativeMouv = new Location(0, 0);
+			switch (d) {
+			case N:
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(-1);
+				break;
+			case S:
+				this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+				this.relativeMouv.setY(1);
+				break;
+			case W:
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(-1);
+				break;
+			case E:
+				this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+				this.relativeMouv.setX(1);
+				break;
+			default:
+				break;
+			}
+
+			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
+			if ((destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
+				if (destTile.entity instanceof DungeonEntrance) {
+					EntitiesConst.GAME.openMap(Game.BOSS);
+				} else if (destTile.entity instanceof MazeEntrance) {
+					EntitiesConst.GAME.openMap(Game.MAZE);
+				}
+			}
+
+			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
+					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
+				destTile.entity = this;
+			} else {
+				this.frozen = false;
+			}
+		}
+	}
+	
 	
 	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int sPotions, Aut_Direction dir) {
 		this.location = loc;
@@ -69,9 +131,10 @@ public abstract class Hero extends Entity {
 
 	@Override
 	public void Power() {
-		if (this.healingPotions > 0) {
+		if (this.healingPotions > 0 && this.health<this.maxHealth) {
 			this.health = this.maxHealth;
 			this.healingPotions--;
+			Wait(250);
 		}
 	}
 
@@ -113,9 +176,6 @@ public abstract class Hero extends Entity {
 	@Override
 	public void takeDamage(Entity attacker) {
 		this.health -= attacker.weaponDamage;
-		if (this.health <= 0) {
-			this.die();
-		}
 	}
 	
 	@Override

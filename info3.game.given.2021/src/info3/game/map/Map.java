@@ -58,7 +58,7 @@ public abstract class Map implements IMap {
 		}
 	}
 	
-	void delTree(int x, int y) {
+	public void delTree(int x, int y) {
 		if(map[x][y].entity instanceof Tree) {
 			Tree tr=(Tree) map[x][y].entity;
 			for (int tr_j = 0; tr_j < 3; tr_j++) {
@@ -151,6 +151,7 @@ public abstract class Map implements IMap {
 	public void createBomb(int x,int y,Bomb b) {
 		if(map[x][y].entity==null) {
 			this.map[x][y].entity= b;
+			Hero.bombs--;
 		}
 	}
 	
@@ -518,6 +519,10 @@ public abstract class Map implements IMap {
 		if(this instanceof DungeonMap) {
 			DungeonMap dmap=(DungeonMap)this;
 			dmap.tick(elapsed);
+		}
+		if(this instanceof MazeMap) {
+			MazeMap mmap=(MazeMap)this;
+			mmap.tick(elapsed);
 		}
 
 		for (int j = 0; j < nbTileY; j++) {
