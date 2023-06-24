@@ -247,6 +247,8 @@ public abstract class Entity implements IEntity {
 		}
 
 		Location location = this.frontTileLocation(d);
+		if (location.getX() == this.location.getX() && location.getY() == this.location.getY())
+			this.die();
 		switch (c) {
 		case A:
 			if (id == 0) {
@@ -258,10 +260,10 @@ public abstract class Entity implements IEntity {
 				Goblin gob = new Goblin(location);
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
-//			case 2:
-//				Skeleton s = new Skeleton(location);
-//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
-//				break;
+			case 2:
+				Skeleton s = new Skeleton(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+				break;
 			}
 		case D:
 			if (this instanceof Hero && Hero.bombs < 0) {
