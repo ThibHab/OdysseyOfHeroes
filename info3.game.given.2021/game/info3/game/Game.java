@@ -95,7 +95,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = true;
+	public boolean debug = false;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -373,13 +373,25 @@ public class Game {
 	void gameOVER() throws Exception {
 		Map m = ((Map) this.map);
 		if (m instanceof WorldMap) {
-
+			File f = new File("save.txt");
+			long length = f.length();
+			if (!f.exists() || length == 0)
+				this.setupGame(null);
+			else
+				removePlayer();
+				this.setupGame(f);
 		}
-		if (m instanceof DungeonMap) {
-
-		}
-		if (m instanceof MazeMap) {
-
+		if (m instanceof DungeonMap || m instanceof MazeMap) {
+			Hero.bombs=0;
+			Hero.coins=0;
+			player1.healingPotions=0;
+			player2.healingPotions=0;
+			player1.revive();
+			player2.revive();
+			player1.direction=Aut_Direction.S;
+			player2.direction=Aut_Direction.S;
+			this.openMap(WORLD);
+			
 		}
 	}
 
@@ -465,22 +477,26 @@ public class Game {
 		}
 		EntitiesConst.MAP.setPlayer(x, y, EntitiesConst.GAME.player2);
 	}
+	
+	void removePlayer() {
+		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.location
+		         				.getX()][(int) EntitiesConst.GAME.player1.location.getY()].entity = null;
+		         		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+		         				.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity instanceof Hero) {
+		         			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+		         					.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity = null;
+		         		}
+		         		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.location
+		         				.getX()][(int) EntitiesConst.GAME.player2.location.getY()].entity = null;
+		         		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+		         				.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity instanceof Hero) {
+		         			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+		         					.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity = null;
+		         		}
+	}
 
 	public void openMap(int map) {
-		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.location
-				.getX()][(int) EntitiesConst.GAME.player1.location.getY()].entity = null;
-		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
-				.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity instanceof Hero) {
-			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
-					.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity = null;
-		}
-		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.location
-				.getX()][(int) EntitiesConst.GAME.player2.location.getY()].entity = null;
-		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
-				.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity instanceof Hero) {
-			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
-					.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity = null;
-		}
+		removePlayer();
 		switch (map) {
 		case WORLD:
 			Map previous=(Map) EntitiesConst.GAME.map;
