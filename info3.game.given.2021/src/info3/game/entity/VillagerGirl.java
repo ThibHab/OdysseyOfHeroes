@@ -96,4 +96,27 @@ public class VillagerGirl extends Villager {
 			super.talks();
 		}
 	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.VILLAGERGIRL_M;
+		case H:
+			return 0;
+		case T:
+			return 0;
+		case D:
+			return 0;
+		case S:
+			return AnimConst.VILLAGERGIRL_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.VILLAGERGIRL_M;
+	}
 }
