@@ -1,6 +1,7 @@
 package info3.game.entity;
 
 import java.awt.Graphics;
+import java.io.RandomAccessFile;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -23,6 +24,7 @@ import info3.game.map.Map;
 import info3.game.map.MapRender;
 import info3.game.map.MazeMap;
 import info3.game.map.Tile;
+import info3.game.sound.RandomFileInputStream;
 
 public abstract class Entity implements IEntity {
 	public String name;

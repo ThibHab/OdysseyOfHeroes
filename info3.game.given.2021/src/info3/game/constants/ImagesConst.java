@@ -6,13 +6,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImagesConst {
-	String path;
+	static String path;
 
 	public static BufferedImage GRASS_TILE, WATER_TILE, DIRT_TILE, ROCK_TILE, ROCK_DUNGEON;
 	public static BufferedImage GRASS_TILE2, WATER_TILE2, DIRT_TILE2, ROCK_TILE2;
 	public static BufferedImage RED_HEART, BLUE_HEART, BLACK_HEART;
 	public static BufferedImage MENU_PICTURE;
-	public static BufferedImage SWORD;
 
 	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
@@ -21,10 +20,10 @@ public class ImagesConst {
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL;
 	public static BufferedImage[] SPEECHBUBBLE;
-	public static BufferedImage[] BOMB;
 	public static BufferedImage[] SAVE_TILES;
 	public static BufferedImage[] SWORD_EFFECT, SPEAR_EFFECT, HEAL_EFFECT, EXPLOSION_EFFECT, SMOKE_EFFECT, BLOOD_EFFECT,
 			GROUND_EFFECT;
+	public static BufferedImage[] BOMB, SWORD, FIRE_POWER;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -49,6 +48,8 @@ public class ImagesConst {
 		HEALING_POTION = loadSprite("Healing", 3, 3);
 		STRENGTH_POTION = loadSprite("Strength", 3, 3);
 		BOMB = loadSprite("bomb", 1, 1);
+		SWORD = loadSprite("weapon", 1, 1);
+		FIRE_POWER = loadSprite("fire_power", 1, 1);
 
 		BOSS = loadSprite("Boss", 1, 1);
 		GOBLIN = loadSprite("Orc", 8, 8);
@@ -75,8 +76,6 @@ public class ImagesConst {
 
 		MENU_PICTURE = loadTile("menu_picture");
 
-		SWORD = loadTile("weapon");
-
 		HERMIT = loadSprite("Hermite", 2, 6);
 		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 3);
 		MINER = loadSprite("Miner", 4, 3);
@@ -94,10 +93,10 @@ public class ImagesConst {
 
 	}
 
-	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
-		File imageFile = new File(this.path + filename + ".png");
+	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
+		File imageFile = new File(path + filename + ".png");
 		if (!imageFile.exists()) {
-			imageFile = new File(this.path + "default.png");
+			imageFile = new File(path + "default.png");
 		}
 		BufferedImage image = ImageIO.read(imageFile);
 		int width = image.getWidth(null) / ncols;
@@ -114,11 +113,19 @@ public class ImagesConst {
 		return images;
 	}
 
-	public BufferedImage loadTile(String filename) throws IOException {
-		File imageFile = new File(this.path + filename + ".png");
+	public static BufferedImage loadTile(String filename) throws IOException {
+		File imageFile = new File(path + filename + ".png");
 		if (!imageFile.exists()) {
-			imageFile = new File(this.path + "default.png");
+			imageFile = new File(path + "default.png");
 		}
 		return ImageIO.read(imageFile);
+	}
+
+	public static void loadFire() {
+		try {
+			ImagesConst.ENERGYBALL = loadSprite("FireEnergyBall", 2, 2);
+		} catch (Exception e) {
+			System.out.println("failed to load fire sprites");
+		}
 	}
 }

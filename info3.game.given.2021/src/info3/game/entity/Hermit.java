@@ -45,7 +45,7 @@ public class Hermit extends Villager {
 	public void talks() {
 		super.talks();
 		if (this.dialogIndex >= 3) {
-			Hero.firePowerUnlocked = true;
+			Range.unlockFire();
 			this.dialogs.clear();
 		}
 	}
