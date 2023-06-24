@@ -2,6 +2,7 @@ package info3.game.map;
 
 import java.util.Random;
 
+import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.MapConstants;
 import info3.game.entity.MazeWall;
@@ -12,6 +13,8 @@ import info3.game.entity.Location;
 
 public class MazeMap extends Map {
 	public Maze maze;
+	public boolean mazeCounterActivated;
+	public int mazeCounter;
 	
 	public MazeMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
@@ -45,5 +48,16 @@ public class MazeMap extends Map {
 	
 		EntitiesConst.MAP = this;
 		EntitiesConst.MAP_MATRIX = this.map;
+	}
+	
+	public void tick(long elapsed) {
+		if (this.mazeCounterActivated) {
+			this.mazeCounter += elapsed;
+			if (this.mazeCounter >= EntitiesConst.MAZE_COUNTER_LIMIT) {
+				EntitiesConst.GAME.openMap(Game.WORLD);
+				this.mazeCounterActivated = false;
+				this.mazeCounter = 0;
+			}
+		}
 	}
 }
