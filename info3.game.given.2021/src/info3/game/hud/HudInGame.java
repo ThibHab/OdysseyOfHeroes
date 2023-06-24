@@ -19,7 +19,7 @@ public class HudInGame {
 	Melee j1;
 	Range j2;
 	int moula;
-	Image redHeart, blueHeart, blackHeart, potion, melee, range, coinIcone, sword, bomb;
+	Image redHeart, blueHeart, blackHeart, potion, melee, range, coinIcone, sword, bomb, power;
 
 	public HudInGame(JFrame frame) {
 		m_frame = frame;
@@ -33,8 +33,9 @@ public class HudInGame {
 		melee = ImagesConst.MELEE[0];
 		range = ImagesConst.RANGE[0];
 		coinIcone = ImagesConst.COIN[0];
-		sword = ImagesConst.SWORD;
+		sword = ImagesConst.SWORD[0];
 		bomb = ImagesConst.BOMB[0];
+		power = ImagesConst.FIRE_POWER[0];
 	}
 
 	public void setTimer(Graphics g) {
@@ -60,6 +61,39 @@ public class HudInGame {
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(nbBomb, g);
 		int textWidth = (int) rec.getWidth();
 		g.drawString(nbBomb, (width / 2) - (textWidth / 2), 140);
+	}
+	
+	public void setCoin(Graphics g, Font f, int width, int height) {
+		int coinWidth = 25;
+		g.drawImage(coinIcone, width / 2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
+		g.setColor(Color.YELLOW);
+		String argent = "" + Hero.coins;
+		g.drawString(argent, width / 2 - ((argent.length() * 32) / 4), 55);
+	}
+	
+	public void setLevel(Graphics g, Font f, int width, int height) {
+		g.setColor(Color.blue);
+		g.drawRoundRect(width / 8, height - 15, width - (width / 4), 10, 10, 10);
+		g.drawRoundRect(width / 8 - 1, height - 16, width - (width / 4) + 2, 12, 10, 10);
+
+		Color grayTrans = new Color(192, 192, 192, 100);
+		g.setColor(grayTrans);
+		g.fillRoundRect(width / 8 + 1, height - 14, width - width / 4 - 1, 9, 10, 10);
+		
+		g.setColor(Color.cyan);
+		int exp = Hero.experience;
+		if (exp == 0) {
+			g.fillRoundRect(width / 8 + 1, height - 14, 0, 9, 10, 10);
+		} else {
+			g.fillRoundRect(width / 8 + 1, height - 14,
+					(int) ((width - width / 4 - 1) / ((float) Hero.levelUp / (float) exp)), 9, 10, 10);
+		}
+
+		g.setColor(Color.blue);
+		String lv = "Level " + Hero.level;
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(lv, g);
+		int textWidth = (int) rec.getWidth();
+		g.drawString(lv, (width / 2) - (textWidth / 2), height - 20);
 	}
 
 	public void paint(Graphics g) {
@@ -110,8 +144,6 @@ public class HudInGame {
 		g.setColor(Color.red);
 		g.drawRect(width - 62, 5, 55, 55);
 		g.drawImage(range, width - 64, 7, 60, 60, m_frame);
-		// TODO: Mettre le nombre de vie max en gris (Besoind de l'inforamtion de vie
-		// max)
 
 		int inc1 = 87;
 		int inc2 = 87;
@@ -144,37 +176,17 @@ public class HudInGame {
 		g.drawImage(potion, width - 32, 100, 25, 25, m_frame);
 		String potionJ2 = j2.healingPotions + "X";
 		g.drawString(potionJ2, width - (7 + 28 + (17 * potionJ2.length())), 123);
-
-		int coinWidth = 25;
-		g.drawImage(coinIcone, width / 2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
-		g.setColor(Color.YELLOW);
-		String argent = "" + Hero.coins;
-		g.drawString(argent, width / 2 - ((argent.length() * 32) / 4), 55);
-
-		g.setColor(Color.blue);
-		g.drawRoundRect(width / 8, height - 15, width - (width / 4), 10, 10, 10);
-		g.drawRoundRect(width / 8 - 1, height - 16, width - (width / 4) + 2, 12, 10, 10);
-
-		Color grayTrans = new Color(192, 192, 192, 100);
-		g.setColor(grayTrans);
-		g.fillRoundRect(width / 8 + 1, height - 14, width - width / 4 - 1, 9, 10, 10);
 		
-		g.setColor(Color.cyan);
-		int exp = Hero.experience;
-		if (exp == 0) {
-			g.fillRoundRect(width / 8 + 1, height - 14, 0, 9, 10, 10);
-		} else {
-			g.fillRoundRect(width / 8 + 1, height - 14,
-					(int) ((width - width / 4 - 1) / ((float) Hero.levelUp / (float) exp)), 9, 10, 10);
+		if (Hero.firePowerUnlocked) {
+			g.drawImage(power, 7, 130, 25, 25, m_frame);
+			g.drawImage(power, width - (7 + 25), 130, 25, 25, m_frame);
 		}
 
-		g.setColor(Color.blue);
-		String lv = "Level " + Hero.level;
-		Rectangle2D rec = g.getFontMetrics().getStringBounds(lv, g);
-		int textWidth = (int) rec.getWidth();
-		g.drawString(lv, (width / 2) - (textWidth / 2), height - 20);
+		setCoin(g, f, width, height);
 		
 		setBomb(g, f, width, height);
+		
+		setLevel(g, f, width, height);
 
 		if (EntitiesConst.GAME.player1.mazeCounterActivated) {
 			setTimer(g);
