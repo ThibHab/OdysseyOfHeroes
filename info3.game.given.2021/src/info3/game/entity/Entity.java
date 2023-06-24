@@ -2,6 +2,7 @@ package info3.game.entity;
 
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import animations.Animation;
@@ -265,12 +266,13 @@ public abstract class Entity implements IEntity {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
 			case 2:
-				Skeleton s = new Skeleton(location);
-				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+//				Skeleton s = new Skeleton(location);
+//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
 				break;
 			}
+			break;
 		case D:
-			if (this instanceof Hero && Hero.bombs < 0) {
+			if (!(this instanceof Hero) || Hero.bombs <= 0) {
 				break;
 			} else {
 				new Bomb(location, this);
@@ -458,8 +460,11 @@ public abstract class Entity implements IEntity {
 	}
 
 	@Override
-	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		// TODO Auto-generated method stub
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		BufferedImage img = anim.getFrame();
+		int diff = (int) (tileSize * (scale - 1)) / 2;
+		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
+				(int) (tileSize * scale), null);
 	}
 
 	public void setLocation(Location location) {

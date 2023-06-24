@@ -16,7 +16,6 @@ import info3.game.constants.ImagesConst;
 public abstract class Villager extends NPC {
 	
 	public LinkedList<String> dialogs;
-	public boolean completed;
 	public int dialogIndex;
 	
 	public Villager(Location l) {
@@ -24,7 +23,6 @@ public abstract class Villager extends NPC {
 		this.location = l;
 		this.dialogIndex = 0;
 		this.dialogs = new LinkedList<>();
-		this.completed = false;
 
 		// --- TODO manage automaton ---
 		// -----------------------------

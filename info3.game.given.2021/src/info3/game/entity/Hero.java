@@ -131,6 +131,14 @@ public abstract class Hero extends Entity {
 		Hero.experience += EntitiesConst.DEATH_EXPERIENCE_GIVEN;
 		if (Hero.experience >= Hero.levelUp) {
 			Hero.level++;
+			try {
+				RandomAccessFile file = new RandomAccessFile("resources/lvlup.ogg", "r");
+				RandomFileInputStream fis = new RandomFileInputStream(file);
+				EntitiesConst.GAME.m_canvas.playSound("lvlup",fis, 0, 0.8F);
+			} catch (Throwable th) {
+				th.printStackTrace(System.err);
+				System.exit(-1);
+			}
 			Hero.experience = 0;
 			Hero.levelUp = Hero.levelUp * 2;
 			
