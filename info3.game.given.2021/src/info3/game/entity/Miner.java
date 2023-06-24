@@ -44,18 +44,6 @@ public class Miner extends Villager {
 	}
 
 	@Override
-	public int getNbActionSprite(Action a) {
-		switch (a) {
-		case M:
-			return AnimConst.MINER_M;
-		case S:
-			return AnimConst.MINER_S;
-		default:
-			return 0;
-		}
-	}
-
-	@Override
 	public void tick(long elapsed) {
 		this.automaton.step(this, EntitiesConst.GAME);
 		if (this.frozen) {
@@ -158,6 +146,23 @@ public class Miner extends Villager {
 		default:
 			return true;
 		}
+	}
+
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.MINER_M;
+		case S:
+			return AnimConst.MINER_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.MINER_M + AnimConst.MINER_S;
 	}
 
 }
