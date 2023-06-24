@@ -1,5 +1,6 @@
 Player2 (Stand) {
   * (Stand)
+  | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
   | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(i) ? Hit(F)  :(Stand)
@@ -9,10 +10,13 @@ Player2 (Stand) {
   | Key(m) ? Move(E) :(Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)
+  
+  *()
  }
 
 Player1 (Stand) {
   * (Stand)
+  | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
   | Key(a) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(a) ? Hit(F)  :(Stand)
@@ -22,6 +26,8 @@ Player1 (Stand) {
   | Key(d) ? Move(E) :(Stand)
   | Key(e) ? Power : (Stand)
   | Key(r) ? Egg(F, D) : (Stand)
+  
+  *()
  }
 
 Bush(Existing){

@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.*;
+import info3.game.map.MazeMap;
 
 public class HudInGame {
 
@@ -39,7 +40,7 @@ public class HudInGame {
 	}
 
 	public void setTimer(Graphics g) {
-		int timer = EntitiesConst.MAZE_COUNTER_LIMIT - EntitiesConst.GAME.player1.mazeCounter;
+		int timer = EntitiesConst.MAZE_COUNTER_LIMIT - ((MazeMap)EntitiesConst.MAP).mazeCounter;
 		int timerSec = (timer / 1000) % 60;
 		int timerMin = (timer / 1000) / 60;
 		String setTimer = String.format("%02d", timerMin) + ":" + String.format("%02d", timerSec);
@@ -202,6 +203,8 @@ public class HudInGame {
 		
 		setBomb(g, f, width, height);
 		
+		setLevel(g, f, width, height);
+		
 		if (VillagerGirl.started) {
 			Font fQuest = new Font(null, 1, 20);
 			g.setFont(fQuest);
@@ -209,9 +212,8 @@ public class HudInGame {
 			setBushQuest(g, fQuest, width, height / 3);
 		}
 		
-		setLevel(g, f, width, height);
 
-		if (EntitiesConst.GAME.player1.mazeCounterActivated) {
+		if (EntitiesConst.MAP instanceof MazeMap) {
 			setTimer(g);
 		}
 

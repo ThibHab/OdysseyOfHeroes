@@ -202,34 +202,7 @@ public abstract class Entity implements IEntity {
 			}
 
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if (this instanceof Hero
-					&& (destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance)
-					&& this.direction == Aut_Direction.N) {
-				if (destTile.entity instanceof DungeonEntrance) {
-					EntitiesConst.GAME.previousMap = 2;
-					EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS
-							+ 1].entity = null;
-					EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1,
-							EntitiesConst.GAME.player2);
-				} else if (destTile.entity instanceof MazeEntrance) {
-					EntitiesConst.GAME.previousMap = 1;
-					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS
-							+ 1].entity = null;
-					EntitiesConst.GAME.map = new MazeMap(
-							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
-							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
-							EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
-					EntitiesConst.GAME.player1.mazeCounterActivated = true;
-				}
-
-				EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
-				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2,
-						EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
-				EntitiesConst.GAME.render.setOffsetCam();
-			}
-
-			if (destTile.walkable && destTile.entity == null && EntitiesConst.GAME.render.moveDooable(destLocation, d,
-					EntitiesConst.GAME.m_canvas.getHeight(), EntitiesConst.GAME.m_canvas.getWidth())) {
+			if (destTile.walkable && destTile.entity == null) {
 				destTile.entity = this;
 			} else {
 				this.frozen = false;
@@ -276,7 +249,6 @@ public abstract class Entity implements IEntity {
 				break;
 			} else {
 				new Bomb(location, this);
-				Hero.bombs--;
 			}
 			break;
 		case P:
@@ -392,6 +364,7 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void revive() {
+		this.currentState = automaton.initial;
 		this.dead = false;
 		this.frozen = false;
 		this.actionIndex = 0;
