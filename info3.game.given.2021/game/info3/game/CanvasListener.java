@@ -78,36 +78,44 @@ public class CanvasListener implements GameCanvasListener {
 		Game game = EntitiesConst.GAME;
 		if (m_focused != null) {
 			if (!menu.getStarted()) {
-				if (m_focused == menu.selected(e.getX(), e.getY())) {
-					if (m_focused.getName().equals("Reprendre la partie")) {
-						File f = new File("save.txt");
-						long length = f.length();
-						if (length == 0)
+				if (menu.credits.isCreditUp()) {
+					if (m_focused == menu.credits.selected(e.getX(), e.getY())
+							&& m_focused.getName().equals("Menu")) {
+						menu.credits.creditsUp = false;
+					}
+				} else {
+					if (m_focused == menu.selected(e.getX(), e.getY())) {
+						if (m_focused.getName().equals("Reprendre la partie")) {
+							File f = new File("save.txt");
+							long length = f.length();
+							if (length == 0)
+								try {
+									m_game.setupGame(null);
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+							else
+								try {
+									m_game.setupGame(f);
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+							menu.setStarted();
+						} else if (m_focused.getName().equals("Nouvelle partie")) {
+							menu.setStarted();
 							try {
 								m_game.setupGame(null);
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
-						else
-							try {
-								m_game.setupGame(f);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-						menu.setStarted();
-					} else if (m_focused.getName().equals("Nouvelle partie")) {
-						menu.setStarted();
-						try {
-							m_game.setupGame(null);
-						} catch (Exception e1) {
-							e1.printStackTrace();
+						} else if (m_focused.getName().equals("Credits")) {
+							menu.credits.creditsUp = true;
+						} else {
+							m_focused = null;
 						}
-					} else if (m_focused.getName().equals("Credits")) {
-						System.out.println("Credits !");
-					} else {
-						m_focused = null;
 					}
 				}
+
 			} else if (inMenu.getPause()) {
 				if (m_focused == inMenu.selected(e.getX(), e.getY())) {
 					if (m_focused.getName().equals("Reprendre")) {
@@ -125,7 +133,9 @@ public class CanvasListener implements GameCanvasListener {
 				}
 			}
 		}
-		if (m_game.debug) {
+		if (m_game.debug)
+
+		{
 			System.out.println("Mouse released: (" + e.getX() + "," + e.getY() + ")");
 			System.out.println("   modifiers=" + e.getModifiersEx());
 			System.out.println("   buttons=" + e.getButton());
@@ -166,18 +176,30 @@ public class CanvasListener implements GameCanvasListener {
 		InGameMenu inMenu = EntitiesConst.GAME.inMenu;
 		if (menu != null) {
 			if (!menu.getStarted()) {
-				if (menu.selected(e.getX(), e.getY()) == null
-						|| menu.selected(e.getX(), e.getY()).m_bgColor == Color.LIGHT_GRAY) {
-					m_focused = null;
+				if (menu.credits.isCreditUp()) {
+					m_focused = menu.credits.selected(e.getX(), e.getY());
+					int nChild = menu.credits.nbChild;
+					for (int i = 0; i < nChild; i++) {
+						if (menu.credits.buttons[i] == m_focused) {
+							m_focused.grow();
+						} else {
+							menu.credits.buttons[i].shrink();
+						}
+					}
 				} else {
-					m_focused = menu.selected(e.getX(), e.getY());
-				}
-				int nChild = menu.nbChild;
-				for (int i = 0; i < nChild; i++) {
-					if (menu.buttons[i] == m_focused) {
-						m_focused.grow();
+					if (menu.selected(e.getX(), e.getY()) == null
+							|| menu.selected(e.getX(), e.getY()).m_bgColor == Color.LIGHT_GRAY) {
+						m_focused = null;
 					} else {
-						menu.buttons[i].shrink();
+						m_focused = menu.selected(e.getX(), e.getY());
+					}
+					int nChild = menu.nbChild;
+					for (int i = 0; i < nChild; i++) {
+						if (menu.buttons[i] == m_focused) {
+							m_focused.grow();
+						} else {
+							menu.buttons[i].shrink();
+						}
 					}
 				}
 			} else if (inMenu.getPause()) {
