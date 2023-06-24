@@ -1,5 +1,7 @@
 package info3.game.entity;
 
+import java.util.Random;
+
 import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
