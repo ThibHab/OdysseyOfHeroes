@@ -79,8 +79,7 @@ public class CanvasListener implements GameCanvasListener {
 		if (m_focused != null) {
 			if (!menu.getStarted()) {
 				if (menu.credits.isCreditUp()) {
-					if (m_focused == menu.credits.selected(e.getX(), e.getY())
-							&& m_focused.getName().equals("Menu")) {
+					if (m_focused == menu.credits.selected(e.getX(), e.getY()) && m_focused.getName().equals("Menu")) {
 						menu.credits.creditsUp = false;
 					}
 				} else {
@@ -117,18 +116,25 @@ public class CanvasListener implements GameCanvasListener {
 				}
 
 			} else if (inMenu.getPause()) {
-				if (m_focused == inMenu.selected(e.getX(), e.getY())) {
-					if (m_focused.getName().equals("Reprendre")) {
-						game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
-								new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
-						inMenu.setPause(false);
-					} else if (m_focused.getName().equals("Controls")) {
-						// TODO
-					} else if (m_focused.getName().equals("Quitter")) {
-						this.exit();
-					} else {
-						m_focused.m_bgColor = Color.red;
-						m_focused = null;
+				if (inMenu.controls.isControlsUp()) {
+					if (m_focused == inMenu.controls.selected(e.getX(), e.getY())
+							&& m_focused.getName().equals("Menu")) {
+						inMenu.controls.controlsUp = false;
+					}
+				} else {
+					if (m_focused == inMenu.selected(e.getX(), e.getY())) {
+						if (m_focused.getName().equals("Reprendre")) {
+							game.m_frame.setCursor(game.m_frame.getToolkit().createCustomCursor(
+									new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
+							inMenu.setPause(false);
+						} else if (m_focused.getName().equals("Controls")) {
+							inMenu.controls.controlsUp = true;
+						} else if (m_focused.getName().equals("Quitter")) {
+							this.exit();
+						} else {
+							m_focused.m_bgColor = Color.red;
+							m_focused = null;
+						}
 					}
 				}
 			}
@@ -203,13 +209,25 @@ public class CanvasListener implements GameCanvasListener {
 					}
 				}
 			} else if (inMenu.getPause()) {
-				m_focused = inMenu.selected(e.getX(), e.getY());
-				int nChild = inMenu.nbChild;
-				for (int i = 0; i < nChild; i++) {
-					if (inMenu.buttons[i] == m_focused) {
-						m_focused.grow();
-					} else {
-						inMenu.buttons[i].shrink();
+				if (inMenu.controls.isControlsUp()) {
+					m_focused = inMenu.controls.selected(e.getX(), e.getY());
+					int nChild = inMenu.controls.nbChild;
+					for (int i = 0; i < nChild; i++) {
+						if (inMenu.controls.buttons[i] == m_focused) {
+							m_focused.grow();
+						} else {
+							inMenu.controls.buttons[i].shrink();
+						}
+					}
+				} else {
+					m_focused = inMenu.selected(e.getX(), e.getY());
+					int nChild = inMenu.nbChild;
+					for (int i = 0; i < nChild; i++) {
+						if (inMenu.buttons[i] == m_focused) {
+							m_focused.grow();
+						} else {
+							inMenu.buttons[i].shrink();
+						}
 					}
 				}
 			}
@@ -289,7 +307,7 @@ public class CanvasListener implements GameCanvasListener {
 	@Override
 	public void endOfPlay(String name) {
 //    if (!m_expired) // only reload if it was a forced reload by timer
-		//m_game.loadMusic();
+		// m_game.loadMusic();
 //    m_expired = false;
 	}
 
