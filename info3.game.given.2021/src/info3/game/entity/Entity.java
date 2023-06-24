@@ -211,11 +211,15 @@ public abstract class Entity implements IEntity {
 					&& (destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance)
 					&& this.direction == Aut_Direction.N) {
 				if (destTile.entity instanceof DungeonEntrance) {
-					EntitiesConst.GAME.previousMap = 2;
-					EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS
-							+ 1].entity = null;
-					EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1,
-							EntitiesConst.GAME.player2);
+					if (Hero.firePowerUnlocked) {
+						EntitiesConst.GAME.previousMap = 2;
+						EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS
+								+ 1].entity = null;
+						EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1,
+								EntitiesConst.GAME.player2);
+					} else {
+						System.out.println("Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu");
+					}
 				} else if (destTile.entity instanceof MazeEntrance) {
 					EntitiesConst.GAME.previousMap = 1;
 					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS
