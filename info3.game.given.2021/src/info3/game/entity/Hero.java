@@ -77,7 +77,11 @@ public abstract class Hero extends Entity {
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
 			if ((destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
 				if (destTile.entity instanceof DungeonEntrance) {
-					EntitiesConst.GAME.openMap(Game.BOSS);
+					if (Hero.firePowerUnlocked) {
+						EntitiesConst.GAME.openMap(Game.BOSS);
+					} else {
+						System.out.println("Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu");
+					}
 				} else if (destTile.entity instanceof MazeEntrance) {
 					EntitiesConst.GAME.openMap(Game.MAZE);
 				}
