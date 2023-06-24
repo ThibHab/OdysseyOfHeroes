@@ -2,6 +2,7 @@ package info3.game.entity;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.RandomAccessFile;
 import java.util.Random;
 
 import animations.Animation;
@@ -12,6 +13,7 @@ import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.sound.RandomFileInputStream;
 
 public class Bush extends DecorElement {
 
@@ -45,7 +47,15 @@ public class Bush extends DecorElement {
 	}
 
 	@Override
-	public void takeDamage(Entity attacker) {
+	public void takeDamage(Entity attacker) {	
+		try {
+			RandomAccessFile file = new RandomAccessFile("resources/bush.ogg", "r");
+			RandomFileInputStream fis = new RandomFileInputStream(file);
+			EntitiesConst.GAME.m_canvas.playSound("bush",fis, 0, 0.8F);
+		} catch (Throwable th) {
+			th.printStackTrace(System.err);
+			System.exit(-1);
+		}
 		System.out.println("HEHO CA FAIT MALEUH");
 		health -= attacker.weaponDamage;
 		if (health <= 0) {
