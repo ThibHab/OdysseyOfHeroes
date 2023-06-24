@@ -116,7 +116,7 @@ public class MapRender {
 	float opacity(float d) {
 		float opa = 1 - (float) (Math.pow(Math.E, -(d * d * 10 / 26)));
 		if (opa > 0.90) {
-			return 0.97f;
+			return 0.99f;
 		}
 		return opa;
 	}

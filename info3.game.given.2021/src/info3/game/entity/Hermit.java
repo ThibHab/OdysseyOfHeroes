@@ -45,9 +45,14 @@ public class Hermit extends Villager {
 	public void talks() {
 		super.talks();
 		if (this.dialogIndex >= 3) {
-			Hero.firePowerUnlocked = true;
+			Range.unlockFire();
 			this.dialogs.clear();
 		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.HERMIT_M + AnimConst.HERMIT_S;
 	}
 
 }

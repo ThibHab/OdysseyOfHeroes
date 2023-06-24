@@ -77,7 +77,7 @@ public abstract class Effect {
 		g.drawImage(img, positionX, positionY, height, width, null);
 	}
 
-	private int getTrueHeight(int tileSize) {
+	public int getTrueHeight(int tileSize) {
 		if (dir != null && dir == Aut_Direction.W) {
 			return (int) -(this.width * tileSize);
 		} else {
@@ -85,7 +85,7 @@ public abstract class Effect {
 		}
 	}
 
-	private int getTrueWidth(int tileSize) {
+	public int getTrueWidth(int tileSize) {
 		if (dir != null && dir == Aut_Direction.N) {
 			return (int) -(this.width * tileSize);
 		} else {
@@ -93,7 +93,7 @@ public abstract class Effect {
 		}
 	}
 
-	private int getPosX(Location pixel, float shiftXY, int tileSize) {
+	public int getPosX(Location pixel, float shiftXY, int tileSize) {
 		if (dir != null && dir == Aut_Direction.W) {
 			return (int) (pixel.getX() - shiftXY + tileSize);
 		} else {
@@ -101,7 +101,7 @@ public abstract class Effect {
 		}
 	}
 
-	private int getPosY(Location pixel, float shiftXY, int tileSize) {
+	public int getPosY(Location pixel, float shiftXY, int tileSize) {
 		if (dir != null && dir == Aut_Direction.N) {
 			return (int) (pixel.getY() - shiftXY + tileSize);
 		} else {

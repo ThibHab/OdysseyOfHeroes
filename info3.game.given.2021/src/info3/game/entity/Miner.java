@@ -22,15 +22,13 @@ public class Miner extends Villager {
 		this.sold = false;
 		this.sellingDialogs = new LinkedList<>();
 		this.sellingDialogsIndex = 0;
-		this.sellingDialog = "50 pièces d'or pour une bombe, \ncrois-moi c'est une bonne affaire ! \n Fais en bon usage !";
+		this.sellingDialog = "50 pièces d'or pour une bombe, \ncrois-moi c'est une bonne affaire ! \nTu peux même faire exploser des \nrochers avec. Fais en bon usage !";
 		this.name = "Villager";
 		this.dialogs.add("Salut ! Je suis Billy-Boy, fils \nde mineur.");
 		this.dialogs.add(
 				"Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé, \nmais surtout ne dis \nrien à mon père...");
 		this.dialogs.add("Ah... tu n'as pas un montant \nde pièces d'or suffisant.");
 		this.dialogs.add("Reviens me voir quand ce sera \nle cas !");
-		this.sellingDialogs
-				.add("50 pièces d'or pour une bombe, \ncrois-moi c'est une bonne affaire ! \n Fais en bon usage !");
 		// TODO Auto-generated constructor stub
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -41,18 +39,6 @@ public class Miner extends Villager {
 				Aut_Direction.W };
 		Action acts[] = new Action[] { Action.S, Action.M };
 		this.anim = new Animation(this, ImagesConst.MINER, dirs, acts);
-	}
-
-	@Override
-	public int getNbActionSprite(Action a) {
-		switch (a) {
-		case M:
-			return AnimConst.MINER_M;
-		case S:
-			return AnimConst.MINER_S;
-		default:
-			return 0;
-		}
 	}
 
 	@Override
@@ -159,6 +145,23 @@ public class Miner extends Villager {
 		default:
 			return true;
 		}
+	}
+
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return AnimConst.MINER_M;
+		case S:
+			return AnimConst.MINER_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.MINER_M + AnimConst.MINER_S;
 	}
 
 }

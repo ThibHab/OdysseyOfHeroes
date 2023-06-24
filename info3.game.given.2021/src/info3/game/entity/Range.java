@@ -32,13 +32,17 @@ public class Range extends Hero {
 		this.anim = new Animation(this, ImagesConst.RANGE, dirs, acts);
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
 	}
-	
+
 	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		Hero otherPlayer = EntitiesConst.GAME.player1;
-		if (otherPlayer.dead && this.healingPotions > 0) {
-			this.healingPotions--;
-			Wait(1000);
+	public void Power() {
+		if (this.healingPotions > 0) {
+			Melee otherPlayer = EntitiesConst.GAME.player1;
+			Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+			if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
+				this.Wait(1000);
+			} else {
+				this.heal();
+			}
 		}
 	}
 	
@@ -63,12 +67,6 @@ public class Range extends Hero {
 			this.frozen = true;
 			Projectile p = new Projectile(this, this.direction);
 		}
-	}
-
-	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Pop(d, c);
 	}
 
 	@Override
@@ -97,16 +95,23 @@ public class Range extends Hero {
 		if (Hero.level % 2 == 0 && this.maxHealth < 13) {
 			this.maxHealth += 1;
 		}
-		
+
 		if (Hero.level % 5 == 0) {
 			this.range += 1;
 		}
 
-		this.health = this.maxHealth;
+		if (this.dead = false)
+			this.health = this.maxHealth;
 	}
 
 	@Override
 	public int totSrpitePerDir() {
 		return AnimConst.RANGE_TOT;
+	}
+	
+	public static void unlockFire() {
+		Hero.firePowerUnlocked = true;
+		ImagesConst.loadFire();
+		EntitiesConst.ENERGYBALL_SCALE = 0.8f;
 	}
 }

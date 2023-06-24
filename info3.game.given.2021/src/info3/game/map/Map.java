@@ -142,6 +142,11 @@ public abstract class Map implements IMap {
 		Bush b = new Bush(new Location(x, y));
 		map[x][y].entity = b;
 	}
+	
+	void createPortal(int x, int y) {
+		Portal b = new Portal(new Location(x, y));
+		map[x][y].entity = b;
+	}
 
 	void createChest(int x, int y) {
 		Chest c = new Chest(new Location(x, y));
@@ -297,7 +302,7 @@ public abstract class Map implements IMap {
 	 * @param spaceBetween the distance between two entity
 	 */
 	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, String ent, long seed, int rareness) {
-		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree"))) {
+		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree")) && !(ent.equals("Portal"))) {
 			return;
 		}
 		Random r = new Random(EntitiesConst.SEED);
@@ -346,8 +351,10 @@ public abstract class Map implements IMap {
 								this.createBush(i, j);
 							} else if (ent.equals("Rock")) {
 								this.createRock(i, j);
-							} else {
+							} else if (ent.equals("Tree")) {
 								createTree(i, j);
+							} else if(ent.equals("Portal")) {
+								createPortal(i, j);
 							}
 						}
 					}

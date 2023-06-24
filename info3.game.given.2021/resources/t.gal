@@ -1,6 +1,4 @@
-
- 
- Player2 (Stand) {
+Player2 (Stand) {
   * (Stand)
   | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
@@ -10,7 +8,6 @@
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
-  | Key(p) & Cell(F,@) ? Wizz : (Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)
   
@@ -27,7 +24,6 @@ Player1 (Stand) {
   | Key(s) ? Move(S) :(Stand)
   | Key(q) ? Move(W) :(Stand)
   | Key(d) ? Move(E) :(Stand)
-  | Key(e) & Cell(F,@) ? Wizz : (Stand)
   | Key(e) ? Power : (Stand)
   | Key(r) ? Egg(F, D) : (Stand)
   
@@ -36,10 +32,10 @@ Player1 (Stand) {
 
 Bush(Existing){
   *(Existing)
-  | !GotPower ? 5% Egg(H,A) / 50% Egg(H,P,1) / 10% Egg(H,P,2) / 5% Egg(H,P,3) : (Growing)
+  | !GotPower ? 5% Egg(H,A) / 50% Egg(H,P,1) / 5% Egg(H,P,2) : (Growing)
   
   * (Growing)
-  | True ? Wait(10000) : (Existing)
+  | True ? Wait(60000) : (Existing)
  } 
  
  Tree(Existing){
@@ -86,13 +82,29 @@ Bush(Existing){
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
  }
  
-  Goblin(Search) {
+Goblin(Search) {
    * (Search)
-   | !GotPower ? : ()
+   | !GotPower ? Egg(H,P,1) : ()
    | Cell(@,N) ? Hit(N) : (Search)
    | Cell(@,S) ? Hit(S) : (Search)
    | Cell(@,E) ? Hit(E) : (Search)
    | Cell(@,W) ? Hit(W) : (Search)
+   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
+   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
+   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
+   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+   | True ? 50% Move(F) / 25% Move(R) / 25% Move(L) : (Search)
+   
+   * ()
+ }
+ 
+ Skeleton(Search) {
+   * (Search)
+   | !GotPower ? Egg(H,P,1) : ()
+   | Cell(@,F,3) ? Hit(N) : (Search)
+   | Cell(@,S,3) ? Hit(S) : (Search)
+   | Cell(@,E,3) ? Hit(E) : (Search)
+   | Cell(@,W,3) ? Hit(W) : (Search)
    | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
@@ -163,6 +175,15 @@ Bush(Existing){
   MazeEntrance(Existing){
 	*(Existing)
 	| True ? : (Existing)
+  }
+  
+  Portal (Waiting) {
+  	* (Waiting)
+  	| True ? 25% Wait(5000) / 25% Wait(10000) / 25% Wait(15000) / 25% Wait(20000) : (Drop)
+  	
+  	* (Drop)
+  	| True ? Egg(F,A,1) / Egg(R,A,1) / Egg(L,A,1) / Egg(B,A,1) : (Waiting) 
+  
   }
  
  

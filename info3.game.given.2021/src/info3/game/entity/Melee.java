@@ -1,5 +1,7 @@
 package info3.game.entity;
 
+import java.io.RandomAccessFile;
+
 import animations.Animation;
 import animations.SpearEffect;
 import animations.SwordEffect;
@@ -14,6 +16,7 @@ import info3.game.constants.ImagesConst;
 import info3.game.constants.MapConstants;
 import info3.game.map.Map;
 import info3.game.map.MapRender;
+import info3.game.sound.RandomFileInputStream;
 
 public class Melee extends Hero {
 	public Melee(String name, Game g) {
@@ -29,20 +32,24 @@ public class Melee extends Hero {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		
+
 		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.E, Aut_Direction.N,
 				Aut_Direction.W };
 		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
 		this.anim = new Animation(this, ImagesConst.MELEE, dirs, acts);
-		this.hitbox = new Hitbox(this, (float)0.50, (float)0.65);
+		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
-	
+
 	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		Hero otherPlayer = EntitiesConst.GAME.player2;
-		if (otherPlayer.dead && this.healingPotions > 0) {
-			this.healingPotions--;
-			Wait(1000);
+	public void Power() {
+		if (this.healingPotions > 0) {
+			Range otherPlayer = EntitiesConst.GAME.player2;
+			Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+			if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
+				this.Wait(1000);
+			} else {
+				this.heal();
+			}
 		}
 	}
 	
@@ -51,7 +58,7 @@ public class Melee extends Hero {
 		this.actionIndex = 0;
 		EntitiesConst.GAME.player2.revive();
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
@@ -74,7 +81,7 @@ public class Melee extends Hero {
 	public int totSrpitePerDir() {
 		return AnimConst.MELEE_TOT;
 	}
-	
+
 	@Override
 	public void updateStats() {
 		this.weaponDamage += 2;
@@ -83,12 +90,12 @@ public class Melee extends Hero {
 			this.maxHealth += 1;
 		}
 
-		this.health = this.maxHealth;
+		if (this.dead == false)
+			this.health = this.maxHealth;
 	}
-	
+
 	@Override
 	public void attackEffect(Location t) {
 		new SwordEffect(t, this.direction);
 	}
-	
 }

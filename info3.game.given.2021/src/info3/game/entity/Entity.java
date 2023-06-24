@@ -1,10 +1,14 @@
 package info3.game.entity;
 
 import java.awt.Graphics;
+import java.io.RandomAccessFile;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import animations.Animation;
+import animations.BloodEffect;
 import animations.Effect;
+import animations.GroundEffect;
 import animations.SpearEffect;
 import animations.SwordEffect;
 import info3.game.Game;
@@ -20,6 +24,7 @@ import info3.game.map.Map;
 import info3.game.map.MapRender;
 import info3.game.map.MazeMap;
 import info3.game.map.Tile;
+import info3.game.sound.RandomFileInputStream;
 
 public abstract class Entity implements IEntity {
 	public String name;
@@ -120,11 +125,11 @@ public abstract class Entity implements IEntity {
 				if (this.actionIndex >= this.attackSpeed) {
 					this.hitFrozen = false;
 				}
-            } else if (action == Action.I) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-					}
+			} else if (action == Action.I) {
+				if (this.isFinished()) {
+					this.frozen = false;
+					this.actionIndex = 0;
+				}
 //			} else if (action == Action.T) {
 //				if (this.isFinished()) {
 //					this.frozen = false;
@@ -138,7 +143,7 @@ public abstract class Entity implements IEntity {
 					this.dead = true;
 					if (!(this instanceof Hero))
 						EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
-					
+
 				}
 			} else if (timer != Integer.MIN_VALUE) {
 				this.timer -= elapsed;
@@ -226,6 +231,8 @@ public abstract class Entity implements IEntity {
 		}
 
 		Location location = this.frontTileLocation(d);
+		if (location.getX() == this.location.getX() && location.getY() == this.location.getY())
+			this.die();
 		switch (c) {
 		case A:
 			if (id == 0) {
@@ -237,13 +244,14 @@ public abstract class Entity implements IEntity {
 				Goblin gob = new Goblin(location);
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
-//			case 2:
+			case 2:
 //				Skeleton s = new Skeleton(location);
 //				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
-//				break;
+				break;
 			}
+			break;
 		case D:
-			if (this instanceof Hero && Hero.bombs < 0) {
+			if (!(this instanceof Hero) || Hero.bombs <= 0) {
 				break;
 			} else {
 				new Bomb(location, this);
@@ -294,23 +302,33 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
+							&& !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.N);
 					}
 					break;
 				case S:
 					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.S);
 					}
 					break;
 				case E:
 					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.E);
 					}
 					break;
 				case W:
-					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
+							&& !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.W);
 					}
 					break;
 				default:
@@ -322,7 +340,8 @@ public abstract class Entity implements IEntity {
 
 	public void takeDamage(Entity attacker) {
 //		else if (!this.frozen /* && attacker.category != this.category */) {
-		System.out.println("victim has " + this.health + " hearts");
+		if (EntitiesConst.GAME.debug)
+			System.out.println("victim has " + this.health + " hearts");
 //			this.frozen = true;
 //			this.action = Action.T;
 //			this.anim.changeAction(action);
@@ -414,14 +433,17 @@ public abstract class Entity implements IEntity {
 		this.timer = time;
 		this.frozen = true;
 	}
-	
+
 	public void waited() {
-		
+
 	}
 
 	@Override
-	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
-		// TODO Auto-generated method stub
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		BufferedImage img = anim.getFrame();
+		int diff = (int) (tileSize * (scale - 1)) / 2;
+		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
+				(int) (tileSize * scale), null);
 	}
 
 	public void setLocation(Location location) {
