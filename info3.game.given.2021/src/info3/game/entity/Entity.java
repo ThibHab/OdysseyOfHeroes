@@ -129,13 +129,6 @@ public abstract class Entity implements IEntity {
 					this.frozen = false;
 					this.actionIndex = 0;
 				}
-//			} else if (action == Action.T) {
-//				if (this.isFinished()) {
-//					this.frozen = false;
-//					this.actionIndex = 0;
-////					if (this.health == 0)
-////						this.die();
-//				}
 			} else if (action == Action.D) {
 				if (this.isFinished()) {
 					this.actionIndex = 0;
@@ -158,6 +151,7 @@ public abstract class Entity implements IEntity {
 					System.out.println(this.name + " is standing");
 				}
 				this.action = Action.S;
+				this.anim.imageIndex = anim.sprites.length - 1;
 				this.anim.changeAction(action);
 			}
 			if (!this.dead)
@@ -329,21 +323,21 @@ public abstract class Entity implements IEntity {
 				switch (d) {
 				case N:
 					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
-							&& !(entity instanceof BombRock)) {
+							&& !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.N);
 					}
 					break;
 				case S:
-					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.S);
 					}
 					break;
 				case E:
-					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.E);
@@ -351,7 +345,7 @@ public abstract class Entity implements IEntity {
 					break;
 				case W:
 					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
-							&& !(entity instanceof BombRock)) {
+							&& !(entity instanceof Rock)) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.W);
@@ -399,9 +393,9 @@ public abstract class Entity implements IEntity {
 		this.dead = false;
 		this.frozen = false;
 		this.actionIndex = 0;
-		this.health = this.maxHealth/2;
+		this.health = this.maxHealth / 2;
 	}
-	
+
 	public void heal() {
 		this.health = this.maxHealth;
 	}
