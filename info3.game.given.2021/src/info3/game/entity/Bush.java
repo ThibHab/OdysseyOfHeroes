@@ -58,6 +58,9 @@ public class Bush extends DecorElement {
 		}
 		System.out.println("HEHO CA FAIT MALEUH");
 		health -= attacker.weaponDamage;
+		if(attacker instanceof Hero && VillagerGirl.started) {
+			Hero.bushesCut++;
+		}
 		if (health <= 0) {
 			EntitiesConst.MAP.deadBush.add(this);
 			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
