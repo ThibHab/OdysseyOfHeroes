@@ -8,6 +8,8 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.JFrame;
 
+import info3.game.constants.EntitiesConst;
+
 public class Button {
 	int m_x, m_y, m_width, m_height;
 	int def_x, def_y, def_width, def_height;
@@ -21,9 +23,9 @@ public class Button {
 		m_name = name;
 	}
 	
-	public Button(Menu parent) {
+	public Button(Menu parent, Color col) {
 		m_parent = parent;
-		m_bgColor = Color.red;
+		m_bgColor = col;
 	}
 	
 	public Button(JFrame frame) {

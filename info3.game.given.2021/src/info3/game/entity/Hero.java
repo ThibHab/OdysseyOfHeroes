@@ -11,7 +11,7 @@ import info3.game.constants.EntitiesConst;
 import info3.game.map.Tile;
 
 public abstract class Hero extends Entity {
-	public static int coins, level, levelUp, experience, bushesCut;
+	public static int coins, level, levelUp, experience, bushesCut, bombs;
 	public static boolean firePowerUnlocked;
 	public int healingPotions, strengthPotions;
 	
@@ -85,11 +85,13 @@ public abstract class Hero extends Entity {
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin)
-				this.coins ++;
+				Hero.coins ++;
 			else if (entity instanceof HealingPotion)
 				this.healingPotions++;
 			else if (entity instanceof StrengthPotion)
 				this.strengthPotions++;
+			else if (entity instanceof Chest)
+				Hero.coins += 5;
 			
 			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
@@ -149,6 +151,7 @@ public abstract class Hero extends Entity {
 			v.talks();
 		}
 	}
+	
 	
 	public static void saveRestore(int lvl, int xp, int coins) {
 		Hero.coins += coins;

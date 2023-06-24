@@ -53,6 +53,7 @@ Player2(Stand_S){
   | Key(l) ? Move(S) :(Stand)
   | Key(k) ? Move(W) :(Stand)
   | Key(m) ? Move(E) :(Stand)
+  | Key(p) & Cell(F,@) ? Wizz : (Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)
  }
@@ -104,9 +105,23 @@ Player2(Stand_S){
   
 }
 
+Player1 (Stand) {
+  * (Stand)
+  | Cell(F,P) ? Pick(F) : (Stand)
+  | Key(a) & Cell(F,T) ? Pop(F,T) : (Stand)
+  | Key(a) ? Hit(F)  :(Stand)
+  | Key(z) ? Move(N) :(Stand)
+  | Key(s) ? Move(S) :(Stand)
+  | Key(q) ? Move(W) :(Stand)
+  | Key(d) ? Move(E) :(Stand)
+  | Key(e) & Cell(F,@) ? Wizz : (Stand)
+  | Key(e) ? Power : (Stand)
+  | Key(r) ? Egg(F, D) : (Stand)
+ }
+
 Bush(Existing){
   *(Existing)
-  | !GotPower ? 5% Egg(H,A) / 50% Egg(H,P,1) / 10% Egg(H,P,2) / 10% Egg(H,P,3) : (Growing)
+  | !GotPower ? 5% Egg(H,A) / 50% Egg(H,P,1) / 10% Egg(H,P,2) / 5% Egg(H,P,3) : (Growing)
   
   * (Growing)
   | True ? Wait(10000) : (Existing)
@@ -176,9 +191,9 @@ Bush(Existing){
    | True ? : (Exists) 
  }
  
- Chest(Exists) {
-   * (Exists)
-   | True ? : (Exists)
+ Chest(Existing) {
+   *(Exists)
+   | True ? : (Exists) 
  }
  
   CaveWall(Existing){

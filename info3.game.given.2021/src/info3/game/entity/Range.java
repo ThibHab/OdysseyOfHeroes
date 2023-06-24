@@ -32,6 +32,21 @@ public class Range extends Hero {
 		this.anim = new Animation(this, ImagesConst.RANGE, dirs, acts);
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
 	}
+	
+	@Override
+	public void Wizz(Aut_Direction d, Aut_Category c) {
+		Hero otherPlayer = EntitiesConst.GAME.player1;
+		if (otherPlayer.dead && this.healingPotions > 0) {
+			this.healingPotions--;
+			Wait(1000);
+		}
+	}
+	
+	@Override
+	public void waited() {
+		this.actionIndex = 0;
+		EntitiesConst.GAME.player1.revive();
+	}
 
 	@Override
 	public void Hit(Aut_Direction d) {
@@ -54,12 +69,6 @@ public class Range extends Hero {
 	public void Pop(Aut_Direction d, Aut_Category c) {
 		// TODO Auto-generated method stub
 		super.Pop(d, c);
-	}
-
-	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Wizz(d, c);
 	}
 
 	@Override
