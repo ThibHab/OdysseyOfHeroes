@@ -107,6 +107,7 @@ public class Miner extends Villager {
 			if (!this.sold) {
 				EntitiesConst.MAP.bubbles.add(new SpeechBubble(this, this.sellingDialog));
 				Hero.coins -= 50;
+				Hero.bombs++;
 				this.sold = true;
 			} else {
 				this.sold = false;

@@ -110,6 +110,7 @@ public class Game {
 	public InGameMenu inMenu;
 	public RandomAccessFile save;
 	boolean reload;
+	public boolean saveExist;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
@@ -136,6 +137,14 @@ public class Game {
 //			save.readFully(buffer);
 //			loadSeed(buffer);
 //		}
+
+		File f = new File("save.txt");
+		long length = f.length();
+		if (length == 0) {
+			saveExist = false;
+		} else {
+			saveExist = true;
+		}
 
 		new ImagesConst();
 		new EntitiesConst();
@@ -177,9 +186,8 @@ public class Game {
 	}
 
 	public void setupGame(File file) throws Exception {
-		m_frame.setCursor(m_frame.getToolkit().createCustomCursor(
-	            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
-	            "null"));
+		m_frame.setCursor(m_frame.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB),
+				new Point(0, 0), "null"));
 		byte[] buffer = null;
 		if (file == null) {
 			file = new File("save.txt");
@@ -234,7 +242,7 @@ public class Game {
 	 */
 	private void setupFrame() {
 		Toolkit tkit = Toolkit.getDefaultToolkit();
-		Point point = new Point(25,25);
+		Point point = new Point(25, 25);
 		Image agrou = ImagesConst.CURSOR[0];
 		Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
 		m_frame.setCursor(curs);
@@ -298,9 +306,9 @@ public class Game {
 					EntitiesConst.MAP.projectiles.get(i).tick(elapsed);
 				}
 
-		        for (Bush b : EntitiesConst.MAP.deadBush) {
-		        	b.tick(elapsed);
-		        }
+				for (Bush b : EntitiesConst.MAP.deadBush) {
+					b.tick(elapsed);
+				}
 				((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 				((Map) map).tickEffects(elapsed);
 

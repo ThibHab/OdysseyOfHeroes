@@ -64,6 +64,21 @@ public class Melee extends Hero {
 	}
 	
 	@Override
+	public void Wizz(Aut_Direction d, Aut_Category c) {
+		Hero otherPlayer = EntitiesConst.GAME.player2;
+		if (otherPlayer.dead && this.healingPotions > 0) {
+			this.healingPotions--;
+			Wait(1000);
+		}
+	}
+	
+	@Override
+	public void waited() {
+		this.actionIndex = 0;
+		EntitiesConst.GAME.player2.revive();
+	}
+	
+	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
 		case M:

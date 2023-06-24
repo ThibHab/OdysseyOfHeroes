@@ -5,6 +5,8 @@ import java.awt.Graphics;
 
 import javax.swing.JFrame;
 
+import info3.game.constants.EntitiesConst;
+
 public class InGameMenu  extends Menu {
 	public boolean isPaused;
 
@@ -14,8 +16,8 @@ public class InGameMenu  extends Menu {
 		isPaused = false;
 	}
 
-	public InGameMenu(Menu parent) {
-		super(parent);
+	public InGameMenu(Menu parent, Color col) {
+		super(parent, col);
 		isStarted = true;
 		isPaused = false;
 	}
@@ -41,9 +43,9 @@ public class InGameMenu  extends Menu {
 	
 	@Override
 	public void setMenu() {
-		Button resume = new Button(this);
-		Button Controls = new Button(this);
-		Button Quit = new Button(this);
+		Button resume = new Button(this, Color.red);
+		Button Controls = new Button(this, Color.red);
+		Button Quit = new Button(this, Color.red);
 		
 		buttons[0] = resume;
 		buttons[1] = Controls;
@@ -51,9 +53,9 @@ public class InGameMenu  extends Menu {
 		
 		nbChild = 3;
 		
-		resume.setName("Resume");
+		resume.setName("Reprendre");
 		Controls.setName("Controls");
-		Quit.setName("Quit");
+		Quit.setName("Quitter");
 		
 		resume.setBounds(m_width / 3, m_height -  3 * (m_height / 4), m_width / 3, 50);
 		Controls.setBounds(m_width / 3, m_height -  2 * (m_height / 4), m_width / 3, 50);
