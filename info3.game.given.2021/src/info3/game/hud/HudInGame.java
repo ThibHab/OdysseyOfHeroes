@@ -95,6 +95,22 @@ public class HudInGame {
 		int textWidth = (int) rec.getWidth();
 		g.drawString(lv, (width / 2) - (textWidth / 2), height - 20);
 	}
+	
+	public void setBushQuest(Graphics g, Font f, int width, int height) {
+		String quest = "Buissons détruits :";
+		String advancement = "" + Hero.bushesCut + " / " + 20;
+		
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(quest, g);
+		int textWidth = (int) rec.getWidth();
+		
+		g.drawString(quest, width - (15 + textWidth), height);
+		
+		rec = g.getFontMetrics().getStringBounds(advancement, g);
+		textWidth = (int) rec.getWidth();
+		int textHeight = (int) rec.getHeight();
+		
+		g.drawString(advancement, width - (15 + textWidth), height + textHeight);		
+	}
 
 	public void paint(Graphics g) {
 		int width = EntitiesConst.GAME.m_frame.getWidth();
@@ -185,6 +201,13 @@ public class HudInGame {
 		setCoin(g, f, width, height);
 		
 		setBomb(g, f, width, height);
+		
+		if (VillagerGirl.started) {
+			Font fQuest = new Font(null, 1, 20);
+			g.setFont(fQuest);
+			g.setColor(Color.magenta);
+			setBushQuest(g, fQuest, width, height / 3);
+		}
 		
 		setLevel(g, f, width, height);
 
