@@ -112,7 +112,7 @@ public abstract class Hero extends Entity {
 	
 	@Override
 	public void takeDamage(Entity attacker) {
-		this.health -= attacker.weaponDamage;
+		this.health -= 0;
 		if (this.health <= 0) {
 			this.die();
 		}

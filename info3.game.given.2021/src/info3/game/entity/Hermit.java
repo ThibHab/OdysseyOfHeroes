@@ -50,4 +50,9 @@ public class Hermit extends Villager {
 		}
 	}
 
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.HERMIT_M + AnimConst.HERMIT_S;
+	}
+
 }
