@@ -31,8 +31,6 @@ public class Projectile extends Entity {
 		this.owner = owner;
 		this.tilesCrossed = 0;
 		this.currentState = this.automaton.initial;
-		this.location.setX((float) (this.owner.location.getX()));
-		this.location.setY((float) (this.owner.location.getY()));
 
 		this.action = Action.M;
 		Action acts[] = new Action[] { Action.M };
@@ -40,6 +38,33 @@ public class Projectile extends Entity {
 
 		this.location.setX((float) (this.owner.location.getX()));
 		this.location.setY((float) (this.owner.location.getY()));
+
+		this.speed = 2;
+		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
+		this.scale = EntitiesConst.ENERGYBALL_SCALE;
+		EntitiesConst.MAP.projectiles.add(this);
+	}
+	
+	public Projectile(Entity owner, Aut_Direction d, Location location) {
+		super();
+		this.direction = d;
+		this.category = Aut_Category.M;
+		this.name = "EnergyBall";
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				this.automaton = next;
+		}
+		this.currentState = this.automaton.initial;
+		this.owner = owner;
+		this.tilesCrossed = 0;
+		this.currentState = this.automaton.initial;
+
+		this.action = Action.M;
+		Action acts[] = new Action[] { Action.M };
+		this.anim = new Animation(this, ImagesConst.ENERGYBALL, null, acts);
+
+		this.location.setX(location.getX());
+		this.location.setY(location.getY());
 
 		this.speed = 2;
 		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
