@@ -87,6 +87,8 @@ public class Bush extends DecorElement {
 //				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
 				break;
 			}
+			break;
+			
 		case D:
 			new Bomb(location, this);
 			Hero.bombs--;
@@ -110,6 +112,7 @@ public class Bush extends DecorElement {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = sp;
 				break;
 			}
+			break;
 
 		default:
 			break;
