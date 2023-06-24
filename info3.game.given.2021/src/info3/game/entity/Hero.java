@@ -112,7 +112,7 @@ public abstract class Hero extends Entity {
 	
 	@Override
 	public void takeDamage(Entity attacker) {
-		this.health -= 0;
+		this.health -= attacker.weaponDamage;
 		if (this.health <= 0) {
 			this.die();
 		}
@@ -161,7 +161,6 @@ public abstract class Hero extends Entity {
 			i++;
 		}
 		Hero.level = lvl;
-		Hero.experience = xp;
-		
+		Hero.experience = xp;	
 	}
 }
