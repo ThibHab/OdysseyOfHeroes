@@ -14,8 +14,6 @@ import info3.game.map.Tile;
 
 public class Boss extends Mob {
 	public int phase;
-	public int mapHeight;
-	public int mapWidth;
 	
 	public Boss(Location l) {
 		super();
@@ -25,6 +23,7 @@ public class Boss extends Mob {
 		this.weaponDamage = EntitiesConst.BOSS_BASE_DAMAGE;
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
 		this.speed = EntitiesConst.BOSS_SPEED;
+		this.direction = Aut_Direction.W;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -35,11 +34,11 @@ public class Boss extends Mob {
 		
 		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.S, Aut_Direction.E,
 				Aut_Direction.W };
-		Action acts[] = new Action[] { Action.M };
+		Action acts[] = new Action[] { Action.H };
 		this.anim = new Animation(this, ImagesConst.BOSS, dirs, acts);
 		this.phase = 0;
-		this.mapHeight = EntitiesConst.MAP.lenY;
-		this.mapWidth = EntitiesConst.MAP.lenX;
+		
+		this.scale = EntitiesConst.BOSS_SCALE;
 	}
 
 	@Override
@@ -51,12 +50,16 @@ public class Boss extends Mob {
 		int bossPosX = (int) this.location.getX();
 		Random random = new Random();
 		for (int i = 0; i < EntitiesConst.BOSS_MOB_SPAWN_NUMBER; i++) {
-			float randomPosX = random.nextInt(bossPosX);
-			float randomPosY = random.nextInt(this.mapHeight);
+			float randomPosX = random.nextInt(19);
+			randomPosX += 3;
+			float randomPosY = random.nextInt(12);
+			randomPosY++;
 			Location mobLocation = new Location(randomPosX, randomPosY);
 			while(!this.checkEntitiesAround(mobLocation)) {
-				randomPosX = random.nextInt(bossPosX);
-				randomPosY = random.nextInt(this.mapHeight);
+				randomPosX = random.nextInt(19);
+				randomPosX += 3;
+				randomPosY = random.nextInt(12);
+				randomPosY++;
 				mobLocation = new Location(randomPosX, randomPosY);
 			}
 
@@ -93,43 +96,55 @@ public class Boss extends Mob {
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
 		Random random = new Random();
-		int randomPosY = random.nextInt(mapHeight);
-		while (randomPosY == 0 || randomPosY == this.mapHeight) {
-			randomPosY = random.nextInt(mapHeight);
+		int randomPosY = random.nextInt(12);
+		randomPosY++;
+		while (randomPosY == 1 || randomPosY == 12) {
+			randomPosY = random.nextInt(12);
+			randomPosY++;
 		}
 		
-		EntitiesConst.MAP_MATRIX[randomPosY - 1][(int) this.location.getX() - 1].entity = new Projectile(this, d);
-		EntitiesConst.MAP_MATRIX[randomPosY][(int) this.location.getX() - 1].entity = new Projectile(this, d);
-		EntitiesConst.MAP_MATRIX[randomPosY + 1][(int) this.location.getX() - 1].entity = new Projectile(this, d);
+		int projectileXPos = (int) this.location.getX() - 1;
+		Location firstProjectileLocation = new Location(projectileXPos, randomPosY - 1);
+		Location secondProjectileLocation = new Location(projectileXPos, randomPosY);
+		Location thirdProjectileLocation = new Location(projectileXPos, randomPosY + 1);
+		EntitiesConst.MAP_MATRIX[randomPosY - 1][projectileXPos].entity = new Projectile(this, d, firstProjectileLocation);
+		//System.out.println("First projectile fired, X : " + projectileXPos + ", Y : " + firstProjectileLocation.getX());
+		EntitiesConst.MAP_MATRIX[randomPosY][projectileXPos].entity = new Projectile(this, d, secondProjectileLocation);
+		//System.out.println("Second projectile fired, X : " + projectileXPos + ", Y : " + secondProjectileLocation.getX());
+		EntitiesConst.MAP_MATRIX[randomPosY + 1][projectileXPos].entity = new Projectile(this, d, thirdProjectileLocation);
+		//System.out.println("Third projectile fired, X : " + projectileXPos + ", Y : " + thirdProjectileLocation.getX());
 	}
 
 	@Override
 	public void Wizz(Aut_Direction d, Aut_Category c) {
-		for (int row = 0; row < this.mapHeight; row++) {
-			EntitiesConst.MAP_MATRIX[row][(int) (this.location.getX() - 1)].entity = new Projectile(this, d);
+		int projectileXPos = (int) this.location.getX() - 1;
+		int[] yPosAlreadyUsed = new int[10];
+		boolean yPosValid = false;
+		Random random = new Random();
+		for (int i = 0; i < EntitiesConst.BOSS_NUMBER_PROJECTILES_TO_BE_FIRED; i++) {
+			int randomPosY = random.nextInt(12);
+			randomPosY++;
+			
+			while (!yPosValid) {
+				yPosValid = true;
+				for (int j = 0; j < yPosAlreadyUsed.length; j++) {
+					if (yPosAlreadyUsed[j] == randomPosY) {
+						yPosValid = false;
+					}
+					
+					randomPosY = random.nextInt(12);
+					randomPosY++;
+				}
+			}
+			
+			Location projectileLocation = new Location(projectileXPos, randomPosY);
+			EntitiesConst.MAP_MATRIX[randomPosY][projectileXPos].entity = new Projectile(this, d, projectileLocation);
 		}
 		
-		int nbHoles = 0;
-		Random random = new Random();
-		while (nbHoles < 2) {
-			int randomPosY = random.nextInt(this.mapHeight);
-			if (EntitiesConst.MAP_MATRIX[randomPosY][(int) this.location.getX() - 1].entity != null) {
-				EntitiesConst.MAP_MATRIX[randomPosY][(int) this.location.getX() - 1].entity = null;
-				nbHoles++;
-			}
+		for (int row = 1; row < 13; row++) {
+			
+			
 		}
-	}
-
-	@Override
-	public void Power() {
-		// TODO Auto-generated method stub
-		super.Power();
-	}
-
-	@Override
-	public void Throw(Aut_Direction d, Aut_Category category) {
-		// TODO Auto-generated method stub
-		super.Throw(d, category);
 	}
 
 	@Override

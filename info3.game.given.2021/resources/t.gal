@@ -171,5 +171,12 @@ Goblin(Search) {
 	*(Existing)
 	| True ? : (Existing)
   }
+  
+  Boss(Stand){
+	*(Stand)
+	| Key(h) ? Hit : (Stand)
+	| Key(n) ? Pop : (Stand)
+	| Key(b) ? Wizz : (Stand)
+  }
  
  
