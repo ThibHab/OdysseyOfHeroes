@@ -61,6 +61,8 @@ public class AnimConst {
 	
 	public static final int SPEECHBUBBLE_S = 1;
 	
+	public static final int PORTAL_S = 4;
+	
 	//Timed Effects
 	public static final int TIME_SWORD_EFFECT = 200;
 	public static final int TIME_SPEAR_EFFECT = 200;
