@@ -199,7 +199,6 @@ public abstract class Hero extends Entity {
 			i++;
 		}
 		Hero.level = lvl;
-		Hero.experience = xp;
-		
+		Hero.experience = xp;	
 	}
 }
