@@ -45,18 +45,26 @@ public class Melee extends Hero {
 		if (this.healingPotions > 0) {
 			Range otherPlayer = EntitiesConst.GAME.player2;
 			Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
-			if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
+			if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer
+					&& otherPlayer.dead) {
 				this.Wait(1000);
 			} else {
-				this.heal();
+				if (this.health < this.maxHealth) {
+					this.heal();
+					this.healingPotions--;
+					Wait(200);
+				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void waited() {
 		this.actionIndex = 0;
-		EntitiesConst.GAME.player2.revive();
+		if (EntitiesConst.GAME.player2.health <= 0) {
+			this.healingPotions--;
+			EntitiesConst.GAME.player2.revive();
+		}
 	}
 
 	@Override
