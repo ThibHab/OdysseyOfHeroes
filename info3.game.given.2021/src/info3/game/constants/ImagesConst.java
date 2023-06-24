@@ -23,7 +23,8 @@ public class ImagesConst {
 	public static BufferedImage[] SPEECHBUBBLE;
 	public static BufferedImage[] BOMB;
 	public static BufferedImage[] SAVE_TILES;
-	public static BufferedImage[] SWORD_EFFECT, SPEAR_EFFECT, HEAL_EFFECT, EXPLOSION_EFFECT, SMOKE_EFFECT;
+	public static BufferedImage[] SWORD_EFFECT, SPEAR_EFFECT, HEAL_EFFECT, EXPLOSION_EFFECT, SMOKE_EFFECT, BLOOD_EFFECT,
+			GROUND_EFFECT;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -43,7 +44,7 @@ public class ImagesConst {
 		ROCK = loadSprite("Rock", 2, 2);
 		TREE = loadSprite("Tree", 2, 1);
 		STATUE = loadSprite("Statue", 1, 1);
-		
+
 		COIN = loadSprite("Coin", 3, 2);
 		HEALING_POTION = loadSprite("Healing", 3, 3);
 		STRENGTH_POTION = loadSprite("Strength", 3, 3);
@@ -53,7 +54,7 @@ public class ImagesConst {
 		GOBLIN = loadSprite("Orc", 8, 8);
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
-		
+
 		BUSH = loadSprite("Bush", 3, 2);
 		CHEST = loadSprite("Chest", 2, 2);
 		TORCH = loadSprite("torch", 2, 3);
@@ -64,30 +65,32 @@ public class ImagesConst {
 
 		MELEE = loadSprite("Melee", 8, 7);
 		RANGE = loadSprite("Range", 8, 7);
-		
-		ENERGYBALL = loadSprite("EnergyBall",1,4);
-		
+
+		ENERGYBALL = loadSprite("EnergyBall", 1, 4);
+
 		RED_HEART = loadTile("red_heart");
 		BLUE_HEART = loadTile("blue_heart");
 		BLACK_HEART = loadTile("empty_heart");
-		
+
 		MENU_PICTURE = loadTile("menu_picture");
-		
+
 		SWORD = loadTile("weapon");
-		
-		HERMIT = loadSprite("Hermite",2,6);
+
+		HERMIT = loadSprite("Hermite", 2, 6);
 		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 3);
 		MINER = loadSprite("Miner", 4, 3);
-		
+
 		SPEECHBUBBLE = loadSprite("SpeechBubble", 1, 1);
 		SWORD_EFFECT = loadSprite("SwordAttackV2", 5, 1);
 		SPEAR_EFFECT = loadSprite("SpearAttack", 3, 2);
 		HEAL_EFFECT = loadSprite("Heal", 4, 4);
 		EXPLOSION_EFFECT = loadSprite("Explosion", 3, 2);
 		SMOKE_EFFECT = loadSprite("Smoke", 3, 2);
-		
+		BLOOD_EFFECT = loadSprite("BloodV2", 5, 2);
+		GROUND_EFFECT = loadSprite("GroundV3", 4, 1);
+
 		CURSOR = loadSprite("agrou_vert", 1, 1);
-		
+
 	}
 
 	public BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {

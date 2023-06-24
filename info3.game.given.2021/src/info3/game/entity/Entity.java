@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.util.Random;
 
 import animations.Animation;
+import animations.BloodEffect;
 import animations.Effect;
+import animations.GroundEffect;
 import animations.SpearEffect;
 import animations.SwordEffect;
 import info3.game.Game;
@@ -120,11 +122,11 @@ public abstract class Entity implements IEntity {
 				if (this.actionIndex >= this.attackSpeed) {
 					this.hitFrozen = false;
 				}
-            } else if (action == Action.I) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-					}
+			} else if (action == Action.I) {
+				if (this.isFinished()) {
+					this.frozen = false;
+					this.actionIndex = 0;
+				}
 //			} else if (action == Action.T) {
 //				if (this.isFinished()) {
 //					this.frozen = false;
@@ -138,7 +140,7 @@ public abstract class Entity implements IEntity {
 					this.dead = true;
 					if (!(this instanceof Hero))
 						EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
-					
+
 				}
 			} else if (timer != Integer.MIN_VALUE) {
 				this.timer -= elapsed;
@@ -203,23 +205,29 @@ public abstract class Entity implements IEntity {
 			}
 
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if (this instanceof Hero && (destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
+			if (this instanceof Hero
+					&& (destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance)
+					&& this.direction == Aut_Direction.N) {
 				if (destTile.entity instanceof DungeonEntrance) {
 					EntitiesConst.GAME.previousMap = 2;
-					EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1].entity = null;
-					EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+					EntitiesConst.MAP_MATRIX[EntitiesConst.DUNGEON_ENTRANCE_X_POS][EntitiesConst.DUNGEON_ENTRANCE_Y_POS
+							+ 1].entity = null;
+					EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1,
+							EntitiesConst.GAME.player2);
 				} else if (destTile.entity instanceof MazeEntrance) {
 					EntitiesConst.GAME.previousMap = 1;
-					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS + 1].entity = null;
+					EntitiesConst.MAP_MATRIX[EntitiesConst.MAZE_ENTRANCE_X_POS][EntitiesConst.MAZE_ENTRANCE_Y_POS
+							+ 1].entity = null;
 					EntitiesConst.GAME.map = new MazeMap(
 							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
 							MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
 							EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
 					EntitiesConst.GAME.player1.mazeCounterActivated = true;
 				}
-				
+
 				EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
-				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2, EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+				EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2,
+						EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
 				EntitiesConst.GAME.render.setOffsetCam();
 			}
 
@@ -318,23 +326,33 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
+							&& !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.N);
 					}
 					break;
 				case S:
 					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.S);
 					}
 					break;
 				case E:
 					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.E);
 					}
 					break;
 				case W:
-					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) && !(entity instanceof BombRock)) {
+					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
+							&& !(entity instanceof BombRock)) {
 						entity.takeDamage(this);
+						if (entity instanceof Mob || entity instanceof Hero)
+							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.W);
 					}
 					break;
 				default:
@@ -346,7 +364,8 @@ public abstract class Entity implements IEntity {
 
 	public void takeDamage(Entity attacker) {
 //		else if (!this.frozen /* && attacker.category != this.category */) {
-		System.out.println("victim has " + this.health + " hearts");
+		if (EntitiesConst.GAME.debug)
+			System.out.println("victim has " + this.health + " hearts");
 //			this.frozen = true;
 //			this.action = Action.T;
 //			this.anim.changeAction(action);
@@ -437,9 +456,9 @@ public abstract class Entity implements IEntity {
 		this.timer = time;
 		this.frozen = true;
 	}
-	
+
 	public void waited() {
-		
+
 	}
 
 	@Override
