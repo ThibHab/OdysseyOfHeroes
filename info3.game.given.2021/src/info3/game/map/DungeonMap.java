@@ -24,7 +24,7 @@ public class DungeonMap extends Map {
 	int transiMax = 5000;
 	int transi;
 	float transiPercent;
-	
+
 	public DungeonMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
 		this.transi = transiMax;
@@ -87,19 +87,21 @@ public class DungeonMap extends Map {
 			for (Torch torch : torches) {
 				EntitiesConst.MAP_MATRIX[(int) torch.location.getX()][(int) torch.location.getY()].entity = null;
 			}
-		EntitiesConst.MAP_MATRIX[20][6].entity = new Boss(new Location(20, 6));
+			EntitiesConst.MAP_MATRIX[20][6].entity = new Boss(new Location(20, 6));
 			System.out.println("Boss spawned");
 		}
 		return true;
 	}
 
 	public void tick(long elapsed) {
-		transiPercent = (float) transi / transiMax;
-		if (!finish && initLit) {
-			transi -= elapsed;
-			if (transi <= 0) {
-				finish = true;
-				this.lit = true;
+		if (!EntitiesConst.GAME.inMenu.isPaused) {
+			transiPercent = (float) transi / transiMax;
+			if (!finish && initLit) {
+				transi -= elapsed;
+				if (transi <= 0) {
+					finish = true;
+					this.lit = true;
+				}
 			}
 		}
 	}
