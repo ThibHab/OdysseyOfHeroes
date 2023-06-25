@@ -185,5 +185,12 @@ Goblin(Search) {
   	| True ? Egg(F,A,1) / Egg(R,A,1) / Egg(L,A,1) / Egg(B,A,1) : (Waiting) 
   
   }
+  
+  Boss(Stand){
+	*(Stand)
+	| Key(h) ? Hit : (Stand)
+	| Key(n) ? Pop : (Stand)
+	| Key(b) ? Wizz : (Stand)
+  }
  
  
