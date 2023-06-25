@@ -6,12 +6,15 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.ImageCapabilities;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import javax.swing.JFrame;
 
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.*;
+import info3.game.map.DungeonMap;
+import info3.game.map.Maze;
 import info3.game.map.MazeMap;
 
 public class HudInGame {
@@ -40,7 +43,7 @@ public class HudInGame {
 	}
 
 	public void setTimer(Graphics g) {
-		int timer = EntitiesConst.MAZE_COUNTER_LIMIT - ((MazeMap)EntitiesConst.MAP).mazeCounter;
+		int timer = EntitiesConst.MAZE_COUNTER_LIMIT - ((MazeMap) EntitiesConst.MAP).mazeCounter;
 		int timerSec = (timer / 1000) % 60;
 		int timerMin = (timer / 1000) / 60;
 		String setTimer = String.format("%02d", timerMin) + ":" + String.format("%02d", timerSec);
@@ -63,7 +66,7 @@ public class HudInGame {
 		int textWidth = (int) rec.getWidth();
 		g.drawString(nbBomb, (width / 2) - (textWidth / 2), 140);
 	}
-	
+
 	public void setCoin(Graphics g, Font f, int width, int height) {
 		int coinWidth = 25;
 		g.drawImage(coinIcone, width / 2 - (coinWidth / 2), 7, coinWidth, coinWidth, m_frame);
@@ -71,7 +74,7 @@ public class HudInGame {
 		String argent = "" + Hero.coins;
 		g.drawString(argent, width / 2 - ((argent.length() * 32) / 4), 55);
 	}
-	
+
 	public void setLevel(Graphics g, Font f, int width, int height) {
 		g.setColor(Color.blue);
 		g.drawRoundRect(width / 8, height - 15, width - (width / 4), 10, 10, 10);
@@ -80,7 +83,7 @@ public class HudInGame {
 		Color grayTrans = new Color(192, 192, 192, 100);
 		g.setColor(grayTrans);
 		g.fillRoundRect(width / 8 + 1, height - 14, width - width / 4 - 1, 9, 10, 10);
-		
+
 		g.setColor(Color.cyan);
 		int exp = Hero.experience;
 		if (exp == 0) {
@@ -96,21 +99,64 @@ public class HudInGame {
 		int textWidth = (int) rec.getWidth();
 		g.drawString(lv, (width / 2) - (textWidth / 2), height - 20);
 	}
-	
+
 	public void setBushQuest(Graphics g, Font f, int width, int height) {
 		String quest = "Buissons détruits :";
 		String advancement = "" + Hero.bushesCut + " / " + 20;
-		
+
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(quest, g);
 		int textWidth = (int) rec.getWidth();
-		
+
 		g.drawString(quest, width - (15 + textWidth), height);
-		
+
 		rec = g.getFontMetrics().getStringBounds(advancement, g);
 		textWidth = (int) rec.getWidth();
 		int textHeight = (int) rec.getHeight();
+
+		g.drawString(advancement, width - (15 + textWidth), height + textHeight);
+	}
+
+	public void setTorchQuest(Graphics g, int width, int height) {
+		String quest = "Torches allumées :";
+		List<Torch> torches = DungeonMap.torches;
+		int nbTorchesLit = 0;
+		for (Torch torch : torches) {
+			if (torch.lit) {
+				nbTorchesLit += 1;
+			}
+		}
+		String advancement = "" + nbTorchesLit + " / " + EntitiesConst.NUMBER_OF_TORCHES;
+
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(quest, g);
+		int textWidth = (int) rec.getWidth();
+
+		g.drawString(quest, width - (15 + textWidth), height);
+
+		rec = g.getFontMetrics().getStringBounds(advancement, g);
+		textWidth = (int) rec.getWidth();
+		int textHeight = (int) rec.getHeight();
+
+		g.drawString(advancement, width - (15 + textWidth), height + textHeight);
+	}
+
+	public void setBossLifeBar(Graphics g, int width, int height) {
+		String name = Boss.name.toString();
 		
-		g.drawString(advancement, width - (15 + textWidth), height + textHeight);		
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(name, g);
+		int textWidth = (int) rec.getWidth();
+		
+		Color col = new Color(192, 0, 0);
+		g.setColor(col);
+		g.drawString(name, (width / 2) - (textWidth / 2), 180);
+		
+		g.drawRoundRect(width / 8, 145, width - (width / 4), 10, 10, 10);
+		g.drawRoundRect(width / 8 - 1, 144, width - (width / 4) + 2, 12, 10, 10);
+		
+		Color col2 = new Color(233, 0, 0);
+		g.setColor(col2);
+		g.fillRoundRect(width / 8 + 1, 146,
+				(int) ((width - width / 4 - 1) / ((float) EntitiesConst.BOSS_HEALTH / (float) Boss.health)), 9, 10, 10);
+
 	}
 
 	public void paint(Graphics g) {
@@ -193,28 +239,39 @@ public class HudInGame {
 		g.drawImage(potion, width - 32, 100, 25, 25, m_frame);
 		String potionJ2 = j2.healingPotions + "X";
 		g.drawString(potionJ2, width - (7 + 28 + (17 * potionJ2.length())), 123);
-		
+
 		if (Hero.firePowerUnlocked) {
 			g.drawImage(power, 7, 130, 25, 25, m_frame);
 			g.drawImage(power, width - (7 + 25), 130, 25, 25, m_frame);
 		}
 
 		setCoin(g, f, width, height);
-		
+
 		setBomb(g, f, width, height);
-		
+
 		setLevel(g, f, width, height);
-		
+
 		if (VillagerGirl.started) {
 			Font fQuest = new Font(null, 1, 20);
 			g.setFont(fQuest);
 			g.setColor(Color.magenta);
 			setBushQuest(g, fQuest, width, height / 3);
 		}
-		
 
 		if (EntitiesConst.MAP instanceof MazeMap) {
 			setTimer(g);
+		}
+
+		if (EntitiesConst.MAP instanceof DungeonMap) {
+			if (!DungeonMap.finish) {
+				Font fQuest = new Font(null, 1, 20);
+				g.setFont(fQuest);
+				g.setColor(Color.magenta);
+				setTorchQuest(g, width, height / 3);
+			}
+			else {
+				setBossLifeBar(g, width, height);
+			}
 		}
 
 		return;

@@ -14,12 +14,14 @@ import info3.game.map.Tile;
 
 public class Boss extends Mob {
 	public int phase;
+	public static String name;
+	public static int health;
 	
 	public Boss(Location l) {
 		super();
-		this.name = "Boss";
+		Boss.name = "Boss";
 		this.location = l;
-		this.health = EntitiesConst.BOSS_HEALTH;
+		Boss.health = EntitiesConst.BOSS_HEALTH;
 		this.weaponDamage = EntitiesConst.BOSS_BASE_DAMAGE;
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
 		this.speed = EntitiesConst.BOSS_SPEED;
