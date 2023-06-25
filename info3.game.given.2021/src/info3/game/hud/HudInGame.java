@@ -125,7 +125,7 @@ public class HudInGame {
 				nbTorchesLit += 1;
 			}
 		}
-		String advancement = "" + nbTorchesLit +" / " + EntitiesConst.NUMBER_OF_TORCHES;
+		String advancement = "" + nbTorchesLit + " / " + EntitiesConst.NUMBER_OF_TORCHES;
 
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(quest, g);
 		int textWidth = (int) rec.getWidth();
@@ -137,6 +137,26 @@ public class HudInGame {
 		int textHeight = (int) rec.getHeight();
 
 		g.drawString(advancement, width - (15 + textWidth), height + textHeight);
+	}
+
+	public void setBossLifeBar(Graphics g, int width, int height) {
+		String name = Boss.name.toString();
+		
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(name, g);
+		int textWidth = (int) rec.getWidth();
+		
+		Color col = new Color(192, 0, 0);
+		g.setColor(col);
+		g.drawString(name, (width / 2) - (textWidth / 2), 180);
+		
+		g.drawRoundRect(width / 8, 145, width - (width / 4), 10, 10, 10);
+		g.drawRoundRect(width / 8 - 1, 144, width - (width / 4) + 2, 12, 10, 10);
+		
+		Color col2 = new Color(233, 0, 0);
+		g.setColor(col2);
+		g.fillRoundRect(width / 8 + 1, 146,
+				(int) ((width - width / 4 - 1) / ((float) EntitiesConst.BOSS_HEALTH / (float) Boss.health)), 9, 10, 10);
+
 	}
 
 	public void paint(Graphics g) {
@@ -241,12 +261,17 @@ public class HudInGame {
 		if (EntitiesConst.MAP instanceof MazeMap) {
 			setTimer(g);
 		}
-		
-		if (EntitiesConst.MAP instanceof DungeonMap && !DungeonMap.finish) {
-			Font fQuest = new Font(null, 1, 20);
-			g.setFont(fQuest);
-			g.setColor(Color.magenta);
-			setTorchQuest(g, width, height / 3);
+
+		if (EntitiesConst.MAP instanceof DungeonMap) {
+			if (!DungeonMap.finish) {
+				Font fQuest = new Font(null, 1, 20);
+				g.setFont(fQuest);
+				g.setColor(Color.magenta);
+				setTorchQuest(g, width, height / 3);
+			}
+			else {
+				setBossLifeBar(g, width, height);
+			}
 		}
 
 		return;
