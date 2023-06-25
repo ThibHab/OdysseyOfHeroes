@@ -297,6 +297,8 @@ public class Game {
 	private String[] m_musicNames = new String[] { "theme" };
 
 	private long m_textElapsed;
+	private long m_deadTextElapsed;
+	public boolean paintDead;
 
 	/*
 	 * This method is invoked almost periodically, given the number of milli-seconds
@@ -317,6 +319,10 @@ public class Game {
 
 				if (player1.action == Action.D && player2.action == Action.D) {
 					gameOVER();
+				}
+				m_deadTextElapsed += elapsed;
+				if (m_deadTextElapsed > 2000) {
+					paintDead = false;
 				}
 
 				if (EntitiesConst.GAME.debug) {
@@ -391,6 +397,8 @@ public class Game {
 			player1.direction=Aut_Direction.S;
 			player2.direction=Aut_Direction.S;
 			this.openMap(WORLD);
+			paintDead = true;
+			m_deadTextElapsed = 0;
 			
 		}
 	}

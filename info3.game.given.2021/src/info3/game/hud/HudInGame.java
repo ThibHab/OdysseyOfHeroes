@@ -158,6 +158,20 @@ public class HudInGame {
 				(int) ((width - width / 4 - 1) / ((float) EntitiesConst.BOSS_HEALTH / (float) Boss.h)), 9, 10, 10);
 
 	}
+	
+	public void showDeadMessage(Graphics g, int width, int height) {
+		String deathMessage = "Vous êtes mort !";
+		
+		Font f = new Font(null, 1, 100);
+		g.setFont(f);
+		g.setColor(Color.red);
+		
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(deathMessage, g);
+		int textWidth = (int) rec.getWidth();
+		int textHeight = (int) rec.getHeight();
+		
+		g.drawString(deathMessage, (width / 2) - (textWidth / 2), (height / 2) + (textHeight) / 2);
+	}
 
 	public void paint(Graphics g) {
 		int width = EntitiesConst.GAME.m_frame.getWidth();
@@ -260,6 +274,10 @@ public class HudInGame {
 
 		if (EntitiesConst.MAP instanceof MazeMap) {
 			setTimer(g);
+		}
+		
+		if (EntitiesConst.GAME.paintDead) {
+			showDeadMessage(g, width, height);
 		}
 
 		if (EntitiesConst.MAP instanceof DungeonMap) {
