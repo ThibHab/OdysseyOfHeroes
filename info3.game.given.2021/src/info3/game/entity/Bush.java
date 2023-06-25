@@ -49,7 +49,7 @@ public class Bush extends DecorElement {
 	@Override
 	public void takeDamage(Entity attacker) {	
 		try {
-			RandomAccessFile file = new RandomAccessFile("resources/bush.ogg", "r");
+			RandomAccessFile file = new RandomAccessFile("resources/sounds/bush.ogg", "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
 			EntitiesConst.GAME.m_canvas.playSound("bush",fis, 0, 0.8F);
 		} catch (Throwable th) {

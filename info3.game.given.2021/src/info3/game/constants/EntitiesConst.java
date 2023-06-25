@@ -22,8 +22,9 @@ public class EntitiesConst {
 	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
 	public static final int MOUVEMENT_INDEX_MAX_VILLAGER = 1500;
 	public static final int MOUVEMENT_INDEX_MAX_MOB = 1000;
+	public static final int MOUVEMENT_INDEX_MAX_MOB_PROJ = 200;
 	public static final int HIT_INDEX_MAX = 300;
-	public static final int HIT_INDEX_MAX_MOB = 1000;
+	public static final int HIT_INDEX_MAX_MOB = 300;
 	public static final int STAND_INDEX_MAX = 200;
 	public static final int TOUCHED_INDEX_MAX = 200;
 	public static final int DIE_INDEX_MAX = 500;
@@ -48,11 +49,11 @@ public class EntitiesConst {
 	public static final float BOMB_RADIUS =2f;
 	
 	// SKELETON CONSTANTS
-	public static final int SKELETON_HEALTH = 20;
-	public static final int SKELETON_DAMAGE = 2;
+	public static final int SKELETON_HEALTH = 8;
+	public static final int SKELETON_DAMAGE = 1;
 	public static final int SKELETON_RANGE = 3;
 	public static final int SKELETON_SPEED = 2;
-	public static final float SKELETON_SCALE = 1.3f;
+	public static final float SKELETON_SCALE = 0.9f;
 	
 	// GOBLIN CONSTANTS
 	public static final int GOBLIN_HEALTH = 12;
@@ -90,6 +91,9 @@ public class EntitiesConst {
 	
 	// ENERGYBALL CONSTANTS
 	public static float ENERGYBALL_SCALE = 1.2f;
+	
+	// BONE CONSTANTS
+	public static final float BONE_SCALE = 0.8f;
 	
 	// MAZE WALL CONSTANTS
 	public static final float MAZE_WALL_SCALE = 1.0f;

@@ -18,7 +18,7 @@ public class ImagesConst {
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
 	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL, DUNGEON_ENTRANCE, PORTAL;
 	public static BufferedImage[] MELEE, RANGE;
-	public static BufferedImage[] ENERGYBALL;
+	public static BufferedImage[] ENERGYBALL, BONE;
 	public static BufferedImage[] SPEECHBUBBLE;
 	public static BufferedImage[] SAVE_TILES;
 	public static BufferedImage[] SWORD_EFFECT, SPEAR_EFFECT, HEAL_EFFECT, EXPLOSION_EFFECT, SMOKE_EFFECT, BLOOD_EFFECT,
@@ -53,7 +53,7 @@ public class ImagesConst {
 
 		BOSS = loadSprite("Boss", 1, 1);
 		GOBLIN = loadSprite("Orc", 8, 8);
-		SKELETON = loadSprite("", 1, 1);
+		SKELETON = loadSprite("Skeleton", 6, 6);
 		MERCHANT = loadSprite("", 1, 1);
 
 		BUSH = loadSprite("Bush", 3, 2);
@@ -69,6 +69,7 @@ public class ImagesConst {
 		RANGE = loadSprite("Range", 8, 7);
 
 		ENERGYBALL = loadSprite("EnergyBall", 1, 4);
+		BONE = loadSprite("Bone", 1, 3);
 
 		RED_HEART = loadTile("red_heart");
 		BLUE_HEART = loadTile("blue_heart");

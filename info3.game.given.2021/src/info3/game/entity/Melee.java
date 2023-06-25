@@ -24,6 +24,7 @@ public class Melee extends Hero {
 		this.name = name;
 		this.weaponDamage = EntitiesConst.MELEE_DAMAGE;
 		this.weaponRange = EntitiesConst.MELEE_RANGE;
+		this.attackSpeed = 300;
 		this.health = 12;
 		this.maxHealth = this.health;
 
@@ -83,6 +84,7 @@ public class Melee extends Hero {
 			}
 		}
 	}
+	
 	
 	@Override
 	public void waited() {

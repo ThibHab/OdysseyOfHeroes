@@ -29,7 +29,7 @@ import info3.game.sound.RandomFileInputStream;
 public abstract class Entity implements IEntity {
 	public String name;
 	public int health, weaponDamage, weaponRange, maxHealth, range;
-	public float speed, attackSpeed;
+	public float attackSpeed;
 	public Aut_Category category;
 	public int healingPotions, strengthPotions;
 	public boolean dead;
@@ -43,6 +43,7 @@ public abstract class Entity implements IEntity {
 	public Location originLocation, location, destLocation, relativeMouv;
 
 	public long actionIndex;
+	public long hitIndex;
 	public int detectionRadius;
 	public Hitbox hitbox;
 	public int mazeCounter;
@@ -60,9 +61,7 @@ public abstract class Entity implements IEntity {
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
-		this.speed = 1;
 		this.attackSpeed = 500;
-		this.range = 0;
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
 
@@ -76,6 +75,7 @@ public abstract class Entity implements IEntity {
 		this.frozen = false;
 		this.hitFrozen = false;
 		this.actionIndex = 0;
+		this.hitIndex = 0;
 		this.dead = false;
 
 		this.scale = 1;
@@ -95,6 +95,14 @@ public abstract class Entity implements IEntity {
 			this.die();
 		}
 		this.automaton.step(this, EntitiesConst.GAME);
+		
+		if (this.hitFrozen) {
+			this.hitIndex += elapsed;
+			if (this.hitIndex > this.attackSpeed) {
+				this.hitFrozen = false;
+				this.hitIndex = 0;
+			}
+		}
 
 		if (this.frozen) {
 			this.actionIndex += elapsed;
@@ -121,9 +129,6 @@ public abstract class Entity implements IEntity {
 				if (this.isFinished()) {
 					this.frozen = false;
 					this.actionIndex = 0;
-				}
-				if (this.actionIndex >= this.attackSpeed) {
-					this.hitFrozen = false;
 				}
 			} else if (action == Action.I) {
 				if (this.isFinished()) {
@@ -272,8 +277,8 @@ public abstract class Entity implements IEntity {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
 			case 2:
-//				Skeleton s = new Skeleton(location);
-//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+				Skeleton s = new Skeleton(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
 				break;
 			}
 			break;
@@ -314,8 +319,9 @@ public abstract class Entity implements IEntity {
 	public void Hit(Aut_Direction d) {
 		// TODO Melee blocked when touching an enemy, also see for the hits in the
 		// border of the maps
-		if (!this.frozen) {
+		if (!this.frozen && !hitFrozen) {
 			this.frozen = true;
+			this.hitFrozen = true;
 			if (d != null) {
 				this.direction = d;
 			}

@@ -22,7 +22,7 @@ public class Projectile extends Entity {
 		super();
 		this.direction = d;
 		this.category = Aut_Category.M;
-		this.name = "EnergyBall";
+		this.name = "Projectile";
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				this.automaton = next;
@@ -35,16 +35,11 @@ public class Projectile extends Entity {
 		this.location.setY((float) (this.owner.location.getY()));
 
 		this.action = Action.M;
-		Action acts[] = new Action[] { Action.M };
-		this.anim = new Animation(this, ImagesConst.ENERGYBALL, null, acts);
 
 		this.location.setX((float) (this.owner.location.getX()));
 		this.location.setY((float) (this.owner.location.getY()));
 
-		this.speed = 2;
 		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
-		this.scale = EntitiesConst.ENERGYBALL_SCALE;
-		EntitiesConst.MAP.projectiles.add(this);
 	}
 
 	@Override
@@ -103,7 +98,7 @@ public class Projectile extends Entity {
 	}
 
 	public void tick(long elapsed) {
-		if (this.owner.range < this.tilesCrossed) {
+		if (this.owner.weaponRange < this.tilesCrossed) {
 			EntitiesConst.MAP.projectiles.remove(this);
 			return;
 		}
@@ -146,29 +141,6 @@ public class Projectile extends Entity {
 	@Override
 	public boolean isFinished() {
 		return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_PROJ;
-	}
-
-	@Override
-	public int getNbActionSprite(Action a) {
-		switch (a) {
-		case M:
-			return AnimConst.ENERGY_B_M;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
-		case S:
-			return 0;
-		default:
-			return 0;
-		}
-	}
-
-	@Override
-	public int totSrpitePerDir() {
-		return AnimConst.ENERGY_B_M;
 	}
 
 }

@@ -56,7 +56,7 @@ public class Bomb extends Entity {
 	public void Explode() {
 		Map map = EntitiesConst.MAP;
 		try {
-			RandomAccessFile file = new RandomAccessFile("resources/bomb.ogg", "r");
+			RandomAccessFile file = new RandomAccessFile("resources/sounds/bomb.ogg", "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
 			EntitiesConst.GAME.m_canvas.playSound("bomb",fis, 0, 0.8F);
 		} catch (Throwable th) {

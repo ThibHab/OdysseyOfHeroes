@@ -19,10 +19,9 @@ public class Goblin extends Mob {
 		this.health = EntitiesConst.GOBLIN_HEALTH;
 		this.weaponDamage = EntitiesConst.GOBLIN_DAMAGE;
 		this.weaponRange = EntitiesConst.GOBLINE_RANGE;
-		this.speed = EntitiesConst.GOBLIN_SPEED;
 		this.scale = EntitiesConst.GOBLIN_SCALE;
 		this.detectionRadius = 5;
-		this.attackSpeed = 5000;
+		this.attackSpeed = 1000;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -38,26 +37,6 @@ public class Goblin extends Mob {
 		this.category = Aut_Category.A;
 	}
 	
-	
-	@Override
-	public boolean isFinished() {
-		switch (this.action) {
-		case S:
-			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
-		case M:
-			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_MOB;
-		case H:
-			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX_MOB;
-		case D:
-			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
-		case T:
-			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
-		case I:
-			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
-		default:
-			return true;
-		}
-	}
 	
 	@Override
 	public int getNbActionSprite(Action a) {

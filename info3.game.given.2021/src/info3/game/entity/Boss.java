@@ -17,7 +17,6 @@ public class Boss extends Mob {
 		this.health = EntitiesConst.BOSS_HEALTH;
 		this.weaponDamage = EntitiesConst.BOSS_DAMAGE;
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
-		this.speed = EntitiesConst.BOSS_SPEED;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))

@@ -76,7 +76,7 @@ public class VillagerGirl extends Villager {
 				if (Hero.experience >= Hero.levelUp) {
 					Hero.level++;
 					try {
-						RandomAccessFile file = new RandomAccessFile("resources/lvlup.ogg", "r");
+						RandomAccessFile file = new RandomAccessFile("resources/sounds/lvlup.ogg", "r");
 						RandomFileInputStream fis = new RandomFileInputStream(file);
 						EntitiesConst.GAME.m_canvas.playSound("lvlup",fis, 0, 0.8F);
 					} catch (Throwable th) {

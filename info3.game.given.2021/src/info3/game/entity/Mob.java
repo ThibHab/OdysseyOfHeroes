@@ -11,6 +11,7 @@ import info3.game.sound.RandomFileInputStream;
 public abstract class Mob extends Entity {
 	public Mob() {
 		super();
+		this.attackSpeed = 1000;
 	}
 	
 	
@@ -23,6 +24,13 @@ public abstract class Mob extends Entity {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 			}
 			this.automaton.step(this, EntitiesConst.GAME);
+			if (this.hitFrozen) {
+				this.hitIndex += elapsed;
+				if (this.hitIndex > this.attackSpeed) {
+					this.hitFrozen = false;
+					this.hitIndex = 0;
+				}
+			}
 
 			if (this.frozen) {
 				this.actionIndex += elapsed;
@@ -50,9 +58,6 @@ public abstract class Mob extends Entity {
 						this.frozen = false;
 						this.actionIndex = 0;
 					}
-					if (this.actionIndex >= this.attackSpeed) {
-						this.hitFrozen = false;
-					}
 				} else if (action == Action.I) {
 					if (this.isFinished()) {
 						this.frozen = false;
@@ -62,6 +67,13 @@ public abstract class Mob extends Entity {
 					if (this.isFinished()) {
 						this.frozen = false;
 						this.actionIndex = 0;
+					}
+				}else  if (timer != Integer.MIN_VALUE) {
+					this.timer -= elapsed;
+					if (timer < 0) {
+						this.frozen = false;
+						timer = Integer.MIN_VALUE;
+						waited();
 					}
 				} 
 			} else {
@@ -107,13 +119,33 @@ public abstract class Mob extends Entity {
 	@Override
 	public void takeDamage(Entity attacker) {
 		super.takeDamage(attacker);
-		try {
-			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
-			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
-		} catch (Throwable th) {
-			th.printStackTrace(System.err);
-			System.exit(-1);
+//		try {
+//			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
+//			RandomFileInputStream fis = new RandomFileInputStream(file);
+//			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
+//		} catch (Throwable th) {
+//			th.printStackTrace(System.err);
+//			System.exit(-1);
+//		}
+	}
+	
+	@Override
+	public boolean isFinished() {
+		switch (this.action) {
+		case S:
+			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
+		case M:
+			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_MOB;
+		case H:
+			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX_MOB;
+		case D:
+			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
+		case T:
+			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+		case I:
+			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
+		default:
+			return true;
 		}
 	}
 }
