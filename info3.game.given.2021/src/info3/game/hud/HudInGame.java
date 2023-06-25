@@ -203,6 +203,8 @@ public class HudInGame {
 		
 		setBomb(g, f, width, height);
 		
+		setLevel(g, f, width, height);
+		
 		if (VillagerGirl.started) {
 			Font fQuest = new Font(null, 1, 20);
 			g.setFont(fQuest);
@@ -210,7 +212,6 @@ public class HudInGame {
 			setBushQuest(g, fQuest, width, height / 3);
 		}
 		
-		setLevel(g, f, width, height);
 
 		if (EntitiesConst.MAP instanceof MazeMap) {
 			setTimer(g);

@@ -29,7 +29,7 @@ public class ImagesConst {
 		path = "resources/sprites/";
 
 		GRASS_TILE = loadTile("Grass");
-		WATER_TILE = loadTile("water_placeholder");
+		WATER_TILE = loadTile("Water");
 		DIRT_TILE = loadTile("Dirt");
 		ROCK_TILE = loadTile("rock_placeholder");
 		GRASS_TILE2 = loadTile("Grass2");

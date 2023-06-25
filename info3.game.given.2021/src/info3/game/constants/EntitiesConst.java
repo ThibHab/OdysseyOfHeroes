@@ -63,9 +63,15 @@ public class EntitiesConst {
 	
 	// BOSS CONSTANTS
 	public static final int BOSS_HEALTH = 20;
-	public static final int BOSS_DAMAGE = 4;
+	public static final int BOSS_BASE_DAMAGE = 4;
+	public static final int BOSS_FLAME_ATTACK_DAMAGE = 100;
 	public static final int BOSS_RANGE = 2;
 	public static final int BOSS_SPEED = 2;
+	public static final int BOSS_MOB_SPAWN_RANGE = 1;
+	public static final int BOSS_MOB_SPAWN_NUMBER = 5;
+	public static final int BOSS_FLAME_ATTACK_SIZE = 3;
+	public static final int BOSS_NUMBER_PROJECTILES_TO_BE_FIRED = 10;
+	public static float BOSS_SCALE = 2.0f;
 	
 	// HOUSE CONSTANTS
 	public static final float HOUSE_SCALE = 1f;
@@ -112,6 +118,9 @@ public class EntitiesConst {
 	public static final int MAZE_ENTRANCE_X_POS = 30;
 	public static final int MAZE_ENTRANCE_Y_POS = 70;
 	public static final int MAZE_COUNTER_LIMIT = 120000;
+	
+	// DUNGEON CONSTANTS
+	public static final int NUMBER_OF_TORCHES = 6;
 	
 	public static int getActionIndexMax(Action a) {
 		if(a == null)
