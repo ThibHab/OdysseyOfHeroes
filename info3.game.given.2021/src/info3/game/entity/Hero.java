@@ -15,6 +15,7 @@ import info3.game.map.DungeonMap;
 import info3.game.map.MapRender;
 import info3.game.map.MazeMap;
 import info3.game.map.Tile;
+import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
 
 public abstract class Hero extends Entity {
@@ -93,6 +94,8 @@ public abstract class Hero extends Entity {
 			} else {
 				this.frozen = false;
 			}
+			WorldMap.saveTile1.changeTile(false);
+			WorldMap.saveTile2.changeTile(false);
 		}
 	}
 	
@@ -263,7 +266,7 @@ public abstract class Hero extends Entity {
 	}
 	
 	
-	public static void saveRestore(int lvl, int xp, int coins) {
+	public static void restore(int lvl, int xp, int coins, int bombs, int bushes) {
 		Hero.coins += coins;
 		int i = 0;
 		while (i < lvl) {
@@ -272,5 +275,8 @@ public abstract class Hero extends Entity {
 		}
 		Hero.level = lvl;
 		Hero.experience = xp;	
+		
+		Hero.bombs = bombs;
+		Hero.bushesCut = bushes;
 	}
 }
