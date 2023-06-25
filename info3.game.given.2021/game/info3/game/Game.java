@@ -112,7 +112,7 @@ public class Game {
 	public Menu menu;
 	public InGameMenu inMenu;
 	public RandomAccessFile save;
-	boolean reload;
+	public boolean reload;
 	public boolean saveExist;
 
 	Game() throws Exception {
@@ -411,8 +411,18 @@ public class Game {
 					+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
 					+ player2.strengthPotions + "/" + player2.direction + "/" + player2.action + "\n";
 
-			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "\n";
-
+			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "/" + Hero.bombs + "/" + Hero.bushesCut + "\n";
+			
+			Location rock = EntitiesConst.MAP.rockLoc;
+			boolean forestUnlocked = !(EntitiesConst.MAP_MATRIX[(int) rock.getX()][(int) rock.getY()].entity instanceof Rock);
+			boolean firePower = Hero.firePowerUnlocked;
+			
+			data += forestUnlocked + "/" + firePower + "\n";
+			
+			data += VillagerGirl.started + "/" + VillagerGirl.completed + "\n";
+			
+			data += Miner.sold;
+			
 			byte[] buffer = data.getBytes();
 			try {
 				save.seek(0);
@@ -442,6 +452,9 @@ public class Game {
 		String[] p1 = data[1].split("/");
 		String[] p2 = data[2].split("/");
 		String[] hero = data[3].split("/");
+		String[] game = data[4].split("/");
+		String[] villagerGirl = data[5].split("/");
+		String[] miner = data[6].split("/");
 
 		Location loc1 = new Location(Float.valueOf(p1[0]), Float.valueOf(p1[1]));
 		Location loc2 = new Location(Float.valueOf(p2[0]), Float.valueOf(p2[1]));
@@ -455,8 +468,23 @@ public class Game {
 		player2.saveRestore(loc2, p2[2], Integer.valueOf(p2[3]), Integer.valueOf(p2[4]), Integer.valueOf(p2[5]),
 				Integer.valueOf(p2[6]), dir2);
 
-		Hero.saveRestore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]));
-
+		Hero.restore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]), Integer.valueOf(hero[3]), Integer.valueOf(hero[4]));
+		
+		boolean forest = Boolean.valueOf(game[0]);
+		boolean fire = Boolean.valueOf(game[1]);
+		if (forest) {
+			Location rock = EntitiesConst.MAP.rockLoc;
+			EntitiesConst.MAP_MATRIX[(int) rock.getX()][(int) rock.getY()].entity = null;
+		}
+		Hero.firePowerUnlocked = fire;
+		
+		VillagerGirl.started = Boolean.valueOf(villagerGirl[0]);
+		VillagerGirl.completed = Boolean.valueOf(villagerGirl[1]);
+		
+		Miner.sold = Boolean.valueOf(miner[0]);
+		
+		WorldMap.saveTile1.changeTile(true);
+		WorldMap.saveTile2.changeTile(true);
 	}
 
 	public void unsave() {

@@ -15,7 +15,7 @@ public class Miner extends Villager {
 	public LinkedList<String> sellingDialogs;
 	public int sellingDialogsIndex;
 	public String sellingDialog;
-	public boolean sold;
+	public static boolean sold;
 
 	public Miner(Location l) {
 		super(l);

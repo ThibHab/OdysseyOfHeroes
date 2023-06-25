@@ -20,6 +20,7 @@ public abstract class Map implements IMap {
 	public LinkedList<SpeechBubble> bubbles;
 	public LinkedList<Effect> effects;
 	public LinkedList<Bush> deadBush;
+	public Location rockLoc;
 
 	public Map(int nb_x, int nb_y, Entity p1, Entity p2) {
 		this.lenX = nb_x;
@@ -498,6 +499,7 @@ public abstract class Map implements IMap {
 
 	public void setForest(int x, int y, int radius, int seed) {
 		createRock(x, y + (radius / 2));
+		rockLoc = new Location(x, y + (radius/2));
 		setDisqueBackground(x + (radius / 2 - 3), y - (radius / 2 - 6), 3, "Water");
 		setDisqueBackground(x + (radius / 2 + 2), y - (radius / 2 - 10), 4, "Water");
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 8), 5, 4, "Rock");
