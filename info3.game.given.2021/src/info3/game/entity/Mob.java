@@ -16,7 +16,7 @@ public abstract class Mob extends Entity {
 	
 	@Override
 	public void tick(long elapsed) {
-//		if (!this.dead) {
+		if (!EntitiesConst.GAME.inMenu.isPaused) {
 			if (currentState.name.equals("")) {
 				this.die();
 				this.dead = true;
@@ -76,7 +76,7 @@ public abstract class Mob extends Entity {
 					this.anim.changeAction(action);
 			}
 			this.anim.step(elapsed);
-//		}
+		}
 	}
 	
 	@Override

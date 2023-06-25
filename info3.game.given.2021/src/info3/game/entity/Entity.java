@@ -94,73 +94,75 @@ public abstract class Entity implements IEntity {
 		if (currentState.name.equals("")) {
 			this.die();
 		}
-		this.automaton.step(this, EntitiesConst.GAME);
+		if (!EntitiesConst.GAME.inMenu.isPaused) {
 
-		if (this.frozen) {
-			this.actionIndex += elapsed;
-			if (action == Action.M) {
-				if (this.isFinished()) {
-					this.actionIndex = 0;
-					this.frozen = false;
-					this.location.setX(destLocation.getX());
-					this.location.setY(destLocation.getY());
-					this.hitbox.update();
-					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-							.getY()].entity = null;
-				} else if (actionIndex != 0) {
-					float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-					this.location
-							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-									% EntitiesConst.MAP.lenX);
-					this.location
-							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-									% EntitiesConst.MAP.lenY);
-					this.hitbox.update();
-				}
-			} else if (action == Action.H) {
-				if (this.isFinished()) {
-					this.frozen = false;
-					this.actionIndex = 0;
-				}
-				if (this.actionIndex >= this.attackSpeed) {
-					this.hitFrozen = false;
-				}
-			} else if (action == Action.I) {
-				if (this.isFinished()) {
-					this.frozen = false;
-					this.actionIndex = 0;
-				}
-			} else if (action == Action.D) {
-				if (this.isFinished()) {
-					this.actionIndex = 0;
-					this.dead = true;
-					if (!(this instanceof Hero))
-						EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
+			this.automaton.step(this, EntitiesConst.GAME);
 
+			if (this.frozen) {
+				this.actionIndex += elapsed;
+				if (action == Action.M) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.frozen = false;
+						this.location.setX(destLocation.getX());
+						this.location.setY(destLocation.getY());
+						this.hitbox.update();
+						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+								.getY()].entity = null;
+					} else if (actionIndex != 0) {
+						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+						this.location.setX(
+								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location.setY(
+								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitbox.update();
+					}
+				} else if (action == Action.H) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+					if (this.actionIndex >= this.attackSpeed) {
+						this.hitFrozen = false;
+					}
+				} else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+				} else if (action == Action.D) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.dead = true;
+						if (!(this instanceof Hero))
+							EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
+
+					}
+				} else if (timer != Integer.MIN_VALUE) {
+					this.timer -= elapsed;
+					if (timer < 0) {
+						this.frozen = false;
+						timer = Integer.MIN_VALUE;
+						waited();
+					}
 				}
-			} else if (timer != Integer.MIN_VALUE) {
-				this.timer -= elapsed;
-				if (timer < 0) {
-					this.frozen = false;
-					timer = Integer.MIN_VALUE;
-					waited();
+			} else {
+				if (this.action != Action.S) {
+					if (EntitiesConst.GAME.debug) {
+						System.out.println(this.name + " is standing");
+					}
+					this.action = Action.S;
+					this.anim.imageIndex = anim.sprites.length - 1;
+					this.anim.changeAction(action);
 				}
-			}
-		} else {
-			if (this.action != Action.S) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is standing");
-				}
-				this.action = Action.S;
-				this.anim.imageIndex = anim.sprites.length - 1;
-				this.anim.changeAction(action);
+				if (!this.dead)
+					this.anim.changeAction(action);
 			}
 			if (!this.dead)
-				this.anim.changeAction(action);
+				this.anim.step(elapsed);
 		}
-		if (!this.dead)
-			this.anim.step(elapsed);
-
 	}
 
 	@Override

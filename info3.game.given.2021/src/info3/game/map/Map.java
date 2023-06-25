@@ -559,40 +559,4 @@ public abstract class Map implements IMap {
 			}
 		}
 	}
-
-	public void freezeEntities() {
-		MapRender rend = EntitiesConst.GAME.render;
-		int nbTileY = rend.nbTileY + 4;
-		int nbTileX = rend.nbTileX + 4;
-
-		for (int j = 0; j < nbTileY; j++) {
-			for (int i = 0; i < nbTileX; i++) {
-				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
-				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
-				Tile renderTile = map[mapX][mapY];
-				Entity ent = renderTile.entity;
-				if (ent != null) {
-					ent.frozen = true;
-				}
-			}
-		}
-	}
-	
-	public void unFreezeEntities() {
-		MapRender rend = EntitiesConst.GAME.render;
-		int nbTileY = rend.nbTileY + 4;
-		int nbTileX = rend.nbTileX + 4;
-
-		for (int j = 0; j < nbTileY; j++) {
-			for (int i = 0; i < nbTileX; i++) {
-				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
-				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
-				Tile renderTile = map[mapX][mapY];
-				Entity ent = renderTile.entity;
-				if (ent != null) {
-					ent.frozen = false;;
-				}
-			}
-		}
-	}
 }

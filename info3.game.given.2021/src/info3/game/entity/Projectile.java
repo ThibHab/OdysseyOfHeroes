@@ -44,7 +44,7 @@ public class Projectile extends Entity {
 		this.scale = EntitiesConst.ENERGYBALL_SCALE;
 		EntitiesConst.MAP.projectiles.add(this);
 	}
-	
+
 	public Projectile(Entity owner, Aut_Direction d, Location location) {
 		super();
 		this.direction = d;
@@ -74,39 +74,41 @@ public class Projectile extends Entity {
 
 	@Override
 	public void Move(Aut_Direction d) {
-		if (!this.frozen) {
-			this.tilesCrossed++;
-			this.frozen = true;
+		if (!EntitiesConst.GAME.inMenu.isPaused) {
+			if (!this.frozen) {
+				this.tilesCrossed++;
+				this.frozen = true;
 
-			if (d == null) {
-				d = this.direction;
+				if (d == null) {
+					d = this.direction;
+				}
+				this.anim.changeAction(Action.M);
+
+				this.destLocation = new Location(this.location.getX(), this.location.getY());
+				originLocation = new Location(this.location.getX(), this.location.getY());
+				relativeMouv = new Location(0, 0);
+				switch (this.direction) {
+				case N:
+					destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+					relativeMouv.setY(-1);
+					break;
+				case S:
+					destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+					relativeMouv.setY(1);
+					break;
+				case W:
+					destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+					relativeMouv.setX(-1);
+					break;
+				case E:
+					destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+					relativeMouv.setX(1);
+					break;
+				default:
+					break;
+				}
+
 			}
-			this.anim.changeAction(Action.M);
-
-			this.destLocation = new Location(this.location.getX(), this.location.getY());
-			originLocation = new Location(this.location.getX(), this.location.getY());
-			relativeMouv = new Location(0, 0);
-			switch (this.direction) {
-			case N:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(-1);
-				break;
-			case S:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(1);
-				break;
-			case W:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(-1);
-				break;
-			case E:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(1);
-				break;
-			default:
-				break;
-			}
-
 		}
 	}
 
