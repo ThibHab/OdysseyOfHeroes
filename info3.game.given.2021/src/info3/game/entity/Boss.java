@@ -14,18 +14,22 @@ import info3.game.map.Tile;
 
 public class Boss extends Mob {
 	public int phase;
-	public static String name;
-	public static int health;
+	public static String n;
+	public static int h;
 	
 	public Boss(Location l) {
 		super();
-		Boss.name = "Boss";
+		Boss.n = "Boss";
+		this.name = "Boss";
 		this.location = l;
-		Boss.health = EntitiesConst.BOSS_HEALTH;
+		Boss.h = EntitiesConst.BOSS_HEALTH;
+		this.health = EntitiesConst.BOSS_HEALTH;
 		this.weaponDamage = EntitiesConst.BOSS_BASE_DAMAGE;
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
 		this.speed = EntitiesConst.BOSS_SPEED;
 		this.direction = Aut_Direction.W;
+		this.frozen = false;
+		this.range = 20;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -34,13 +38,23 @@ public class Boss extends Mob {
 		this.currentState = automaton.initial;
 		this.category = Aut_Category.A;
 		
-		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.S, Aut_Direction.E,
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.N, Aut_Direction.E, Aut_Direction.S,
 				Aut_Direction.W };
-		Action acts[] = new Action[] { Action.H };
+		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this, ImagesConst.BOSS, dirs, acts);
 		this.phase = 0;
 		
 		this.scale = EntitiesConst.BOSS_SCALE;
+		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
+	}
+	
+	@Override
+	public void takeDamage(Entity attacker) {
+		this.health -= attacker.weaponDamage;
+		Boss.h = this.health;
+		if (this.health < 0 ) {
+			this.frozen = false;
+		}
 	}
 
 	@Override
@@ -67,11 +81,11 @@ public class Boss extends Mob {
 
 			boolean randomMob = random.nextBoolean();
 			Tile tile = EntitiesConst.MAP_MATRIX[(int) mobLocation.getX()][(int) mobLocation.getY()];
-			if (randomMob) {
-				tile.entity = new Skeleton(mobLocation);
-			} else {
+//			if (randomMob) {
+////				tile.entity = new Skeleton(mobLocation);
+//			} else {
 				tile.entity = new Goblin(mobLocation);
-			}
+//			}
 		}
 	}
 	
@@ -109,25 +123,28 @@ public class Boss extends Mob {
 		Location firstProjectileLocation = new Location(projectileXPos, randomPosY - 1);
 		Location secondProjectileLocation = new Location(projectileXPos, randomPosY);
 		Location thirdProjectileLocation = new Location(projectileXPos, randomPosY + 1);
-		EntitiesConst.MAP_MATRIX[randomPosY - 1][projectileXPos].entity = new Projectile(this, d, firstProjectileLocation);
+//		EntitiesConst.MAP_MATRIX[randomPosY - 1][projectileXPos].entity = new Projectile(this, d, firstProjectileLocation);
+		new Projectile(this, d, firstProjectileLocation);
 		//System.out.println("First projectile fired, X : " + projectileXPos + ", Y : " + firstProjectileLocation.getX());
-		EntitiesConst.MAP_MATRIX[randomPosY][projectileXPos].entity = new Projectile(this, d, secondProjectileLocation);
+//		EntitiesConst.MAP_MATRIX[randomPosY][projectileXPos].entity = new Projectile(this, d, secondProjectileLocation);
+		new Projectile(this, d, secondProjectileLocation);
 		//System.out.println("Second projectile fired, X : " + projectileXPos + ", Y : " + secondProjectileLocation.getX());
-		EntitiesConst.MAP_MATRIX[randomPosY + 1][projectileXPos].entity = new Projectile(this, d, thirdProjectileLocation);
+//		EntitiesConst.MAP_MATRIX[randomPosY + 1][projectileXPos].entity = new Projectile(this, d, thirdProjectileLocation);
+		new Projectile(this, d, thirdProjectileLocation);
 		//System.out.println("Third projectile fired, X : " + projectileXPos + ", Y : " + thirdProjectileLocation.getX());
 	}
 
 	@Override
 	public void Wizz(Aut_Direction d, Aut_Category c) {
 		int projectileXPos = (int) this.location.getX() - 1;
-		int[] yPosAlreadyUsed = new int[10];
+		int[] yPosAlreadyUsed = new int[EntitiesConst.BOSS_NUMBER_PROJECTILES_TO_BE_FIRED];
 		boolean yPosValid = false;
 		Random random = new Random();
 		for (int i = 0; i < EntitiesConst.BOSS_NUMBER_PROJECTILES_TO_BE_FIRED; i++) {
 			int randomPosY = 0;
+			yPosValid = false;
 			while (!yPosValid) {
-				randomPosY = random.nextInt(12);
-				randomPosY++;
+				randomPosY = random.nextInt(11) + 1;
 				yPosValid = true;
 				for (int j = 0; j < i; j++) {
 					if (yPosAlreadyUsed[j] == randomPosY) {
@@ -137,13 +154,8 @@ public class Boss extends Mob {
 			}
 			
 			Location projectileLocation = new Location(projectileXPos, randomPosY);
-			EntitiesConst.MAP_MATRIX[randomPosY][projectileXPos].entity = new Projectile(this, d, projectileLocation);
+			new Projectile(this, d, projectileLocation);
 			yPosAlreadyUsed[i] = randomPosY;
-		}
-		
-		for (int row = 1; row < 13; row++) {
-			
-			
 		}
 	}
 

@@ -26,12 +26,12 @@ public class AnimConst {
 	public static final int GOBLIN_TOT = GOBLIN_S + GOBLIN_M + GOBLIN_H + GOBLIN_T + GOBLIN_D;
 
 	// Boss
-	public static final int BOSS_S = 0;
-	public static final int BOSS_M = 3;
+	public static final int BOSS_S = 3;
+	public static final int BOSS_M = 0;
 	public static final int BOSS_H = 0;
 	public static final int BOSS_T = 0;
 	public static final int BOSS_D = 0;
-	public static final int BOSS_TOT = RANGE_S + RANGE_M + RANGE_H + RANGE_T + RANGE_D;
+	public static final int BOSS_TOT = BOSS_S + BOSS_M + BOSS_H + BOSS_T + BOSS_D;
 
 	// Items
 	public static final int COIN_S = 3;

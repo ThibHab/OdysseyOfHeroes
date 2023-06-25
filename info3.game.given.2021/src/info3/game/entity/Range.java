@@ -108,8 +108,9 @@ public class Range extends Hero {
 			this.range += 1;
 		}
 
-		if (this.dead = false)
+		if (this.dead == false) {
 			this.health = this.maxHealth;
+		}
 	}
 
 	@Override

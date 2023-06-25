@@ -62,16 +62,16 @@ public class EntitiesConst {
 	public static final float GOBLIN_SCALE = 1.3f;
 	
 	// BOSS CONSTANTS
-	public static final int BOSS_HEALTH = 20;
+	public static final int BOSS_HEALTH = 100;
 	public static final int BOSS_BASE_DAMAGE = 4;
 	public static final int BOSS_FLAME_ATTACK_DAMAGE = 100;
 	public static final int BOSS_RANGE = 2;
 	public static final int BOSS_SPEED = 2;
 	public static final int BOSS_MOB_SPAWN_RANGE = 1;
-	public static final int BOSS_MOB_SPAWN_NUMBER = 5;
+	public static final int BOSS_MOB_SPAWN_NUMBER = 3;
 	public static final int BOSS_FLAME_ATTACK_SIZE = 3;
 	public static final int BOSS_NUMBER_PROJECTILES_TO_BE_FIRED = 10;
-	public static float BOSS_SCALE = 2.0f;
+	public static final float BOSS_SCALE = 3.0f;
 	
 	// HOUSE CONSTANTS
 	public static final float HOUSE_SCALE = 1f;

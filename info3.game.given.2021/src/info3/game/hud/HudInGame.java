@@ -140,7 +140,7 @@ public class HudInGame {
 	}
 
 	public void setBossLifeBar(Graphics g, int width, int height) {
-		String name = Boss.name.toString();
+		String name = Boss.n.toString();
 		
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(name, g);
 		int textWidth = (int) rec.getWidth();
@@ -155,7 +155,7 @@ public class HudInGame {
 		Color col2 = new Color(233, 0, 0);
 		g.setColor(col2);
 		g.fillRoundRect(width / 8 + 1, 146,
-				(int) ((width - width / 4 - 1) / ((float) EntitiesConst.BOSS_HEALTH / (float) Boss.health)), 9, 10, 10);
+				(int) ((width - width / 4 - 1) / ((float) EntitiesConst.BOSS_HEALTH / (float) Boss.h)), 9, 10, 10);
 
 	}
 
