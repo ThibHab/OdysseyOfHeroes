@@ -15,7 +15,7 @@ public class Miner extends Villager {
 	public LinkedList<String> sellingDialogs;
 	public int sellingDialogsIndex;
 	public String sellingDialog;
-	public boolean sold;
+	public static boolean sold;
 
 	public Miner(Location l) {
 		super(l);
@@ -43,41 +43,43 @@ public class Miner extends Villager {
 
 	@Override
 	public void tick(long elapsed) {
-		this.automaton.step(this, EntitiesConst.GAME);
-		if (this.frozen) {
-			this.actionIndex += elapsed;
-			if (action == Action.M) {
-				if (this.isFinished()) {
-					this.actionIndex = 0;
-					this.frozen = false;
-					this.location.setX(destLocation.getX());
-					this.location.setY(destLocation.getY());
-					this.hitbox.update();
-					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-							.getY()].entity = null;
-				} else if (actionIndex != 0) {
-					float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_VILLAGER;
-					this.location
-							.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-									% EntitiesConst.MAP.lenX);
-					this.location
-							.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-									% EntitiesConst.MAP.lenY);
-					this.hitbox.update();
+		if (!EntitiesConst.GAME.inMenu.isPaused) {
+			this.automaton.step(this, EntitiesConst.GAME);
+			if (this.frozen) {
+				this.actionIndex += elapsed;
+				if (action == Action.M) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.frozen = false;
+						this.location.setX(destLocation.getX());
+						this.location.setY(destLocation.getY());
+						this.hitbox.update();
+						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+								.getY()].entity = null;
+					} else if (actionIndex != 0) {
+						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_VILLAGER;
+						this.location.setX(
+								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location.setY(
+								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitbox.update();
+					}
 				}
-			}
-		} else {
-			if (this.action != Action.S) {
-				if (EntitiesConst.GAME.debug) {
-					System.out.println(this.name + " is standing");
+			} else {
+				if (this.action != Action.S) {
+					if (EntitiesConst.GAME.debug) {
+						System.out.println(this.name + " is standing");
+					}
+					this.action = Action.S;
+					this.anim.changeAction(action);
 				}
-				this.action = Action.S;
-				this.anim.changeAction(action);
+				if (!this.dead) {
+					this.anim.changeAction(action);
+				}
+				this.anim.step(elapsed);
 			}
-			if (!this.dead) {
-				this.anim.changeAction(action);
-			}
-			this.anim.step(elapsed);
 		}
 	}
 

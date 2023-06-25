@@ -38,6 +38,8 @@ public class Goblin extends Mob {
 	}
 	
 	
+	
+	
 	@Override
 	public int getNbActionSprite(Action a) {
 		//TODO

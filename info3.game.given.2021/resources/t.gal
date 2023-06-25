@@ -1,5 +1,6 @@
 Player2 (Stand) {
   * (Stand)
+  | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
   | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(i) ? Hit(F)  :(Stand)
@@ -9,10 +10,13 @@ Player2 (Stand) {
   | Key(m) ? Move(E) :(Stand)
   | Key(p) ? Power : (Stand)
   | Key(u) ? Egg(F, D) : (Stand)
+  
+  *()
  }
 
 Player1 (Stand) {
   * (Stand)
+  | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
   | Key(a) & Cell(F,T) ? Pop(F,T) : (Stand)
   | Key(a) ? Hit(F)  :(Stand)
@@ -22,6 +26,8 @@ Player1 (Stand) {
   | Key(d) ? Move(E) :(Stand)
   | Key(e) ? Power : (Stand)
   | Key(r) ? Egg(F, D) : (Stand)
+  
+  *()
  }
 
 Bush(Existing){
@@ -79,6 +85,7 @@ Bush(Existing){
 Goblin(Search) {
    * (Search)
    | !GotPower ? Egg(H,P,1) : ()
+   | Cell(F,P) ? Pick : (Search)
    | Cell(@,N) ? Hit(N) : (Search)
    | Cell(@,S) ? Hit(S) : (Search)
    | Cell(@,E) ? Hit(E) : (Search)
@@ -95,6 +102,7 @@ Goblin(Search) {
  Skeleton(Search) {
    * (Search)
    | !GotPower ? Egg(H,P,1) : ()
+   | Cell(F,P) ? Pick : (Search)
    | Cell(@,N,3) ? Hit(N) : (Search)
    | Cell(@,S,3) ? Hit(S) : (Search)
    | Cell(@,E,3) ? Hit(E) : (Search)
@@ -179,6 +187,31 @@ Goblin(Search) {
   	* (Drop)
   	| True ? Egg(F,A,2) / Egg(R,A,2) / Egg(L,A,2) / Egg(B,A,2) : (Waiting) 
   
+  }
+  
+  Boss(Phase1){
+	*(Phase1)
+	| !GotPower(50) ? : (Phase2)
+	| True ? Hit : (Wait1)
+	
+	* (Wait1)
+	| True ? Wait(15000) : (Phase1)
+	
+	* (Phase2)
+	| !GotPower(20) ? : (Phase3)
+	| True ? 50% Hit / 50% Pop : (Wait2)
+	
+	* (Wait2)
+	| True ? Wait(5000) : (Phase2)
+	
+	* (Phase3)
+	| !GotPower ? : ()
+	| True ? 35% Hit / 35% Pop / 30% Wizz : (Wait3)
+	
+	* (Wait3)
+	| True ? Wait(10000) : (Phase3)
+	
+	* ()
   }
  
  

@@ -8,19 +8,19 @@ import java.util.Random;
 
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
+import info3.game.entity.Boss;
 import info3.game.entity.Entity;
 import info3.game.entity.Location;
 import info3.game.entity.Melee;
 import info3.game.entity.Torch;
 
 public class DungeonMap extends Map {
-
-	List<Torch> torches;
+	public static List<Torch> torches;
 	public boolean lit;
 	public int sizeX = 20;
 	public int sizeY = 12;
 	boolean initLit = false;
-	public boolean finish;
+	public static boolean finish;
 	int transiMax = 5000;
 	int transi;
 	float transiPercent;
@@ -40,7 +40,7 @@ public class DungeonMap extends Map {
 		int x, y;
 		Location loc;
 		Random r = new Random();
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < EntitiesConst.NUMBER_OF_TORCHES; i++) {
 			do {
 				x = r.nextInt(sizeX - 2) + 1;
 				y = r.nextInt(sizeY - 2) + 1;
@@ -87,17 +87,21 @@ public class DungeonMap extends Map {
 			for (Torch torch : torches) {
 				EntitiesConst.MAP_MATRIX[(int) torch.location.getX()][(int) torch.location.getY()].entity = null;
 			}
+			EntitiesConst.MAP_MATRIX[20][6].entity = new Boss(new Location(20, 6));
+			System.out.println("Boss spawned");
 		}
 		return true;
 	}
 
 	public void tick(long elapsed) {
-		transiPercent = (float) transi / transiMax;
-		if (!finish && initLit) {
-			transi -= elapsed;
-			if (transi <= 0) {
-				finish = true;
-				this.lit = true;
+		if (!EntitiesConst.GAME.inMenu.isPaused) {
+			transiPercent = (float) transi / transiMax;
+			if (!finish && initLit) {
+				transi -= elapsed;
+				if (transi <= 0) {
+					finish = true;
+					this.lit = true;
+				}
 			}
 		}
 	}

@@ -34,12 +34,12 @@ public class AnimConst {
 	public static final int SKELETON_TOT = SKELETON_S + SKELETON_M + SKELETON_H + SKELETON_T + SKELETON_D;
 
 	// Boss
-	public static final int BOSS_S = 0;
-	public static final int BOSS_M = 3;
+	public static final int BOSS_S = 3;
+	public static final int BOSS_M = 0;
 	public static final int BOSS_H = 0;
 	public static final int BOSS_T = 0;
 	public static final int BOSS_D = 0;
-	public static final int BOSS_TOT = RANGE_S + RANGE_M + RANGE_H + RANGE_T + RANGE_D;
+	public static final int BOSS_TOT = BOSS_S + BOSS_M + BOSS_H + BOSS_T + BOSS_D;
 
 	// Items
 	public static final int COIN_S = 3;

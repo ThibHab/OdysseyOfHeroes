@@ -70,6 +70,9 @@ public class Game {
 
 	static Game game;
 	static boolean newGame;
+	public static final int WORLD = 0;
+	public static final int MAZE = 1;
+	public static final int BOSS = 2;
 
 	public static void main(String args[]) throws Exception {
 		try {
@@ -109,7 +112,7 @@ public class Game {
 	public Menu menu;
 	public InGameMenu inMenu;
 	public RandomAccessFile save;
-	boolean reload;
+	public boolean reload;
 	public boolean saveExist;
 
 	Game() throws Exception {
@@ -294,6 +297,8 @@ public class Game {
 	private String[] m_musicNames = new String[] { "theme" };
 
 	private long m_textElapsed;
+	private long m_deadTextElapsed;
+	public boolean paintDead;
 
 	/*
 	 * This method is invoked almost periodically, given the number of milli-seconds
@@ -311,6 +316,14 @@ public class Game {
 				}
 				((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 				((Map) map).tickEffects(elapsed);
+
+				if (player1.action == Action.D && player2.action == Action.D) {
+					gameOVER();
+				}
+				m_deadTextElapsed += elapsed;
+				if (m_deadTextElapsed > 2000) {
+					paintDead = false;
+				}
 
 				if (EntitiesConst.GAME.debug) {
 					m_textElapsed += elapsed;
@@ -363,6 +376,33 @@ public class Game {
 		}
 	}
 
+	void gameOVER() throws Exception {
+		Map m = ((Map) this.map);
+		if (m instanceof WorldMap) {
+			File f = new File("save.txt");
+			long length = f.length();
+			if (!f.exists() || length == 0)
+				this.setupGame(null);
+			else
+				removePlayer();
+				this.setupGame(f);
+		}
+		if (m instanceof DungeonMap || m instanceof MazeMap) {
+			Hero.bombs=0;
+			Hero.coins=0;
+			player1.healingPotions=0;
+			player2.healingPotions=0;
+			player1.revive();
+			player2.revive();
+			player1.direction=Aut_Direction.S;
+			player2.direction=Aut_Direction.S;
+			this.openMap(WORLD);
+			paintDead = true;
+			m_deadTextElapsed = 0;
+			
+		}
+	}
+
 	public void save() {
 		if (EntitiesConst.MAP instanceof WorldMap
 				&& EntitiesConst.MAP_MATRIX[(int) player1.location.getX()][(int) player1.location
@@ -379,8 +419,18 @@ public class Game {
 					+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
 					+ player2.strengthPotions + "/" + player2.direction + "/" + player2.action + "\n";
 
-			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "\n";
-
+			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "/" + Hero.bombs + "/" + Hero.bushesCut + "\n";
+			
+			Location rock = EntitiesConst.MAP.rockLoc;
+			boolean forestUnlocked = !(EntitiesConst.MAP_MATRIX[(int) rock.getX()][(int) rock.getY()].entity instanceof Rock);
+			boolean firePower = Hero.firePowerUnlocked;
+			
+			data += forestUnlocked + "/" + firePower + "\n";
+			
+			data += VillagerGirl.started + "/" + VillagerGirl.completed + "\n";
+			
+			data += Miner.sold;
+			
 			byte[] buffer = data.getBytes();
 			try {
 				save.seek(0);
@@ -410,6 +460,9 @@ public class Game {
 		String[] p1 = data[1].split("/");
 		String[] p2 = data[2].split("/");
 		String[] hero = data[3].split("/");
+		String[] game = data[4].split("/");
+		String[] villagerGirl = data[5].split("/");
+		String[] miner = data[6].split("/");
 
 		Location loc1 = new Location(Float.valueOf(p1[0]), Float.valueOf(p1[1]));
 		Location loc2 = new Location(Float.valueOf(p2[0]), Float.valueOf(p2[1]));
@@ -423,13 +476,94 @@ public class Game {
 		player2.saveRestore(loc2, p2[2], Integer.valueOf(p2[3]), Integer.valueOf(p2[4]), Integer.valueOf(p2[5]),
 				Integer.valueOf(p2[6]), dir2);
 
-		Hero.saveRestore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]));
-
+		Hero.restore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]), Integer.valueOf(hero[3]), Integer.valueOf(hero[4]));
+		
+		boolean forest = Boolean.valueOf(game[0]);
+		boolean fire = Boolean.valueOf(game[1]);
+		if (forest) {
+			Location rock = EntitiesConst.MAP.rockLoc;
+			EntitiesConst.MAP_MATRIX[(int) rock.getX()][(int) rock.getY()].entity = null;
+		}
+		Hero.firePowerUnlocked = fire;
+		
+		VillagerGirl.started = Boolean.valueOf(villagerGirl[0]);
+		VillagerGirl.completed = Boolean.valueOf(villagerGirl[1]);
+		
+		Miner.sold = Boolean.valueOf(miner[0]);
+		
+		WorldMap.saveTile1.changeTile(true);
+		WorldMap.saveTile2.changeTile(true);
 	}
 
 	public void unsave() {
 		File f = new File("save.txt");
 		f.delete();
+	}
+
+	void doublePlayerPlace(int i, int j) {
+		int x = i - 1;
+		int y = j + 1;
+		if (EntitiesConst.MAP_MATRIX[x][y].entity instanceof Tree) {
+			EntitiesConst.MAP.delTree(x, y);
+		}
+		EntitiesConst.MAP.setPlayer(x, y, EntitiesConst.GAME.player1);
+		x = i + 1;
+		if (EntitiesConst.MAP_MATRIX[x][y].entity instanceof Tree) {
+			EntitiesConst.MAP.delTree(x, y);
+		}
+		EntitiesConst.MAP.setPlayer(x, y, EntitiesConst.GAME.player2);
+	}
+	
+	void removePlayer() {
+		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.location
+		         				.getX()][(int) EntitiesConst.GAME.player1.location.getY()].entity = null;
+		         		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+		         				.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity instanceof Hero) {
+		         			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+		         					.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity = null;
+		         		}
+		         		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.location
+		         				.getX()][(int) EntitiesConst.GAME.player2.location.getY()].entity = null;
+		         		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+		         				.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity instanceof Hero) {
+		         			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+		         					.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity = null;
+		         		}
+	}
+
+	public void openMap(int map) {
+		removePlayer();
+		switch (map) {
+		case WORLD:
+			Map previous=(Map) EntitiesConst.GAME.map;
+			EntitiesConst.GAME.map = MapConstants.WORLD_MAP;
+			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
+			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			if (previous instanceof MazeMap) {
+				doublePlayerPlace(EntitiesConst.MAZE_ENTRANCE_X_POS, EntitiesConst.MAZE_ENTRANCE_Y_POS);
+			} else {
+				doublePlayerPlace(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
+			}
+			break;
+		case MAZE:
+			MazeMap mm = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+					MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
+					EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+			EntitiesConst.GAME.map = mm;
+			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
+			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			mm.mazeCounterActivated = true;
+			break;
+		case BOSS:
+			EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
+			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			break;
+		}
+		EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
+		EntitiesConst.GAME.render.updateCam(EntitiesConst.GAME.player1, EntitiesConst.GAME.player2,
+				EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
+		EntitiesConst.GAME.render.setOffsetCam();
 	}
 
 }

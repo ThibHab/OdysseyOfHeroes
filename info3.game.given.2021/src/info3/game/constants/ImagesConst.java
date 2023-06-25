@@ -29,7 +29,7 @@ public class ImagesConst {
 		path = "resources/sprites/";
 
 		GRASS_TILE = loadTile("Grass");
-		WATER_TILE = loadTile("water_placeholder");
+		WATER_TILE = loadTile("Water");
 		DIRT_TILE = loadTile("Dirt");
 		ROCK_TILE = loadTile("rock_placeholder");
 		GRASS_TILE2 = loadTile("Grass2");
@@ -51,7 +51,7 @@ public class ImagesConst {
 		SWORD = loadSprite("weapon", 1, 1);
 		FIRE_POWER = loadSprite("fire_power", 1, 1);
 
-		BOSS = loadSprite("Boss", 1, 1);
+		BOSS = loadSprite("Boss", 4, 3);
 		GOBLIN = loadSprite("Orc", 8, 8);
 		SKELETON = loadSprite("Skeleton", 6, 6);
 		MERCHANT = loadSprite("", 1, 1);

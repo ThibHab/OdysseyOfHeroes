@@ -70,7 +70,7 @@ public class VillagerGirl extends Villager {
 	
 	@Override
 	public void talks() {
-		if(Hero.bushesCut >= 1){
+		if(Hero.bushesCut >= 20){
 			if(!VillagerGirl.completed) {
 				Hero.experience += 10;
 				if (Hero.experience >= Hero.levelUp) {

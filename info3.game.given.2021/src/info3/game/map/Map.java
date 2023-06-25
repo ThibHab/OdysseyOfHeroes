@@ -20,6 +20,7 @@ public abstract class Map implements IMap {
 	public LinkedList<SpeechBubble> bubbles;
 	public LinkedList<Effect> effects;
 	public LinkedList<Bush> deadBush;
+	public Location rockLoc;
 
 	public Map(int nb_x, int nb_y, Entity p1, Entity p2) {
 		this.lenX = nb_x;
@@ -58,7 +59,7 @@ public abstract class Map implements IMap {
 		}
 	}
 	
-	void delTree(int x, int y) {
+	public void delTree(int x, int y) {
 		if(map[x][y].entity instanceof Tree) {
 			Tree tr=(Tree) map[x][y].entity;
 			for (int tr_j = 0; tr_j < 3; tr_j++) {
@@ -156,14 +157,9 @@ public abstract class Map implements IMap {
 	public void createBomb(int x,int y,Bomb b) {
 		if(map[x][y].entity==null) {
 			this.map[x][y].entity= b;
+			Hero.bombs--;
 		}
 	}
-	
-	public void createBombRock(int x, int y) {
-		BombRock br = new BombRock(new Location(x,y));
-		map[x][y].entity = br;
-	}
-	
 	public float diffX(float a, float b) {
 		float tmp = Math.abs(a - b);
 		float tmp2 = Math.min(a, b) + lenX - Math.max(a, b);
@@ -502,7 +498,8 @@ public abstract class Map implements IMap {
 	}
 
 	public void setForest(int x, int y, int radius, int seed) {
-		createBombRock(x, y + (radius / 2));
+		createRock(x, y + (radius / 2));
+		rockLoc = new Location(x, y + (radius/2));
 		setDisqueBackground(x + (radius / 2 - 3), y - (radius / 2 - 6), 3, "Water");
 		setDisqueBackground(x + (radius / 2 + 2), y - (radius / 2 - 10), 4, "Water");
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 8), 5, 4, "Rock");
@@ -525,6 +522,10 @@ public abstract class Map implements IMap {
 		if(this instanceof DungeonMap) {
 			DungeonMap dmap=(DungeonMap)this;
 			dmap.tick(elapsed);
+		}
+		if(this instanceof MazeMap) {
+			MazeMap mmap=(MazeMap)this;
+			mmap.tick(elapsed);
 		}
 
 		for (int j = 0; j < nbTileY; j++) {
@@ -557,42 +558,6 @@ public abstract class Map implements IMap {
 			Effect eff = it.next();
 			if (eff != null) {
 				eff.step(elapsed);
-			}
-		}
-	}
-
-	public void freezeEntities() {
-		MapRender rend = EntitiesConst.GAME.render;
-		int nbTileY = rend.nbTileY + 4;
-		int nbTileX = rend.nbTileX + 4;
-
-		for (int j = 0; j < nbTileY; j++) {
-			for (int i = 0; i < nbTileX; i++) {
-				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
-				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
-				Tile renderTile = map[mapX][mapY];
-				Entity ent = renderTile.entity;
-				if (ent != null) {
-					ent.frozen = true;
-				}
-			}
-		}
-	}
-	
-	public void unFreezeEntities() {
-		MapRender rend = EntitiesConst.GAME.render;
-		int nbTileY = rend.nbTileY + 4;
-		int nbTileX = rend.nbTileX + 4;
-
-		for (int j = 0; j < nbTileY; j++) {
-			for (int i = 0; i < nbTileX; i++) {
-				int mapX = (int) (i + rend.camera.getX() + lenX - nbTileX / 2) % lenX;
-				int mapY = (int) (j + rend.camera.getY() + lenY - nbTileY / 2) % lenY;
-				Tile renderTile = map[mapX][mapY];
-				Entity ent = renderTile.entity;
-				if (ent != null) {
-					ent.frozen = false;;
-				}
 			}
 		}
 	}

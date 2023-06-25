@@ -31,8 +31,6 @@ public class Projectile extends Entity {
 		this.owner = owner;
 		this.tilesCrossed = 0;
 		this.currentState = this.automaton.initial;
-		this.location.setX((float) (this.owner.location.getX()));
-		this.location.setY((float) (this.owner.location.getY()));
 
 		this.action = Action.M;
 
@@ -42,41 +40,70 @@ public class Projectile extends Entity {
 		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
 	}
 
+	public Projectile(Entity owner, Aut_Direction d, Location location) {
+		super();
+		this.direction = d;
+		this.category = Aut_Category.M;
+		this.name = "EnergyBall";
+		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
+			if (next.name.equals(name))
+				this.automaton = next;
+		}
+		this.currentState = this.automaton.initial;
+		this.owner = owner;
+		this.tilesCrossed = 0;
+		this.currentState = this.automaton.initial;
+
+		this.action = Action.M;
+		Action acts[] = new Action[] { Action.M };
+		this.anim = new Animation(this, ImagesConst.ENERGYBALL, null, acts);
+
+		this.location.setX(location.getX());
+		this.location.setY(location.getY());
+
+		this.speed = 2;
+		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
+		this.scale = EntitiesConst.ENERGYBALL_SCALE;
+		EntitiesConst.MAP.projectiles.add(this);
+	}
+
 	@Override
 	public void Move(Aut_Direction d) {
-		if (!this.frozen) {
-			this.tilesCrossed++;
-			this.frozen = true;
+		if (!EntitiesConst.GAME.inMenu.isPaused) {
+			if (!this.frozen) {
+				this.tilesCrossed++;
+				this.frozen = true;
 
-			if (d == null) {
-				d = this.direction;
+				if (d == null) {
+					d = this.direction;
+				}
+				this.anim.changeAction(Action.M);
+
+				this.destLocation = new Location(this.location.getX(), this.location.getY());
+				originLocation = new Location(this.location.getX(), this.location.getY());
+				relativeMouv = new Location(0, 0);
+				switch (this.direction) {
+				case N:
+					destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+					relativeMouv.setY(-1);
+					break;
+				case S:
+					destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+					relativeMouv.setY(1);
+					break;
+				case W:
+					destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+					relativeMouv.setX(-1);
+					break;
+				case E:
+					destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+					relativeMouv.setX(1);
+					break;
+				default:
+					break;
+				}
+
 			}
-			this.anim.changeAction(Action.M);
-
-			this.destLocation = new Location(this.location.getX(), this.location.getY());
-			originLocation = new Location(this.location.getX(), this.location.getY());
-			relativeMouv = new Location(0, 0);
-			switch (this.direction) {
-			case N:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(-1);
-				break;
-			case S:
-				destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
-				relativeMouv.setY(1);
-				break;
-			case W:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(-1);
-				break;
-			case E:
-				destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
-				relativeMouv.setX(1);
-				break;
-			default:
-				break;
-			}
-
 		}
 	}
 

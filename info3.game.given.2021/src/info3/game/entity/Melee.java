@@ -42,54 +42,30 @@ public class Melee extends Hero {
 	}
 
 	@Override
-	public void tick(long elapsed) {
-		if (this.mazeCounterActivated) {
-			this.mazeCounter += elapsed;
-			if (this.mazeCounter >= EntitiesConst.MAZE_COUNTER_LIMIT) {
-				EntitiesConst.GAME.map = MapConstants.WORLD_MAP;
-				EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
-				EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
-				if (EntitiesConst.GAME.previousMap == 1) {
-					EntitiesConst.MAP.setPlayer(EntitiesConst.MAZE_ENTRANCE_X_POS - 1,
-							EntitiesConst.MAZE_ENTRANCE_Y_POS + 1, this);
-					EntitiesConst.MAP.setPlayer(EntitiesConst.MAZE_ENTRANCE_X_POS + 1,
-							EntitiesConst.MAZE_ENTRANCE_Y_POS + 1, EntitiesConst.GAME.player2);
-				} else if (EntitiesConst.GAME.previousMap == 2) {
-					EntitiesConst.MAP.setPlayer(EntitiesConst.DUNGEON_ENTRANCE_X_POS - 1,
-							EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1, this);
-					EntitiesConst.MAP.setPlayer(EntitiesConst.DUNGEON_ENTRANCE_X_POS + 1,
-							EntitiesConst.DUNGEON_ENTRANCE_Y_POS + 1, EntitiesConst.GAME.player2);
-				}
-				EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
-				EntitiesConst.GAME.render.updateCam(this, EntitiesConst.GAME.player2,
-						EntitiesConst.GAME.m_canvas.getWidth(), EntitiesConst.GAME.m_canvas.getHeight());
-				EntitiesConst.GAME.render.setOffsetCam();
-				this.mazeCounterActivated = false;
-				this.mazeCounter = 0;
-			}
-		}
-
-		super.tick(elapsed);
-	}
-
-	@Override
 	public void Power() {
 		if (this.healingPotions > 0) {
 			Range otherPlayer = EntitiesConst.GAME.player2;
 			Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
-			if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
+			if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer
+					&& otherPlayer.dead) {
 				this.Wait(1000);
 			} else {
-				this.heal();
+				if (this.health < this.maxHealth) {
+					this.heal();
+					this.healingPotions--;
+					Wait(200);
+				}
 			}
 		}
 	}
-	
-	
+
 	@Override
 	public void waited() {
 		this.actionIndex = 0;
-		EntitiesConst.GAME.player2.revive();
+		if (EntitiesConst.GAME.player2.health <= 0) {
+			this.healingPotions--;
+			EntitiesConst.GAME.player2.revive();
+		}
 	}
 
 	@Override

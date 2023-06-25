@@ -24,7 +24,7 @@ public class WorldMap extends Map {
 		
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Portal", 2, 15);
 		
-		if (EntitiesConst.MAP == null) {
+		if (EntitiesConst.MAP == null && !EntitiesConst.GAME.reload) {
 			setPlayer(29, 31, p1);
 			setPlayer(31, 31, p2);
 		}
