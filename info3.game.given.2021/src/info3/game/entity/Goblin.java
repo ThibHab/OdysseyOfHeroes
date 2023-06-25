@@ -39,25 +39,7 @@ public class Goblin extends Mob {
 	}
 	
 	
-	@Override
-	public boolean isFinished() {
-		switch (this.action) {
-		case S:
-			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
-		case M:
-			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_MOB;
-		case H:
-			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX_MOB;
-		case D:
-			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
-		case T:
-			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
-		case I:
-			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
-		default:
-			return true;
-		}
-	}
+	
 	
 	@Override
 	public int getNbActionSprite(Action a) {

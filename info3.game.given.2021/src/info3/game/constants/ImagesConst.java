@@ -51,7 +51,7 @@ public class ImagesConst {
 		SWORD = loadSprite("weapon", 1, 1);
 		FIRE_POWER = loadSprite("fire_power", 1, 1);
 
-		BOSS = loadSprite("Boss", 1, 1);
+		BOSS = loadSprite("Boss", 4, 3);
 		GOBLIN = loadSprite("Orc", 8, 8);
 		SKELETON = loadSprite("", 1, 1);
 		MERCHANT = loadSprite("", 1, 1);
