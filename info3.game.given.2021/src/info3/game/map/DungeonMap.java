@@ -15,12 +15,12 @@ import info3.game.entity.Melee;
 import info3.game.entity.Torch;
 
 public class DungeonMap extends Map {
-	List<Torch> torches;
+	public static List<Torch> torches;
 	public boolean lit;
 	public int sizeX = 20;
 	public int sizeY = 12;
 	boolean initLit = false;
-	public boolean finish;
+	public static boolean finish;
 	int transiMax = 5000;
 	int transi;
 	float transiPercent;
