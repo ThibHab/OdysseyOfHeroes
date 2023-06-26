@@ -122,14 +122,7 @@ RangeEnnemy(Search) {
   
   Hermit (Turning) {
   * (Turning)
-  | Cell(@, B) ? Turn(B) : (Standing)
-  | Cell(@, L) ? Turn(L) : (Standing)
-  | Cell(@, R) ? Turn(R) : (Standing)
-  | Cell(@, F) ? : (Standing)
-  | Cell(R, V) ? Turn(R) : (Turned)
-  
-  * (Waiting)
-  | True ? Wait(200) : (Moving)
+  | Cell(R, V) ? Turn(R) : (Moving)
   
   * (Moving)
   | Cell(F, V) ? Move(F) : (Turning)

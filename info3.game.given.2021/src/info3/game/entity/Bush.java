@@ -32,7 +32,7 @@ public class Bush extends DecorElement {
 		}
 		this.currentState = automaton.initial;
 
-		Action acts[] = new Action[] { Action.S, Action.H };
+		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this, ImagesConst.BUSH, null, acts);
 
 		this.width = 1;
@@ -131,12 +131,12 @@ public class Bush extends DecorElement {
 		}
 	}
 
-	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-		BufferedImage img = anim.getFrame();
-		int diff = (int) (tileSize * (scale - 1)) / 2;
-		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
-				(int) (tileSize * scale), null);
-	}
+//	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+//		BufferedImage img = anim.getFrame();
+//		int diff = (int) (tileSize * (scale - 1)) / 2;
+//		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
+//				(int) (tileSize * scale), null);
+//	}
 
 	@Override
 	public int getNbActionSprite(Action a) {

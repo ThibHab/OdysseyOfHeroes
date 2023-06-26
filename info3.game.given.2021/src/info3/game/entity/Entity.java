@@ -1,5 +1,6 @@
 package info3.game.entity;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.io.RandomAccessFile;
 import java.awt.image.BufferedImage;
@@ -83,6 +84,8 @@ public abstract class Entity implements IEntity {
 
 		this.mazeCounter = 0;
 		this.mazeCounterActivated = false;
+		
+		
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -463,10 +466,18 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+//		BufferedImage img = anim.getFrame();
+//		int diff = (int) (tileSize * (scale - 1)) / 2;
+//		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
+//				(int) (tileSize * scale), null);
+
 		BufferedImage img = anim.getFrame();
-		int diff = (int) (tileSize * (scale - 1)) / 2;
-		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
-				(int) (tileSize * scale), null);
+		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
+		int dimension = (int) (scale * tileSize);
+		float shiftXY = ((scale - 1) / 2) * tileSize;
+		int positionX = (int) (pixel.getX() - shiftXY);
+		int positionY = (int) (pixel.getY() - shiftXY);
+		g.drawImage(img, positionX, positionY, dimension, dimension, null);
 	}
 
 	public void setLocation(Location location) {
