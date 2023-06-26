@@ -21,7 +21,7 @@ public class WorldMap extends Map {
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", EntitiesConst.SEED, 10);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", EntitiesConst.SEED, 15);
 		
-		this.setVillage(30, 30, 21);
+		this.setVillage(30, 30);
 		
 		this.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 		this.setMazeEntrance(EntitiesConst.MAZE_ENTRANCE_X_POS, EntitiesConst.MAZE_ENTRANCE_Y_POS);

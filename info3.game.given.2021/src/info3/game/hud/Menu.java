@@ -96,7 +96,7 @@ public class Menu extends Button {
 	}
 
 	public void setStarted() {
-		isStarted = true;
+		isStarted = !isStarted;
 	}
 
 	public void setMenuSize() {

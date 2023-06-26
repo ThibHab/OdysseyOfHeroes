@@ -36,7 +36,7 @@ public abstract class Villager extends NPC {
 
 	@Override
 	public void tick(long elapsed) {
-		if (!EntitiesConst.GAME.inMenu.isPaused) {
+		if (!EntitiesConst.GAME.inMenu.isPaused && !EntitiesConst.GAME.endGameFreeze) {
 			this.automaton.step(this, EntitiesConst.GAME);
 			if (this.frozen) {
 				this.actionIndex += elapsed;

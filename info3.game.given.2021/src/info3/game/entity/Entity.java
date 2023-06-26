@@ -95,7 +95,7 @@ public abstract class Entity implements IEntity {
 		if (currentState.name.equals("")) {
 			this.die();
 		}
-		if (!EntitiesConst.GAME.inMenu.isPaused) {
+		if (!EntitiesConst.GAME.inMenu.isPaused && !EntitiesConst.GAME.endGameFreeze) {
 			this.automaton.step(this, EntitiesConst.GAME);
 
 			if (this.hitFrozen) {
