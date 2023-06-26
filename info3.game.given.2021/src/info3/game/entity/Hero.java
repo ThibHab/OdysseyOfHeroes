@@ -22,6 +22,7 @@ public abstract class Hero extends Entity {
 	public static int coins, level, levelUp, experience, bushesCut, bombs;
 	public static boolean firePowerUnlocked;
 	public int healingPotions, strengthPotions;
+	public static boolean tryToEnterDungeon;
 	
 	public Hero() {
 		super();
@@ -81,7 +82,7 @@ public abstract class Hero extends Entity {
 					if (Hero.firePowerUnlocked) {
 						EntitiesConst.GAME.openMap(Game.BOSS);
 					} else {
-						System.out.println("Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu");
+						tryToEnterDungeon = true;
 					}
 				} else if (destTile.entity instanceof MazeEntrance) {
 					EntitiesConst.GAME.openMap(Game.MAZE);
