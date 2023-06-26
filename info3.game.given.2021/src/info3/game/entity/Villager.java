@@ -29,7 +29,6 @@ public abstract class Villager extends NPC {
 		this.category = Aut_Category.T;
 
 		// --- TODO manage sprite properly ---
-		this.scale = EntitiesConst.VILLAGER_SCALE;
 		// -----------------------------------
 		this.hitbox = new Hitbox(this, (float) 0.80, (float) 0.90);
 	}
@@ -37,7 +36,20 @@ public abstract class Villager extends NPC {
 	@Override
 	public void tick(long elapsed) {
 		if (!EntitiesConst.GAME.inMenu.isPaused) {
+			if (currentState.name.equals("")) {
+				this.die();
+				this.dead = true;
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
+			}
 			this.automaton.step(this, EntitiesConst.GAME);
+			if (this.hitFrozen) {
+				this.hitIndex += elapsed;
+				if (this.hitIndex > this.attackSpeed) {
+					this.hitFrozen = false;
+					this.hitIndex = 0;
+				}
+			}
+
 			if (this.frozen) {
 				this.actionIndex += elapsed;
 				if (action == Action.M) {
@@ -59,7 +71,29 @@ public abstract class Villager extends NPC {
 										% EntitiesConst.MAP.lenY);
 						this.hitbox.update();
 					}
-				}
+				} else if (action == Action.H) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+				} else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+				} else if (action == Action.T) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+				}else  if (timer != Integer.MIN_VALUE) {
+					this.timer -= elapsed;
+					if (timer < 0) {
+						this.frozen = false;
+						timer = Integer.MIN_VALUE;
+						waited();
+					}
+				} 
 			} else {
 				if (this.action != Action.S) {
 					if (EntitiesConst.GAME.debug) {
@@ -68,11 +102,10 @@ public abstract class Villager extends NPC {
 					this.action = Action.S;
 					this.anim.changeAction(action);
 				}
-				if (!this.dead) {
+				if (!this.dead)
 					this.anim.changeAction(action);
-				}
-				this.anim.step(elapsed);
 			}
+			this.anim.step(elapsed);
 		}
 	}
 

@@ -20,7 +20,8 @@ public class EntitiesConst {
 	
 	public static final int MOUVEMENT_INDEX_MAX = 200;
 	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
-	public static final int MOUVEMENT_INDEX_MAX_VILLAGER = 1500;
+	public static final int MOUVEMENT_INDEX_MAX_VILLAGER = 1200;
+	public static final int MOUVEMENT_INDEX_MAX_HERMIT = 1800;
 	public static final int MOUVEMENT_INDEX_MAX_MOB = 1000;
 	public static final int MOUVEMENT_INDEX_MAX_MOB_PROJ = 200;
 	public static final int HIT_INDEX_MAX = 300;
@@ -47,6 +48,7 @@ public class EntitiesConst {
 	// BOMB CONSTANTS
 	public static final int BOMB_TIMER = 3000;
 	public static final float BOMB_RADIUS =2f;
+	public static final float BOMB_SCALE =0.6f;
 	
 	// SKELETON CONSTANTS
 	public static final int SKELETON_HEALTH = 8;
@@ -106,7 +108,9 @@ public class EntitiesConst {
 	
 	// SPEECH CONSTANTS
 	public static final float SPEECHBUBBLE_SCALE = 1.0f;
-	public static final float VILLAGER_SCALE = 1.0f;
+	public static final float VILLAGERGIRL_SCALE = 1.2f;
+	public static final float MINER_SCALE = 1.3f;
+	public static final float HERMIT_SCALE = 1.0f;
 	
 	// STATUE CONSTANTS
 	public static final float STATUE_SCALE =4f;

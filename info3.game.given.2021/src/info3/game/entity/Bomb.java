@@ -39,14 +39,17 @@ public class Bomb extends Entity {
 		this.category = Aut_Category.D;
 		timer = EntitiesConst.BOMB_TIMER;
 		EntitiesConst.MAP.createBomb((int) loc.getX(), (int) loc.getY(), this);
+		this.scale = EntitiesConst.BOMB_SCALE;
 	}
 
 
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
-		g.drawImage(img, (int) screenPosX, (int) screenPosY, TileSize, TileSize, null);
+		int diff = (int) (TileSize * (scale - 1)) / 2;
+		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (TileSize * scale),
+				(int) (TileSize * scale), null);
 		if (EntitiesConst.GAME.debug) {
-			int diff = (int) (TileSize * (2 * EntitiesConst.BOMB_RADIUS - 1)) / 2;
+			diff = (int) (TileSize * (2 * EntitiesConst.BOMB_RADIUS - 1)) / 2;
 			g.drawOval((int) (screenPosX - diff), (int) (screenPosY - diff),
 					(int) (TileSize * EntitiesConst.BOMB_RADIUS * 2), (int) (TileSize * EntitiesConst.BOMB_RADIUS * 2));
 		}

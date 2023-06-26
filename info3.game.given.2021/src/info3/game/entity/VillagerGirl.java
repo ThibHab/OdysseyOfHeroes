@@ -40,10 +40,11 @@ public class VillagerGirl extends Villager {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.N, Aut_Direction.E,
-				Aut_Direction.W };
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.W, Aut_Direction.E,
+				Aut_Direction.N };
 		Action acts[] = new Action[] { Action.S, Action.M };
 		this.anim = new Animation(this, ImagesConst.VILLAGERGIRL, dirs, acts);
+		this.scale = EntitiesConst.VILLAGERGIRL_SCALE;
 		
 	}
 	
@@ -128,12 +129,6 @@ public class VillagerGirl extends Villager {
 		switch (a) {
 		case M:
 			return AnimConst.VILLAGERGIRL_M;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.VILLAGERGIRL_S;
 		default:
@@ -143,6 +138,6 @@ public class VillagerGirl extends Villager {
 
 	@Override
 	public int totSrpitePerDir() {
-		return AnimConst.VILLAGERGIRL_M;
+		return AnimConst.VILLAGERGIRL_TOT;
 	}
 }

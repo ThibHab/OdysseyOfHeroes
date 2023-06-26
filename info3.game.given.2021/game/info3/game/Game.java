@@ -381,6 +381,14 @@ public class Game {
 		if (m instanceof WorldMap) {
 			File f = new File("save.txt");
 			long length = f.length();
+			try {
+				RandomAccessFile file = new RandomAccessFile("resources/sounds/gameOver.ogg", "r");
+				RandomFileInputStream fis = new RandomFileInputStream(file);
+				EntitiesConst.GAME.m_canvas.playSound("gameOver",fis, 0, 0.8F);
+			} catch (Throwable th) {
+				th.printStackTrace(System.err);
+				System.exit(-1);
+			}
 			if (!f.exists() || length == 0)
 				this.setupGame(null);
 			else
