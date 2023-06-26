@@ -111,6 +111,8 @@ public class CanvasListener implements GameCanvasListener {
 							}
 						} else if (m_focused.getName().equals("Credits")) {
 							menu.credits.creditsUp = true;
+						} else if (m_focused.getName().equals("Quitter")) {
+							this.exit();
 						} else {
 							m_focused = null;
 						}
@@ -256,11 +258,11 @@ public class CanvasListener implements GameCanvasListener {
 		}
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			m_game.save();
-			if(m_game.debug) {
-				Hero.bombs=100;
-				m_game.player1.healingPotions=100;
-				m_game.player2.healingPotions=100;
-				Range.firePowerUnlocked=true;
+			if (m_game.debug) {
+				Hero.bombs = 100;
+				m_game.player1.healingPotions = 100;
+				m_game.player2.healingPotions = 100;
+				Range.firePowerUnlocked = true;
 			}
 		}
 		if (!keys.contains((Integer) e.getKeyCode())) {
