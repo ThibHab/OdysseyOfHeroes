@@ -473,6 +473,16 @@ public abstract class Map implements IMap {
 	}
 
 	public void setVillage(int x, int y, int areaSize) {
+		for (int i = 16; i < 45; i++) {
+			for (int j = 22; j < 45; j++) {
+				Tile tile = this.map[i][j];
+				if (tile.entity instanceof Tree) {
+					delTree(i, j);
+				} else {
+					tile.entity = null;
+				}
+			}
+		}
 		if (areaSize < 30 && areaSize > 20) {
 			setDisqueBackground(x, y, 3, "Dirt");
 			createTree(x, y);
@@ -509,6 +519,16 @@ public abstract class Map implements IMap {
 		setBorderForest(x, y, radius / 2);
 		createChest(x, y);
 		setEntityRandomly(x - ((radius / 2) + 10), y - ((radius / 2) + 10), radius + 15, 1, "Tree", seed, 4);
+		for (int i = 77; i < 80; i++) {
+			for (int j = 65; j < 68; j++) {
+				Tile tile = this.map[i][j];
+				if (tile.entity instanceof Tree) {
+					delTree(i, j);
+				} else {
+					tile.entity = null;
+				}
+			}
+		}
 	}
 
 	public void tickEntities(int x, int y, long elapsed) {

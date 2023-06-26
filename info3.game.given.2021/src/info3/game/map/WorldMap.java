@@ -12,17 +12,20 @@ public class WorldMap extends Map {
 		
 		this.setSurfaceBackground(0, 0, lenX, lenY, "Grass");
 		this.setLac(9, 12, 3);
-		this.setVillage(30, 30, 25);
+		
+		this.setEntityRandomly(0, 0, lenX - 2, 2, "Tree", EntitiesConst.SEED, 20);
+		this.setEntityRandomly(0, 0, lenX - 2, 2, "Portal", EntitiesConst.SEED, 50);
+		
 		this.setForest(70, 70, 30, EntitiesConst.SEED);
 		
-		this.setEntityRandomly(0, 0, lenX - 2, 2, "Tree", EntitiesConst.SEED, 30);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Bush", EntitiesConst.SEED, 10);
 		this.setEntityRandomly(0, 0, lenX - 2, 2, "Rock", EntitiesConst.SEED, 15);
+		
+		this.setVillage(30, 30, 21);
 		
 		this.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 		this.setMazeEntrance(EntitiesConst.MAZE_ENTRANCE_X_POS, EntitiesConst.MAZE_ENTRANCE_Y_POS);
 		
-		this.setEntityRandomly(0, 0, lenX - 2, 2, "Portal", EntitiesConst.SEED, 15);
 		
 		if (EntitiesConst.MAP == null && !EntitiesConst.GAME.reload) {
 			setPlayer(29, 31, p1);
