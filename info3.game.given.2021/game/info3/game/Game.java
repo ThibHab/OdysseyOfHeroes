@@ -187,9 +187,9 @@ public class Game {
 		if (!f.exists() || f.length() == 0) {
 			throw new Exception("Configuration file not found");
 		}
-		save = new RandomAccessFile(f, "r");
-		byte[] buffer = new byte[(int) save.length()];
-		save.readFully(buffer);
+		RandomAccessFile config = new RandomAccessFile(f, "r");
+		byte[] buffer = new byte[(int) config.length()];
+		config.readFully(buffer);
 		String s = new String(buffer);
 		String[] configFile = s.split("\n");
 		String[][] configData = new String[configFile.length][2];
@@ -198,6 +198,7 @@ public class Game {
 			configData[i][0] = line[0];
 			configData[i][1] = line[1];
 		}
+		config.close();
 
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
