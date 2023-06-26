@@ -242,11 +242,10 @@ public class MapRender {
 
 		// BACKGGROUND
 		paintBackground(g);
-		// EFFECT
-		paintEffect(g);
 		paintProj(g);
 		// DECOR & PLAYER
 		paintEntity(g);
+		paintEffect(g);
 		paintBubbles(g);
 		// NIGHT
 		if (map instanceof DungeonMap) {
