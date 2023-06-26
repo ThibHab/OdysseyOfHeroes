@@ -96,7 +96,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = true;
+	public boolean debug = false;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -376,12 +376,12 @@ public class Game {
 						m_tryEnterDungeon = 0;
 					}
 				}
-				
+
 				if (map instanceof DungeonMap && DungeonMap.initLit && Boss.h <= 0 && menu.getStarted()) {
 					gameWin(elapsed);
 				}
-				
-				//TODO Rajouter timer Message victoire 5s;
+
+				// TODO Rajouter timer Message victoire 5s;
 
 				if (EntitiesConst.GAME.debug) {
 					m_textElapsed += elapsed;
@@ -437,21 +437,31 @@ public class Game {
 	void gameOVER() throws Exception {
 		Map m = ((Map) this.map);
 		if (m instanceof WorldMap) {
-			File f = new File("save.txt");
-			long length = f.length();
 			try {
 				RandomAccessFile file = new RandomAccessFile("resources/sounds/gameOver.ogg", "r");
 				RandomFileInputStream fis = new RandomFileInputStream(file);
-				EntitiesConst.GAME.m_canvas.playSound("gameOver",fis, 0, 0.8F);
+				EntitiesConst.GAME.m_canvas.playSound("gameOver", fis, 0, 0.8F);
 			} catch (Throwable th) {
 				th.printStackTrace(System.err);
 				System.exit(-1);
 			}
-			if (!f.exists() || length == 0)
+
+			File f = new File("save.txt");
+			long length = f.length();
+			if (!f.exists() || length == 0) {
 				this.setupGame(null);
-			else
-				removePlayer();
-			this.setupGame(f);
+			} else {
+				RandomAccessFile raf = new RandomAccessFile(f, "r");
+				byte[] buffer = new byte[(int) raf.length()];
+				raf.readFully(buffer);
+				String[] data = new String(buffer).split("\n");
+				int seed = Integer.valueOf(data[0]); // restore seed
+				if (seed == EntitiesConst.SEED) {
+					this.setupGame(f);
+				} else {
+					this.setupGame(null);
+				}
+			}
 		}
 		if (m instanceof DungeonMap || m instanceof MazeMap) {
 			Hero.bombs = 0;
@@ -471,11 +481,11 @@ public class Game {
 
 		}
 	}
-	
+
 	void gameWin(long elapsed) {
 		endGameFreeze = true;
 		victory_message = true;
-		
+
 		if (endGameFreeze) {
 			m_victoiry += elapsed;
 			if (m_victoiry > 5000) {
@@ -508,10 +518,10 @@ public class Game {
 
 			data += player1.location.getX() + "/" + player1.location.getY() + "/" + player1.currentState.name + "/"
 					+ player1.health + "/" + player1.maxHealth + "/" + player1.healingPotions + "/"
-					+ player1.strengthPotions + "/" + player1.direction + "/" + player1.action + "\n";
+					+ player1.weaponDamage + "/" + player1.direction + "\n";
 			data += player2.location.getX() + "/" + player2.location.getY() + "/" + player2.currentState.name + "/"
 					+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
-					+ player2.strengthPotions + "/" + player2.direction + "/" + player2.action + "\n";
+					+ player2.weaponDamage + "/" + player2.weaponRange + "/" + player2.direction + "\n";
 
 			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "/" + Hero.bombs + "/" + Hero.bushesCut
 					+ "\n";
@@ -563,14 +573,12 @@ public class Game {
 		Location loc1 = new Location(Float.valueOf(p1[0]), Float.valueOf(p1[1]));
 		Location loc2 = new Location(Float.valueOf(p2[0]), Float.valueOf(p2[1]));
 		Aut_Direction dir1 = Aut_Direction.valueOf(p1[7]);
-		Aut_Direction dir2 = Aut_Direction.valueOf(p2[7]);
-		Action a1 = Action.valueOf(p1[8]);
-		Action a2 = Action.valueOf(p2[8]);
+		Aut_Direction dir2 = Aut_Direction.valueOf(p2[8]);
 
 		player1.saveRestore(loc1, p1[2], Integer.valueOf(p1[3]), Integer.valueOf(p1[4]), Integer.valueOf(p1[5]),
-				Integer.valueOf(p1[6]), dir1);
+				Integer.valueOf(p1[6]), 0, dir1);
 		player2.saveRestore(loc2, p2[2], Integer.valueOf(p2[3]), Integer.valueOf(p2[4]), Integer.valueOf(p2[5]),
-				Integer.valueOf(p2[6]), dir2);
+				Integer.valueOf(p2[6]), Integer.valueOf(p2[7]), dir2);
 
 		Hero.restore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]),
 				Integer.valueOf(hero[3]), Integer.valueOf(hero[4]));
@@ -583,6 +591,10 @@ public class Game {
 		}
 		if (fire) {
 			Range.unlockFire();
+		} else {
+			Hero.firePowerUnlocked = false;
+			ImagesConst.DUNGEON_ENTRANCE_OPEN = ImagesConst.DUNGEON_ENTRANCE_CLOSED;
+			EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 		}
 
 		VillagerGirl.started = Boolean.valueOf(villagerGirl[0]);

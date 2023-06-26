@@ -34,7 +34,7 @@ public abstract class Hero extends Entity {
 		Hero.experience = EntitiesConst.EXPERIENCE;
 		Hero.firePowerUnlocked = false;
 		Hero.bushesCut = 0;
-		Hero.bombs = 1;
+		Hero.bombs = 0;
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
 	
@@ -101,7 +101,7 @@ public abstract class Hero extends Entity {
 	}
 	
 	
-	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int sPotions, Aut_Direction dir) {
+	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int wDamage, int range, Aut_Direction dir) {
 		this.location = loc;
 		this.destLocation = loc;
 		EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity = this;
@@ -117,7 +117,8 @@ public abstract class Hero extends Entity {
 		}
 		
 		this.healingPotions = hPotions;
-		this.strengthPotions = sPotions;
+		this.weaponDamage = wDamage;
+		this.weaponRange = range;
 		this.health = health;
 		this.maxHealth = maxHealth;
 		this.direction = dir;
