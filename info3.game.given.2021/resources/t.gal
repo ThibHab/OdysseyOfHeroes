@@ -122,10 +122,10 @@ RangeEnnemy(Search) {
   
   Hermit (Turning) {
   * (Turning)
-  | Cell(R, V) ? Turn(R) : (Moving)
+  | True ? Turn(R) : (Moving)
   
   * (Moving)
-  | Cell(F, V) ? Move(F) : (Turning)
+  | True ? Move(F) : (Turning)
   }
   
   
