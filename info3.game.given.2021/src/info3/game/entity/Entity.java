@@ -97,78 +97,78 @@ public abstract class Entity implements IEntity {
 		}
 		if (!EntitiesConst.GAME.inMenu.isPaused) {
 			this.automaton.step(this, EntitiesConst.GAME);
-			
+
 			if (this.hitFrozen) {
 				this.hitIndex += elapsed;
 				if (this.hitIndex > this.attackSpeed) {
 					this.hitFrozen = false;
 					this.hitIndex = 0;
 				}
-			}	
-				if (this.frozen) {
-					this.actionIndex += elapsed;
-					if (action == Action.M) {
-						if (this.isFinished()) {
-							this.actionIndex = 0;
-							this.frozen = false;
-							this.location.setX(destLocation.getX());
-							this.location.setY(destLocation.getY());
-							this.hitbox.update();
-							EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-									.getY()].entity = null;
-						} else if (actionIndex != 0) {
-							float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-							this.location.setX(
-									(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-											% EntitiesConst.MAP.lenX);
-							this.location.setY(
-									(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-											% EntitiesConst.MAP.lenY);
-							this.hitbox.update();
-						}
-					} else if (action == Action.H) {
-						if (this.isFinished()) {
-							this.frozen = false;
-							this.actionIndex = 0;
-						}
-						if (this.actionIndex >= this.attackSpeed) {
-							this.hitFrozen = false;
-						}
-					} else if (action == Action.I) {
-						if (this.isFinished()) {
-							this.frozen = false;
-							this.actionIndex = 0;
-						}
-					} else if (action == Action.D) {
-						if (this.isFinished()) {
-							this.actionIndex = 0;
-							this.dead = true;
-							if (!(this instanceof Hero))
-								EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
-	
-						}
-					} else if (timer != Integer.MIN_VALUE) {
-						this.timer -= elapsed;
-						if (timer < 0) {
-							this.frozen = false;
-							timer = Integer.MIN_VALUE;
-							waited();
-						}
+			}
+			if (this.frozen) {
+				this.actionIndex += elapsed;
+				if (action == Action.M) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.frozen = false;
+						this.location.setX(destLocation.getX());
+						this.location.setY(destLocation.getY());
+						this.hitbox.update();
+						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+								.getY()].entity = null;
+					} else if (actionIndex != 0) {
+						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+						this.location.setX(
+								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+										% EntitiesConst.MAP.lenX);
+						this.location.setY(
+								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+										% EntitiesConst.MAP.lenY);
+						this.hitbox.update();
 					}
-				} else {
-					if (this.action != Action.S) {
-						if (EntitiesConst.GAME.debug) {
-							System.out.println(this.name + " is standing");
-						}
-						this.action = Action.S;
-						this.anim.imageIndex = anim.sprites.length - 1;
-						this.anim.changeAction(action);
+				} else if (action == Action.H) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
 					}
-					if (!this.dead)
-						this.anim.changeAction(action);
+					if (this.actionIndex >= this.attackSpeed) {
+						this.hitFrozen = false;
+					}
+				} else if (action == Action.I) {
+					if (this.isFinished()) {
+						this.frozen = false;
+						this.actionIndex = 0;
+					}
+				} else if (action == Action.D) {
+					if (this.isFinished()) {
+						this.actionIndex = 0;
+						this.dead = true;
+						if (!(this instanceof Hero))
+							EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
+
+					}
+				} else if (timer != Integer.MIN_VALUE) {
+					this.timer -= elapsed;
+					if (timer < 0) {
+						this.frozen = false;
+						timer = Integer.MIN_VALUE;
+						waited();
+					}
+				}
+			} else {
+				if (this.action != Action.S) {
+					if (EntitiesConst.GAME.debug) {
+						System.out.println(this.name + " is standing");
+					}
+					this.action = Action.S;
+					this.anim.imageIndex = anim.sprites.length - 1;
+					this.anim.changeAction(action);
 				}
 				if (!this.dead)
-					this.anim.step(elapsed);
+					this.anim.changeAction(action);
+			}
+			if (!this.dead)
+				this.anim.step(elapsed);
 		}
 	}
 
@@ -306,30 +306,28 @@ public abstract class Entity implements IEntity {
 			if (entity != null) {
 				switch (d) {
 				case N:
-					if ((entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5)
-							&& !(entity instanceof Rock)) {
+					if (entity.hitbox.location.getY() + entity.hitbox.height > t.getY() - 0.5) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.N);
 					}
 					break;
 				case S:
-					if ((entity.hitbox.location.getY() < t.getY() + 0.5) && !(entity instanceof Rock)) {
+					if (entity.hitbox.location.getY() < t.getY() + 0.5) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.S);
 					}
 					break;
 				case E:
-					if ((entity.hitbox.location.getX() < t.getX() + 0.5) && !(entity instanceof Rock)) {
+					if (entity.hitbox.location.getX() < t.getX() + 0.5) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.E);
 					}
 					break;
 				case W:
-					if ((entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5)
-							&& !(entity instanceof Rock)) {
+					if (entity.hitbox.location.getX() + entity.hitbox.width > t.getX() - 0.5) {
 						entity.takeDamage(this);
 						if (entity instanceof Mob || entity instanceof Hero)
 							new BloodEffect(entity.frontTileLocation(direction), Aut_Direction.W);
@@ -376,11 +374,30 @@ public abstract class Entity implements IEntity {
 	public void revive() {
 		this.currentState = automaton.initial;
 		new HealEffect(this.location);
-		System.out.println("wtf heal ??");
 		this.dead = false;
 		this.frozen = false;
 		this.actionIndex = 0;
 		this.health = this.maxHealth / 2;
+		if (this.destLocation != this.location) {
+			this.location.setX(Math.round(this.location.getX()));
+			this.location.setY(Math.round(this.location.getY()));
+			if (location.getX() == destLocation.getX() && location.getY() == destLocation.getY()) {
+				if (EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+						.getY()].entity == this) {
+					EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+							.getY()].entity = null;
+				}
+
+			}
+			if (location.getX() == originLocation.getX() && location.getY() == originLocation.getY()) {
+				if (EntitiesConst.MAP_MATRIX[(int) this.destLocation.getX()][(int) this.destLocation
+						.getY()].entity == this) {
+					EntitiesConst.MAP_MATRIX[(int) this.destLocation.getX()][(int) this.destLocation
+							.getY()].entity = null;
+				}
+			}
+			this.hitbox.update();
+		}
 	}
 
 	public void heal() {

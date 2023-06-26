@@ -38,6 +38,8 @@ public class Rock extends DecorElement {
 
 	@Override
 	public void takeDamage(Entity attacker) {
-		this.health = health - attacker.weaponDamage;
+		if(attacker instanceof Bomb) {
+			this.health = health - attacker.weaponDamage;
+		}
 	}
 }

@@ -42,48 +42,6 @@ public class Miner extends Villager {
 	}
 
 	@Override
-	public void tick(long elapsed) {
-		if (!EntitiesConst.GAME.inMenu.isPaused) {
-			this.automaton.step(this, EntitiesConst.GAME);
-			if (this.frozen) {
-				this.actionIndex += elapsed;
-				if (action == Action.M) {
-					if (this.isFinished()) {
-						this.actionIndex = 0;
-						this.frozen = false;
-						this.location.setX(destLocation.getX());
-						this.location.setY(destLocation.getY());
-						this.hitbox.update();
-						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-								.getY()].entity = null;
-					} else if (actionIndex != 0) {
-						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_VILLAGER;
-						this.location.setX(
-								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-										% EntitiesConst.MAP.lenX);
-						this.location.setY(
-								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-										% EntitiesConst.MAP.lenY);
-						this.hitbox.update();
-					}
-				}
-			} else {
-				if (this.action != Action.S) {
-					if (EntitiesConst.GAME.debug) {
-						System.out.println(this.name + " is standing");
-					}
-					this.action = Action.S;
-					this.anim.changeAction(action);
-				}
-				if (!this.dead) {
-					this.anim.changeAction(action);
-				}
-				this.anim.step(elapsed);
-			}
-		}
-	}
-
-	@Override
 	public void talks() {
 		if (Hero.coins >= 50) {
 			for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
@@ -113,28 +71,6 @@ public class Miner extends Villager {
 				this.sold = false;
 			}
 		}
-	}
-
-	@Override
-	public void Move(Aut_Direction d) {
-		float x = this.location.getX();
-		float y = this.location.getY();
-		Aut_Direction dir = d.rightDirection(this);
-		if (x > 35 && dir == Aut_Direction.E || x < 25 && dir == Aut_Direction.W || y > 35 && dir == Aut_Direction.S
-				|| y < 25 && dir == Aut_Direction.N) {
-			dir = Aut_Direction.B;
-			dir = dir.rightDirection(this);
-			super.Move(dir);
-		} else {
-			super.Move(d);
-		}
-		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
-			SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
-			if (bubble.v == this) {
-				EntitiesConst.MAP.bubbles.remove(i);
-			}
-		}
-		this.dialogIndex = 0;
 	}
 
 	@Override

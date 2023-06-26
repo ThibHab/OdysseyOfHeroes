@@ -36,6 +36,7 @@ import java.util.List;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Hero;
+import info3.game.entity.Range;
 import info3.game.graphics.GameCanvasListener;
 import info3.game.hud.Button;
 import info3.game.hud.InGameMenu;
@@ -259,6 +260,7 @@ public class CanvasListener implements GameCanvasListener {
 				Hero.bombs=100;
 				m_game.player1.healingPotions=100;
 				m_game.player2.healingPotions=100;
+				Range.firePowerUnlocked=true;
 			}
 		}
 		if (!keys.contains((Integer) e.getKeyCode())) {

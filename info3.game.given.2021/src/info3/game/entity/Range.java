@@ -56,9 +56,11 @@ public class Range extends Hero {
 	@Override
 	public void waited() {
 		this.actionIndex = 0;
-		if (EntitiesConst.GAME.player1.health <= 0) {
+		Melee otherPlayer = EntitiesConst.GAME.player1;
+		Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+		if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
 			this.healingPotions--;
-			EntitiesConst.GAME.player1.revive();
+			otherPlayer.revive();
 		}
 	}
 
