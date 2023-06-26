@@ -68,7 +68,7 @@ public abstract class Map implements IMap {
 					int tr_y = (y - 2 + tr_j + lenY) % lenY;
 					if (x != tr_x || y != tr_y) {
 						if (map[tr_x][tr_y].tpBlock != null) {
-							map[tr_x][tr_y].tpBlock = null;
+							map[tr_x][tr_y].tpBlock.del(tr);
 						}
 					}
 				}

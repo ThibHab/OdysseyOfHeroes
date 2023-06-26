@@ -492,6 +492,8 @@ public class Game {
 			EntitiesConst.GAME.map = null;
 			endGameFreeze = false;
 			m_victoiry = 0;
+			this.m_musicIndex = 0;
+			this.loadMusic();
 		}
 	}
 
