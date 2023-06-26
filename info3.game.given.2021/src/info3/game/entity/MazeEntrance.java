@@ -4,6 +4,7 @@ import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -24,7 +25,7 @@ public class MazeEntrance extends DecorElement {
 		// -----------------------------
 
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.MAZE_ENTRANCE, null, acts);
+		this.anim = new Animation(this,ImagesConst.DUNGEON_ENTRANCE_OPEN, null, acts);
 		// -----------------------------------
 
 		this.width = 1;
@@ -35,6 +36,29 @@ public class MazeEntrance extends DecorElement {
 		}
 
 		this.scale = EntitiesConst.MAZE_ENTRANCE_SCALE;
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return 0;
+		case H:
+			return 0;
+		case T:
+			return 0;
+		case D:
+			return 0;
+		case S:
+			return AnimConst.DUNGEON_ENTRANCE_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.DUNGEON_ENTRANCE_S;
 	}
 
 }

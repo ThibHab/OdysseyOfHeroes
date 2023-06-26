@@ -123,6 +123,7 @@ public class Range extends Hero {
 	public static void unlockFire() {
 		Hero.firePowerUnlocked = true;
 		ImagesConst.loadFire();
+		EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 		EntitiesConst.ENERGYBALL_SCALE = 0.8f;
 	}
 }

@@ -58,10 +58,10 @@ public abstract class Map implements IMap {
 			}
 		}
 	}
-	
+
 	public void delTree(int x, int y) {
-		if(map[x][y].entity instanceof Tree) {
-			Tree tr=(Tree) map[x][y].entity;
+		if (map[x][y].entity instanceof Tree) {
+			Tree tr = (Tree) map[x][y].entity;
 			for (int tr_j = 0; tr_j < 3; tr_j++) {
 				for (int tr_i = 0; tr_i < 3; tr_i++) {
 					int tr_x = (x - 1 + tr_i + lenX) % lenX;
@@ -73,7 +73,7 @@ public abstract class Map implements IMap {
 					}
 				}
 			}
-			map[x][y].entity=null;
+			map[x][y].entity = null;
 		}
 	}
 
@@ -103,20 +103,21 @@ public abstract class Map implements IMap {
 			}
 		}
 	}
-	boolean transparentBlockStatue(int x,int y) {
-		return ((x<=1 && y<=1) || (x>2 && y<=1) || (x>0 && x<4 && y>0 && y<4) || (x==2 && y==4)) &&!(x==2 && y==2) ;
+
+	boolean transparentBlockStatue(int x, int y) {
+		return ((x <= 1 && y <= 1) || (x > 2 && y <= 1) || (x > 0 && x < 4 && y > 0 && y < 4) || (x == 2 && y == 4))
+				&& !(x == 2 && y == 2);
 	}
-	
-	
-	void createStatue(int x,int y) {
-		Statue st=new Statue(new Location(x, y));
+
+	void createStatue(int x, int y) {
+		Statue st = new Statue(new Location(x, y));
 		map[x][y].entity = st;
 		int count = 0;
 		for (int stj = 0; stj < 5; stj++) {
 			for (int sti = 0; sti < 5; sti++) {
 				int stx = (x - 2 + sti + lenX) % lenX;
 				int sty = (y - 2 + stj + lenY) % lenY;
-				if (transparentBlockStatue(sti,stj)) {
+				if (transparentBlockStatue(sti, stj)) {
 					if (map[stx][sty].tpBlock != null) {
 						map[stx][sty].tpBlock.add(st);
 						st.liste[count] = map[stx][sty];
@@ -131,7 +132,7 @@ public abstract class Map implements IMap {
 				}
 			}
 		}
-		
+
 	}
 
 	void createRock(int x, int y) {
@@ -143,7 +144,7 @@ public abstract class Map implements IMap {
 		Bush b = new Bush(new Location(x, y));
 		map[x][y].entity = b;
 	}
-	
+
 	void createPortal(int x, int y) {
 		Portal b = new Portal(new Location(x, y));
 		map[x][y].entity = b;
@@ -153,13 +154,14 @@ public abstract class Map implements IMap {
 		Chest c = new Chest(new Location(x, y));
 		map[x][y].entity = c;
 	}
-	
-	public void createBomb(int x,int y,Bomb b) {
-		if(map[x][y].entity==null) {
-			this.map[x][y].entity= b;
+
+	public void createBomb(int x, int y, Bomb b) {
+		if (map[x][y].entity == null) {
+			this.map[x][y].entity = b;
 			Hero.bombs--;
 		}
 	}
+
 	public float diffX(float a, float b) {
 		float tmp = Math.abs(a - b);
 		float tmp2 = Math.min(a, b) + lenX - Math.max(a, b);
@@ -216,17 +218,17 @@ public abstract class Map implements IMap {
 		if (player.action != Action.D) {
 			player.action = Action.S;
 		}
-		
+
 		player.location.setX(x);
 		player.location.setY(y);
 		player.hitbox.update();
 		map[x][y].entity = player;
-		
+
 		if (player.action != Action.D) {
 			player.frozen = false;
 		}
 	}
-	
+
 	public void setDungeonEntrance(int x, int y) {
 		Location location = new Location(x, y);
 		if (map[x][y].entity != null) {
@@ -236,28 +238,28 @@ public abstract class Map implements IMap {
 				map[x][y].entity = null;
 			}
 		}
-		
+
 		map[x][y].entity = new DungeonEntrance(location);
-		
+
 		if (map[x][y + 1].entity instanceof Tree) {
 			this.delTree(x, y + 1);
 		} else {
 			map[x][y + 1].entity = null;
 		}
-		
+
 		if (map[x - 1][y + 1].entity instanceof Tree) {
 			this.delTree(x - 1, y + 1);
 		} else {
 			map[x - 1][y + 1].entity = null;
 		}
-		
+
 		if (map[x + 1][y + 1].entity instanceof Tree) {
 			this.delTree(x + 1, y + 1);
 		} else {
 			map[x + 1][y + 1].entity = null;
 		}
 	}
-	
+
 	public void setMazeEntrance(int x, int y) {
 		Location location = new Location(x, y);
 		if (map[x][y].entity != null) {
@@ -267,21 +269,21 @@ public abstract class Map implements IMap {
 				map[x][y].entity = null;
 			}
 		}
-		
+
 		map[x][y].entity = new MazeEntrance(location);
-		
+
 		if (map[x][y + 1].entity instanceof Tree) {
 			this.delTree(x, y + 1);
 		} else {
 			map[x][y + 1].entity = null;
 		}
-		
+
 		if (map[x - 1][y + 1].entity instanceof Tree) {
 			this.delTree(x - 1, y + 1);
 		} else {
 			map[x - 1][y + 1].entity = null;
 		}
-		
+
 		if (map[x + 1][y + 1].entity instanceof Tree) {
 			this.delTree(x + 1, y + 1);
 		} else {
@@ -348,7 +350,7 @@ public abstract class Map implements IMap {
 								this.createRock(i, j);
 							} else if (ent.equals("Tree")) {
 								createTree(i, j);
-							} else if(ent.equals("Portal")) {
+							} else if (ent.equals("Portal")) {
 								createPortal(i, j);
 							}
 						}
@@ -440,7 +442,7 @@ public abstract class Map implements IMap {
 		setDisqueBackground(x, y, radius, "Rock");
 		setCircleBackground(x, y, radius - 1, "Water");
 		setCircleBackground(x, y, radius + 1, "Dirt");
-		createStatue(x,y);
+		createStatue(x, y);
 		WorldMap.saveTile1 = new SaveTile(new Location(x - radius - 1, y));
 		map[x - radius - 1][y] = WorldMap.saveTile1;
 		WorldMap.saveTile2 = new SaveTile(new Location(x + radius + 1, y));
@@ -499,7 +501,7 @@ public abstract class Map implements IMap {
 
 	public void setForest(int x, int y, int radius, int seed) {
 		createRock(x, y + (radius / 2));
-		rockLoc = new Location(x, y + (radius/2));
+		rockLoc = new Location(x, y + (radius / 2));
 		setDisqueBackground(x + (radius / 2 - 3), y - (radius / 2 - 6), 3, "Water");
 		setDisqueBackground(x + (radius / 2 + 2), y - (radius / 2 - 10), 4, "Water");
 		setSurfaceBackground(x + (radius / 2 - 5), y - (radius / 2 - 8), 5, 4, "Rock");
@@ -519,12 +521,12 @@ public abstract class Map implements IMap {
 		Entity tab[] = new Entity[tabSize];
 		int indexTab = 0;
 		boolean alreadyTicked = false;
-		if(this instanceof DungeonMap) {
-			DungeonMap dmap=(DungeonMap)this;
+		if (this instanceof DungeonMap) {
+			DungeonMap dmap = (DungeonMap) this;
 			dmap.tick(elapsed);
 		}
-		if(this instanceof MazeMap) {
-			MazeMap mmap=(MazeMap)this;
+		if (this instanceof MazeMap) {
+			MazeMap mmap = (MazeMap) this;
 			mmap.tick(elapsed);
 		}
 
