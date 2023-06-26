@@ -25,6 +25,7 @@ public class Bomb extends Entity {
 		this.name = "Bomb";
 		this.location = loc;
 		this.category = Aut_Category.D;
+		this.weaponDamage = 5;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -71,7 +72,7 @@ public class Bomb extends Entity {
 				Entity entity = EntitiesConst.MAP_MATRIX[(int) (this.location.getX() - 2 + i + map.lenX)
 						% map.lenX][(int) (this.location.getY() - 2 + j + map.lenY) % map.lenY].entity;
 				if (entity != null && circleIntersect(this.location, entity, EntitiesConst.BOMB_RADIUS) && (entity instanceof Mob || entity instanceof Hero || entity.category == Aut_Category.O || entity instanceof Bush)) {
-					entity.takeDamage(this.owner);
+					entity.takeDamage(this);
 				}
 			}
 		}
