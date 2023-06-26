@@ -34,7 +34,7 @@ public abstract class Hero extends Entity {
 		Hero.experience = EntitiesConst.EXPERIENCE;
 		Hero.firePowerUnlocked = false;
 		Hero.bushesCut = 0;
-		Hero.bombs = 1;
+		Hero.bombs = 0;
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
 	
