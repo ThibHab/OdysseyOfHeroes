@@ -273,7 +273,7 @@ public abstract class Hero extends Entity {
 	
 	public static void restore(int lvl, int xp, int coins, int bombs, int bushes) {
 		Hero.coins += coins;
-		int i = 0;
+		int i = 1;
 		while (i < lvl) {
 			Hero.levelUp *= 2;
 			i++;
