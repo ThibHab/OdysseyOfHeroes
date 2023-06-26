@@ -230,9 +230,9 @@ public abstract class Hero extends Entity {
 //			th.printStackTrace(System.err);
 //			System.exit(-1);
 //		}
-		if (this.health <= 0) {
-			this.die();
-		}
+//		if (this.health <= 0) {
+//			this.die();
+//		}
 	}
 	
 	@Override

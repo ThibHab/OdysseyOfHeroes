@@ -25,7 +25,7 @@ public class EntitiesConst {
 	public static final int MOUVEMENT_INDEX_MAX_MOB = 1000;
 	public static final int MOUVEMENT_INDEX_MAX_MOB_PROJ = 200;
 	public static final int HIT_INDEX_MAX = 300;
-	public static final int STAND_INDEX_MAX = 500;
+	public static final int STAND_INDEX_MAX = 300;
 	public static final int HIT_INDEX_MAX_MOB = 300;
 	public static final int TOUCHED_INDEX_MAX = 200;
 	public static final int DIE_INDEX_MAX = 500;
@@ -122,6 +122,10 @@ public class EntitiesConst {
 	public static final float DUNGEON_ENTRANCE_SCALE = 1.0f;
 	public static final int DUNGEON_ENTRANCE_X_POS = 70;
 	public static final int DUNGEON_ENTRANCE_Y_POS = 30;
+	
+	// END GAME CONSTANTS
+	public static final int SPRING_X_POS = 30;
+	public static final int SPRING_Y_POS = 43;
 	
 	// MAZE ENTRANCE CONSTANTS
 	public static final float MAZE_ENTRANCE_SCALE = 1.0f;

@@ -9,5 +9,5 @@ public class MapConstants {
 	public static final int MAZE_MAP_SIZE = 20;
 	
 	// WORLD MAP CONSTANTS
-	public static Map WORLD_MAP = new WorldMap(100, 100, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+	public static Map WORLD_MAP;
 }

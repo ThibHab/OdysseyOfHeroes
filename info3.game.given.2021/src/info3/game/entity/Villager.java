@@ -35,7 +35,7 @@ public abstract class Villager extends NPC {
 
 	@Override
 	public void tick(long elapsed) {
-		if (!EntitiesConst.GAME.inMenu.isPaused) {
+		if (!EntitiesConst.GAME.inMenu.isPaused && !EntitiesConst.GAME.endGameFreeze) {
 			if (currentState.name.equals("")) {
 				this.die();
 				this.dead = true;

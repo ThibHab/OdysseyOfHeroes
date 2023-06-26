@@ -66,10 +66,8 @@ public class Boss extends Mob {
 		int bossPosX = (int) this.location.getX();
 		Random random = new Random();
 		for (int i = 0; i < EntitiesConst.BOSS_MOB_SPAWN_NUMBER; i++) {
-			float randomPosX = random.nextInt(19);
-			randomPosX += 3;
-			float randomPosY = random.nextInt(12);
-			randomPosY++;
+			float randomPosX = random.nextInt(18)+3;
+			float randomPosY = random.nextInt(12)+1;
 			Location mobLocation = new Location(randomPosX, randomPosY);
 			while(!this.checkEntitiesAround(mobLocation)) {
 				randomPosX = random.nextInt(19);
