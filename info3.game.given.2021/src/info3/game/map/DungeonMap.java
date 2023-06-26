@@ -95,6 +95,7 @@ public class DungeonMap extends Map {
 				if (transi <= 0) {
 					finish = true;
 					this.lit = true;
+					EntitiesConst.MAP_MATRIX[20][6].entity.frozen = false;	// unfreeze boss
 				}
 			}
 		}

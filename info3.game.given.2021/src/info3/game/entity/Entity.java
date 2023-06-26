@@ -234,7 +234,7 @@ public abstract class Entity implements IEntity {
 
 		Location location = this.frontTileLocation(d);
 		Tile tile = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()];
-		if (tile.entity instanceof Hero || tile.entity instanceof Villager) {
+		if (tile.entity instanceof Hero || tile.entity instanceof Villager || !tile.walkable) {
 			return;
 		}
 		if (location.getX() == this.location.getX() && location.getY() == this.location.getY())
@@ -266,7 +266,7 @@ public abstract class Entity implements IEntity {
 		case P:
 			if (id == 0) {
 				Random randomP = new Random();
-				id = randomP.nextInt(3) + 1;
+				id = randomP.nextInt(2) + 1;
 			}
 			switch (id) {
 			case 1:
@@ -276,10 +276,6 @@ public abstract class Entity implements IEntity {
 			case 2:
 				HealingPotion hp = new HealingPotion(location);
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = hp;
-				break;
-			case 3:
-				StrengthPotion sp = new StrengthPotion(location);
-				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = sp;
 				break;
 			}
 

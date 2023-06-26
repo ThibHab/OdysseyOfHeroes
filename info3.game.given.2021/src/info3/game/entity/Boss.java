@@ -27,7 +27,7 @@ public class Boss extends Mob {
 		this.weaponDamage = EntitiesConst.BOSS_BASE_DAMAGE;
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
 		this.direction = Aut_Direction.W;
-		this.frozen = false;
+		this.frozen = true;
 		this.range = 18;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
