@@ -20,7 +20,8 @@ public class EntitiesConst {
 	
 	public static final int MOUVEMENT_INDEX_MAX = 200;
 	public static final int MOUVEMENT_INDEX_MAX_PROJ = 100;
-	public static final int MOUVEMENT_INDEX_MAX_VILLAGER = 1500;
+	public static final int MOUVEMENT_INDEX_MAX_VILLAGER = 1200;
+	public static final int MOUVEMENT_INDEX_MAX_HERMIT = 1800;
 	public static final int MOUVEMENT_INDEX_MAX_MOB = 1000;
 	public static final int MOUVEMENT_INDEX_MAX_MOB_PROJ = 200;
 	public static final int HIT_INDEX_MAX = 300;
@@ -47,6 +48,7 @@ public class EntitiesConst {
 	// BOMB CONSTANTS
 	public static final int BOMB_TIMER = 3000;
 	public static final float BOMB_RADIUS =2f;
+	public static final float BOMB_SCALE =0.6f;
 	
 	// SKELETON CONSTANTS
 	public static final int SKELETON_HEALTH = 8;
@@ -54,6 +56,7 @@ public class EntitiesConst {
 	public static final int SKELETON_RANGE = 3;
 	public static final int SKELETON_SPEED = 2;
 	public static final float SKELETON_SCALE = 0.9f;
+	public static int SKELETON_DETECTION = 5;
 	
 	// GOBLIN CONSTANTS
 	public static final int GOBLIN_HEALTH = 12;
@@ -61,12 +64,13 @@ public class EntitiesConst {
 	public static final int GOBLINE_RANGE = 2;
 	public static final int GOBLIN_SPEED = 6;
 	public static final float GOBLIN_SCALE = 1.2f;
+	public static int GOBLIN_DETECTION = 5;
 	
 	// BOSS CONSTANTS
-	public static final int BOSS_HEALTH = 100;
+	public static final int BOSS_HEALTH = 500;
 	public static final int BOSS_BASE_DAMAGE = 4;
 	public static final int BOSS_FLAME_ATTACK_DAMAGE = 100;
-	public static final int BOSS_RANGE = 2;
+	public static final int BOSS_RANGE = 18;
 	public static final int BOSS_SPEED = 2;
 	public static final int BOSS_MOB_SPAWN_RANGE = 1;
 	public static final int BOSS_MOB_SPAWN_NUMBER = 3;
@@ -106,7 +110,9 @@ public class EntitiesConst {
 	
 	// SPEECH CONSTANTS
 	public static final float SPEECHBUBBLE_SCALE = 1.0f;
-	public static final float VILLAGER_SCALE = 1.0f;
+	public static final float VILLAGERGIRL_SCALE = 1.2f;
+	public static final float MINER_SCALE = 1.3f;
+	public static final float HERMIT_SCALE = 1.0f;
 	
 	// STATUE CONSTANTS
 	public static final float STATUE_SCALE =4f;

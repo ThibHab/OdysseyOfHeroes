@@ -17,14 +17,14 @@ public class Menu extends Button {
 	public Button[] buttons;
 	boolean isStarted;
 	public int nbChild;
-	Image imgBackground; // TODO trouver une image pour le menu
+	Image imgBackground;
 	public Credits credits;
 
 	public Menu(String name) {
 		super(name);
 		isStarted = false;
 		nbChild = 0;
-		buttons = new Button[3];
+		buttons = new Button[4];
 		m_bgColor = Color.blue;
 	}
 
@@ -40,7 +40,7 @@ public class Menu extends Button {
 		m_name = "Menu";
 		isStarted = false;
 		nbChild = 0;
-		buttons = new Button[3];
+		buttons = new Button[4];
 		m_bgColor = Color.blue;
 		imgBackground = ImagesConst.MENU_PICTURE;
 	}
@@ -67,25 +67,28 @@ public class Menu extends Button {
 		Button resume = new Button(this, col);
 		Button newGame = new Button(this, Color.red);
 		Button creditPage = new Button(this, Color.red);
+		Button quit = new Button(this, Color.red);
 
 		buttons[0] = resume;
 		buttons[1] = newGame;
 		buttons[2] = creditPage;
-
-		nbChild = 3;
+		buttons[3] = quit;
+		
+		nbChild = 4;
 
 		resume.setName("Reprendre la partie");
 		newGame.setName("Nouvelle partie");
 		creditPage.setName("Credits");
+		quit.setName("Quitter");
 
-		resume.setBounds(m_width / 3, m_height - 3 * (m_height / 5), m_width / 3, 50);
-		newGame.setBounds(m_width / 3, m_height - 2 * (m_height / 5), m_width / 3, 50);
-		creditPage.setBounds(m_width / 3, m_height - (m_height / 5), m_width / 3, 50);
+		resume.setBounds(m_width / 3, m_height - 4 * (m_height / 6), m_width / 3, 50);
+		newGame.setBounds(m_width / 3, m_height - 3 * (m_height / 6), m_width / 3, 50);
+		creditPage.setBounds(m_width / 3, m_height - 2 * (m_height / 6), m_width / 3, 50);
+		quit.setBounds(m_width / 3, m_height - (m_height / 6), m_width / 3, 50);
 
 		credits = new Credits(m_frame);
 		credits.setCreditSize();
 		credits.setCredits();
-
 	}
 
 	public boolean getStarted() {
