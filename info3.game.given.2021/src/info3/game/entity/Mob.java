@@ -11,6 +11,8 @@ import info3.game.sound.RandomFileInputStream;
 public abstract class Mob extends Entity {
 	public Mob() {
 		super();
+		this.attackSpeed = 1000;
+		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
 	
 	
@@ -23,6 +25,13 @@ public abstract class Mob extends Entity {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 			}
 			this.automaton.step(this, EntitiesConst.GAME);
+			if (this.hitFrozen) {
+				this.hitIndex += elapsed;
+				if (this.hitIndex > this.attackSpeed) {
+					this.hitFrozen = false;
+					this.hitIndex = 0;
+				}
+			}
 
 			if (this.frozen) {
 				this.actionIndex += elapsed;
@@ -50,9 +59,6 @@ public abstract class Mob extends Entity {
 						this.frozen = false;
 						this.actionIndex = 0;
 					}
-					if (this.actionIndex >= this.attackSpeed) {
-						this.hitFrozen = false;
-					}
 				} else if (action == Action.I) {
 					if (this.isFinished()) {
 						this.frozen = false;
@@ -63,14 +69,14 @@ public abstract class Mob extends Entity {
 						this.frozen = false;
 						this.actionIndex = 0;
 					}
-				} else if (timer != Integer.MIN_VALUE) {
+				}else  if (timer != Integer.MIN_VALUE) {
 					this.timer -= elapsed;
 					if (timer < 0) {
 						this.frozen = false;
 						timer = Integer.MIN_VALUE;
 						waited();
 					}
-				}
+				} 
 			} else {
 				if (this.action != Action.S) {
 					if (EntitiesConst.GAME.debug) {
@@ -134,13 +140,13 @@ public abstract class Mob extends Entity {
 	@Override
 	public void takeDamage(Entity attacker) {
 		super.takeDamage(attacker);
-		try {
-			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
-			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
-		} catch (Throwable th) {
-			th.printStackTrace(System.err);
-			System.exit(-1);
-		}
+//		try {
+//			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
+//			RandomFileInputStream fis = new RandomFileInputStream(file);
+//			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
+//		} catch (Throwable th) {
+//			th.printStackTrace(System.err);
+//			System.exit(-1);
+//		}
 	}
 }

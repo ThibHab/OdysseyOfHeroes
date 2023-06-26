@@ -63,7 +63,7 @@ Bush(Existing){
  	* ()
  }
  
- EnergyBall(Forward){
+ Projectile(Forward){
    *(Forward)
    | True ? Move : (Forward)
    
@@ -103,7 +103,7 @@ Goblin(Search) {
    * (Search)
    | !GotPower ? Egg(H,P,1) : ()
    | Cell(F,P) ? Pick : (Search)
-   | Cell(@,F,3) ? Hit(N) : (Search)
+   | Cell(@,N,3) ? Hit(N) : (Search)
    | Cell(@,S,3) ? Hit(S) : (Search)
    | Cell(@,E,3) ? Hit(E) : (Search)
    | Cell(@,W,3) ? Hit(W) : (Search)
@@ -111,6 +111,7 @@ Goblin(Search) {
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+   | True ? 50% Move(F) / 25% Move(R) / 25% Move(L) : (Search)
    
    * ()
  }
@@ -184,7 +185,7 @@ Goblin(Search) {
   	| True ? 25% Wait(5000) / 25% Wait(10000) / 25% Wait(15000) / 25% Wait(20000) : (Drop)
   	
   	* (Drop)
-  	| True ? 25% Egg(F,A,1) / 25% Egg(R,A,1) / 25% Egg(L,A,1) / 25% Egg(B,A,1) : (Waiting) 
+  	| True ? 25% Egg(F,A) / 25% Egg(R,A) / 25% Egg(L,A) / 25% Egg(B,A) : (Waiting) 
   
   }
   
