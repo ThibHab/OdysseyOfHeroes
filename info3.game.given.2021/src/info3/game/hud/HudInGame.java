@@ -174,6 +174,22 @@ public class HudInGame {
 		g.setColor(Color.red);
 		g.drawString(deathMessage, (width / 2) - (textWidth / 2), (height / 2) + (textHeight) / 2);
 	}
+		
+	public void showWinMessage(Graphics g, int width, int height) {
+		String winMessage = "Victoire !";
+		
+		Font f = new Font(null, 1, 100);
+		g.setFont(f);
+		
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(winMessage, g);
+		int textWidth = (int) rec.getWidth();
+		int textHeight = (int) rec.getHeight();
+		
+		g.setColor(new Color(0,0,0,175));
+		g.fillRect(0, (height / 3), width, (height / 3));
+		g.setColor(Color.red);
+		g.drawString(winMessage, (width / 2) - (textWidth / 2), (height / 2) + (textHeight) / 2);
+	}
 	
 	public void setDungeonEntrance(Graphics g, int width, int height) {
 		String cantEnter = "Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu !";
@@ -299,6 +315,10 @@ public class HudInGame {
 		if (Hero.tryToEnterDungeon) {
 			setDungeonEntrance(g, width, height);
 		}
+		
+		if (EntitiesConst.GAME.victory_message) {
+			showWinMessage(g, width, height);
+		}
 
 		if (EntitiesConst.MAP instanceof DungeonMap) {
 			if (!DungeonMap.finish) {
@@ -308,6 +328,7 @@ public class HudInGame {
 				setTorchQuest(g, width, height / 3);
 			}
 			else {
+				g.setFont(f);
 				setBossLifeBar(g, width, height);
 			}
 		}
