@@ -60,7 +60,7 @@ public class EntitiesConst {
 	public static final int GOBLIN_DAMAGE = 1;
 	public static final int GOBLINE_RANGE = 2;
 	public static final int GOBLIN_SPEED = 6;
-	public static final float GOBLIN_SCALE = 1.3f;
+	public static final float GOBLIN_SCALE = 1.2f;
 	
 	// BOSS CONSTANTS
 	public static final int BOSS_HEALTH = 100;

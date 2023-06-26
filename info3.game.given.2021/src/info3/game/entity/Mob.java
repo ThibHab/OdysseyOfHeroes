@@ -12,6 +12,7 @@ public abstract class Mob extends Entity {
 	public Mob() {
 		super();
 		this.attackSpeed = 1000;
+		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
 	
 	
@@ -147,25 +148,5 @@ public abstract class Mob extends Entity {
 //			th.printStackTrace(System.err);
 //			System.exit(-1);
 //		}
-	}
-	
-	@Override
-	public boolean isFinished() {
-		switch (this.action) {
-		case S:
-			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
-		case M:
-			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX_MOB;
-		case H:
-			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX_MOB;
-		case D:
-			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
-		case T:
-			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
-		case I:
-			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
-		default:
-			return true;
-		}
 	}
 }

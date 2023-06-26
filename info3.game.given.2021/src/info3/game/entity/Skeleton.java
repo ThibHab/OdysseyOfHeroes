@@ -77,8 +77,4 @@ public class Skeleton extends Mob {
 	public int totSrpitePerDir() {
 		return AnimConst.SKELETON_TOT;
 	}
-	
-	public void attackEffect(Location t){
-		new SpearEffect(t, this.direction);
-	}
 }

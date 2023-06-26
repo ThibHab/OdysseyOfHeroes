@@ -38,7 +38,6 @@ public class Melee extends Hero {
 				Aut_Direction.W };
 		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
 		this.anim = new Animation(this, ImagesConst.MELEE, dirs, acts);
-		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
 
 	@Override

@@ -185,7 +185,7 @@ Goblin(Search) {
   	| True ? 25% Wait(5000) / 25% Wait(10000) / 25% Wait(15000) / 25% Wait(20000) : (Drop)
   	
   	* (Drop)
-  	| True ? Egg(F,A,2) / Egg(R,A,2) / Egg(L,A,2) / Egg(B,A,2) : (Waiting) 
+  	| True ? 25% Egg(F,A) / 25% Egg(R,A) / 25% Egg(L,A) / 25% Egg(B,A) : (Waiting) 
   
   }
   

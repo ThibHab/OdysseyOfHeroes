@@ -61,7 +61,6 @@ public class Projectile extends Entity {
 		this.location.setX(location.getX());
 		this.location.setY(location.getY());
 
-		this.speed = 2;
 		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
 		this.scale = EntitiesConst.ENERGYBALL_SCALE;
 		EntitiesConst.MAP.projectiles.add(this);
