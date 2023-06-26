@@ -191,7 +191,7 @@ Goblin(Search) {
   
   Boss(Phase1){
 	*(Phase1)
-	| !GotPower(50) ? : (Phase2)
+	| !GotPower(470) ? : (Phase2)
 	| True ? Hit : (Wait1)
 	
 	* (Wait1)
@@ -199,14 +199,14 @@ Goblin(Search) {
 	
 	* (Phase2)
 	| !GotPower(20) ? : (Phase3)
-	| True ? 50% Hit / 50% Pop : (Wait2)
+	| True ? Pop : (Wait2)
 	
 	* (Wait2)
 	| True ? Wait(5000) : (Phase2)
 	
 	* (Phase3)
 	| !GotPower ? : ()
-	| True ? 35% Hit / 35% Pop / 30% Wizz : (Wait3)
+	| True ? 30% Hit / 35% Pop / 35% Wizz : (Wait3)
 	
 	* (Wait3)
 	| True ? Wait(10000) : (Phase3)

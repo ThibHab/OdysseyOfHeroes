@@ -25,29 +25,30 @@ public class Portal extends DecorElement {
 
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this, ImagesConst.PORTAL, null, acts);
+		this.action = Action.S;
 	}
-//	
-//	@Override
-//	public int getNbActionSprite(Action a) {
-//		switch (a) {
-//		case M:
-//			return 0;
-//		case H:
-//			return 0;
-//		case T:
-//			return 0;
-//		case D:
-//			return 0;
-//		case S:
-//			return AnimConst.PORTAL_S;
-//		default:
-//			return 0;
-//		}
-//	}
-//
-//	@Override
-//	public int totSrpitePerDir() {
-//		return AnimConst.PORTAL_S;
-//	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return 0;
+		case H:
+			return 0;
+		case T:
+			return 0;
+		case D:
+			return 0;
+		case S:
+			return AnimConst.PORTAL_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.PORTAL_S;
+	}
 
 }

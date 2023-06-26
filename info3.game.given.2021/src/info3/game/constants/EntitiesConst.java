@@ -54,6 +54,7 @@ public class EntitiesConst {
 	public static final int SKELETON_RANGE = 3;
 	public static final int SKELETON_SPEED = 2;
 	public static final float SKELETON_SCALE = 0.9f;
+	public static int SKELETON_DETECTION = 5;
 	
 	// GOBLIN CONSTANTS
 	public static final int GOBLIN_HEALTH = 12;
@@ -61,12 +62,13 @@ public class EntitiesConst {
 	public static final int GOBLINE_RANGE = 2;
 	public static final int GOBLIN_SPEED = 6;
 	public static final float GOBLIN_SCALE = 1.2f;
+	public static int GOBLIN_DETECTION = 5;
 	
 	// BOSS CONSTANTS
 	public static final int BOSS_HEALTH = 500;
 	public static final int BOSS_BASE_DAMAGE = 4;
 	public static final int BOSS_FLAME_ATTACK_DAMAGE = 100;
-	public static final int BOSS_RANGE = 2;
+	public static final int BOSS_RANGE = 18;
 	public static final int BOSS_SPEED = 2;
 	public static final int BOSS_MOB_SPAWN_RANGE = 1;
 	public static final int BOSS_MOB_SPAWN_NUMBER = 3;
