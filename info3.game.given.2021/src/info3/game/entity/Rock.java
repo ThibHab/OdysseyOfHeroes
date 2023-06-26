@@ -10,7 +10,7 @@ import info3.game.constants.ImagesConst;
 public class Rock extends DecorElement {
 	public Rock(Location l) {
 		super();
-		this.name = "BombRock";
+		this.name = "Rock";
 		this.location = l;
 		this.hitbox.update();
 		

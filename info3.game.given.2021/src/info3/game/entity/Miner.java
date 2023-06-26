@@ -23,7 +23,7 @@ public class Miner extends Villager {
 		this.sellingDialogs = new LinkedList<>();
 		this.sellingDialogsIndex = 0;
 		this.sellingDialog = "50 pièces d'or pour une bombe, \ncrois-moi c'est une bonne affaire ! \nTu peux même faire exploser des \nrochers avec. Fais en bon usage !";
-		this.name = "Villager";
+		this.name = "Miner";
 		this.dialogs.add("Salut ! Je suis Billy-Boy, fils \nde mineur.");
 		this.dialogs.add(
 				"Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé, \nmais surtout ne dis \nrien à mon père...");

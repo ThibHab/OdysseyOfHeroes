@@ -1,4 +1,4 @@
-Player2 (Stand) {
+P2 (Stand) {
   * (Stand)
   | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
@@ -14,7 +14,7 @@ Player2 (Stand) {
   *()
  }
 
-Player1 (Stand) {
+P1 (Stand) {
   * (Stand)
   | !GotPower ? : ()
   | Cell(F,P) ? Pick(F) : (Stand)
@@ -38,20 +38,10 @@ Bush(Existing){
   | True ? Wait(60000) : (Existing)
  } 
  
- Tree(Existing){
+ Nothing (Existing){
   *(Existing)
   | True ? : (Existing)
   } 
-  
- House(Existing){
- 	*(Existing)
- 	| True ? : (Existing)
- }
- 
-  Rock(Existing){
- 	*(Existing)
- 	| True ? : (Existing)
- }
  
  Bomb(Existing){
  	*(Existing)
@@ -70,19 +60,7 @@ Bush(Existing){
    *()
  }
  
- Ennemy(DontStart) {
-   * (DontStart)
-   | Key(s) ? : (Search)
-   | True ? : (DontStart)
-   
-   * (Search)
-   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
-   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
-   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
-   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
- }
- 
-Goblin(Search) {
+MeleeEnnemy(Search) {
    * (Search)
    | !GotPower ? Egg(H,P,1) : ()
    | Cell(F,P) ? Pick : (Search)
@@ -99,7 +77,7 @@ Goblin(Search) {
    * ()
  }
  
- Skeleton(Search) {
+RangeEnnemy(Search) {
    * (Search)
    | !GotPower ? Egg(H,P,1) : ()
    | Cell(F,P) ? Pick : (Search)
@@ -116,39 +94,19 @@ Goblin(Search) {
    * ()
  }
  
- Coin(Exists) {
-   *(Exists)
-   | True ? : (Exists) 
- }
- 
- Chest(Existing) {
-   *(Exists)
-   | True ? : (Exists) 
- }
- 
-  CaveWall(Existing){
-	*(Existing)
-	| True ? : (Existing)
-  }
-  
-  Statue(Existing){
-	*(Existing)
-	| True ? : (Existing)
-  } 
-  
   Villager (Walking) {
   * (Walking)
   | Cell(@, B) ? Turn(B) : (Standing)
   | Cell(@, L) ? Turn(L) : (Standing)
   | Cell(@, R) ? Turn(R) : (Standing)
   | Cell(@, F) ? : (Standing)
-  | True ? 80% Move(F) / 10% Move(L) / 10% Move(R) : (Walking)
+  | True ? 60% Move(F) / 20% Move(L) / 20% Move(R): (Walking)
   
   * (Standing)
   | !Cell(@, F) ? : (Walking)
   }
   
-  BombRock(Existing){
+  Rock(Existing){
   *(Existing)
   | !GotPower ? : ()
   
@@ -162,23 +120,21 @@ Goblin(Search) {
   * (On)
   }
   
-  Hermit (Thinking) {
-  * (Thinking)
+  Hermit (Turning) {
+  * (Turning)
+  | Cell(@, B) ? Turn(B) : (Standing)
+  | Cell(@, L) ? Turn(L) : (Standing)
+  | Cell(@, R) ? Turn(R) : (Standing)
+  | Cell(@, F) ? : (Standing)
   | Cell(R, V) ? Turn(R) : (Turned)
   
-  * (Turned)
-  | Cell(F, V) ? Move(F) : (Thinking)
+  * (Waiting)
+  | True ? Wait(200) : (Moving)
+  
+  * (Moving)
+  | Cell(F, V) ? Move(F) : (Turning)
   }
   
-  DungeonEntrance(Existing){
-	*(Existing)
-	| True ? : (Existing)
-  }
-  
-  MazeEntrance(Existing){
-	*(Existing)
-	| True ? : (Existing)
-  }
   
   Portal (Waiting) {
   	* (Waiting)
