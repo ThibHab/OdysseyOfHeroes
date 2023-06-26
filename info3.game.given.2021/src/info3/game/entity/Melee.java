@@ -61,9 +61,11 @@ public class Melee extends Hero {
 	@Override
 	public void waited() {
 		this.actionIndex = 0;
-		if (EntitiesConst.GAME.player2.health <= 0) {
+		Range otherPlayer = EntitiesConst.GAME.player2;
+		Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+		if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
 			this.healingPotions--;
-			EntitiesConst.GAME.player2.revive();
+			otherPlayer.revive();
 		}
 	}
 

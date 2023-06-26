@@ -95,7 +95,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
+	public boolean debug = true;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -317,7 +317,9 @@ public class Game {
 				((Map) map).tickEntities((int) render.camera.getX(), (int) render.camera.getY(), elapsed);
 				((Map) map).tickEffects(elapsed);
 
-				if (player1.action == Action.D && player2.action == Action.D) {
+				if ((player1.action == Action.D && player2.action == Action.D) || EntitiesConst.MAP instanceof MazeMap
+						&& ((player1.action == Action.D && player2.healingPotions <= 0)
+								|| (player2.action == Action.D && player1.healingPotions <= 0))) {
 					gameOVER();
 				}
 				m_deadTextElapsed += elapsed;
@@ -385,21 +387,24 @@ public class Game {
 				this.setupGame(null);
 			else
 				removePlayer();
-				this.setupGame(f);
+			this.setupGame(f);
 		}
 		if (m instanceof DungeonMap || m instanceof MazeMap) {
-			Hero.bombs=0;
-			Hero.coins=0;
-			player1.healingPotions=0;
-			player2.healingPotions=0;
+			Hero.bombs = 0;
+			Hero.coins = 0;
+			player1.healingPotions = 0;
+			player2.healingPotions = 0;
 			player1.revive();
 			player2.revive();
-			player1.direction=Aut_Direction.S;
-			player2.direction=Aut_Direction.S;
+			player1.direction = Aut_Direction.S;
+			player2.direction = Aut_Direction.S;
 			this.openMap(WORLD);
+			if (m instanceof DungeonMap) {
+				DungeonMap.finish=false;
+			}
 			paintDead = true;
 			m_deadTextElapsed = 0;
-			
+
 		}
 	}
 
@@ -419,18 +424,20 @@ public class Game {
 					+ player2.health + "/" + player2.maxHealth + "/" + player2.healingPotions + "/"
 					+ player2.strengthPotions + "/" + player2.direction + "/" + player2.action + "\n";
 
-			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "/" + Hero.bombs + "/" + Hero.bushesCut + "\n";
-			
+			data += Hero.level + "/" + Hero.experience + "/" + Hero.coins + "/" + Hero.bombs + "/" + Hero.bushesCut
+					+ "\n";
+
 			Location rock = EntitiesConst.MAP.rockLoc;
-			boolean forestUnlocked = !(EntitiesConst.MAP_MATRIX[(int) rock.getX()][(int) rock.getY()].entity instanceof Rock);
+			boolean forestUnlocked = !(EntitiesConst.MAP_MATRIX[(int) rock.getX()][(int) rock
+					.getY()].entity instanceof Rock);
 			boolean firePower = Hero.firePowerUnlocked;
-			
+
 			data += forestUnlocked + "/" + firePower + "\n";
-			
+
 			data += VillagerGirl.started + "/" + VillagerGirl.completed + "\n";
-			
+
 			data += Miner.sold;
-			
+
 			byte[] buffer = data.getBytes();
 			try {
 				save.seek(0);
@@ -476,8 +483,9 @@ public class Game {
 		player2.saveRestore(loc2, p2[2], Integer.valueOf(p2[3]), Integer.valueOf(p2[4]), Integer.valueOf(p2[5]),
 				Integer.valueOf(p2[6]), dir2);
 
-		Hero.restore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]), Integer.valueOf(hero[3]), Integer.valueOf(hero[4]));
-		
+		Hero.restore(Integer.valueOf(hero[0]), Integer.valueOf(hero[1]), Integer.valueOf(hero[2]),
+				Integer.valueOf(hero[3]), Integer.valueOf(hero[4]));
+
 		boolean forest = Boolean.valueOf(game[0]);
 		boolean fire = Boolean.valueOf(game[1]);
 		if (forest) {
@@ -487,12 +495,12 @@ public class Game {
 		if (fire) {
 			Range.unlockFire();
 		}
-		
+
 		VillagerGirl.started = Boolean.valueOf(villagerGirl[0]);
 		VillagerGirl.completed = Boolean.valueOf(villagerGirl[1]);
-		
+
 		Miner.sold = Boolean.valueOf(miner[0]);
-		
+
 		WorldMap.saveTile1.changeTile(true);
 		WorldMap.saveTile2.changeTile(true);
 	}
@@ -515,29 +523,29 @@ public class Game {
 		}
 		EntitiesConst.MAP.setPlayer(x, y, EntitiesConst.GAME.player2);
 	}
-	
+
 	void removePlayer() {
 		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.location
-		         				.getX()][(int) EntitiesConst.GAME.player1.location.getY()].entity = null;
-		         		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
-		         				.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity instanceof Hero) {
-		         			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
-		         					.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity = null;
-		         		}
-		         		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.location
-		         				.getX()][(int) EntitiesConst.GAME.player2.location.getY()].entity = null;
-		         		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
-		         				.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity instanceof Hero) {
-		         			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
-		         					.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity = null;
-		         		}
+				.getX()][(int) EntitiesConst.GAME.player1.location.getY()].entity = null;
+		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+				.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity instanceof Hero) {
+			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player1.destLocation
+					.getX()][(int) EntitiesConst.GAME.player1.destLocation.getY()].entity = null;
+		}
+		EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.location
+				.getX()][(int) EntitiesConst.GAME.player2.location.getY()].entity = null;
+		if (EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+				.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity instanceof Hero) {
+			EntitiesConst.MAP_MATRIX[(int) EntitiesConst.GAME.player2.destLocation
+					.getX()][(int) EntitiesConst.GAME.player2.destLocation.getY()].entity = null;
+		}
 	}
 
 	public void openMap(int map) {
 		removePlayer();
 		switch (map) {
 		case WORLD:
-			Map previous=(Map) EntitiesConst.GAME.map;
+			Map previous = (Map) EntitiesConst.GAME.map;
 			EntitiesConst.GAME.map = MapConstants.WORLD_MAP;
 			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
 			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;

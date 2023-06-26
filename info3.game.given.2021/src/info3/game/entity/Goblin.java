@@ -35,6 +35,7 @@ public class Goblin extends Mob {
 		this.anim = new Animation(this,ImagesConst.GOBLIN, dirs, acts);
 
 		this.category = Aut_Category.A;
+		this.hitbox.update();
 	}
 	
 	

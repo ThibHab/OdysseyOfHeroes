@@ -164,12 +164,14 @@ public class HudInGame {
 		
 		Font f = new Font(null, 1, 100);
 		g.setFont(f);
-		g.setColor(Color.red);
 		
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(deathMessage, g);
 		int textWidth = (int) rec.getWidth();
 		int textHeight = (int) rec.getHeight();
 		
+		g.setColor(new Color(0,0,0,175));
+		g.fillRect(0, (height / 3), width, (height / 3));
+		g.setColor(Color.red);
 		g.drawString(deathMessage, (width / 2) - (textWidth / 2), (height / 2) + (textHeight) / 2);
 	}
 

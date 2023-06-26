@@ -44,7 +44,7 @@ public class Boss extends Mob {
 		this.phase = 0;
 		
 		this.scale = EntitiesConst.BOSS_SCALE;
-		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
+		this.hitbox = new Hitbox(this, (float)2f, (float) 2f);
 	}
 	
 	@Override
