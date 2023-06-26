@@ -30,7 +30,7 @@ import info3.game.sound.RandomFileInputStream;
 public abstract class Entity implements IEntity {
 	public String name;
 	public int health, weaponDamage, weaponRange, maxHealth, range;
-	public float speed, attackSpeed;
+	public float attackSpeed;
 	public Aut_Category category;
 	public int healingPotions, strengthPotions;
 	public boolean dead;
@@ -44,6 +44,7 @@ public abstract class Entity implements IEntity {
 	public Location originLocation, location, destLocation, relativeMouv;
 
 	public long actionIndex;
+	public long hitIndex;
 	public int detectionRadius;
 	public Hitbox hitbox;
 	public int mazeCounter;
@@ -61,9 +62,7 @@ public abstract class Entity implements IEntity {
 		this.health = -1;
 		this.weaponDamage = 1;
 		this.weaponRange = 1;
-		this.speed = 1;
 		this.attackSpeed = 500;
-		this.range = 0;
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
 
@@ -77,6 +76,7 @@ public abstract class Entity implements IEntity {
 		this.frozen = false;
 		this.hitFrozen = false;
 		this.actionIndex = 0;
+		this.hitIndex = 0;
 		this.dead = false;
 
 		this.scale = 1;
@@ -96,73 +96,79 @@ public abstract class Entity implements IEntity {
 			this.die();
 		}
 		if (!EntitiesConst.GAME.inMenu.isPaused) {
-
 			this.automaton.step(this, EntitiesConst.GAME);
-
-			if (this.frozen) {
-				this.actionIndex += elapsed;
-				if (action == Action.M) {
-					if (this.isFinished()) {
-						this.actionIndex = 0;
-						this.frozen = false;
-						this.location.setX(destLocation.getX());
-						this.location.setY(destLocation.getY());
-						this.hitbox.update();
-						EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
-								.getY()].entity = null;
-					} else if (actionIndex != 0) {
-						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
-						this.location.setX(
-								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-										% EntitiesConst.MAP.lenX);
-						this.location.setY(
-								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-										% EntitiesConst.MAP.lenY);
-						this.hitbox.update();
-					}
-				} else if (action == Action.H) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-					}
-					if (this.actionIndex >= this.attackSpeed) {
-						this.hitFrozen = false;
-					}
-				} else if (action == Action.I) {
-					if (this.isFinished()) {
-						this.frozen = false;
-						this.actionIndex = 0;
-					}
-				} else if (action == Action.D) {
-					if (this.isFinished()) {
-						this.actionIndex = 0;
-						this.dead = true;
-						if (!(this instanceof Hero))
-							EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
-
-					}
-				} else if (timer != Integer.MIN_VALUE) {
-					this.timer -= elapsed;
-					if (timer < 0) {
-						this.frozen = false;
-						timer = Integer.MIN_VALUE;
-						waited();
-					}
+			
+			if (this.hitFrozen) {
+				this.hitIndex += elapsed;
+				if (this.hitIndex > this.attackSpeed) {
+					this.hitFrozen = false;
+					this.hitIndex = 0;
 				}
-			} else {
-				if (this.action != Action.S) {
-					if (EntitiesConst.GAME.debug) {
-						System.out.println(this.name + " is standing");
+			}	
+				if (this.frozen) {
+					this.actionIndex += elapsed;
+					if (action == Action.M) {
+						if (this.isFinished()) {
+							this.actionIndex = 0;
+							this.frozen = false;
+							this.location.setX(destLocation.getX());
+							this.location.setY(destLocation.getY());
+							this.hitbox.update();
+							EntitiesConst.MAP_MATRIX[(int) this.originLocation.getX()][(int) this.originLocation
+									.getY()].entity = null;
+						} else if (actionIndex != 0) {
+							float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX;
+							this.location.setX(
+									(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
+											% EntitiesConst.MAP.lenX);
+							this.location.setY(
+									(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
+											% EntitiesConst.MAP.lenY);
+							this.hitbox.update();
+						}
+					} else if (action == Action.H) {
+						if (this.isFinished()) {
+							this.frozen = false;
+							this.actionIndex = 0;
+						}
+						if (this.actionIndex >= this.attackSpeed) {
+							this.hitFrozen = false;
+						}
+					} else if (action == Action.I) {
+						if (this.isFinished()) {
+							this.frozen = false;
+							this.actionIndex = 0;
+						}
+					} else if (action == Action.D) {
+						if (this.isFinished()) {
+							this.actionIndex = 0;
+							this.dead = true;
+							if (!(this instanceof Hero))
+								EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
+	
+						}
+					} else if (timer != Integer.MIN_VALUE) {
+						this.timer -= elapsed;
+						if (timer < 0) {
+							this.frozen = false;
+							timer = Integer.MIN_VALUE;
+							waited();
+						}
 					}
-					this.action = Action.S;
-					this.anim.imageIndex = anim.sprites.length - 1;
-					this.anim.changeAction(action);
+				} else {
+					if (this.action != Action.S) {
+						if (EntitiesConst.GAME.debug) {
+							System.out.println(this.name + " is standing");
+						}
+						this.action = Action.S;
+						this.anim.imageIndex = anim.sprites.length - 1;
+						this.anim.changeAction(action);
+					}
+					if (!this.dead)
+						this.anim.changeAction(action);
 				}
 				if (!this.dead)
-					this.anim.changeAction(action);
-			}
-			if (!this.dead)
-				this.anim.step(elapsed);
+					this.anim.step(elapsed);
 		}
 	}
 
@@ -245,8 +251,8 @@ public abstract class Entity implements IEntity {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
 			case 2:
-//				Skeleton s = new Skeleton(location);
-//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+				Skeleton s = new Skeleton(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
 				break;
 			}
 			break;
@@ -286,8 +292,9 @@ public abstract class Entity implements IEntity {
 	public void Hit(Aut_Direction d) {
 		// TODO Melee blocked when touching an enemy, also see for the hits in the
 		// border of the maps
-		if (!this.frozen) {
+		if (!this.frozen && !hitFrozen) {
 			this.frozen = true;
+			this.hitFrozen = true;
 			if (d != null) {
 				this.direction = d;
 			}

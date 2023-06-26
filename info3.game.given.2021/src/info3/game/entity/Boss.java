@@ -26,7 +26,6 @@ public class Boss extends Mob {
 		this.health = EntitiesConst.BOSS_HEALTH;
 		this.weaponDamage = EntitiesConst.BOSS_BASE_DAMAGE;
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
-		this.speed = EntitiesConst.BOSS_SPEED;
 		this.direction = Aut_Direction.W;
 		this.frozen = false;
 		this.range = 20;

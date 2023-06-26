@@ -18,6 +18,7 @@ public class Range extends Hero {
 		this.weaponRange = EntitiesConst.RANGE_RANGE;
 		this.health = 8;
 		this.maxHealth = this.health;
+		this.attackSpeed = 500;
 		this.range = 3;
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 
@@ -63,7 +64,7 @@ public class Range extends Hero {
 
 	@Override
 	public void Hit(Aut_Direction d) {
-		if (!this.frozen) {
+		if (!this.frozen && !this.hitFrozen) {
 			this.frozen = true;
 			if (d != null) {
 				this.direction = d;
@@ -74,7 +75,7 @@ public class Range extends Hero {
 			}
 			this.hitFrozen = true;
 			this.frozen = true;
-			Projectile p = new Projectile(this, this.direction);
+			EntitiesConst.MAP.projectiles.add(new EnergyBall(this, this.direction));
 		}
 	}
 

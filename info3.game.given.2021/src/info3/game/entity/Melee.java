@@ -24,6 +24,7 @@ public class Melee extends Hero {
 		this.name = name;
 		this.weaponDamage = EntitiesConst.MELEE_DAMAGE;
 		this.weaponRange = EntitiesConst.MELEE_RANGE;
+		this.attackSpeed = 300;
 		this.health = 12;
 		this.maxHealth = this.health;
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
@@ -38,7 +39,6 @@ public class Melee extends Hero {
 				Aut_Direction.W };
 		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
 		this.anim = new Animation(this, ImagesConst.MELEE, dirs, acts);
-		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
 
 	@Override

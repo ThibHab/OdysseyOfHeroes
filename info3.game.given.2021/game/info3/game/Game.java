@@ -298,6 +298,7 @@ public class Game {
 
 	private long m_textElapsed;
 	private long m_deadTextElapsed;
+	private long m_tryEnterDungeon;
 	public boolean paintDead;
 
 	/*
@@ -323,6 +324,14 @@ public class Game {
 				m_deadTextElapsed += elapsed;
 				if (m_deadTextElapsed > 2000) {
 					paintDead = false;
+				}
+				
+				if (Hero.tryToEnterDungeon) {
+					m_tryEnterDungeon += elapsed;
+					if (m_tryEnterDungeon > 2000) {
+						Hero.tryToEnterDungeon = false;
+						m_tryEnterDungeon = 0;
+					}
 				}
 
 				if (EntitiesConst.GAME.debug) {
@@ -484,7 +493,9 @@ public class Game {
 			Location rock = EntitiesConst.MAP.rockLoc;
 			EntitiesConst.MAP_MATRIX[(int) rock.getX()][(int) rock.getY()].entity = null;
 		}
-		Hero.firePowerUnlocked = fire;
+		if (fire) {
+			Range.unlockFire();
+		}
 		
 		VillagerGirl.started = Boolean.valueOf(villagerGirl[0]);
 		VillagerGirl.completed = Boolean.valueOf(villagerGirl[1]);

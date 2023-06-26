@@ -24,6 +24,14 @@ public class AnimConst {
 	public static final int GOBLIN_T = 3;
 	public static final int GOBLIN_D = 4;
 	public static final int GOBLIN_TOT = GOBLIN_S + GOBLIN_M + GOBLIN_H + GOBLIN_T + GOBLIN_D;
+	
+	// Skeleton
+	public static final int SKELETON_S = 1;
+	public static final int SKELETON_M = 4;
+	public static final int SKELETON_H = 3;
+	public static final int SKELETON_T = 0;
+	public static final int SKELETON_D = 0;
+	public static final int SKELETON_TOT = SKELETON_S + SKELETON_M + SKELETON_H + SKELETON_T + SKELETON_D;
 
 	// Boss
 	public static final int BOSS_S = 3;
@@ -49,6 +57,8 @@ public class AnimConst {
 	
 	public static final int ENERGY_B_M = 4;
 	public static final int ENERGY_B_H = 0;
+	
+	public static final int BONE_M = 3;
 	
 	public static final int MINER_M = 3;
 	public static final int MINER_S = 0;

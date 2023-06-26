@@ -22,10 +22,10 @@ public abstract class Hero extends Entity {
 	public static int coins, level, levelUp, experience, bushesCut, bombs;
 	public static boolean firePowerUnlocked;
 	public int healingPotions, strengthPotions;
+	public static boolean tryToEnterDungeon;
 	
 	public Hero() {
 		super();
-		this.speed = EntitiesConst.HERO_SPEED;
 		this.category = Aut_Category.AT;
 		this.scale = EntitiesConst.HEROES_SCALE;
 		Hero.coins = EntitiesConst.COINS;
@@ -35,6 +35,7 @@ public abstract class Hero extends Entity {
 		Hero.firePowerUnlocked = false;
 		Hero.bushesCut = 0;
 		Hero.bombs = 1;
+		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
 	
 	@Override
@@ -81,7 +82,7 @@ public abstract class Hero extends Entity {
 					if (Hero.firePowerUnlocked) {
 						EntitiesConst.GAME.openMap(Game.BOSS);
 					} else {
-						System.out.println("Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu");
+						tryToEnterDungeon = true;
 					}
 				} else if (destTile.entity instanceof MazeEntrance) {
 					EntitiesConst.GAME.openMap(Game.MAZE);
@@ -145,7 +146,7 @@ public abstract class Hero extends Entity {
 			this.health = this.maxHealth;
 			this.healingPotions--;
 			try {
-				RandomAccessFile file = new RandomAccessFile("resources/heal.ogg", "r");
+				RandomAccessFile file = new RandomAccessFile("resources/sounds/heal.ogg", "r");
 				RandomFileInputStream fis = new RandomFileInputStream(file);
 				EntitiesConst.GAME.m_canvas.playSound("heal",fis, 0, 0.8F);
 			} catch (Throwable th) {
@@ -168,7 +169,7 @@ public abstract class Hero extends Entity {
 			if (entity instanceof Coin) {
 				Hero.coins ++;
 				try {
-					RandomAccessFile file = new RandomAccessFile("resources/coin.ogg", "r");
+					RandomAccessFile file = new RandomAccessFile("resources/sounds/coin.ogg", "r");
 					RandomFileInputStream fis = new RandomFileInputStream(file);
 					EntitiesConst.GAME.m_canvas.playSound("coin",fis, 0, 0.8F);
 				} catch (Throwable th) {
@@ -184,7 +185,7 @@ public abstract class Hero extends Entity {
 			else if (entity instanceof Chest) {
 				Hero.coins += 5;
 				try {
-					RandomAccessFile file = new RandomAccessFile("resources/chest.ogg", "r");
+					RandomAccessFile file = new RandomAccessFile("resources/sounds/chest.ogg", "r");
 					RandomFileInputStream fis = new RandomFileInputStream(file);
 					EntitiesConst.GAME.m_canvas.playSound("chest",fis, 0, 0.8F);
 				} catch (Throwable th) {
@@ -202,7 +203,7 @@ public abstract class Hero extends Entity {
 		if (Hero.experience >= Hero.levelUp) {
 			Hero.level++;
 			try {
-				RandomAccessFile file = new RandomAccessFile("resources/lvlup.ogg", "r");
+				RandomAccessFile file = new RandomAccessFile("resources/sounds/lvlup.ogg", "r");
 				RandomFileInputStream fis = new RandomFileInputStream(file);
 				EntitiesConst.GAME.m_canvas.playSound("lvlup",fis, 0, 0.8F);
 			} catch (Throwable th) {
@@ -221,13 +222,16 @@ public abstract class Hero extends Entity {
 	@Override
 	public void takeDamage(Entity attacker) {
 		this.health -= attacker.weaponDamage;
-		try {
-			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
-			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
-		} catch (Throwable th) {
-			th.printStackTrace(System.err);
-			System.exit(-1);
+//		try {
+//			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
+//			RandomFileInputStream fis = new RandomFileInputStream(file);
+//			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
+//		} catch (Throwable th) {
+//			th.printStackTrace(System.err);
+//			System.exit(-1);
+//		}
+		if (this.health <= 0) {
+			this.die();
 		}
 	}
 	
