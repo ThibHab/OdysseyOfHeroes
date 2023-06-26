@@ -123,6 +123,10 @@ public class EntitiesConst {
 	public static final int DUNGEON_ENTRANCE_X_POS = 70;
 	public static final int DUNGEON_ENTRANCE_Y_POS = 30;
 	
+	// END GAME CONSTANTS
+	public static final int SPRING_X_POS = 30;
+	public static final int SPRING_Y_POS = 43;
+	
 	// MAZE ENTRANCE CONSTANTS
 	public static final float MAZE_ENTRANCE_SCALE = 1.0f;
 	public static final int MAZE_ENTRANCE_X_POS = 30;
