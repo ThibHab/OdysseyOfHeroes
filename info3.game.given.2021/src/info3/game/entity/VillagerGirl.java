@@ -24,7 +24,7 @@ public class VillagerGirl extends Villager {
 		VillagerGirl.completed = false;
 		this.completedDialogs = new LinkedList<>();
 		this.completedDialogsIndex = 0;
-		this.name = "Villager";
+		this.name = "VillagerGirl";
 		this.dialogs.add("Oyé Oyé, jeunes aventuriers !\nBienvenue à QuoicoubehLand !");
 		this.dialogs.add("Depuis que le dragon habite nos \nterres, nous ne sommes plus en \nsécurité.");
 		this.dialogs.add("Les squelettes et les orcs rodent \ndans les alentours et menacent \nnotre village");

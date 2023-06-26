@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -95,7 +96,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = true;
+	public boolean debug = false;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -153,9 +154,8 @@ public class Game {
 		new EntitiesConst();
 		EntitiesConst.GAME = this;
 
-		IVisitor visitor = new AutCreator();
-		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
-		listAutomata = (List<Aut_Automaton>) ast.accept(visitor);
+//		listAutomata = new LinkedList<Aut_Automaton>();
+//		getAutomata();
 
 		// creating a listener for all the events
 		// from the game canvas, that would be
@@ -180,6 +180,38 @@ public class Game {
 		setupFrame();
 
 		setupMenu();
+	}
+
+	public void getAutomata() throws Exception {
+		File f = new File("config.txt");
+		if (!f.exists() || f.length() == 0) {
+			throw new Exception("Configuration file not found");
+		}
+		save = new RandomAccessFile(f, "r");
+		byte[] buffer = new byte[(int) save.length()];
+		save.readFully(buffer);
+		String s = new String(buffer);
+		String[] configFile = s.split("\n");
+		String[][] configData = new String[configFile.length][2];
+		for (int i = 0; i < configFile.length; i++) {
+			String[] line = configFile[i].split(" = ");
+			configData[i][0] = line[0];
+			configData[i][1] = line[1];
+		}
+
+		IVisitor visitor = new AutCreator();
+		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
+		List<Aut_Automaton> listAut = (List<Aut_Automaton>) ast.accept(visitor);
+		for (int i = 0; i < configFile.length; i++) {
+			for (Aut_Automaton aut : listAut) {
+				if (aut.name.equals(configData[i][1])) {
+					Aut_Automaton automata = aut.clone();
+					automata.name = configData[i][0];
+					listAutomata.add(automata);
+					break;
+				}
+			}
+		}
 	}
 
 	public void setupMenu() {
@@ -213,11 +245,15 @@ public class Game {
 			loadSeed(buffer);
 		}
 
+		listAutomata = new LinkedList<Aut_Automaton>();
+		getAutomata();
+
 		player1 = new Melee("Player1", this);
 		player1.name = "player1";
 		player2 = new Range("Player2", this);
 		player2.name = "player2";
 
+//		map = new WorldMap(100, 100, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
 		map = MapConstants.WORLD_MAP;
 		// map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map) map, this);
@@ -327,7 +363,7 @@ public class Game {
 				if (m_deadTextElapsed > 2000) {
 					paintDead = false;
 				}
-				
+
 				if (Hero.tryToEnterDungeon) {
 					m_tryEnterDungeon += elapsed;
 					if (m_tryEnterDungeon > 2000) {
@@ -409,7 +445,7 @@ public class Game {
 			player2.direction = Aut_Direction.S;
 			this.openMap(WORLD);
 			if (m instanceof DungeonMap) {
-				DungeonMap.finish=false;
+				DungeonMap.finish = false;
 			}
 			paintDead = true;
 			m_deadTextElapsed = 0;
