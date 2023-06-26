@@ -56,7 +56,6 @@ public class Bush extends DecorElement {
 			th.printStackTrace(System.err);
 			System.exit(-1);
 		}
-		System.out.println("HEHO CA FAIT MALEUH");
 		health -= attacker.weaponDamage;
 		if(attacker instanceof Hero && VillagerGirl.started) {
 			Hero.bushesCut++;

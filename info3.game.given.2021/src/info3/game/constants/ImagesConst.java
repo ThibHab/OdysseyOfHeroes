@@ -79,9 +79,9 @@ public class ImagesConst {
 		MENU_PICTURE = loadTile("menu_picture");
 		CREDIT_PICTURE = loadTile("Credits_projet");
 
-		HERMIT = loadSprite("Hermite", 2, 6);
-		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 3);
-		MINER = loadSprite("Miner", 4, 3);
+		HERMIT = loadSprite("Hermit", 4, 3);
+		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 4);
+		MINER = loadSprite("Miner", 4, 4);
 
 		SPEECHBUBBLE = loadSprite("SpeechBubble", 1, 1);
 		SWORD_EFFECT = loadSprite("SwordAttackV2", 5, 1);
