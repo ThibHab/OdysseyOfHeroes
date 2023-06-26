@@ -96,7 +96,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
+	public boolean debug = true;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -187,9 +187,9 @@ public class Game {
 		if (!f.exists() || f.length() == 0) {
 			throw new Exception("Configuration file not found");
 		}
-		save = new RandomAccessFile(f, "r");
-		byte[] buffer = new byte[(int) save.length()];
-		save.readFully(buffer);
+		RandomAccessFile config = new RandomAccessFile(f, "r");
+		byte[] buffer = new byte[(int) config.length()];
+		config.readFully(buffer);
 		String s = new String(buffer);
 		String[] configFile = s.split("\n");
 		String[][] configData = new String[configFile.length][2];
@@ -198,6 +198,7 @@ public class Game {
 			configData[i][0] = line[0];
 			configData[i][1] = line[1];
 		}
+		config.close();
 
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
@@ -253,7 +254,8 @@ public class Game {
 		player2 = new Range("Player2", this);
 		player2.name = "player2";
 
-//		map = new WorldMap(100, 100, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
+		EntitiesConst.MAP = null;
+		MapConstants.WORLD_MAP = new WorldMap(100, 100, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
 		map = MapConstants.WORLD_MAP;
 		// map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map) map, this);
@@ -335,7 +337,10 @@ public class Game {
 	private long m_textElapsed;
 	private long m_deadTextElapsed;
 	private long m_tryEnterDungeon;
+	private long m_victoiry;
 	public boolean paintDead;
+	public boolean endGameFreeze;
+	public boolean victory_message;
 
 	/*
 	 * This method is invoked almost periodically, given the number of milli-seconds
@@ -371,6 +376,12 @@ public class Game {
 						m_tryEnterDungeon = 0;
 					}
 				}
+				
+				if (map instanceof DungeonMap && DungeonMap.initLit && Boss.h <= 0 && menu.getStarted()) {
+					gameWin(elapsed);
+				}
+				
+				//TODO Rajouter timer Message victoire 5s;
 
 				if (EntitiesConst.GAME.debug) {
 					m_textElapsed += elapsed;
@@ -458,6 +469,31 @@ public class Game {
 			paintDead = true;
 			m_deadTextElapsed = 0;
 
+		}
+	}
+	
+	void gameWin(long elapsed) {
+		endGameFreeze = true;
+		victory_message = true;
+		
+		if (endGameFreeze) {
+			m_victoiry += elapsed;
+			if (m_victoiry > 5000) {
+				victory_message = false;
+			}
+		}
+		if (victory_message == false) {
+			menu.setStarted();
+			Toolkit tkit = Toolkit.getDefaultToolkit();
+			Point point = new Point(25, 25);
+			Image agrou = ImagesConst.CURSOR[0];
+			Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
+			m_frame.setCursor(curs);
+			EntitiesConst.GAME.map = null;
+			endGameFreeze = false;
+			m_victoiry = 0;
+			this.m_musicIndex = 0;
+			this.loadMusic();
 		}
 	}
 

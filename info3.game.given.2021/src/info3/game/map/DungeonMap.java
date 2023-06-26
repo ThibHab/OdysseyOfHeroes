@@ -19,7 +19,7 @@ public class DungeonMap extends Map {
 	public boolean lit;
 	public int sizeX = 20;
 	public int sizeY = 12;
-	boolean initLit = false;
+	public static boolean initLit;
 	public static boolean finish;
 	int transiMax = 5000;
 	int transi;
@@ -28,6 +28,9 @@ public class DungeonMap extends Map {
 	public DungeonMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
 		this.transi = transiMax;
+		
+		DungeonMap.initLit = false;
+		DungeonMap.finish = false;
 
 		this.setSurfaceBackground(0, 0, nb_x, nb_y, "BlackTile");
 		this.setSurfaceBackground(1, 1, sizeX, sizeY, "RockDungeon");
@@ -36,7 +39,7 @@ public class DungeonMap extends Map {
 		this.setPlayer(4, 5, p1);
 		this.setPlayer(4, 6, p2);
 
-		this.torches = new LinkedList<Torch>();
+		DungeonMap.torches = new LinkedList<Torch>();
 		int x, y;
 		Location loc;
 		Random r = new Random(EntitiesConst.SEED);
@@ -73,11 +76,11 @@ public class DungeonMap extends Map {
 			for (Torch torch : torches) {
 				if (!torch.lit) {
 					this.lit = false;
-					this.initLit = false;
+					DungeonMap.initLit = false;
 					return false;
 				}
 			}
-			this.initLit = true;
+			DungeonMap.initLit = true;
 			for (Torch torch : torches) {
 				EntitiesConst.MAP_MATRIX[(int) torch.location.getX()][(int) torch.location.getY()].entity = null;
 			}

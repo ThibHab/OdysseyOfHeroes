@@ -29,37 +29,36 @@ public class Bone extends Projectile {
 			EntitiesConst.MAP.projectiles.remove(this);
 			return;
 		}
-		this.automaton.step(this, EntitiesConst.GAME);
-		this.anim.step(elapsed);
-		Entity e = EntitiesConst.MAP_MATRIX[(int) this.destLocation.getX()][(int) this.destLocation.getY()].entity;
-		if (e != null && e != this.owner) {
-			if (this.hitboxOverlap(e)) {
-				new SmokeEffect(this.location);
-				e.takeDamage(this.owner);
-				if (EntitiesConst.GAME.debug)
+		if (!EntitiesConst.GAME.inMenu.isPaused && !EntitiesConst.GAME.endGameFreeze) {
+			this.automaton.step(this, EntitiesConst.GAME);
+			this.anim.step(elapsed);
+			Entity e = EntitiesConst.MAP_MATRIX[(int) this.destLocation.getX()][(int) this.destLocation.getY()].entity;
+			if (e != null && e != this.owner) {
+				if (this.hitboxOverlap(e)) {
+					new SmokeEffect(this.location);
+					e.takeDamage(this.owner);
 					System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
-				EntitiesConst.MAP.projectiles.remove(this);
+					EntitiesConst.MAP.projectiles.remove(this);
+				}
 			}
-		}
-		if (this.frozen) {
 			if (this.frozen) {
-				this.actionIndex += elapsed;
-				if (action == Action.M) {
-					if (this.isFinished()) {
-						this.actionIndex = 0;
-						this.frozen = false;
-						this.location.setX(destLocation.getX());
-						this.location.setY(destLocation.getY());
-						this.hitbox.update();
-					} else if (actionIndex != 0) {
-						float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_MOB_PROJ;
-						this.location.setX(
-								(this.originLocation.getX() + EntitiesConst.MAP.lenX + progress * relativeMouv.getX())
-										% EntitiesConst.MAP.lenX);
-						this.location.setY(
-								(this.originLocation.getY() + EntitiesConst.MAP.lenY + progress * relativeMouv.getY())
-										% EntitiesConst.MAP.lenY);
-						this.hitbox.update();
+				if (this.frozen) {
+					this.actionIndex += elapsed;
+					if (action == Action.M) {
+						if (this.isFinished()) {
+							this.actionIndex = 0;
+							this.frozen = false;
+							this.location.setX(destLocation.getX());
+							this.location.setY(destLocation.getY());
+							this.hitbox.update();
+						} else if (actionIndex != 0) {
+							float progress = (float) this.actionIndex / EntitiesConst.MOUVEMENT_INDEX_MAX_MOB_PROJ;
+							this.location.setX((this.originLocation.getX() + EntitiesConst.MAP.lenX
+									+ progress * relativeMouv.getX()) % EntitiesConst.MAP.lenX);
+							this.location.setY((this.originLocation.getY() + EntitiesConst.MAP.lenY
+									+ progress * relativeMouv.getY()) % EntitiesConst.MAP.lenY);
+							this.hitbox.update();
+						}
 					}
 				}
 			}

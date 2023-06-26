@@ -474,7 +474,7 @@ public abstract class Map implements IMap {
 		setSurfaceBackground(x, y + 14, 7, 1, "Dirt");
 	}
 
-	public void setVillage(int x, int y, int areaSize) {
+	public void setVillage(int x, int y) {
 		for (int i = 16; i < 45; i++) {
 			for (int j = 22; j < 45; j++) {
 				Tile tile = this.map[i][j];
@@ -485,22 +485,18 @@ public abstract class Map implements IMap {
 				}
 			}
 		}
-		if (areaSize < 30 && areaSize > 20) {
-			setDisqueBackground(x, y, 3, "Dirt");
-			createTree(x, y);
-			createHouse(x, y - 5);
-			setSurfaceBackground(x, y - 4, 1, 1, "Dirt");
-			setSurfaceBackground(x - 5, y, 2, 1, "Dirt");
-			setDistrict(x - 12, y - 6);
+		setDisqueBackground(x, y, 3, "Dirt");
+		createTree(x, y);
+		createHouse(x, y - 5);
+		setSurfaceBackground(x, y - 4, 1, 1, "Dirt");
+		setSurfaceBackground(x - 5, y, 2, 1, "Dirt");
+		setDistrict(x - 12, y - 6);
 
-			setSurfaceBackground(x + 4, y, 2, 1, "Dirt");
-			setDistrict(x + 6, y - 6);
+		setSurfaceBackground(x + 4, y, 2, 1, "Dirt");
+		setDistrict(x + 6, y - 6);
 
-			setSurfaceBackground(x - 1, y + 4, 3, 3, "Dirt");
-			setSpring(x, y + 10, 3);
-		} else if (areaSize > 30) {
-
-		}
+		setSurfaceBackground(x - 1, y + 4, 3, 3, "Dirt");
+		setSpring(x, y + 10, 3);
 	}
 
 	public void setLac(int x, int y, int radius) {
