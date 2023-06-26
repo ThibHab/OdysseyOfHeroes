@@ -109,7 +109,7 @@ public class Range extends Hero {
 		}
 
 		if (Hero.level % 5 == 0) {
-			this.range += 1;
+			this.weaponRange += 1;
 		}
 
 		if (this.dead == false) {
@@ -124,8 +124,9 @@ public class Range extends Hero {
 
 	public static void unlockFire() {
 		Hero.firePowerUnlocked = true;
-		ImagesConst.loadFire();
+//		ImagesConst.loadFire();
+		ImagesConst.DUNGEON_ENTRANCE_CLOSED = ImagesConst.DUNGEON_ENTRANCE_OPEN;
 		EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
-		EntitiesConst.ENERGYBALL_SCALE = 0.8f;
+//		EntitiesConst.ENERGYBALL_SCALE = 0.8f;
 	}
 }

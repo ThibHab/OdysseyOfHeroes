@@ -101,6 +101,7 @@ public class EntitiesConst {
 	
 	// ENERGYBALL CONSTANTS
 	public static float ENERGYBALL_SCALE = 1.2f;
+	public static float FIREBALL_SCALE = 0.8f;
 	
 	// BONE CONSTANTS
 	public static final float BONE_SCALE = 0.8f;
