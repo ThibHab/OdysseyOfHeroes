@@ -17,7 +17,7 @@ public class ImagesConst {
 	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
-	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL, DUNGEON_ENTRANCE, PORTAL;
+	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL,DUNGEON_ENTRANCE_OPEN,DUNGEON_ENTRANCE_CLOSED, PORTAL;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL, BONE;
 	public static BufferedImage[] SPEECHBUBBLE;
@@ -32,7 +32,7 @@ public class ImagesConst {
 		GRASS_TILE = loadTile("Grass");
 		WATER_TILE = loadTile("Water");
 		DIRT_TILE = loadTile("Dirt");
-		ROCK_TILE = loadTile("rock_placeholder");
+		ROCK_TILE = loadTile("Stone");
 		GRASS_TILE2 = loadTile("Grass2");
 		WATER_TILE2 = loadTile("");
 		DIRT_TILE2 = loadTile("");
@@ -57,13 +57,14 @@ public class ImagesConst {
 		SKELETON = loadSprite("Skeleton", 6, 6);
 		MERCHANT = loadSprite("", 1, 1);
 
-		BUSH = loadSprite("Bush", 3, 2);
+		BUSH = loadSprite("bush", 1, 1);
 		CHEST = loadSprite("Chest", 2, 2);
 		TORCH = loadSprite("torch", 2, 3);
 		MAZE_WALL = loadSprite("MazeWall", 1, 1);
 		MAZE_ENTRANCE = loadSprite("MazeEntrance", 1, 1);
 		DUNGEON_WALL = loadSprite("DungeonWall", 3, 2);
-		DUNGEON_ENTRANCE = loadSprite("DungeonEntrance", 1, 1);
+		DUNGEON_ENTRANCE_OPEN = loadSprite("portalRing", 1, 5);
+		DUNGEON_ENTRANCE_CLOSED= loadSprite("PortalRingClosed", 3, 2);
 		PORTAL = loadSprite("portal", 2, 2);
 
 		MELEE = loadSprite("Melee", 8, 7);
@@ -127,6 +128,7 @@ public class ImagesConst {
 	public static void loadFire() {
 		try {
 			ImagesConst.ENERGYBALL = loadSprite("FireEnergyBall", 2, 2);
+			ImagesConst.DUNGEON_ENTRANCE_CLOSED = ImagesConst.DUNGEON_ENTRANCE_OPEN;
 		} catch (Exception e) {
 			System.out.println("failed to load fire sprites");
 		}

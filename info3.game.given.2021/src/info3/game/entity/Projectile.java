@@ -135,7 +135,8 @@ public class Projectile extends Entity {
 			if (this.hitboxOverlap(e)) {
 				new SmokeEffect(this.location);
 				e.takeDamage(this.owner);
-				System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
+				if (EntitiesConst.GAME.debug)
+					System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
 				EntitiesConst.MAP.projectiles.remove(this);
 			}
 		}

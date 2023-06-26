@@ -16,14 +16,13 @@ import info3.game.constants.ImagesConst;
 
 public class Bone extends Projectile {
 
-		public Bone(Entity owner, Aut_Direction d) {
-			super(owner,d);
-			Action acts[] = new Action[] { Action.M };
-			this.anim = new Animation(this, ImagesConst.BONE, null, acts);
+	public Bone(Entity owner, Aut_Direction d) {
+		super(owner, d);
+		Action acts[] = new Action[] { Action.M };
+		this.anim = new Animation(this, ImagesConst.BONE, null, acts);
 
-			this.scale = EntitiesConst.BONE_SCALE;
+		this.scale = EntitiesConst.BONE_SCALE;
 	}
-	
 
 	public void tick(long elapsed) {
 		if (this.owner.weaponRange < this.tilesCrossed) {
@@ -37,7 +36,8 @@ public class Bone extends Projectile {
 			if (this.hitboxOverlap(e)) {
 				new SmokeEffect(this.location);
 				e.takeDamage(this.owner);
-				System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
+				if (EntitiesConst.GAME.debug)
+					System.out.println(this.name + " de " + this.owner.name + " a touché " + e.name);
 				EntitiesConst.MAP.projectiles.remove(this);
 			}
 		}
