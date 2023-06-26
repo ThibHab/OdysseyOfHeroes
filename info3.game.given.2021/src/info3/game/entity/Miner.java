@@ -26,7 +26,7 @@ public class Miner extends Villager {
 		this.name = "Miner";
 		this.dialogs.add("Salut ! Je suis Billy-Boy, fils \nde mineur.");
 		this.dialogs.add(
-				"Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé, \nmais surtout ne dis \nrien à mon père...");
+				"Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé.");
 		this.dialogs.add("Ah... tu n'as pas un montant \nde pièces d'or suffisant.");
 		this.dialogs.add("Reviens me voir quand ce sera \nle cas !");
 		// TODO Auto-generated constructor stub
@@ -35,10 +35,11 @@ public class Miner extends Villager {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.N, Aut_Direction.E,
-				Aut_Direction.W };
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.W, Aut_Direction.E,
+				Aut_Direction.N };
 		Action acts[] = new Action[] { Action.S, Action.M };
 		this.anim = new Animation(this, ImagesConst.MINER, dirs, acts);
+		this.scale = EntitiesConst.MINER_SCALE;
 	}
 
 	@Override
@@ -99,7 +100,6 @@ public class Miner extends Villager {
 
 	@Override
 	public int totSrpitePerDir() {
-		return AnimConst.MINER_M + AnimConst.MINER_S;
+		return AnimConst.MINER_TOT;
 	}
-
 }

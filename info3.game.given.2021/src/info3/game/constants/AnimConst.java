@@ -61,17 +61,21 @@ public class AnimConst {
 	public static final int BONE_M = 3;
 	
 	public static final int MINER_M = 3;
-	public static final int MINER_S = 0;
+	public static final int MINER_S = 1;
+	public static final int MINER_TOT = MINER_M + MINER_S;
 	
 	public static final int VILLAGERGIRL_M = 3;
-	public static final int VILLAGERGIRL_S = 0;
+	public static final int VILLAGERGIRL_S = 1;
+	public static final int VILLAGERGIRL_TOT = VILLAGERGIRL_M + VILLAGERGIRL_S;
 	
 	public static final int HERMIT_M = 3;
 	public static final int HERMIT_S = 0;
+	public static final int HERMIT_TOT = HERMIT_M + HERMIT_S;
 	
 	public static final int SPEECHBUBBLE_S = 1;
 	
 	public static final int PORTAL_S = 4;
+	public static final int DUNGEON_ENTRANCE_S = 4;
 	
 	//Timed Effects
 	public static final int TIME_SWORD_EFFECT = 200;

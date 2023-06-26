@@ -187,9 +187,9 @@ public class Game {
 		if (!f.exists() || f.length() == 0) {
 			throw new Exception("Configuration file not found");
 		}
-		save = new RandomAccessFile(f, "r");
-		byte[] buffer = new byte[(int) save.length()];
-		save.readFully(buffer);
+		RandomAccessFile config = new RandomAccessFile(f, "r");
+		byte[] buffer = new byte[(int) config.length()];
+		config.readFully(buffer);
 		String s = new String(buffer);
 		String[] configFile = s.split("\n");
 		String[][] configData = new String[configFile.length][2];
@@ -198,6 +198,7 @@ public class Game {
 			configData[i][0] = line[0];
 			configData[i][1] = line[1];
 		}
+		config.close();
 
 		IVisitor visitor = new AutCreator();
 		AST ast = (AST) AutomataParser.from_file("resources/t.gal");
@@ -331,7 +332,7 @@ public class Game {
 	}
 
 	private int m_musicIndex = 0;
-	private String[] m_musicNames = new String[] { "theme" };
+	private String[] m_musicNames = new String[] { "theme", "dungeon-theme" };
 
 	private long m_textElapsed;
 	private long m_deadTextElapsed;
@@ -438,6 +439,14 @@ public class Game {
 		if (m instanceof WorldMap) {
 			File f = new File("save.txt");
 			long length = f.length();
+			try {
+				RandomAccessFile file = new RandomAccessFile("resources/sounds/gameOver.ogg", "r");
+				RandomFileInputStream fis = new RandomFileInputStream(file);
+				EntitiesConst.GAME.m_canvas.playSound("gameOver",fis, 0, 0.8F);
+			} catch (Throwable th) {
+				th.printStackTrace(System.err);
+				System.exit(-1);
+			}
 			if (!f.exists() || length == 0)
 				this.setupGame(null);
 			else
@@ -632,6 +641,8 @@ public class Game {
 			} else {
 				doublePlayerPlace(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 			}
+			this.m_musicIndex = 0;
+			this.loadMusic();
 			break;
 		case MAZE:
 			MazeMap mm = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
@@ -646,6 +657,8 @@ public class Game {
 			EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
 			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
 			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			this.m_musicIndex = 1;
+			this.loadMusic();
 			break;
 		}
 		EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);

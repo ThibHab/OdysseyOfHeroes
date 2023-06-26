@@ -27,15 +27,15 @@ public class Skeleton extends Mob {
 		this.currentState = automaton.initial;
 
 		this.category = Aut_Category.A;
-		
-		//TODO add sprites and actions
+
+		// TODO add sprites and actions
 		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.E, Aut_Direction.W,
 				Aut_Direction.N };
-		Action acts[] = new Action[] { Action.S, Action.M, Action.H};
-		this.anim = new Animation(this,ImagesConst.SKELETON, dirs, acts);
+		Action acts[] = new Action[] { Action.S, Action.M, Action.H };
+		this.anim = new Animation(this, ImagesConst.SKELETON, dirs, acts);
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
 	}
-	
+
 	@Override
 	public void Hit(Aut_Direction d) {
 		if (!this.frozen && !this.hitFrozen) {
@@ -48,15 +48,15 @@ public class Skeleton extends Mob {
 				this.anim.changeAction(action);
 			}
 			this.hitFrozen = true;
-			System.out.println("skeleton shoots");
-			EntitiesConst.MAP.projectiles.add(new Bone(this, this.direction)) ;
+			if (EntitiesConst.GAME.debug)
+				System.out.println("skeleton shoots");
+			EntitiesConst.MAP.projectiles.add(new Bone(this, this.direction));
 		}
-		System.out.println("skeleton wants to hit but is hitFrozen");
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
-		//TODO
+		// TODO
 		switch (a) {
 		case M:
 			return AnimConst.SKELETON_M;
@@ -72,7 +72,7 @@ public class Skeleton extends Mob {
 			return 0;
 		}
 	}
-	
+
 	@Override
 	public int totSrpitePerDir() {
 		return AnimConst.SKELETON_TOT;
