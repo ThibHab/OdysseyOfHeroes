@@ -294,7 +294,7 @@ public class Game {
 	}
 
 	private int m_musicIndex = 0;
-	private String[] m_musicNames = new String[] { "theme" };
+	private String[] m_musicNames = new String[] { "theme", "dungeon-theme" };
 
 	private long m_textElapsed;
 	private long m_deadTextElapsed;
@@ -554,6 +554,8 @@ public class Game {
 			} else {
 				doublePlayerPlace(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 			}
+			this.m_musicIndex = 0;
+			this.loadMusic();
 			break;
 		case MAZE:
 			MazeMap mm = new MazeMap(MapConstants.MAZE_MAP_SIZE * (MapConstants.MAZE_MAP_CORRIDOR_SIZE + 1) + 1,
@@ -568,6 +570,8 @@ public class Game {
 			EntitiesConst.GAME.map = new DungeonMap(40, 40, EntitiesConst.GAME.player1, EntitiesConst.GAME.player2);
 			EntitiesConst.MAP = (Map) EntitiesConst.GAME.map;
 			EntitiesConst.MAP_MATRIX = EntitiesConst.MAP.map;
+			this.m_musicIndex = 1;
+			this.loadMusic();
 			break;
 		}
 		EntitiesConst.GAME.render = new MapRender(EntitiesConst.MAP, EntitiesConst.GAME);
