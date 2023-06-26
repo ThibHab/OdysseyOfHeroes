@@ -23,8 +23,8 @@ public class Miner extends Villager {
 		this.sellingDialogs = new LinkedList<>();
 		this.sellingDialogsIndex = 0;
 		this.sellingDialog = "50 pièces d'or pour une bombe, \ncrois-moi c'est une bonne affaire ! \nTu peux même faire exploser des \nrochers avec. Fais en bon usage !";
-		this.name = "Villager";
-		this.dialogs.add("Salut ! Je suis Billy-Boy, mineur \nchevronné !");
+		this.name = "Miner";
+		this.dialogs.add("Salut ! Je suis Billy-Boy, fils \nde mineur.");
 		this.dialogs.add(
 				"Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé.");
 		this.dialogs.add("Ah... tu n'as pas un montant \nde pièces d'or suffisant.");
@@ -72,28 +72,6 @@ public class Miner extends Villager {
 				this.sold = false;
 			}
 		}
-	}
-
-	@Override
-	public void Move(Aut_Direction d) {
-		float x = this.location.getX();
-		float y = this.location.getY();
-		Aut_Direction dir = d.rightDirection(this);
-		if (x > 35 && dir == Aut_Direction.E || x < 25 && dir == Aut_Direction.W || y > 35 && dir == Aut_Direction.S
-				|| y < 25 && dir == Aut_Direction.N) {
-			dir = Aut_Direction.B;
-			dir = dir.rightDirection(this);
-			super.Move(dir);
-		} else {
-			super.Move(d);
-		}
-		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
-			SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
-			if (bubble.v == this) {
-				EntitiesConst.MAP.bubbles.remove(i);
-			}
-		}
-		this.dialogIndex = 0;
 	}
 
 	@Override

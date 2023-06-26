@@ -108,6 +108,28 @@ public abstract class Villager extends NPC {
 			this.anim.step(elapsed);
 		}
 	}
+	
+	@Override
+	public void Move(Aut_Direction d) {
+		float x = this.location.getX();
+		float y = this.location.getY();
+		Aut_Direction dir = d.rightDirection(this);
+		if (x > 35 && dir == Aut_Direction.E || x < 25 && dir == Aut_Direction.W || y > 35 && dir == Aut_Direction.S
+				|| y < 25 && dir == Aut_Direction.N) {
+			dir = Aut_Direction.B;
+			dir = dir.rightDirection(this);
+			super.Move(dir);
+		} else {
+			super.Move(d);
+		}
+		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
+			SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
+			if (bubble.v == this) {
+				EntitiesConst.MAP.bubbles.remove(i);
+			}
+		}
+		this.dialogIndex = 0;
+	}
 
 	public void talks() {
 

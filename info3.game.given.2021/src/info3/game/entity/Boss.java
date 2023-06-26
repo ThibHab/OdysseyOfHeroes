@@ -27,8 +27,8 @@ public class Boss extends Mob {
 		this.weaponDamage = EntitiesConst.BOSS_BASE_DAMAGE;
 		this.weaponRange = EntitiesConst.BOSS_RANGE;
 		this.direction = Aut_Direction.W;
-		this.frozen = false;
-		this.range = 20;
+		this.frozen = true;
+		this.range = 18;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -42,9 +42,10 @@ public class Boss extends Mob {
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this, ImagesConst.BOSS, dirs, acts);
 		this.phase = 0;
+		this.action = Action.S;
 		
 		this.scale = EntitiesConst.BOSS_SCALE;
-		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
+		this.hitbox = new Hitbox(this, (float) 2.0, (float) 2.0);
 	}
 	
 	@Override
@@ -80,11 +81,11 @@ public class Boss extends Mob {
 
 			boolean randomMob = random.nextBoolean();
 			Tile tile = EntitiesConst.MAP_MATRIX[(int) mobLocation.getX()][(int) mobLocation.getY()];
-//			if (randomMob) {
-////				tile.entity = new Skeleton(mobLocation);
-//			} else {
+			if (randomMob) {
+				tile.entity = new Skeleton(mobLocation);
+			} else {
 				tile.entity = new Goblin(mobLocation);
-//			}
+			}
 		}
 	}
 	
@@ -179,5 +180,24 @@ public class Boss extends Mob {
 	@Override
 	public int totSrpitePerDir() {
 		return AnimConst.BOSS_TOT;
+	}
+	
+	public boolean isFinished() {
+		switch (this.action) {
+		case S:
+			return this.actionIndex >= EntitiesConst.STAND_INDEX_MAX;
+		case M:
+			return this.actionIndex >= EntitiesConst.MOUVEMENT_INDEX_MAX;
+		case H:
+			return this.actionIndex >= EntitiesConst.HIT_INDEX_MAX;
+		case D:
+			return this.actionIndex >= EntitiesConst.DIE_INDEX_MAX;
+		case T:
+			return this.actionIndex >= EntitiesConst.TOUCHED_INDEX_MAX;
+		case I:
+			return this.actionIndex >= EntitiesConst.INTERACT_INDEX_MAX;
+		default:
+			return true;
+		}
 	}
 }

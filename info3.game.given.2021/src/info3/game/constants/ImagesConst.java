@@ -12,6 +12,7 @@ public class ImagesConst {
 	public static BufferedImage GRASS_TILE2, WATER_TILE2, DIRT_TILE2, ROCK_TILE2;
 	public static BufferedImage RED_HEART, BLUE_HEART, BLACK_HEART;
 	public static BufferedImage MENU_PICTURE;
+	public static BufferedImage CREDIT_PICTURE;
 
 	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
@@ -76,6 +77,7 @@ public class ImagesConst {
 		BLACK_HEART = loadTile("empty_heart");
 
 		MENU_PICTURE = loadTile("menu_picture");
+		CREDIT_PICTURE = loadTile("Credits_projet");
 
 		HERMIT = loadSprite("Hermit", 4, 3);
 		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 4);

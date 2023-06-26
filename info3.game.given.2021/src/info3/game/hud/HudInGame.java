@@ -164,13 +164,29 @@ public class HudInGame {
 		
 		Font f = new Font(null, 1, 100);
 		g.setFont(f);
-		g.setColor(Color.red);
 		
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(deathMessage, g);
 		int textWidth = (int) rec.getWidth();
 		int textHeight = (int) rec.getHeight();
 		
+		g.setColor(new Color(0,0,0,175));
+		g.fillRect(0, (height / 3), width, (height / 3));
+		g.setColor(Color.red);
 		g.drawString(deathMessage, (width / 2) - (textWidth / 2), (height / 2) + (textHeight) / 2);
+	}
+	
+	public void setDungeonEntrance(Graphics g, int width, int height) {
+		String cantEnter = "Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu !";
+		
+		Font f = new Font(null, 1, 40);
+		g.setFont(f);
+		g.setColor(Color.red);
+		
+		Rectangle2D rec = g.getFontMetrics().getStringBounds(cantEnter, g);
+		int textWidth = (int) rec.getWidth();
+		int textHeight = (int) rec.getHeight();
+		
+		g.drawString(cantEnter, (width / 2) - (textWidth / 2), (height / 4) + (textHeight) / 2);
 	}
 
 	public void paint(Graphics g) {
@@ -278,6 +294,10 @@ public class HudInGame {
 		
 		if (EntitiesConst.GAME.paintDead) {
 			showDeadMessage(g, width, height);
+		}
+		
+		if (Hero.tryToEnterDungeon) {
+			setDungeonEntrance(g, width, height);
 		}
 
 		if (EntitiesConst.MAP instanceof DungeonMap) {

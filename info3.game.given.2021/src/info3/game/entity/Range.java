@@ -19,6 +19,8 @@ public class Range extends Hero {
 		this.health = 8;
 		this.maxHealth = this.health;
 		this.attackSpeed = 500;
+		this.range = 3;
+		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))
@@ -54,9 +56,11 @@ public class Range extends Hero {
 	@Override
 	public void waited() {
 		this.actionIndex = 0;
-		if (EntitiesConst.GAME.player1.health <= 0) {
+		Melee otherPlayer = EntitiesConst.GAME.player1;
+		Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+		if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
 			this.healingPotions--;
-			EntitiesConst.GAME.player1.revive();
+			otherPlayer.revive();
 		}
 	}
 

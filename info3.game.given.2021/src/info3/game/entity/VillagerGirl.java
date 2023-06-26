@@ -24,7 +24,7 @@ public class VillagerGirl extends Villager {
 		VillagerGirl.completed = false;
 		this.completedDialogs = new LinkedList<>();
 		this.completedDialogsIndex = 0;
-		this.name = "Villager";
+		this.name = "VillagerGirl";
 		this.dialogs.add("Oyé Oyé, jeunes aventuriers !\nBienvenue à QuoicoubehLand !");
 		this.dialogs.add("Depuis que le dragon habite nos \nterres, nous ne sommes plus en \nsécurité.");
 		this.dialogs.add("Les squelettes et les orcs rodent \ndans les alentours et menacent \nnotre village");
@@ -46,27 +46,6 @@ public class VillagerGirl extends Villager {
 		this.anim = new Animation(this, ImagesConst.VILLAGERGIRL, dirs, acts);
 		this.scale = EntitiesConst.VILLAGERGIRL_SCALE;
 		
-	}
-	
-	@Override
-	public void Move(Aut_Direction d) {
-		float x = this.location.getX();
-		float y =this.location.getY();
-		Aut_Direction dir = d.rightDirection(this);
-		if (x > 35 && dir == Aut_Direction.E  || x < 25 && dir == Aut_Direction.W || y > 35 && dir == Aut_Direction.S || y < 25 && dir == Aut_Direction.N) {
-			dir = Aut_Direction.B;
-			dir = dir.rightDirection(this);
-			super.Move(dir);
-		}else {
-			super.Move(d);
-		}
-			for (int i = 0; i < EntitiesConst.MAP.bubbles.size() ; i++) {
-				SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
-				if (bubble.v == this) {
-					EntitiesConst.MAP.bubbles.remove(i);
-				}
-			}
-		this.dialogIndex = 0;
 	}
 	
 	@Override

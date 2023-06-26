@@ -20,7 +20,7 @@ public class Goblin extends Mob {
 		this.weaponDamage = EntitiesConst.GOBLIN_DAMAGE;
 		this.weaponRange = EntitiesConst.GOBLINE_RANGE;
 		this.scale = EntitiesConst.GOBLIN_SCALE;
-		this.detectionRadius = 5;
+		this.detectionRadius = EntitiesConst.GOBLIN_DETECTION;
 		this.attackSpeed = 1000;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
@@ -35,6 +35,7 @@ public class Goblin extends Mob {
 		this.anim = new Animation(this,ImagesConst.GOBLIN, dirs, acts);
 
 		this.category = Aut_Category.A;
+		this.hitbox.update();
 	}
 	
 	

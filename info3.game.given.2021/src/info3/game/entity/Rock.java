@@ -10,7 +10,7 @@ import info3.game.constants.ImagesConst;
 public class Rock extends DecorElement {
 	public Rock(Location l) {
 		super();
-		this.name = "BombRock";
+		this.name = "Rock";
 		this.location = l;
 		this.hitbox.update();
 		
@@ -38,6 +38,8 @@ public class Rock extends DecorElement {
 
 	@Override
 	public void takeDamage(Entity attacker) {
-		this.health = health - attacker.weaponDamage;
+		if(attacker instanceof Bomb) {
+			this.health = health - attacker.weaponDamage;
+		}
 	}
 }

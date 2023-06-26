@@ -18,7 +18,7 @@ public class Skeleton extends Mob {
 		this.weaponDamage = EntitiesConst.SKELETON_DAMAGE;
 		this.weaponRange = EntitiesConst.SKELETON_RANGE;
 		this.scale = EntitiesConst.SKELETON_SCALE;
-		this.detectionRadius = 5;
+		this.detectionRadius = EntitiesConst.SKELETON_DETECTION;
 		this.attackSpeed = 1000;
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))

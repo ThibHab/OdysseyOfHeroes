@@ -27,6 +27,7 @@ public class Melee extends Hero {
 		this.attackSpeed = 300;
 		this.health = 12;
 		this.maxHealth = this.health;
+		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))
@@ -61,9 +62,11 @@ public class Melee extends Hero {
 	@Override
 	public void waited() {
 		this.actionIndex = 0;
-		if (EntitiesConst.GAME.player2.health <= 0) {
+		Range otherPlayer = EntitiesConst.GAME.player2;
+		Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+		if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
 			this.healingPotions--;
-			EntitiesConst.GAME.player2.revive();
+			otherPlayer.revive();
 		}
 	}
 
@@ -92,7 +95,7 @@ public class Melee extends Hero {
 
 	@Override
 	public void updateStats() {
-		this.weaponDamage += 2;
+		this.weaponDamage += 1;
 
 		if (Hero.level % 2 == 0 && this.maxHealth < 20) {
 			this.maxHealth += 1;

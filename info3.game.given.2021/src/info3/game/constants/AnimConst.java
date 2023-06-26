@@ -80,7 +80,7 @@ public class AnimConst {
 	public static final int TIME_SWORD_EFFECT = 200;
 	public static final int TIME_SPEAR_EFFECT = 200;
 	public static final int TIME_EXPLOSION_EFFECT = 200;
-	public static final int TIME_HEAL_EFFECT = 200;
+	public static final int TIME_HEAL_EFFECT = 1000;
 	public static final int TIME_SMOKE_EFFECT = 200;
 	public static final int TIME_BLOOD_EFFECT = 200;
 	public static final int TIME_GROUND_EFFECT = 200;
