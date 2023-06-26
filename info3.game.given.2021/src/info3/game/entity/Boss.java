@@ -42,9 +42,10 @@ public class Boss extends Mob {
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this, ImagesConst.BOSS, dirs, acts);
 		this.phase = 0;
+		this.action = Action.S;
 		
 		this.scale = EntitiesConst.BOSS_SCALE;
-		this.hitbox = new Hitbox(this, (float) 1.0, (float) 1.0);
+		this.hitbox = new Hitbox(this, (float) 2.0, (float) 2.0);
 	}
 	
 	@Override
@@ -80,11 +81,11 @@ public class Boss extends Mob {
 
 			boolean randomMob = random.nextBoolean();
 			Tile tile = EntitiesConst.MAP_MATRIX[(int) mobLocation.getX()][(int) mobLocation.getY()];
-//			if (randomMob) {
-////				tile.entity = new Skeleton(mobLocation);
-//			} else {
+			if (randomMob) {
+				tile.entity = new Skeleton(mobLocation);
+			} else {
 				tile.entity = new Goblin(mobLocation);
-//			}
+			}
 		}
 	}
 	

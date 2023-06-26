@@ -44,7 +44,7 @@ public class Projectile extends Entity {
 		super();
 		this.direction = d;
 		this.category = Aut_Category.M;
-		this.name = "EnergyBall";
+		this.name = "Projectile";
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				this.automaton = next;
