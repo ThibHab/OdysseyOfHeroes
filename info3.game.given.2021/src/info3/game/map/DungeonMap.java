@@ -39,24 +39,18 @@ public class DungeonMap extends Map {
 		this.torches = new LinkedList<Torch>();
 		int x, y;
 		Location loc;
-		Random r = new Random();
+		Random r = new Random(EntitiesConst.SEED);
 		for (int i = 0; i < EntitiesConst.NUMBER_OF_TORCHES; i++) {
 			do {
 				x = r.nextInt(sizeX - 2) + 1;
 				y = r.nextInt(sizeY - 2) + 1;
 			} while (map[x][y].entity != null);
-			if (i < 3)
-				loc = new Location(x, y);
-			else
-				loc = new Location(x, sizeY - 1 - y);
-
+			
+			loc = new Location(x, y);
 			Torch t = new Torch(loc);
 			torches.add(t);
-			this.map[x][(int) loc.getY()].entity = t;
+			this.map[x][y].entity = t;
 		}
-
-		EntitiesConst.MAP = this;
-		EntitiesConst.MAP_MATRIX = this.map;
 	}
 
 	public void setDongeonWalls(int x, int y, int nbTileX, int nbTileY) {
