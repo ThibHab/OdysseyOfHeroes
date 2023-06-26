@@ -1,5 +1,7 @@
 package info3.game.entity;
 
+import java.io.RandomAccessFile;
+
 import animations.Animation;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Direction;
@@ -7,15 +9,17 @@ import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.sound.RandomFileInputStream;
 
 public class Hermit extends Villager {
 
 	public Hermit(Location l) {
 		super(l);
 		this.name = "Hermit";
-		this.dialogs.add("Enchanté jeune guerrier. je\n suis l'hermite suprême de la forêt");
-		this.dialogs.add("Tiens voilà le feu pour \ntuer le dragon !");
-		this.dialogs.add("Bon courage ! Moi je vais méditer.");
+		this.dialogs.add("Enchanté jeunes guerriers. je\n suis l'hermite suprême de la forêt");
+		this.dialogs.add("Pour combattre le dragon, vous \naurez besoin du pouvoir du feu.");
+		this.dialogs.add("Je vous transmet ce pouvoir !");
+		this.dialogs.add("Bon courage ! Je retourne méditer.");
 		// TODO Auto-generated constructor stub
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -44,8 +48,18 @@ public class Hermit extends Villager {
 	@Override
 	public void talks() {
 		super.talks();
-		if (this.dialogIndex >= 3) {
+		if(this.dialogIndex == 3) {
+			try {
+				RandomAccessFile file = new RandomAccessFile("resources/sounds/fireUnlocked.ogg", "r");
+				RandomFileInputStream fis = new RandomFileInputStream(file);
+				EntitiesConst.GAME.m_canvas.playSound("lvlup",fis, 0, 0.8F);
+			} catch (Throwable th) {
+				th.printStackTrace(System.err);
+				System.exit(-1);
+			}
 			Range.unlockFire();
+		}
+		if (this.dialogIndex >= 4) {
 			this.dialogs.clear();
 		}
 	}
