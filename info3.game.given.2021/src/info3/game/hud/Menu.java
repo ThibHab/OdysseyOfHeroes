@@ -17,7 +17,7 @@ public class Menu extends Button {
 	public Button[] buttons;
 	boolean isStarted;
 	public int nbChild;
-	Image imgBackground; // TODO trouver une image pour le menu
+	Image imgBackground;
 	public Credits credits;
 
 	public Menu(String name) {
