@@ -63,7 +63,7 @@ public class EntitiesConst {
 	public static final float GOBLIN_SCALE = 1.2f;
 	
 	// BOSS CONSTANTS
-	public static final int BOSS_HEALTH = 100;
+	public static final int BOSS_HEALTH = 500;
 	public static final int BOSS_BASE_DAMAGE = 4;
 	public static final int BOSS_FLAME_ATTACK_DAMAGE = 100;
 	public static final int BOSS_RANGE = 2;

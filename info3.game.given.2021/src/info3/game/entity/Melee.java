@@ -93,7 +93,7 @@ public class Melee extends Hero {
 
 	@Override
 	public void updateStats() {
-		this.weaponDamage += 2;
+		this.weaponDamage += 1;
 
 		if (Hero.level % 2 == 0 && this.maxHealth < 20) {
 			this.maxHealth += 1;
