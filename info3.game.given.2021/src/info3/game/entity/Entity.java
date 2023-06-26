@@ -9,6 +9,7 @@ import animations.Animation;
 import animations.BloodEffect;
 import animations.Effect;
 import animations.GroundEffect;
+import animations.HealEffect;
 import animations.SpearEffect;
 import animations.SwordEffect;
 import info3.game.Game;
@@ -374,6 +375,8 @@ public abstract class Entity implements IEntity {
 
 	public void revive() {
 		this.currentState = automaton.initial;
+		new HealEffect(this.location);
+		System.out.println("wtf heal ??");
 		this.dead = false;
 		this.frozen = false;
 		this.actionIndex = 0;
