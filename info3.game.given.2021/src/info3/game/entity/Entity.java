@@ -377,7 +377,6 @@ public abstract class Entity implements IEntity {
 	public void revive() {
 		this.currentState = automaton.initial;
 		new HealEffect(this.location);
-		System.out.println("wtf heal ??");
 		this.dead = false;
 		this.frozen = false;
 		this.actionIndex = 0;
