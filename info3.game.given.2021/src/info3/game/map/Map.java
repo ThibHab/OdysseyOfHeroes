@@ -531,6 +531,20 @@ public abstract class Map implements IMap {
 				}
 			}
 		}
+		if(map[x][y + (radius/2) -1].entity != null) {
+			if (map[x][y + (radius/2) -1].entity instanceof Tree) {
+				delTree(x, y + (radius/2) -1);
+			} else {
+				map[x][y + (radius/2) -1].entity = null;
+			}
+		}
+		if(map[x][y + (radius/2) +1].entity != null) {
+			if (map[x][y + (radius/2) +1].entity instanceof Tree) {
+				delTree(x, y + (radius/2) +1);
+			} else {
+				map[x][y + (radius/2) +1].entity = null;
+			}
+		}
 	}
 
 	public void tickEntities(int x, int y, long elapsed) {

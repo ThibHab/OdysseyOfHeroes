@@ -48,5 +48,7 @@ public class WorldMap extends Map {
 		WorldMap.saveTile1.entity = null;
 		this.delTree((int)WorldMap.saveTile2.location.getX(), (int)WorldMap.saveTile2.location.getY());
 		WorldMap.saveTile2.entity = null;
+		
+		
 	}
 }
