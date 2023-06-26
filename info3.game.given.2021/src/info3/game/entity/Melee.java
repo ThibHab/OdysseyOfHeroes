@@ -27,6 +27,7 @@ public class Melee extends Hero {
 		this.attackSpeed = 300;
 		this.health = 12;
 		this.maxHealth = this.health;
+		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))
