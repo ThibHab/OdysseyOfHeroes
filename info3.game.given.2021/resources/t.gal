@@ -100,7 +100,7 @@ RangeEnnemy(Search) {
   | Cell(@, L) ? Turn(L) : (Standing)
   | Cell(@, R) ? Turn(R) : (Standing)
   | Cell(@, F) ? : (Standing)
-  | True ? 50% Move(F) / 15% Move(L) / 15% Move(R) / 10% Wait(1000) / 10% Wait(500) : (Walking)
+  | True ? 60% Move(F) / 20% Move(L) / 20% Move(R): (Walking)
   
   * (Standing)
   | !Cell(@, F) ? : (Walking)
