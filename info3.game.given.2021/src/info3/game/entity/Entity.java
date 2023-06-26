@@ -227,9 +227,10 @@ public abstract class Entity implements IEntity {
 		}
 
 		Location location = this.frontTileLocation(d);
-		if (EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity instanceof Hero)
+		Tile tile = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()];
+		if (tile.entity instanceof Hero || tile.entity instanceof Villager) {
 			return;
-		
+		}
 		if (location.getX() == this.location.getX() && location.getY() == this.location.getY())
 			this.die();
 		switch (c) {

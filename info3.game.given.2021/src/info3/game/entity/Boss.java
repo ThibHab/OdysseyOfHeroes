@@ -29,7 +29,7 @@ public class Boss extends Mob {
 		this.speed = EntitiesConst.BOSS_SPEED;
 		this.direction = Aut_Direction.W;
 		this.frozen = false;
-		this.range = 20;
+		this.range = 18;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -45,7 +45,7 @@ public class Boss extends Mob {
 		this.phase = 0;
 		
 		this.scale = EntitiesConst.BOSS_SCALE;
-		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
+		this.hitbox = new Hitbox(this, (float) 1.0, (float) 1.0);
 	}
 	
 	@Override
