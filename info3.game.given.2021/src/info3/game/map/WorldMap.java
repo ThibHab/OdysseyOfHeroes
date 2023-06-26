@@ -26,6 +26,13 @@ public class WorldMap extends Map {
 		this.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 		this.setMazeEntrance(EntitiesConst.MAZE_ENTRANCE_X_POS, EntitiesConst.MAZE_ENTRANCE_Y_POS);
 		
+		int x = (int)this.rockLoc.getX();
+		int y = (int)this.rockLoc.getY();
+		
+		delTree(x, y -1);
+		map[x][y -1].entity = null;
+		delTree(x, y +1);
+		map[x][y +1].entity = null;
 		
 		if (EntitiesConst.MAP == null && !EntitiesConst.GAME.reload) {
 			setPlayer(29, 31, p1);
@@ -48,5 +55,7 @@ public class WorldMap extends Map {
 		WorldMap.saveTile1.entity = null;
 		this.delTree((int)WorldMap.saveTile2.location.getX(), (int)WorldMap.saveTile2.location.getY());
 		WorldMap.saveTile2.entity = null;
+		
+		
 	}
 }
