@@ -23,7 +23,7 @@ public abstract class TransparentDecorElement extends DecorElement {
 		this.transparent=false;
 		int res=0;
 		for(int i=0;i<lenListe;i++) {
-			if(liste[i].entity != null && (liste[i].entity instanceof Hero || liste[i].entity instanceof NPC)) {
+			if(liste[i]!=null &&(liste[i].entity != null && (liste[i].entity instanceof Hero || liste[i].entity instanceof NPC))) {
 				this.transparent=true;
 				res=Math.max(res, liste[i].tpBlock.target.size());
 			}
