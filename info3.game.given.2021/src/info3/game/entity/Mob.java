@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.RandomAccessFile;
 
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.sound.RandomFileInputStream;
@@ -90,6 +92,19 @@ public abstract class Mob extends Entity {
 					this.anim.changeAction(action);
 			}
 			this.anim.step(elapsed);
+		}
+	}
+	
+	@Override
+	public void Pick(Aut_Direction d) {
+		if (d == null) {
+			d = this.direction;
+		}
+
+		Location location = frontTileLocation(d);
+		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
+		if (entity.category == Aut_Category.P && !(entity instanceof Chest)) {
+			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
 	}
 	
