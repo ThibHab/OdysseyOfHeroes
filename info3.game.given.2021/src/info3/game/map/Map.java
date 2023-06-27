@@ -1,16 +1,28 @@
 package info3.game.map;
 
-import java.awt.Graphics;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
-import info3.game.constants.Action;
 import animations.Effect;
-import info3.game.Game;
+import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
-import info3.game.constants.MapConstants;
-import info3.game.entity.*;
+import info3.game.entity.Bomb;
+import info3.game.entity.Boss;
+import info3.game.entity.Bush;
+import info3.game.entity.Chest;
+import info3.game.entity.DungeonEntrance;
+import info3.game.entity.Entity;
+import info3.game.entity.Hero;
+import info3.game.entity.House;
+import info3.game.entity.Location;
+import info3.game.entity.MazeEntrance;
+import info3.game.entity.Portal;
+import info3.game.entity.Projectile;
+import info3.game.entity.Rock;
+import info3.game.entity.SpeechBubble;
+import info3.game.entity.Statue;
+import info3.game.entity.TransparencyBlock;
+import info3.game.entity.Tree;
 
 public abstract class Map implements IMap {
 	public Tile[][] map;
@@ -31,7 +43,7 @@ public abstract class Map implements IMap {
 		this.projectiles = new LinkedList<>();
 		this.bubbles = new LinkedList<>();
 		this.effects = new LinkedList<>();
-		this.deadBush = new LinkedList<Bush>();
+		this.deadBush = new LinkedList<>();
 	}
 
 	void createTree(int x, int y) {
@@ -294,11 +306,12 @@ public abstract class Map implements IMap {
 
 	/**
 	 * Generate randomly with a chosen space between the chosen entity.
-	 * 
+	 *
 	 * @param rareness     the bigger the less entity it creates
 	 * @param seed         to set the random
 	 * @param spaceBetween the distance between two entity
 	 */
+	@Override
 	public void setEntityRandomly(int x, int y, int areaSize, int spaceBetween, String ent, long seed, int rareness) {
 		if (!(ent.equals("Bush")) && !(ent.equals("Rock")) && !(ent.equals("Tree")) && !(ent.equals("Portal"))) {
 			return;
@@ -572,9 +585,7 @@ public abstract class Map implements IMap {
 	}
 
 	public void tickEffects(long elapsed) {
-		Iterator<Effect> it = this.effects.iterator();
-		while (it.hasNext()) {
-			Effect eff = it.next();
+		for (Effect eff : this.effects) {
 			if (eff != null) {
 				eff.step(elapsed);
 			}

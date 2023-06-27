@@ -26,14 +26,6 @@ public class EnergyBall extends Projectile {
 		switch (a) {
 		case M:
 			return AnimConst.ENERGY_B_M;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
-		case S:
-			return 0;
 		default:
 			return 0;
 		}

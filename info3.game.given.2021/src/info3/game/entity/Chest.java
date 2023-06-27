@@ -24,24 +24,18 @@ public class Chest extends DecorElement {
 		}
 		this.currentState = automaton.initial;
 
-		Action acts[] = new Action[] { Action.S,  Action.H};
-		this.anim = new Animation(this,ImagesConst.CHEST, null, acts);
-		
+		Action acts[] = new Action[] { Action.S, Action.H };
+		this.anim = new Animation(this, ImagesConst.CHEST, null, acts);
+
 		this.width = 1;
 		this.height = 1;
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
-		case M:
-			return 0;
 		case H:
 			return AnimConst.CHEST_H;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.CHEST_S;
 		default:

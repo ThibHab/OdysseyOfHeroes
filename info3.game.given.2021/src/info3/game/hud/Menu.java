@@ -49,6 +49,7 @@ public class Menu extends Button {
 		isStarted = true;
 	}
 
+	@Override
 	public Button selected(int x, int y) {
 		for (int i = 0; i < nbChild; i++) {
 			Button b = buttons[i].selected(x, y);
@@ -73,7 +74,7 @@ public class Menu extends Button {
 		buttons[1] = newGame;
 		buttons[2] = creditPage;
 		buttons[3] = quit;
-		
+
 		nbChild = 4;
 
 		resume.setName("Reprendre la partie");
@@ -106,6 +107,7 @@ public class Menu extends Button {
 		m_height = m_frame.getHeight();
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		if (credits == null) {
 			GameCanvas c = EntitiesConst.GAME.m_canvas;
@@ -122,7 +124,6 @@ public class Menu extends Button {
 
 			Rectangle2D rec = g.getFontMetrics().getStringBounds(gameName, g);
 			int textWidth = (int) rec.getWidth();
-			int textHeight = (int) rec.getHeight();
 			g.drawString(gameName, (m_width / 2) - (textWidth / 2), m_height - 4 * (m_height / 5));
 		} else {
 			if (!credits.isCreditUp()) {
@@ -140,7 +141,6 @@ public class Menu extends Button {
 
 				Rectangle2D rec = g.getFontMetrics().getStringBounds(gameName, g);
 				int textWidth = (int) rec.getWidth();
-				int textHeight = (int) rec.getHeight();
 				g.drawString(gameName, (m_width / 2) - (textWidth / 2), m_height - 4 * (m_height / 5));
 			} else {
 				credits.paint(g);

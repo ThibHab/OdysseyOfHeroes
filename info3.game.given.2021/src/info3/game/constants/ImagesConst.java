@@ -14,18 +14,17 @@ public class ImagesConst {
 	public static BufferedImage RED_HEART, BLUE_HEART, BLACK_HEART;
 	public static BufferedImage MENU_PICTURE, CREDIT_PICTURE, CONTROL_PICTURE, MINIMAP_PICTURE, LOGO;
 
-	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR;
+	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR, BUSH, CHEST, TORCH;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
-	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL, DUNGEON_ENTRANCE_OPEN,
+	public static BufferedImage[] MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL, DUNGEON_ENTRANCE_OPEN,
 			DUNGEON_ENTRANCE_CLOSED, PORTAL;
-	public static BufferedImage[] MELEE, RANGE;
+	public static BufferedImage[] MELEE, RANGE, BOMB, SWORD, FIRE_POWER;
 	public static BufferedImage[] ENERGYBALL, FIREBALL, BONE;
 	public static BufferedImage[] SPEECHBUBBLE;
 	public static BufferedImage[] SAVE_TILES;
 	public static BufferedImage[] SWORD_EFFECT, SPEAR_EFFECT, HEAL_EFFECT, EXPLOSION_EFFECT, SMOKE_EFFECT, BLOOD_EFFECT,
 			GROUND_EFFECT;
-	public static BufferedImage[] BOMB, SWORD, FIRE_POWER;
 
 	public ImagesConst() throws IOException {
 		path = "resources/sprites/";
@@ -34,10 +33,6 @@ public class ImagesConst {
 		WATER_TILE = loadTile("Water");
 		DIRT_TILE = loadTile("Dirt");
 		ROCK_TILE = loadTile("Stone");
-		GRASS_TILE2 = loadTile("Grass2");
-		WATER_TILE2 = loadTile("");
-		DIRT_TILE2 = loadTile("");
-		ROCK_TILE2 = loadTile("");
 		ROCK_DUNGEON = loadTile("rock_tile_boss");
 		SAVE_TILES = loadSprite("SaveTiles", 2, 1);
 
@@ -45,6 +40,9 @@ public class ImagesConst {
 		ROCK = loadSprite("Rock", 1, 1);
 		TREE = loadSprite("Tree", 2, 1);
 		STATUE = loadSprite("Statue", 1, 1);
+		BUSH = loadSprite("bush", 1, 1);
+		CHEST = loadSprite("Chest", 2, 2);
+		TORCH = loadSprite("TorchNoLight", 2, 3);
 
 		COIN = loadSprite("Coin", 3, 2);
 		HEALING_POTION = loadSprite("Healing", 3, 3);
@@ -56,11 +54,10 @@ public class ImagesConst {
 		BOSS = loadSprite("Boss", 4, 3);
 		GOBLIN = loadSprite("Orc", 8, 8);
 		SKELETON = loadSprite("Skeleton", 6, 6);
-		MERCHANT = loadSprite("", 1, 1);
+		HERMIT = loadSprite("Hermit", 4, 3);
+		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 4);
+		MINER = loadSprite("Miner", 4, 4);
 
-		BUSH = loadSprite("bush", 1, 1);
-		CHEST = loadSprite("Chest", 2, 2);
-		TORCH = loadSprite("TorchNoLight", 2, 3);
 		MAZE_WALL = loadSprite("MazeWall", 1, 1);
 		MAZE_ENTRANCE = loadSprite("MazeEntrance", 1, 1);
 		DUNGEON_WALL = loadSprite("DungeonWall", 3, 2);
@@ -84,12 +81,10 @@ public class ImagesConst {
 		CONTROL_PICTURE = loadTile("controls");
 		MINIMAP_PICTURE = loadTile("Minimap");
 		LOGO = loadTile("Logo");
-
-		HERMIT = loadSprite("Hermit", 4, 3);
-		VILLAGERGIRL = loadSprite("VillagerGirl", 4, 4);
-		MINER = loadSprite("Miner", 4, 4);
+		CURSOR = loadSprite("agrou_vert", 1, 1);
 
 		SPEECHBUBBLE = loadSprite("SpeechBubble", 1, 1);
+
 		SWORD_EFFECT = loadSprite("SwordAttackV2", 5, 1);
 		SPEAR_EFFECT = loadSprite("SpearAttack", 3, 2);
 		HEAL_EFFECT = loadSprite("Heal", 4, 4);
@@ -97,9 +92,6 @@ public class ImagesConst {
 		SMOKE_EFFECT = loadSprite("Smoke", 3, 2);
 		BLOOD_EFFECT = loadSprite("BloodV2", 5, 2);
 		GROUND_EFFECT = loadSprite("GroundV3", 4, 1);
-
-		CURSOR = loadSprite("agrou_vert", 1, 1);
-
 	}
 
 	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) {

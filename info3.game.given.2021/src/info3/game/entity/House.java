@@ -135,7 +135,7 @@ public class House extends TransparentDecorElement {
 				EntitiesConst.MAP_MATRIX[(int) topOri.getX()][(int) topOri.getY()].entity = null;
 				EntitiesConst.MAP_MATRIX[(int) topRightOri.getX()][(int) topRightOri.getY()].entity = null;
 				EntitiesConst.MAP_MATRIX[(int) rightOri.getX()][(int) rightOri.getY()].entity = null;
-				
+
 				EntitiesConst.MAP_MATRIX[(int) topLeftDest.getX()][(int) topLeftDest.getY()].entity = this;
 				EntitiesConst.MAP_MATRIX[(int) leftDest.getX()][(int) leftDest.getY()].entity = this;
 				EntitiesConst.MAP_MATRIX[(int) topDest.getX()][(int) topDest.getY()].entity = this;
@@ -148,12 +148,13 @@ public class House extends TransparentDecorElement {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
 		if (this.transparent) {
 			Graphics2D gr = (Graphics2D) g;
-			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-					(float) (EntitiesConst.HOUSE_OPACITY / this.opacityDiv)));
+			gr.setComposite(
+					AlphaComposite.getInstance(AlphaComposite.SRC_OVER, EntitiesConst.HOUSE_OPACITY / this.opacityDiv));
 			gr.drawImage(img, (int) (screenPosX - tileSize), (int) (screenPosY - 2 * tileSize),
 					(int) (tileSize * scale * width), (int) (tileSize * scale * height), null);
 			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));

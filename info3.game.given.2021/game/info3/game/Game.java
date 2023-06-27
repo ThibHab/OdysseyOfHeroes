@@ -30,10 +30,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.LinkedList;
@@ -43,7 +41,8 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import info3.game.automata.*;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Direction;
 import info3.game.automata.ast.AST;
 import info3.game.automata.ast.AutCreator;
 import info3.game.automata.ast.IVisitor;
@@ -52,12 +51,21 @@ import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 import info3.game.constants.MapConstants;
-import info3.game.entity.*;
+import info3.game.entity.Boss;
+import info3.game.entity.Bush;
+import info3.game.entity.Entity;
+import info3.game.entity.Hero;
+import info3.game.entity.Location;
+import info3.game.entity.Melee;
+import info3.game.entity.Miner;
+import info3.game.entity.Range;
+import info3.game.entity.Rock;
+import info3.game.entity.Tree;
+import info3.game.entity.VillagerGirl;
 import info3.game.graphics.GameCanvas;
 import info3.game.hud.HudInGame;
 import info3.game.hud.InGameMenu;
 import info3.game.hud.Menu;
-import info3.game.map.DebugMap;
 import info3.game.map.DungeonMap;
 import info3.game.map.IMap;
 import info3.game.map.Map;
@@ -78,17 +86,6 @@ public class Game {
 	public static void main(String args[]) throws Exception {
 		try {
 			System.out.println("Game starting...");
-//			newGame = false;
-//			if (newGame)
-//				game = new Game(null);
-//			else {
-//				File f = new File("save.txt");
-//				long length = f.length();
-//				if (length == 0)
-//					game = new Game(null);
-//				else
-//					game = new Game(new File("save.txt"));
-//			}
 			game = new Game();
 			System.out.println("Game started.");
 		} catch (Throwable th) {
@@ -101,7 +98,6 @@ public class Game {
 	JLabel m_text;
 	public GameCanvas m_canvas;
 	public CanvasListener m_listener;
-	Cowboy m_cowboy;
 	public Melee player1;
 	public Range player2;
 	Sound m_music;
@@ -118,31 +114,6 @@ public class Game {
 	public boolean showMap;
 
 	Game() throws Exception {
-		// creating a cowboy, that would be a model
-		// in an Model-View-Controller pattern (MVC)
-//		m_cowboy = new Cowboy(this);
-//		byte[] buffer = null;
-//		if (file == null) {
-//			file = new File("save.txt");
-//			save = new RandomAccessFile(file, "rw");
-//			Random r = new Random();
-//			EntitiesConst.SEED = r.nextInt();
-//			reload = false;
-//		} else {
-//			reload = true;
-//		}
-//
-//		if (!file.exists()) {
-//			file.createNewFile();
-//		}
-//		save = new RandomAccessFile(file, "rw");
-//
-//		if (reload) {
-//			buffer = new byte[(int) save.length()];
-//			save.readFully(buffer);
-//			loadSeed(buffer);
-//		}
-
 		File f = new File("save.txt");
 		long length = f.length();
 		if (length == 0) {
@@ -155,19 +126,10 @@ public class Game {
 		new EntitiesConst();
 		EntitiesConst.GAME = this;
 
-//		listAutomata = new LinkedList<Aut_Automaton>();
-//		getAutomata();
-
-		// creating a listener for all the events
-		// from the game canvas, that would be
-		// the controller in the MVC pattern
 		m_listener = new CanvasListener(this);
-		// creating the game canvas to render the game,
-		// that would be a part of the view in the MVC pattern
 		m_canvas = new GameCanvas(m_listener);
 
 		System.out.println("  - creating frame...");
-//		Dimension d = new Dimension(1024, 768);
 		Rectangle rec = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		Dimension d = new Dimension((int) rec.getWidth(), (int) rec.getHeight());
 		m_frame = m_canvas.createFrame(d);
@@ -177,7 +139,7 @@ public class Game {
 		m_frame.setIconImage(null);
 
 		System.out.println("  - setting up the frame...");
-		
+
 		m_frame.setIconImage(ImagesConst.LOGO);
 		m_frame.setName("Odyssey of Heroes");
 
@@ -596,7 +558,8 @@ public class Game {
 			Range.unlockFire();
 		} else {
 			Hero.firePowerUnlocked = false;
-			EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
+			EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS,
+					EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 		}
 
 		VillagerGirl.started = Boolean.valueOf(villagerGirl[0]);

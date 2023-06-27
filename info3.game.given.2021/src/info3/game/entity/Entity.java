@@ -1,18 +1,12 @@
 package info3.game.entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.io.RandomAccessFile;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import animations.Animation;
 import animations.BloodEffect;
-import animations.Effect;
-import animations.GroundEffect;
 import animations.HealEffect;
-import animations.SpearEffect;
-import animations.SwordEffect;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
@@ -20,13 +14,8 @@ import info3.game.automata.Aut_Direction;
 import info3.game.automata.Aut_State;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
-import info3.game.constants.MapConstants;
-import info3.game.map.DungeonMap;
 import info3.game.map.Map;
-import info3.game.map.MapRender;
-import info3.game.map.MazeMap;
 import info3.game.map.Tile;
-import info3.game.sound.RandomFileInputStream;
 
 public abstract class Entity implements IEntity {
 	public String name;
@@ -83,8 +72,7 @@ public abstract class Entity implements IEntity {
 
 		this.mazeCounter = 0;
 		this.mazeCounterActivated = false;
-		
-		
+
 	}
 
 	public static void InitStatics(Game g, int lvl, int xp) {
@@ -220,7 +208,7 @@ public abstract class Entity implements IEntity {
 			}
 		}
 	}
-	
+
 	@Override
 	public void Turn(Aut_Direction d) {
 		if (d != null) {
@@ -228,7 +216,7 @@ public abstract class Entity implements IEntity {
 			this.anim.changeAction(action);
 		}
 	}
-	
+
 	@Override
 	public void Egg(Aut_Direction d, Aut_Category c, int id) {
 		if (d == null) {
@@ -286,7 +274,7 @@ public abstract class Entity implements IEntity {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void Hit(Aut_Direction d) {
 		if (!this.frozen && !hitFrozen) {
@@ -344,22 +332,9 @@ public abstract class Entity implements IEntity {
 	}
 
 	public void takeDamage(Entity attacker) {
-//		else if (!this.frozen /* && attacker.category != this.category */) {
 		if (EntitiesConst.GAME.debug)
 			System.out.println("victim has " + this.health + " hearts");
-//			this.frozen = true;
-//			this.action = Action.T;
-//			this.anim.changeAction(action);
 		this.health -= attacker.weaponDamage;
-//			if (this.health - attacker.weaponDamage > 0) {
-//				this.health -= attacker.weaponDamage;
-//			} else {
-//				this.health = 0;
-//				if (attacker.category == Aut_Category.AT) {
-//					Hero.addExperience(attacker);
-//				}
-//			}
-//		}
 	}
 
 	public void die() {
@@ -417,7 +392,7 @@ public abstract class Entity implements IEntity {
 	@Override
 	public void Explode() {
 	}
-	
+
 	@Override
 	public void Pick(Aut_Direction d) {
 		if (d == null) {
@@ -430,28 +405,28 @@ public abstract class Entity implements IEntity {
 			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
 	}
-	
+
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
 	}
-	
+
 	@Override
 	public void Wizz(Aut_Direction d, Aut_Category c) {
 	}
-	
+
 	@Override
 	public void Power() {
 		this.health = maxHealth;
 	}
-	
+
 	@Override
 	public void Store(Aut_Category c) {
 	}
-	
+
 	@Override
 	public void Throw(Aut_Direction d, Aut_Category category) {
 	}
-	
+
 	@Override
 	public void Wait(int time) {
 		this.timer = time;
@@ -461,14 +436,9 @@ public abstract class Entity implements IEntity {
 	public void waited() {
 
 	}
-	
+
 	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-//		BufferedImage img = anim.getFrame();
-//		int diff = (int) (tileSize * (scale - 1)) / 2;
-//		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
-//				(int) (tileSize * scale), null);
-
 		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
 		int dimension = (int) (scale * tileSize);

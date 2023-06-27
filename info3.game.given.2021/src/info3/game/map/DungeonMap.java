@@ -1,17 +1,13 @@
 package info3.game.map;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import info3.game.automata.Aut_Direction;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.Boss;
 import info3.game.entity.Entity;
 import info3.game.entity.Location;
-import info3.game.entity.Melee;
 import info3.game.entity.Rock;
 import info3.game.entity.Torch;
 
@@ -40,7 +36,7 @@ public class DungeonMap extends Map {
 		this.setPlayer(4, 5, p1);
 		this.setPlayer(4, 6, p2);
 
-		DungeonMap.torches = new LinkedList<Torch>();
+		DungeonMap.torches = new LinkedList<>();
 		int x, y;
 		Location loc;
 		Random r = new Random(EntitiesConst.SEED);

@@ -19,14 +19,13 @@ public class Miner extends Villager {
 
 	public Miner(Location l) {
 		super(l);
-		this.sold = false;
+		Miner.sold = false;
 		this.sellingDialogs = new LinkedList<>();
 		this.sellingDialogsIndex = 0;
 		this.sellingDialog = "50 pièces d'or pour une bombe, \ncrois-moi c'est une bonne affaire ! \nTu peux même faire exploser des \nrochers avec. Fais en bon usage !";
 		this.name = "Miner";
 		this.dialogs.add("Salut ! Je suis Billy-Boy, fils \nde mineur.");
-		this.dialogs.add(
-				"Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé.");
+		this.dialogs.add("Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé.");
 		this.dialogs.add("Ah... tu n'as pas un montant \nde pièces d'or suffisant.");
 		this.dialogs.add("Reviens me voir quand ce sera \nle cas !");
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
@@ -50,16 +49,16 @@ public class Miner extends Villager {
 					EntitiesConst.MAP.bubbles.remove(i);
 				}
 			}
-			if (!this.sold) {
+			if (!Miner.sold) {
 				EntitiesConst.MAP.bubbles.add(new SpeechBubble(this, this.sellingDialog));
 				Hero.coins -= 50;
 				Hero.bombs++;
-				this.sold = true;
+				Miner.sold = true;
 			} else {
-				this.sold = false;
+				Miner.sold = false;
 			}
 		} else {
-			if (!this.sold) {
+			if (!Miner.sold) {
 				super.talks();
 			} else {
 				for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
@@ -68,7 +67,7 @@ public class Miner extends Villager {
 						EntitiesConst.MAP.bubbles.remove(i);
 					}
 				}
-				this.sold = false;
+				Miner.sold = false;
 			}
 		}
 	}

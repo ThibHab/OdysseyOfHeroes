@@ -1,22 +1,14 @@
 package info3.game.entity;
 
-import java.io.RandomAccessFile;
-
 import animations.Animation;
-import animations.SpearEffect;
 import animations.SwordEffect;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
-import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.constants.MapConstants;
-import info3.game.map.Map;
-import info3.game.map.MapRender;
-import info3.game.sound.RandomFileInputStream;
 
 public class Melee extends Hero {
 	public Melee(String name, Game g) {
@@ -101,7 +93,7 @@ public class Melee extends Hero {
 			this.maxHealth += 1;
 		}
 
-		if (this.dead == false)
+		if (!this.dead)
 			this.health = this.maxHealth;
 	}
 

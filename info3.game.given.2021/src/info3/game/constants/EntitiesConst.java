@@ -38,6 +38,7 @@ public class EntitiesConst {
 	public static final int HERO_SPEED = 2;
 	public static final int HEALING_POTIONS = 0;
 	public static final int STRENGTH_POTIONS = 0;
+	public static final float HEROES_SCALE = 1.45f;
 
 	// MELEE CONSTANTS
 	public static final int MELEE_DAMAGE = 3;
@@ -95,11 +96,13 @@ public class EntitiesConst {
 	// ROCK CONSTANTS
 	public static final float ROCK_SCALE = 1.3f;
 
-	// HEROES CONSTANTS
-	public static final float HEROES_SCALE = 1.45f;
+	// DUNGEON ENTRANCE CONSTANTS
+	public static final float DUNGEON_ENTRANCE_SCALE = 1.0f;
+	public static final int DUNGEON_ENTRANCE_X_POS = 70;
+	public static final int DUNGEON_ENTRANCE_Y_POS = 30;
 
-	// COWBOY CONSTANTS
-	public static final float COWBOY_SCALE = 1.3f;
+	// DUNGEON CONSTANTS
+	public static final int NUMBER_OF_TORCHES = 6;
 
 	// ENERGYBALL CONSTANTS
 	public static float ENERGYBALL_SCALE = 1.2f;
@@ -121,11 +124,6 @@ public class EntitiesConst {
 	public static final float STATUE_SCALE = 4f;
 	public static final float STATUE_OPACITY = 0.75f;
 
-	// DUNGEON ENTRANCE CONSTANTS
-	public static final float DUNGEON_ENTRANCE_SCALE = 1.0f;
-	public static final int DUNGEON_ENTRANCE_X_POS = 70;
-	public static final int DUNGEON_ENTRANCE_Y_POS = 30;
-
 	// END GAME CONSTANTS
 	public static final int SPRING_X_POS = 30;
 	public static final int SPRING_Y_POS = 43;
@@ -135,9 +133,6 @@ public class EntitiesConst {
 	public static final int MAZE_ENTRANCE_X_POS = 30;
 	public static final int MAZE_ENTRANCE_Y_POS = 70;
 	public static final int MAZE_COUNTER_LIMIT = 120000;
-
-	// DUNGEON CONSTANTS
-	public static final int NUMBER_OF_TORCHES = 6;
 
 	public static int getActionIndexMax(Action a) {
 		if (a == null)

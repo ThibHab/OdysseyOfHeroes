@@ -3,7 +3,6 @@ package info3.game.entity;
 import animations.Animation;
 import info3.game.Game;
 import info3.game.automata.Aut_Automaton;
-import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
@@ -111,7 +110,7 @@ public class Range extends Hero {
 			this.weaponRange += 1;
 		}
 
-		if (this.dead == false) {
+		if (!this.dead) {
 			this.health = this.maxHealth;
 		}
 	}
@@ -123,9 +122,7 @@ public class Range extends Hero {
 
 	public static void unlockFire() {
 		Hero.firePowerUnlocked = true;
-//		ImagesConst.loadFire();
-//		ImagesConst.DUNGEON_ENTRANCE_CLOSED = ImagesConst.DUNGEON_ENTRANCE_OPEN;
-		EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
-//		EntitiesConst.ENERGYBALL_SCALE = 0.8f;
+		EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS,
+				EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 	}
 }

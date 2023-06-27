@@ -26,19 +26,20 @@ public class Tree extends TransparentDecorElement {
 		this.currentState = automaton.initial;
 
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.TREE, null, acts);
+		this.anim = new Animation(this, ImagesConst.TREE, null, acts);
 		this.width = 3;
 		this.height = 3;
 
 		this.scale = EntitiesConst.TREE_SCALE;
 	}
 
+	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
 		if (this.transparent) {
 			Graphics2D gr = (Graphics2D) g;
-			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-					(float) (EntitiesConst.TREE_OPACITY / this.opacityDiv)));
+			gr.setComposite(
+					AlphaComposite.getInstance(AlphaComposite.SRC_OVER, EntitiesConst.TREE_OPACITY / this.opacityDiv));
 			gr.drawImage(img, (int) (screenPosX - tileSize), (int) (screenPosY - 2 * tileSize),
 					(int) (tileSize * scale * width), (int) (tileSize * scale * height), null);
 			gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));

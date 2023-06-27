@@ -5,11 +5,11 @@ import java.util.Random;
 import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.MapConstants;
-import info3.game.entity.MazeWall;
 import info3.game.entity.Chest;
 import info3.game.entity.Entity;
 import info3.game.entity.Goblin;
 import info3.game.entity.Location;
+import info3.game.entity.MazeWall;
 
 public class MazeMap extends Map {
 	public Maze maze;
@@ -39,9 +39,6 @@ public class MazeMap extends Map {
 				}
 			}
 		}
-
-		// this.maze.pretty_print(MapConstants.MAZE_MAP_CORRIDOR_SIZE);
-
 		this.setPlayer(1, 1, p1);
 		this.setPlayer(1, 3, p2);
 

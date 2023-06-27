@@ -15,6 +15,7 @@ public abstract class Item extends Entity {
 		this.category = Aut_Category.P;
 	}
 
+	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);

@@ -11,8 +11,8 @@ import info3.game.constants.ImagesConst;
 
 public class Torch extends DecorElement {
 
-	public boolean lit=false;
-	
+	public boolean lit = false;
+
 	public Torch(Location l) {
 		super();
 		this.name = "Torch";
@@ -23,20 +23,20 @@ public class Torch extends DecorElement {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		
+
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.TORCH, null, acts);		
+		this.anim = new Animation(this, ImagesConst.TORCH, null, acts);
 		this.width = 1;
 		this.height = 1;
-		
-		if(this.location != null) {
-			this.hitbox = new Hitbox(this, (float)0.90, (float)0.90);
+
+		if (this.location != null) {
+			this.hitbox = new Hitbox(this, (float) 0.90, (float) 0.90);
 		}
 		this.health = 1;
-		this.lit=false;
-		
+		this.lit = false;
+
 	}
-	
+
 	@Override
 	public void takeDamage(Entity ent) {
 		if (ent instanceof Range) {
@@ -44,23 +44,15 @@ public class Torch extends DecorElement {
 			this.anim.sprites = ImagesConst.loadSprite("TorchLight", 2, 3);
 		}
 	}
-	
+
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
-		this.lit=true;
+		this.lit = true;
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
-		case M:
-			return 0;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.TORCH_S;
 		default:

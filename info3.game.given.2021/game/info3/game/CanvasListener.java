@@ -41,7 +41,6 @@ import info3.game.graphics.GameCanvasListener;
 import info3.game.hud.Button;
 import info3.game.hud.InGameMenu;
 import info3.game.hud.Menu;
-import info3.game.map.Map;
 import info3.game.map.WorldMap;
 
 public class CanvasListener implements GameCanvasListener {
@@ -182,7 +181,6 @@ public class CanvasListener implements GameCanvasListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		Game game = EntitiesConst.GAME;
 		Menu menu = EntitiesConst.GAME.menu;
 		InGameMenu inMenu = EntitiesConst.GAME.inMenu;
 		if (menu != null) {
@@ -265,10 +263,11 @@ public class CanvasListener implements GameCanvasListener {
 				m_game.player2.healingPotions = 100;
 				Range.firePowerUnlocked = true;
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_H  && m_game.menu.getStarted() && EntitiesConst.MAP instanceof WorldMap && !m_game.inMenu.isPaused) {
+		} else if (e.getKeyCode() == KeyEvent.VK_H && m_game.menu.getStarted() && EntitiesConst.MAP instanceof WorldMap
+				&& !m_game.inMenu.isPaused) {
 			EntitiesConst.GAME.showMap = true;
 		}
-		
+
 		if (!keys.contains((Integer) e.getKeyCode())) {
 			keys.add((Integer) e.getKeyCode());
 		}
@@ -312,7 +311,6 @@ public class CanvasListener implements GameCanvasListener {
 	@Override
 	public void windowOpened() {
 		m_game.loadMusic();
-//    m_game.m_canvas.setTimer(6000);
 	}
 
 	@Override
@@ -320,20 +318,12 @@ public class CanvasListener implements GameCanvasListener {
 		System.exit(0);
 	}
 
-//  boolean m_expired;
 	@Override
 	public void endOfPlay(String name) {
-//    if (!m_expired) // only reload if it was a forced reload by timer
-		// m_game.loadMusic();
-//    m_expired = false;
 	}
 
 	@Override
 	public void expired() {
-		// will force a change of music, after 6s of play
-//    System.out.println("Forcing an ealy change of music");
-//    m_expired = true;
-//    m_game.loadMusic();    
 	}
 
 }

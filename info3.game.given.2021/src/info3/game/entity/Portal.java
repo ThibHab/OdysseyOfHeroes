@@ -27,18 +27,10 @@ public class Portal extends DecorElement {
 		this.anim = new Animation(this, ImagesConst.PORTAL, null, acts);
 		this.action = Action.S;
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
-		case M:
-			return 0;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.PORTAL_S;
 		default:

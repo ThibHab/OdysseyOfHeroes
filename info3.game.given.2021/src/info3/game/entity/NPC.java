@@ -10,6 +10,7 @@ public abstract class NPC extends Entity {
 		super();
 	}
 
+	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
@@ -18,5 +19,5 @@ public abstract class NPC extends Entity {
 		int positionX = (int) (pixel.getX() - shiftXY);
 		int positionY = (int) (pixel.getY() - shiftXY);
 		g.drawImage(img, positionX, positionY, dimension, dimension, null);
-		}
+	}
 }

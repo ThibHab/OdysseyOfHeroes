@@ -13,7 +13,7 @@ public class Rock extends DecorElement {
 		this.name = "Rock";
 		this.location = l;
 		this.hitbox.update();
-		
+
 		this.health = 1;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
@@ -31,12 +31,12 @@ public class Rock extends DecorElement {
 		this.scale = EntitiesConst.ROCK_SCALE;
 
 		this.category = Aut_Category.O;
-		
+
 	}
 
 	@Override
 	public void takeDamage(Entity attacker) {
-		if(attacker instanceof Bomb) {
+		if (attacker instanceof Bomb) {
 			this.health = health - attacker.weaponDamage;
 		}
 	}
