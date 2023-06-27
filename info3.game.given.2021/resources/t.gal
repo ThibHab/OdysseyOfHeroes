@@ -147,18 +147,18 @@ RangeEnnemy(Search) {
   
   Boss(Phase1){
 	*(Phase1)
-	| !GotPower(250) ? : (Phase2)
+	| !GotPower(600) ? : (Phase2)
 	| True ? Hit : (Wait1)
 	
 	* (Wait1)
-	| True ? Wait(10000) : (Phase1)
+	| True ? Wait(7000) : (Phase1)
 	
 	* (Phase2)
-	| !GotPower(100) ? : (Phase3)
+	| !GotPower(300) ? : (Phase3)
 	| True ? 25% Hit/ 75% Pop : (Wait2)
 	
 	* (Wait2)
-	| True ? Wait(3000) : (Phase2)
+	| True ? Wait(2000) : (Phase2)
 	
 	* (Phase3)
 	| !GotPower ? : ()

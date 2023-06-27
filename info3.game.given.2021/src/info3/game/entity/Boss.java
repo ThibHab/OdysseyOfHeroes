@@ -101,9 +101,9 @@ public class Boss extends Mob {
 			float randomPosY = random.nextInt(12)+1;
 			Location mobLocation = new Location(randomPosX, randomPosY);
 			while(!this.checkEntitiesAround(mobLocation)) {
-				randomPosX = random.nextInt(18);
+				randomPosX = random.nextInt(15);
 				randomPosX += 3;
-				randomPosY = random.nextInt(12);
+				randomPosY = random.nextInt(11);
 				randomPosY++;
 				mobLocation = new Location(randomPosX, randomPosY);
 			}
