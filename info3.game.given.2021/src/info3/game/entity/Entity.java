@@ -306,6 +306,9 @@ public abstract class Entity implements IEntity {
 			this.attackEffect(t);
 
 			Entity entity = EntitiesConst.MAP_MATRIX[(int) t.getX()][(int) t.getY()].entity;
+			if (entity instanceof Boss) {
+				entity.takeDamage(this);
+			}
 			if (entity != null) {
 				switch (d) {
 				case N:
@@ -520,7 +523,7 @@ public abstract class Entity implements IEntity {
 
 	public boolean hitboxOverlap(Entity tgt) {
 		float x1, x2, X1, X2, y1, y2, Y1, Y2;
-		if (tgt instanceof DecorElement) {
+		if (tgt instanceof DecorElement || tgt instanceof Boss) {
 			x1 = this.hitbox.location.getX();
 			y1 = this.hitbox.location.getY();
 			X1 = this.destLocation.getX();

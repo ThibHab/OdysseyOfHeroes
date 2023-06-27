@@ -122,10 +122,17 @@ RangeEnnemy(Search) {
   
   Hermit (Turning) {
   * (Turning)
+  | Cell(@, B) ? Turn(B) : (Standing)
+  | Cell(@, L) ? Turn(L) : (Standing)
+  | Cell(@, R) ? Turn(R) : (Standing)
+  | Cell(@, F) ? : (Standing)
   | True ? Turn(R) : (Moving)
   
   * (Moving)
   | True ? Move(F) : (Turning)
+  
+  * (Standing)
+  | Cell(F,V) ? : (Moving)
   }
   
   
@@ -140,27 +147,35 @@ RangeEnnemy(Search) {
   
   Boss(Phase1){
 	*(Phase1)
-	| !GotPower(470) ? : (Phase2)
+	| !GotPower(250) ? : (Phase2)
 	| True ? Hit : (Wait1)
 	
 	* (Wait1)
-	| True ? Wait(15000) : (Phase1)
+	| True ? Wait(10000) : (Phase1)
 	
 	* (Phase2)
-	| !GotPower(20) ? : (Phase3)
-	| True ? Pop : (Wait2)
+	| !GotPower(100) ? : (Phase3)
+	| True ? 25% Hit/ 75% Pop : (Wait2)
 	
 	* (Wait2)
-	| True ? Wait(5000) : (Phase2)
+	| True ? Wait(3000) : (Phase2)
 	
 	* (Phase3)
 	| !GotPower ? : ()
-	| True ? 30% Hit / 35% Pop / 35% Wizz : (Wait3)
+	| True ? 15% Hit / 35% Pop / 50% Wizz : (Wait3)
 	
 	* (Wait3)
-	| True ? Wait(10000) : (Phase3)
+	| True ? Wait(5000) : (Phase3)
 	
 	* ()
+  }
+  
+  Choregraphie (Turning) {
+  * (Turning)
+  | True ? Turn(R) : (Moving)
+  
+  * (Moving)
+  | True ? Move(F) : (Turning)
   }
  
  
