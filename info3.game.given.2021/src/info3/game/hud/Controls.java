@@ -6,31 +6,33 @@ import java.awt.Image;
 
 import javax.swing.JFrame;
 
+import info3.game.constants.EntitiesConst;
+import info3.game.constants.ImagesConst;
+
 public class Controls extends InGameMenu {
 
 	public boolean controlsUp;
-	Image controlsImg;
 
 	public Controls(String name) {
 		super(name);
 		controlsUp = false;
-		m_bgColor = Color.black;
-		// TODO: rajouter l'image
+		m_bgColor = Color.white;
+		imgBackground = ImagesConst.CONTROL_PICTURE;
 	}
 
 	public Controls(Menu parent, Color col) {
 		super(parent, col);
 		m_name = "Credits";
 		controlsUp = false;
-		// TODO: rajouter l'image
+		imgBackground = ImagesConst.CONTROL_PICTURE;
 	}
 	
 	public Controls(JFrame frame) {
 		super(frame);
 		m_name = "Credits";
 		controlsUp = false;
-		m_bgColor = Color.black;
-		// TODO: rajouter l'image
+		m_bgColor = Color.white;
+		imgBackground = ImagesConst.CONTROL_PICTURE;
 	}
 	
 	public void setControlSize() {
@@ -61,6 +63,7 @@ public class Controls extends InGameMenu {
 		// TODO: remplaser le background par l'image
 		g.setColor(m_bgColor);
 		g.fillRect(0, 0, m_frame.getWidth(), m_frame.getHeight());
+		g.drawImage(imgBackground, def_x, def_y, m_frame.getWidth(), m_frame.getHeight(), null);
 		this.buttons[0].paint(g);
 	}
 
