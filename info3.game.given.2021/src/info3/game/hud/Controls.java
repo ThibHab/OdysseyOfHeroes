@@ -14,7 +14,7 @@ public class Controls extends InGameMenu {
 	public Controls(String name) {
 		super(name);
 		controlsUp = false;
-		m_bgColor = Color.white;
+		m_bgColor = new Color(255, 255, 255, 150);
 		imgBackground = ImagesConst.CONTROL_PICTURE;
 	}
 
@@ -29,7 +29,7 @@ public class Controls extends InGameMenu {
 		super(frame);
 		m_name = "Credits";
 		controlsUp = false;
-		m_bgColor = Color.white;
+		m_bgColor = new Color(255, 255, 255, 150);
 		imgBackground = ImagesConst.CONTROL_PICTURE;
 	}
 
