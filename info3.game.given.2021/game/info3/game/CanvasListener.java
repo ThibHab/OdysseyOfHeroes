@@ -265,7 +265,7 @@ public class CanvasListener implements GameCanvasListener {
 				m_game.player2.healingPotions = 100;
 				Range.firePowerUnlocked = true;
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_H && !m_game.inMenu.isPaused && m_game.menu.getStarted() && EntitiesConst.MAP instanceof WorldMap) {
+		} else if (e.getKeyCode() == KeyEvent.VK_H  && m_game.menu.getStarted() && EntitiesConst.MAP instanceof WorldMap && !m_game.inMenu.isPaused) {
 			EntitiesConst.GAME.showMap = true;
 		}
 		
@@ -290,7 +290,7 @@ public class CanvasListener implements GameCanvasListener {
 						new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
 			}
 			m_game.inMenu.setPause(!b);
-		} else if (e.getKeyCode() == KeyEvent.VK_H && !m_game.inMenu.isPaused && m_game.menu.getStarted()) {
+		} else if (e.getKeyCode() == KeyEvent.VK_H && m_game.menu.getStarted() && !m_game.inMenu.isPaused) {
 			EntitiesConst.GAME.showMap = false;
 		}
 		if (m_game.debug) {
