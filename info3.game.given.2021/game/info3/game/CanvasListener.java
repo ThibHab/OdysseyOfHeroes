@@ -42,6 +42,7 @@ import info3.game.hud.Button;
 import info3.game.hud.InGameMenu;
 import info3.game.hud.Menu;
 import info3.game.map.Map;
+import info3.game.map.WorldMap;
 
 public class CanvasListener implements GameCanvasListener {
 	Game m_game;
@@ -264,7 +265,10 @@ public class CanvasListener implements GameCanvasListener {
 				m_game.player2.healingPotions = 100;
 				Range.firePowerUnlocked = true;
 			}
+		} else if (e.getKeyCode() == KeyEvent.VK_H && !m_game.inMenu.isPaused && m_game.menu.getStarted() && EntitiesConst.MAP instanceof WorldMap) {
+			EntitiesConst.GAME.showMap = true;
 		}
+		
 		if (!keys.contains((Integer) e.getKeyCode())) {
 			keys.add((Integer) e.getKeyCode());
 		}
@@ -286,6 +290,8 @@ public class CanvasListener implements GameCanvasListener {
 						new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
 			}
 			m_game.inMenu.setPause(!b);
+		} else if (e.getKeyCode() == KeyEvent.VK_H && !m_game.inMenu.isPaused && m_game.menu.getStarted()) {
+			EntitiesConst.GAME.showMap = false;
 		}
 		if (m_game.debug) {
 			System.out.println("Key released: " + e.getKeyChar() + " code=" + e.getKeyCode());
