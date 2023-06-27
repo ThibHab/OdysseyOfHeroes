@@ -392,6 +392,7 @@ public abstract class Map implements IMap {
 				if (checkinradius(i, j, x, y, radius + 0.3f)) {
 					Location l = new Location(j, j);
 					if (type.equals("Water")) {
+						this.delTree(i, j);
 						map[i][j] = new WaterTile(l);
 					} else if (type.equals("Rock")) {
 						map[i][j] = new RockTile(l);
