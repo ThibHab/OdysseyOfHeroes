@@ -42,7 +42,7 @@ public class ImagesConst {
 		SAVE_TILES = loadSprite("SaveTiles", 2, 1);
 
 		HOUSE = loadSprite("House", 1, 1);
-		ROCK = loadSprite("Rock", 2, 2);
+		ROCK = loadSprite("Rock", 1, 1);
 		TREE = loadSprite("Tree", 2, 1);
 		STATUE = loadSprite("Statue", 1, 1);
 
