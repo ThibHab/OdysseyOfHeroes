@@ -81,6 +81,8 @@ public class Animation {
 		case S:
 			System.out.println(owner.name + " is standing.");
 			break;
+		default:
+			break;
 		}
 	}
 

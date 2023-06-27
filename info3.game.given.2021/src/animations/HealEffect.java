@@ -1,6 +1,5 @@
 package animations;
 
-import info3.game.automata.Aut_Direction;
 import info3.game.constants.AnimConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Location;
