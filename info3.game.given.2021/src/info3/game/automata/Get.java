@@ -11,7 +11,6 @@ public class Get extends Aut_Action {
 
 	@Override
 	public void exec(Entity e, Game g) {
-		// TODO Auto-generated method stub
 
 	}
 

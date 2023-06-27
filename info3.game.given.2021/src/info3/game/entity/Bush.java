@@ -140,16 +140,9 @@ public class Bush extends DecorElement {
 
 	@Override
 	public int getNbActionSprite(Action a) {
-		// TODO
 		switch (a) {
-		case M:
-			return 0;
 		case H:
 			return AnimConst.BUSH_H;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.BUSH_S;
 		default:
@@ -159,7 +152,6 @@ public class Bush extends DecorElement {
 
 	@Override
 	public int totSrpitePerDir() {
-		// TODO
 		return AnimConst.BUSH_TOT;
 	}
 }

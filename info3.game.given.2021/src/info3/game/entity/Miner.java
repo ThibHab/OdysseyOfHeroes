@@ -29,7 +29,6 @@ public class Miner extends Villager {
 				"Je peux te vendre une bombe pour \n50 pièces d'or si tu es interessé.");
 		this.dialogs.add("Ah... tu n'as pas un montant \nde pièces d'or suffisant.");
 		this.dialogs.add("Reviens me voir quand ce sera \nle cas !");
-		// TODO Auto-generated constructor stub
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;

@@ -51,15 +51,15 @@ public class Animation {
 				idx += (3 * this.owner.totSrpitePerDir());
 			}
 		}
-		for (int i = 0; i < this.actOrder.length; i++) {
-			if (this.owner.action == actOrder[i]) {
-				if (this.imageIndex + 1 < idx + owner.getNbActionSprite(actOrder[i])) {
+		for (Action element : this.actOrder) {
+			if (this.owner.action == element) {
+				if (this.imageIndex + 1 < idx + owner.getNbActionSprite(element)) {
 					this.imageIndex = this.imageIndex + 1;
 				} else {
 					this.imageIndex = idx;
 				}
 			} else {
-				idx += owner.getNbActionSprite(actOrder[i]);
+				idx += owner.getNbActionSprite(element);
 			}
 		}
 	}

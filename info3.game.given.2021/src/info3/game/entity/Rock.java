@@ -16,13 +16,11 @@ public class Rock extends DecorElement {
 		
 		this.health = 1;
 
-		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		// -----------------------------
 
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this, ImagesConst.ROCK, null, acts);

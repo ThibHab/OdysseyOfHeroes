@@ -24,12 +24,8 @@ public abstract class Villager extends NPC {
 		this.dialogIndex = 0;
 		this.dialogs = new LinkedList<>();
 
-		// --- TODO manage automaton ---
-		// -----------------------------
 		this.category = Aut_Category.T;
 
-		// --- TODO manage sprite properly ---
-		// -----------------------------------
 		this.hitbox = new Hitbox(this, (float) 0.80, (float) 0.90);
 	}
 

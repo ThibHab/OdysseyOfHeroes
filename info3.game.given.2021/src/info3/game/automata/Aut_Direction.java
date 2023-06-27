@@ -11,8 +11,8 @@ public enum Aut_Direction {
 	B, // Back
 	L, // Left
 	R, // Right
-	H;  // Here
-	
+	H; // Here
+
 	public Aut_Direction rightDirection(Entity e) {
 		if (this != null) {
 			switch (this) {
@@ -34,6 +34,8 @@ public enum Aut_Direction {
 					return Aut_Direction.W;
 				case W:
 					return Aut_Direction.E;
+				default:
+					return null;
 				}
 			case L:
 				switch (e.direction) {
@@ -45,6 +47,8 @@ public enum Aut_Direction {
 					return Aut_Direction.N;
 				case W:
 					return Aut_Direction.S;
+				default:
+					return null;
 				}
 			case R:
 				switch (e.direction) {
@@ -56,6 +60,8 @@ public enum Aut_Direction {
 					return Aut_Direction.S;
 				case W:
 					return Aut_Direction.N;
+				default:
+					return null;
 				}
 
 			}

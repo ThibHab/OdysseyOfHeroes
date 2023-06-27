@@ -215,8 +215,6 @@ public class HudInGame {
 		g.setColor(Color.blue);
 		g.drawRect(7, 7, 55, 55);
 		g.drawImage(melee, 5, 7, 60, 60, m_frame);
-		// TODO: Mettre le nombre de vie max en gris (Besoind de l'inforamtion de vie
-		// max)
 
 		int incJ11 = 63;
 		int incJ12 = 63;

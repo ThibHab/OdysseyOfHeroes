@@ -24,7 +24,7 @@ public class AnimConst {
 	public static final int GOBLIN_T = 3;
 	public static final int GOBLIN_D = 4;
 	public static final int GOBLIN_TOT = GOBLIN_S + GOBLIN_M + GOBLIN_H + GOBLIN_T + GOBLIN_D;
-	
+
 	// Skeleton
 	public static final int SKELETON_S = 1;
 	public static final int SKELETON_M = 4;
@@ -45,40 +45,39 @@ public class AnimConst {
 	public static final int COIN_S = 3;
 	public static final int STRENGTH_POTION_S = 3;
 	public static final int HEALING_POTION_S = 6;
-	
-	//DecorElement
-	public static final int BUSH_S = 1;
-	public static final int BUSH_H = 1;
-	public static final int BUSH_TOT = BUSH_S + BUSH_H;
-	
-	public static final int CHEST_S = 1;
-	public static final int CHEST_H = 2;
-	public static final int CHEST_TOT = CHEST_S + CHEST_H;
-	
-	public static final int ENERGY_B_M = 4;
-	public static final int ENERGY_B_H = 0;
-	
-	public static final int BONE_M = 3;
-	
-	public static final int MINER_M = 3;
-	public static final int MINER_S = 1;
-	public static final int MINER_TOT = MINER_M + MINER_S;
-	
-	public static final int VILLAGERGIRL_M = 3;
-	public static final int VILLAGERGIRL_S = 1;
-	public static final int VILLAGERGIRL_TOT = VILLAGERGIRL_M + VILLAGERGIRL_S;
-	
-	public static final int HERMIT_M = 3;
-	public static final int HERMIT_S = 0;
-	public static final int HERMIT_TOT = HERMIT_M + HERMIT_S;
-	
-	public static final int SPEECHBUBBLE_S = 1;
-	
 	public static final int PORTAL_S = 4;
 	public static final int DUNGEON_ENTRANCE_S = 4;
 	public static final int TORCH_S = 4;
-	
-	//Timed Effects
+
+	// DecorElement
+	public static final int BUSH_S = 1;
+	public static final int BUSH_H = 1;
+	public static final int BUSH_TOT = BUSH_S + BUSH_H;
+
+	public static final int CHEST_S = 1;
+	public static final int CHEST_H = 2;
+	public static final int CHEST_TOT = CHEST_S + CHEST_H;
+
+	public static final int ENERGY_B_M = 4;
+	public static final int ENERGY_B_H = 0;
+
+	public static final int BONE_M = 3;
+
+	public static final int MINER_M = 3;
+	public static final int MINER_S = 1;
+	public static final int MINER_TOT = MINER_M + MINER_S;
+
+	public static final int VILLAGERGIRL_M = 3;
+	public static final int VILLAGERGIRL_S = 1;
+	public static final int VILLAGERGIRL_TOT = VILLAGERGIRL_M + VILLAGERGIRL_S;
+
+	public static final int HERMIT_M = 3;
+	public static final int HERMIT_S = 0;
+	public static final int HERMIT_TOT = HERMIT_M + HERMIT_S;
+
+	public static final int SPEECHBUBBLE_S = 1;
+
+	// Timed Effects
 	public static final int TIME_SWORD_EFFECT = 200;
 	public static final int TIME_SPEAR_EFFECT = 200;
 	public static final int TIME_EXPLOSION_EFFECT = 200;

@@ -15,13 +15,11 @@ public class DungeonEntrance extends DecorElement {
 		this.location = location;
 		this.category = Aut_Category.G;
 
-		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		// -----------------------------
 
 		Action acts[] = new Action[] { Action.S };
 		if (Hero.firePowerUnlocked) {
@@ -29,7 +27,6 @@ public class DungeonEntrance extends DecorElement {
 		} else {
 			this.anim = new Animation(this, ImagesConst.DUNGEON_ENTRANCE_CLOSED, null, acts);
 		}
-		// -----------------------------------
 
 		this.width = 1;
 		this.height = 1;

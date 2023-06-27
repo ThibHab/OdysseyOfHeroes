@@ -60,7 +60,6 @@ public class Controls extends InGameMenu {
 	}
 	
 	public void paint(Graphics g) {
-		// TODO: remplaser le background par l'image
 		g.setColor(m_bgColor);
 		g.fillRect(0, 0, m_frame.getWidth(), m_frame.getHeight());
 		g.drawImage(imgBackground, def_x, def_y, m_frame.getWidth(), m_frame.getHeight(), null);

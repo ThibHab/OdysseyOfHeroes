@@ -12,5 +12,5 @@ public enum Aut_Category {
 	T, // Team
 	V, // Void
 	AT, // The player in my team
-	UNDERSCORE // Anything but void 
+	UNDERSCORE // Anything but void
 }

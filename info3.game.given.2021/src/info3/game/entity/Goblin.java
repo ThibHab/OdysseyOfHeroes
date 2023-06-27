@@ -43,7 +43,6 @@ public class Goblin extends Mob {
 	
 	@Override
 	public int getNbActionSprite(Action a) {
-		//TODO
 		switch (a) {
 		case M:
 			return AnimConst.GOBLIN_M;

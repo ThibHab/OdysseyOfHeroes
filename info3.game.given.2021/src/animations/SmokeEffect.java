@@ -4,7 +4,7 @@ import info3.game.constants.AnimConst;
 import info3.game.constants.ImagesConst;
 import info3.game.entity.Location;
 
-public class SmokeEffect extends Effect{
+public class SmokeEffect extends Effect {
 	public SmokeEffect(Location l) {
 		super(l, null);
 		this.sprites = ImagesConst.SMOKE_EFFECT;

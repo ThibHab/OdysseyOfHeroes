@@ -67,7 +67,6 @@ public abstract class Entity implements IEntity {
 		this.healingPotions = EntitiesConst.HEALING_POTIONS;
 		this.strengthPotions = EntitiesConst.STRENGTH_POTIONS;
 
-		// TODO assign default automaton
 		this.automaton = null;
 		this.currentState = null;
 		this.timer = Integer.MIN_VALUE;
@@ -290,8 +289,6 @@ public abstract class Entity implements IEntity {
 	
 	@Override
 	public void Hit(Aut_Direction d) {
-		// TODO Melee blocked when touching an enemy, also see for the hits in the
-		// border of the maps
 		if (!this.frozen && !hitFrozen) {
 			this.frozen = true;
 			this.hitFrozen = true;
@@ -415,7 +412,6 @@ public abstract class Entity implements IEntity {
 
 	@Override
 	public void Jump() {
-		// TODO write function not usable ?
 	}
 
 	@Override
@@ -454,7 +450,6 @@ public abstract class Entity implements IEntity {
 	
 	@Override
 	public void Throw(Aut_Direction d, Aut_Category category) {
-		// TODO complete method
 	}
 	
 	@Override

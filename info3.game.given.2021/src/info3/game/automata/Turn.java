@@ -4,7 +4,7 @@ import info3.game.Game;
 import info3.game.entity.Entity;
 
 public class Turn extends Aut_Action {
-	
+
 	public Turn(Aut_Direction direction, int percent) {
 		super(direction, percent);
 	}

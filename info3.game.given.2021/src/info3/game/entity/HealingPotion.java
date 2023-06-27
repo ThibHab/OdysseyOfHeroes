@@ -27,16 +27,7 @@ public class HealingPotion extends Item {
 
 	@Override
 	public int getNbActionSprite(Action a) {
-		// TODO
 		switch (a) {
-		case M:
-			return 0;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.HEALING_POTION_S;
 		default:

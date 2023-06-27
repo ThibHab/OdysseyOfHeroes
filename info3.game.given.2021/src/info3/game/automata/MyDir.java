@@ -4,7 +4,7 @@ import info3.game.Game;
 import info3.game.entity.Entity;
 
 public class MyDir extends Aut_Condition {
-	
+
 	Aut_Direction dir;
 
 	public MyDir(Aut_Direction direction) {

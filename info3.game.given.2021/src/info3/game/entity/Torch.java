@@ -18,13 +18,11 @@ public class Torch extends DecorElement {
 		this.name = "Torch";
 		this.location = l;
 
-		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		// -----------------------------
 		
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this,ImagesConst.TORCH, null, acts);		
@@ -49,8 +47,6 @@ public class Torch extends DecorElement {
 	
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
-		//TODO UPDATE ANIM
-		//this.imageIndex = 1;
 		this.lit=true;
 	}
 	

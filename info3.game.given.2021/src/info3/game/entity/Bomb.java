@@ -77,7 +77,5 @@ public class Bomb extends Entity {
 			}
 		}
 		new ExplosionEffect(this.location);
-		// TODO delete destroyable rocks
-		// TODO add explode method for animation (view)
 	}
 }

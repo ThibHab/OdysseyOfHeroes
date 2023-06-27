@@ -16,17 +16,14 @@ public class MazeEntrance extends DecorElement {
 		this.location = location;
 		this.category = Aut_Category.G;
 
-		// --- TODO manage automaton ---
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		// -----------------------------
 
 		Action acts[] = new Action[] { Action.S };
 		this.anim = new Animation(this,ImagesConst.DUNGEON_ENTRANCE_OPEN, null, acts);
-		// -----------------------------------
 
 		this.width = 1;
 		this.height = 1;

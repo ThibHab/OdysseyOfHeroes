@@ -7,22 +7,23 @@ import java.util.Random;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class Aut_Automaton implements java.lang.Cloneable{
-	
+public class Aut_Automaton implements java.lang.Cloneable {
+
 	public LinkedList<Aut_Transition> transitions;
 	public Aut_State initial;
 	public String name;
-	
+
 	public Aut_Automaton(String name, Aut_State i, List<Aut_Transition> t) {
 		this.initial = i;
 		this.transitions = (LinkedList<Aut_Transition>) t;
 		this.name = name;
 	}
-	
+
+	@Override
 	public Aut_Automaton clone() throws CloneNotSupportedException {
 		return (Aut_Automaton) super.clone();
 	}
-	
+
 	public Aut_State step(Entity e, Game g) {
 		if (!e.frozen) {
 			for (Aut_Transition next_t : transitions) {

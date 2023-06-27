@@ -27,6 +27,7 @@ public class BloodEffect extends Effect {
 		}
 	}
 
+	@Override
 	public int getPosX(Location pixel, float shiftXY, int tileSize) {
 		if (dir != null && dir == Aut_Direction.W) {
 			return (int) (pixel.getX() - shiftXY + 0.8 * tileSize);

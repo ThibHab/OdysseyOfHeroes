@@ -96,7 +96,7 @@ public class Game {
 		}
 	}
 
-	public boolean debug = false;
+	public boolean debug = true;
 	public JFrame m_frame;
 	JLabel m_text;
 	public GameCanvas m_canvas;
@@ -264,7 +264,6 @@ public class Game {
 		// map=new DebugMap(40,40,player1,player2);
 		render = new MapRender((Map) map, this);
 
-		// TODO correctly initialize Level and Experience methods /!\
 		int level = 0, xp = 0;
 		Entity.InitStatics(this, level, xp);
 
@@ -385,11 +384,8 @@ public class Game {
 					gameWin(elapsed);
 				}
 
-				// TODO Rajouter timer Message victoire 5s;
-
 				if (EntitiesConst.GAME.debug) {
 					m_textElapsed += elapsed;
-					// TODO modif pour debug
 					if (m_textElapsed > 100) {
 						m_textElapsed = 0;
 						float period = m_canvas.getTickPeriod();

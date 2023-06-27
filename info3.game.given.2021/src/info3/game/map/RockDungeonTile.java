@@ -9,7 +9,6 @@ public class RockDungeonTile extends Tile {
 
 	public RockDungeonTile(Location location) {
 		super(location, true, 1.0f, ImagesConst.ROCK_DUNGEON);
-		// TODO Auto-generated constructor stub
 	}
 
 }

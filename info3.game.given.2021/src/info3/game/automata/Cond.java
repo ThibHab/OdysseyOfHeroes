@@ -3,8 +3,8 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.entity.Entity;
 
-public class Cond extends Aut_Condition{
-	
+public class Cond extends Aut_Condition {
+
 	Aut_Condition condition1;
 	Aut_Condition condition2;
 	String op;
@@ -14,16 +14,17 @@ public class Cond extends Aut_Condition{
 		this.condition2 = c2;
 		this.op = op;
 	}
-	
+
+	@Override
 	public boolean eval(Entity e, Game g) {
-		switch(op) {
-		case "!" :
+		switch (op) {
+		case "!":
 			return !condition1.eval(e, g);
-		case "/" :
+		case "/":
 			return (condition1.eval(e, g) || condition2.eval(e, g));
-		case "&" :
+		case "&":
 			return (condition1.eval(e, g) && condition2.eval(e, g));
-		default :
+		default:
 			return condition1.eval(e, g);
 		}
 	}

@@ -28,7 +28,6 @@ public class Skeleton extends Mob {
 
 		this.category = Aut_Category.A;
 
-		// TODO add sprites and actions
 		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.E, Aut_Direction.W,
 				Aut_Direction.N };
 		Action acts[] = new Action[] { Action.S, Action.M, Action.H };
@@ -56,7 +55,6 @@ public class Skeleton extends Mob {
 
 	@Override
 	public int getNbActionSprite(Action a) {
-		// TODO
 		switch (a) {
 		case M:
 			return AnimConst.SKELETON_M;

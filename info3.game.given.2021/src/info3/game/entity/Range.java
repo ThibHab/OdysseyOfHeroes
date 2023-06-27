@@ -83,7 +83,6 @@ public class Range extends Hero {
 
 	@Override
 	public int getNbActionSprite(Action a) {
-		// TODO
 		switch (a) {
 		case M:
 			return AnimConst.RANGE_M;

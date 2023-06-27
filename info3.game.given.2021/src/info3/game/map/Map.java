@@ -448,7 +448,6 @@ public abstract class Map implements IMap {
 		map[x - radius - 1][y] = WorldMap.saveTile1;
 		WorldMap.saveTile2 = new SaveTile(new Location(x + radius + 1, y));
 		map[x + radius + 1][y] = WorldMap.saveTile2;
-		// TODO fix statue disappearing
 	}
 
 	public void setDistrict(int x, int y) {

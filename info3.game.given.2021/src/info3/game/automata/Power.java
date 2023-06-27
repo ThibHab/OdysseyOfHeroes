@@ -4,7 +4,7 @@ import info3.game.Game;
 import info3.game.entity.Entity;
 
 public class Power extends Aut_Action {
-	
+
 	public Power(int percent) {
 		super(null, percent);
 	}

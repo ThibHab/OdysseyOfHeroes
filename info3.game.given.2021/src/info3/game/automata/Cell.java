@@ -22,7 +22,6 @@ public class Cell extends Aut_Condition {
 
 	@Override
 	public boolean eval(Entity e, Game g) {
-		// TODO Waiting for attribute tile in Entity and Map pushed
 		for (int i = 1; i <= distance; i++) {
 			int x = (int) e.location.getX();
 			int y = (int) e.location.getY();
@@ -55,6 +54,8 @@ public class Cell extends Aut_Condition {
 				case W:
 					x -= i;
 					break;
+				default:
+					break;
 				}
 				break;
 			case B:
@@ -70,6 +71,8 @@ public class Cell extends Aut_Condition {
 					break;
 				case E:
 					x -= i;
+					break;
+				default:
 					break;
 				}
 				break;
@@ -87,6 +90,8 @@ public class Cell extends Aut_Condition {
 				case E:
 					y -= i;
 					break;
+				default:
+					break;
 				}
 				break;
 			case R:
@@ -103,15 +108,19 @@ public class Cell extends Aut_Condition {
 				case E:
 					y += i;
 					break;
+				default:
+					break;
 				}
+				break;
+			default:
 				break;
 			}
 
 			x = (x + ((Map) g.map).lenX) % ((Map) g.map).lenX;
 			y = (y + ((Map) g.map).lenY) % ((Map) g.map).lenY;
-			if (cat == Aut_Category.V && (map[x][y].entity == null || map[x][y].entity.dead == true))
+			if (cat == Aut_Category.V && (map[x][y].entity == null || map[x][y].entity.dead))
 				return true;
-			if (map[x][y].entity != null && map[x][y].entity.category == cat && map[x][y].entity.dead == false)
+			if (map[x][y].entity != null && map[x][y].entity.category == cat && !map[x][y].entity.dead)
 				return true;
 		}
 		return false;

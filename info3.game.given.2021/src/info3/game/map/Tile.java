@@ -15,7 +15,6 @@ public abstract class Tile implements ITile {
 	public boolean walkable;
 	public Entity entity;
 	public float opacity;
-	public Sound sound;
 	public Image image;
 	public Location location;
 	public TransparencyBlock tpBlock;
@@ -25,7 +24,6 @@ public abstract class Tile implements ITile {
 		this.location = location;
 		this.opacity = opacity;
 		this.image = img;
-		// TODO Ajouter Sound au constructeur
 	}
 
 	@Override

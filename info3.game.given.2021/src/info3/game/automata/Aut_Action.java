@@ -16,7 +16,6 @@ public abstract class Aut_Action {
 
 		dir = direction;
 	}
-	
 
 	public abstract void exec(Entity e, Game g);
 }

@@ -34,7 +34,6 @@ public class VillagerGirl extends Villager {
 		this.completedDialogs.add("vous pouvez vous rendre dans \nle labyrinthe situé au sud du village.");
 		this.completedDialogs.add("Mais attention ! Ca grouille d'orcs là \ndedans !");
 		this.completedDialogs.add("Si vous voulez vous confronter au \ndragon, il faudra que vous trouviez \nl'hermite caché dans la forêt, il saura\nvous aider.");
-		// TODO Auto-generated constructor stub
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;

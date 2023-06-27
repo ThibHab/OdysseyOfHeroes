@@ -22,7 +22,6 @@ public class Hermit extends Villager {
 		this.dialogs.add("Je vous transmet ce pouvoir !");
 		this.dialogs.add("Bon courage ! Je retourne méditer.");
 		this.scale = EntitiesConst.HERMIT_SCALE;
-		// TODO Auto-generated constructor stub
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
@@ -32,7 +31,6 @@ public class Hermit extends Villager {
 				Aut_Direction.W };
 		Action acts[] = new Action[] { Action.S, Action.M };
 		this.anim = new Animation(this, ImagesConst.HERMIT, dirs, acts);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
