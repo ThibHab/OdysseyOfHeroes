@@ -12,6 +12,7 @@ import info3.game.entity.Boss;
 import info3.game.entity.Entity;
 import info3.game.entity.Location;
 import info3.game.entity.Melee;
+import info3.game.entity.Rock;
 import info3.game.entity.Torch;
 
 public class DungeonMap extends Map {
@@ -28,7 +29,7 @@ public class DungeonMap extends Map {
 	public DungeonMap(int nb_x, int nb_y, Entity p1, Entity p2) {
 		super(nb_x, nb_y, p1, p2);
 		this.transi = transiMax;
-		
+
 		DungeonMap.initLit = false;
 		DungeonMap.finish = false;
 
@@ -48,7 +49,7 @@ public class DungeonMap extends Map {
 				x = r.nextInt(sizeX - 2) + 1;
 				y = r.nextInt(sizeY - 2) + 1;
 			} while (map[x][y].entity != null);
-			
+
 			loc = new Location(x, y);
 			Torch t = new Torch(loc);
 			torches.add(t);
@@ -84,8 +85,30 @@ public class DungeonMap extends Map {
 			for (Torch torch : torches) {
 				EntitiesConst.MAP_MATRIX[(int) torch.location.getX()][(int) torch.location.getY()].entity = null;
 			}
-			EntitiesConst.MAP_MATRIX[20][6].entity = new Boss(new Location(20, 6));
+
+			for (int i = 1; i < sizeY + 1; i++) {
+				if (map[18][i].entity == player1 || map[19][i].entity == player1 || map[20][i].entity == player1) {
+					if (map[17][i].entity == null) {
+						setPlayer(17, i, player1);
+					} else {
+						setPlayer(15, i, player1);
+					}
+				}
+				if (map[18][i].entity == player2 || map[19][i].entity == player2 || map[20][i].entity == player2) {
+					if (map[17][i].entity == null) {
+						setPlayer(17, i, player2);
+					} else {
+						setPlayer(15, i, player2);
+					}
+				}
+				if (i != 5 && i != 6 && i != 7) {
+					Rock r = new Rock(new Location(18, i));
+					map[18][i].entity = r;
+					r.health = Integer.MAX_VALUE;
+				}
+			}
 			System.out.println("Boss spawned");
+			EntitiesConst.MAP_MATRIX[20][6].entity = new Boss(new Location(20, 6));
 		}
 		return true;
 	}
@@ -100,7 +123,7 @@ public class DungeonMap extends Map {
 					this.lit = true;
 					EntitiesConst.GOBLIN_DETECTION = 10;
 					EntitiesConst.SKELETON_DETECTION = 10;
-					EntitiesConst.MAP_MATRIX[20][6].entity.frozen = false;	// unfreeze boss
+					EntitiesConst.MAP_MATRIX[20][6].entity.frozen = false; // unfreeze boss
 				}
 			}
 		}
