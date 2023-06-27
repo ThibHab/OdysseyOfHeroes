@@ -115,6 +115,7 @@ public class Game {
 	public RandomAccessFile save;
 	public boolean reload;
 	public boolean saveExist;
+	public boolean showMap;
 
 	Game() throws Exception {
 		// creating a cowboy, that would be a model
@@ -428,6 +429,9 @@ public class Game {
 			hud.paint(g);
 			if (inMenu.getPause()) {
 				inMenu.paint(g);
+			} else if (showMap) {
+				Image miniMap = ImagesConst.MINIMAP_PICTURE;
+				g.drawImage(miniMap, 0, 0, width, height, null);
 			}
 		} else {
 			menu.paint(g);
