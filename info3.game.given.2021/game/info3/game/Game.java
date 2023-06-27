@@ -178,7 +178,8 @@ public class Game {
 
 		System.out.println("  - setting up the frame...");
 		
-		m_frame.setIconImage(ImagesConst.CURSOR[0]);
+		m_frame.setIconImage(ImagesConst.LOGO);
+		m_frame.setName("Odyssey of Heroes");
 
 		setupFrame();
 
@@ -290,7 +291,7 @@ public class Game {
 		Image agrou = ImagesConst.CURSOR[0];
 		Cursor curs = tkit.createCustomCursor(agrou, point, "AgrouCurs");
 		m_frame.setCursor(curs);
-		m_frame.setTitle("Game");
+		m_frame.setTitle("Odyssey of Heroes");
 		m_frame.setLayout(new BorderLayout());
 
 		m_frame.add(m_canvas, BorderLayout.CENTER);
