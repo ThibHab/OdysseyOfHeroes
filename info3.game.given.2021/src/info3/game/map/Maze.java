@@ -13,7 +13,7 @@ public class Maze {
 		private int idx;
 
 		public Maze_tile(int size) {
-			neighbors = new Maze_tile[size * size + 1]; //array of the connected tiles
+			neighbors = new Maze_tile[size * size + 1]; // array of the connected tiles
 			idx = 0;
 			neighbors[idx++] = this;
 		}
@@ -21,13 +21,12 @@ public class Maze {
 		public int get_idx() {
 			return idx;
 		}
-		
+
 		public void add_neighbors(Maze_tile[] n, int length) {
-			for (int i = 0; i < length; i++) { 
+			for (int i = 0; i < length; i++) {
 				neighbors[idx++] = n[i];
 			}
 		}
-		
 
 		public boolean is_neighbor(Maze_tile t) {
 			for (int i = 0; i < idx; i++) {

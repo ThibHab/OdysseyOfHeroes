@@ -2,11 +2,9 @@ package info3.game.hud;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 
 import javax.swing.JFrame;
 
-import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
 public class Controls extends InGameMenu {
@@ -26,7 +24,7 @@ public class Controls extends InGameMenu {
 		controlsUp = false;
 		imgBackground = ImagesConst.CONTROL_PICTURE;
 	}
-	
+
 	public Controls(JFrame frame) {
 		super(frame);
 		m_name = "Credits";
@@ -34,31 +32,32 @@ public class Controls extends InGameMenu {
 		m_bgColor = Color.white;
 		imgBackground = ImagesConst.CONTROL_PICTURE;
 	}
-	
+
 	public void setControlSize() {
 		m_x = m_frame.getX();
 		m_y = m_frame.getY();
 		m_width = m_frame.getWidth();
 		m_height = m_frame.getHeight();
 	}
-	
+
 	public void setControls() {
 
 		Button goBack = new Button(this, Color.red);
-		
+
 		buttons[0] = goBack;
-		
+
 		nbChild = 1;
-		
+
 		goBack.setName("Menu");
-		
+
 		goBack.setBounds(20, 20, 150, 50);
 	}
-	
+
 	public boolean isControlsUp() {
 		return controlsUp;
 	}
-	
+
+	@Override
 	public void paint(Graphics g) {
 		g.setColor(m_bgColor);
 		g.fillRect(0, 0, m_frame.getWidth(), m_frame.getHeight());

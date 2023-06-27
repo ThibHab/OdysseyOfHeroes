@@ -6,7 +6,7 @@ import info3.game.entity.Location;
 public class RockTile extends Tile {
 
 	public RockTile(Location location) {
-		super(location, false, 0.0f,ImagesConst.ROCK_TILE);
+		super(location, false, 0.0f, ImagesConst.ROCK_TILE);
 	}
 
 }

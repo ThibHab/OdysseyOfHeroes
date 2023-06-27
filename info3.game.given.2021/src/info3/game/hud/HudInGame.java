@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.ImageCapabilities;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
@@ -12,9 +11,13 @@ import javax.swing.JFrame;
 
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.entity.*;
+import info3.game.entity.Boss;
+import info3.game.entity.Hero;
+import info3.game.entity.Melee;
+import info3.game.entity.Range;
+import info3.game.entity.Torch;
+import info3.game.entity.VillagerGirl;
 import info3.game.map.DungeonMap;
-import info3.game.map.Maze;
 import info3.game.map.MazeMap;
 
 public class HudInGame {
@@ -52,9 +55,8 @@ public class HudInGame {
 		g.setFont(f);
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(setTimer, g);
 		int textWidth = (int) rec.getWidth();
-		int textHeight = (int) rec.getHeight();
 
-		g.drawString(setTimer, (m_frame.getWidth() / 2) - (int) (textWidth / 2), 200);
+		g.drawString(setTimer, (m_frame.getWidth() / 2) - textWidth / 2, 200);
 	}
 
 	public void setBomb(Graphics g, Font f, int width, int height) {
@@ -141,67 +143,67 @@ public class HudInGame {
 
 	public void setBossLifeBar(Graphics g, int width, int height) {
 		String name = Boss.n.toString();
-		
+
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(name, g);
 		int textWidth = (int) rec.getWidth();
-		
+
 		Color col = new Color(192, 0, 0);
 		g.setColor(col);
 		g.drawString(name, (width / 2) - (textWidth / 2), 180);
-		
+
 		g.drawRoundRect(width / 8, 145, width - (width / 4), 10, 10, 10);
 		g.drawRoundRect(width / 8 - 1, 144, width - (width / 4) + 2, 12, 10, 10);
-		
+
 		Color col2 = new Color(233, 0, 0);
 		g.setColor(col2);
 		g.fillRoundRect(width / 8 + 1, 146,
 				(int) ((width - width / 4 - 1) / ((float) EntitiesConst.BOSS_HEALTH / (float) Boss.h)), 9, 10, 10);
 
 	}
-	
+
 	public void showDeadMessage(Graphics g, int width, int height) {
 		String deathMessage = "Vous êtes mort !";
-		
+
 		Font f = new Font(null, 1, 100);
 		g.setFont(f);
-		
+
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(deathMessage, g);
 		int textWidth = (int) rec.getWidth();
 		int textHeight = (int) rec.getHeight();
-		
-		g.setColor(new Color(0,0,0,175));
+
+		g.setColor(new Color(0, 0, 0, 175));
 		g.fillRect(0, (height / 3), width, (height / 3));
 		g.setColor(Color.red);
 		g.drawString(deathMessage, (width / 2) - (textWidth / 2), (height / 2) + (textHeight) / 2);
 	}
-		
+
 	public void showWinMessage(Graphics g, int width, int height) {
 		String winMessage = "Victoire !";
-		
+
 		Font f = new Font(null, 1, 100);
 		g.setFont(f);
-		
+
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(winMessage, g);
 		int textWidth = (int) rec.getWidth();
 		int textHeight = (int) rec.getHeight();
-		
-		g.setColor(new Color(0,0,0,175));
+
+		g.setColor(new Color(0, 0, 0, 175));
 		g.fillRect(0, (height / 3), width, (height / 3));
 		g.setColor(Color.red);
 		g.drawString(winMessage, (width / 2) - (textWidth / 2), (height / 2) + (textHeight) / 2);
 	}
-	
+
 	public void setDungeonEntrance(Graphics g, int width, int height) {
 		String cantEnter = "Vous ne pouvez pas entrer dans le donjon sans le pouvoir du feu !";
-		
+
 		Font f = new Font(null, 1, 40);
 		g.setFont(f);
 		g.setColor(Color.red);
-		
+
 		Rectangle2D rec = g.getFontMetrics().getStringBounds(cantEnter, g);
 		int textWidth = (int) rec.getWidth();
 		int textHeight = (int) rec.getHeight();
-		
+
 		g.drawString(cantEnter, (width / 2) - (textWidth / 2), (height / 4) + (textHeight) / 2);
 	}
 
@@ -305,15 +307,15 @@ public class HudInGame {
 		if (EntitiesConst.MAP instanceof MazeMap) {
 			setTimer(g);
 		}
-		
+
 		if (EntitiesConst.GAME.paintDead) {
 			showDeadMessage(g, width, height);
 		}
-		
+
 		if (Hero.tryToEnterDungeon) {
 			setDungeonEntrance(g, width, height);
 		}
-		
+
 		if (EntitiesConst.GAME.victory_message) {
 			showWinMessage(g, width, height);
 		}
@@ -324,8 +326,7 @@ public class HudInGame {
 				g.setFont(fQuest);
 				g.setColor(Color.magenta);
 				setTorchQuest(g, width, height / 3);
-			}
-			else {
+			} else {
 				g.setFont(f);
 				setBossLifeBar(g, width, height);
 			}
