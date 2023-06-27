@@ -32,7 +32,7 @@ public abstract class Hero extends Entity {
 		Hero.level = EntitiesConst.LEVEL;
 		Hero.levelUp = EntitiesConst.LEVEL_UP;
 		Hero.experience = EntitiesConst.EXPERIENCE;
-		Hero.firePowerUnlocked = true;
+		Hero.firePowerUnlocked = false;
 		Hero.bushesCut = 0;
 		Hero.bombs = 0;
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
