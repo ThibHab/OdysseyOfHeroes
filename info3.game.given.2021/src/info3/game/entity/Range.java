@@ -1,12 +1,14 @@
 package info3.game.entity;
 
+import animations.Animation;
 import info3.game.Game;
-import info3.game.automata.*;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
-import info3.game.constants.StatesConst;
 
 public class Range extends Hero {
 	public Range(String name, Game g) {
@@ -16,133 +18,115 @@ public class Range extends Hero {
 		this.weaponRange = EntitiesConst.RANGE_RANGE;
 		this.health = 8;
 		this.maxHealth = this.health;
+		this.attackSpeed = 500;
 		this.range = 3;
-        
+		this.healingPotions = EntitiesConst.HEALING_POTIONS;
+
 		for (Aut_Automaton next : g.listAutomata) {
 			if (next.name.equals(name))
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
 
-		this.sprites = ImagesConst.RANGE;
-		this.imageIndex = 0;
-		this.hitbox = new Hitbox(this, (float)0.50, (float)0.60);
+		Aut_Direction dirs[] = new Aut_Direction[] { Aut_Direction.S, Aut_Direction.E, Aut_Direction.N,
+				Aut_Direction.W };
+		Action acts[] = new Action[] { Action.S, Action.M, Action.H, Action.T, Action.D };
+		this.anim = new Animation(this, ImagesConst.RANGE, dirs, acts);
+		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.60);
 	}
-	
+
+	@Override
+	public void Power() {
+		if (this.healingPotions > 0) {
+			Melee otherPlayer = EntitiesConst.GAME.player1;
+			Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+			if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer
+					&& otherPlayer.dead) {
+				this.Wait(1000);
+			} else {
+				if (this.health < this.maxHealth) {
+					this.heal();
+					this.healingPotions--;
+					Wait(200);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void waited() {
+		this.actionIndex = 0;
+		Melee otherPlayer = EntitiesConst.GAME.player1;
+		Location loc = frontTileLocation(Aut_Direction.F.rightDirection(this));
+		if (EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity == otherPlayer && otherPlayer.dead) {
+			this.healingPotions--;
+			otherPlayer.revive();
+		}
+	}
+
 	@Override
 	public void Hit(Aut_Direction d) {
-		if (!this.hitFrozen) {
+		if (!this.frozen && !this.hitFrozen) {
 			this.frozen = true;
+			if (d != null) {
+				this.direction = d;
+			}
 			if (this.action != Action.H) {
-				System.out.println(this.name + " hits");
-				this.imageIndex = this.sprites.length;
 				this.action = Action.H;
-				this.updateSpriteIndex();
+				this.anim.changeAction(action);
 			}
 			this.hitFrozen = true;
-			if(d != null) {
-				Projectile p = new Projectile(this, d);
-			}else {
-				Projectile p = new Projectile(this, this.direction);
-			}
-			
+			this.frozen = true;
+			EntitiesConst.MAP.projectiles.add(new EnergyBall(this, this.direction));
 		}
 	}
-	public int getHitNbSprite() {
-		return AnimConst.RANGE_H;
-	}
-	
-	@Override
-	public int getMvmtNbSprite() {
-		return AnimConst.RANGE_M;
-	}
-	
-	@Override
-	public int getStandNbSprite() {
-		return AnimConst.RANGE_S;
-	}
-	
-	@Override
-	public int getDieNbSprite() {
-		return AnimConst.RANGE_D;
-	}
-	
-	@Override
-	public int getTouchedNbSprite() {
-		return AnimConst.RANGE_T;
-	}
 
 	@Override
-	public void Pop(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Pop(d, c);
-	}
-
-	@Override
-	public void Wizz(Aut_Direction d, Aut_Category c) {
-		// TODO Auto-generated method stub
-		super.Wizz(d, c);
-	}
-
-	@Override
-	public void updateSpriteIndex() {
-		int idx = 0;
-		switch (this.direction) {
+	public int getNbActionSprite(Action a) {
+		// TODO
+		switch (a) {
+		case M:
+			return AnimConst.RANGE_M;
+		case H:
+			return AnimConst.RANGE_H;
+		case T:
+			return AnimConst.RANGE_T;
+		case D:
+			return AnimConst.RANGE_D;
 		case S:
-			break;
-		case E:
-			idx += (1 * AnimConst.RANGE_TOT);
-			break;
-		case N:
-			idx += (2 * AnimConst.RANGE_TOT);
-			break;
-		case W:
-			idx += (3 * AnimConst.RANGE_TOT);
-			break;
+			return AnimConst.RANGE_S;
 		default:
-			break;
+			return 0;
 		}
-		if (this.action == Action.S) {
-			if (this.imageIndex + 1 < idx + AnimConst.RANGE_S) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
+	}
+
+	@Override
+	public void updateStats() {
+		this.weaponDamage += 2;
+
+		if (Hero.level % 2 == 0 && this.maxHealth < 13) {
+			this.maxHealth += 1;
 		}
-		idx += AnimConst.RANGE_S;
-		if (this.action == Action.M) {
-			if (this.imageIndex + 1 < idx + AnimConst.RANGE_M) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
+
+		if (Hero.level % 5 == 0) {
+			this.weaponRange += 1;
 		}
-		idx += AnimConst.RANGE_M;
-		if (this.action == Action.H) {
-			if (this.imageIndex + 1 < idx + AnimConst.RANGE_H) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
+
+		if (this.dead == false) {
+			this.health = this.maxHealth;
 		}
-		idx += AnimConst.RANGE_H;
-		if (this.action == Action.T) {
-			if (this.imageIndex + 1 < idx + AnimConst.RANGE_T) {
-				this.imageIndex = this.imageIndex + 1;
-				return;
-			}
-			this.imageIndex = idx;
-			return;
-		}
-		idx += AnimConst.RANGE_T;
-		if (this.imageIndex + 1 < idx + AnimConst.RANGE_D) {
-			this.imageIndex = this.imageIndex + 1;
-			return;
-		}
-		this.imageIndex = idx;
-		return;
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.RANGE_TOT;
+	}
+
+	public static void unlockFire() {
+		Hero.firePowerUnlocked = true;
+//		ImagesConst.loadFire();
+//		ImagesConst.DUNGEON_ENTRANCE_CLOSED = ImagesConst.DUNGEON_ENTRANCE_OPEN;
+		EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
+//		EntitiesConst.ENERGYBALL_SCALE = 0.8f;
 	}
 }

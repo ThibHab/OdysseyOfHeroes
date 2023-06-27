@@ -3,7 +3,7 @@ package info3.game.automata;
 import info3.game.Game;
 import info3.game.constants.EntitiesConst;
 import info3.game.entity.Entity;
-import info3.game.map.*;
+import info3.game.map.Tile;
 
 public class Closest extends Aut_Condition {
 
@@ -41,7 +41,7 @@ public class Closest extends Aut_Condition {
 			for (int i = 0; i < 2 * range; i++) {
 				xSearch -= 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
-				if (tile.entity != null && tile.entity.category == cat) {
+				if (tile.entity != null && tile.entity.category == cat && tile.entity.dead == false) {
 					if (xEnt < xSearch && (dir == Aut_Direction.N || dir == Aut_Direction.E))
 						return true;
 					if (xEnt == xSearch && dir == Aut_Direction.N)
@@ -56,7 +56,7 @@ public class Closest extends Aut_Condition {
 			for (int i = 0; i < 2 * range; i++) {
 				ySearch += 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
-				if (tile.entity != null && tile.entity.category == cat) {
+				if (tile.entity != null && tile.entity.category == cat && tile.entity.dead == false) {
 					if (yEnt < ySearch && (dir == Aut_Direction.W || dir == Aut_Direction.S))
 						return true;
 					if (yEnt == ySearch && dir == Aut_Direction.W)
@@ -70,7 +70,7 @@ public class Closest extends Aut_Condition {
 			for (int i = 0; i < 2 * range; i++) {
 				xSearch += 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
-				if (tile.entity != null && tile.entity.category == cat) {
+				if (tile.entity != null && tile.entity.category == cat && tile.entity.dead == false) {
 					if (xEnt < xSearch && (dir == Aut_Direction.S || dir == Aut_Direction.E))
 						return true;
 					if (xEnt == xSearch && dir == Aut_Direction.S)
@@ -84,7 +84,7 @@ public class Closest extends Aut_Condition {
 			for (int i = 0; i < 2 * range; i++) {
 				ySearch -= 1;
 				tile = map[getXmap(xSearch)][getYmap(ySearch)];
-				if (tile.entity != null && tile.entity.category == cat) {
+				if (tile.entity != null && tile.entity.category == cat && tile.entity.dead == false) {
 					if (yEnt < ySearch && (dir == Aut_Direction.E || dir == Aut_Direction.S))
 						return true;
 					if (yEnt == ySearch && dir == Aut_Direction.E)

@@ -25,7 +25,7 @@ public class DebugMap extends Map {
 		}
 		map[(int)lp1.getX()][(int)lp1.getY()].entity = player1;
 		map[(int)lp2.getX()][(int)lp2.getY()].entity = player2;
-		//summon a coin
+		map[5][5].entity=new Rock(new Location(5,5));
 		
 	}
 

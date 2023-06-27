@@ -5,7 +5,33 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import info3.game.automata.*;
+import info3.game.automata.Aut_Action;
+import info3.game.automata.Aut_Automaton;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Condition;
+import info3.game.automata.Aut_Direction;
+import info3.game.automata.Aut_Key;
+import info3.game.automata.Aut_State;
+import info3.game.automata.Aut_Transition;
+import info3.game.automata.Cell;
+import info3.game.automata.Closest;
+import info3.game.automata.Cond;
+import info3.game.automata.Egg;
+import info3.game.automata.Explode;
+import info3.game.automata.Get;
+import info3.game.automata.GotPower;
+import info3.game.automata.GotStuff;
+import info3.game.automata.Hit;
+import info3.game.automata.Move;
+import info3.game.automata.MyDir;
+import info3.game.automata.Pick;
+import info3.game.automata.Pop;
+import info3.game.automata.Power;
+import info3.game.automata.Throw;
+import info3.game.automata.True;
+import info3.game.automata.Turn;
+import info3.game.automata.Wait;
+import info3.game.automata.Wizz;
 
 public class AutCreator implements IVisitor {
 
@@ -170,10 +196,13 @@ public class AutCreator implements IVisitor {
 			act = new Pick(dir, funcall.percent);
 			break;
 		case "Throw":
-			act = new Throw(dir, funcall.percent);
+			act = new Throw(dir, cat, funcall.percent);
 			break;
 		case "Wait":
-			act = new Wait(funcall.percent);
+			act = new Wait(number, funcall.percent);
+			break;
+		case "Power":
+			act = new Power(funcall.percent);
 			break;
 		}
 		actions.add(act);

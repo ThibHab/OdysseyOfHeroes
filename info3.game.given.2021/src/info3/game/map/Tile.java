@@ -33,7 +33,7 @@ public abstract class Tile implements ITile {
 		g.drawImage(this.image, (int) screenPosX, (int) screenPosY, size, size, null);
 		if (EntitiesConst.GAME.debug) {
 			g.setColor(Color.red);
-			g.drawString(screenPosX + ";" + screenPosY, (int) screenPosX, (int) screenPosY + size / 2);
+			//g.drawString(screenPosX + ";" + screenPosY, (int) screenPosX, (int) screenPosY + size / 2);
 			if (entity == null) {
 				if ((location.getX() + location.getY()) % 2 == 0) {
 					g.setColor(new Color(0, 255, 255, 50));

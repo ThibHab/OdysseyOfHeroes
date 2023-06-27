@@ -1,119 +1,69 @@
-Player2(Stand_S){
-  * (Stand_S)
-  | Key(o) ? Turn(N) :(Stand_N)
-  | Key(l) ? Move(S) :(Stand_S)
-  | Key(k) ? Turn(W) :(Stand_W)
-  | Key(m) ? Turn(E) :(Stand_E)
-  | Key(i) ? Hit(S)  :(Stand_S)
-  | Cell(S,P) ? Pick(S) : (Stand_S)
-
-  * (Stand_N)
-  | Key(o) ? Move(N) :(Stand_N)
-  | Key(l) ? Turn(S) :(Stand_S)
-  | Key(k) ? Turn(W) :(Stand_W)
-  | Key(m) ? Turn(E) :(Stand_E)
-  | Key(i) ? Hit(N)  :(Stand_N)
-  | Cell(N,P) ? Pick(N) : (Stand_N)
+P2 (Stand) {
+  * (Stand)
+  | !GotPower ? : ()
+  | Cell(F,P) ? Pick(F) : (Stand)
+  | Key(i) & Cell(F,T) ? Pop(F,T) : (Stand)
+  | Key(i) ? Hit(F)  :(Stand)
+  | Key(o) ? Move(N) :(Stand)
+  | Key(l) ? Move(S) :(Stand)
+  | Key(k) ? Move(W) :(Stand)
+  | Key(m) ? Move(E) :(Stand)
+  | Key(p) ? Power : (Stand)
+  | Key(u) ? Egg(F, D) : (Stand)
   
-  * (Stand_W)
-  | Key(o) ? Turn(N) :(Stand_N)
-  | Key(l) ? Turn(S) :(Stand_S)
-  | Key(k) ? Move(W) :(Stand_W)
-  | Key(m) ? Turn(E) :(Stand_E)
-  | Key(i) ? Hit(W)  :(Stand_W)
-  | Cell(W,P) ? Pick(W) : (Stand_W)
-  
-  * (Stand_E)
-  | Key(o) ? Turn(N) :(Stand_N)
-  | Key(l) ? Turn(S) :(Stand_S)
-  | Key(k) ? Turn(W) :(Stand_W)
-  | Key(m) ? Move(E) :(Stand_E)
-  | Key(i) ? Hit(E)  :(Stand_E)
-  | Cell(E,P) ? Pick(E) : (Stand_E)
+  *()
  }
- 
- Player1(Stand_S){
-  * (Stand_S)
-  | Key(z) ? Turn(N) :(Stand_N)
-  | Key(s) ? Move(S) :(Stand_S)
-  | Key(q) ? Turn(W) :(Stand_W)
-  | Key(d) ? Turn(E) :(Stand_E)
-  | Key(a) ? Hit(S)  :(Stand_S)
-  | Cell(S,P) ? Pick(S) : (Stand_S)
 
-  * (Stand_N)
-  | Key(z) ? Move(N) :(Stand_N)
-  | Key(s) ? Turn(S) :(Stand_S)
-  | Key(q) ? Turn(W) :(Stand_W)
-  | Key(d) ? Turn(E) :(Stand_E)
-  | Key(a) ? Hit(N)  :(Stand_N)
-  | Cell(N,P) ? Pick(N) : (Stand_N)
+P1 (Stand) {
+  * (Stand)
+  | !GotPower ? : ()
+  | Cell(F,P) ? Pick(F) : (Stand)
+  | Key(a) & Cell(F,T) ? Pop(F,T) : (Stand)
+  | Key(a) ? Hit(F)  :(Stand)
+  | Key(z) ? Move(N) :(Stand)
+  | Key(s) ? Move(S) :(Stand)
+  | Key(q) ? Move(W) :(Stand)
+  | Key(d) ? Move(E) :(Stand)
+  | Key(e) ? Power : (Stand)
+  | Key(r) ? Egg(F, D) : (Stand)
   
-  * (Stand_W)
-  | Key(z) ? Turn(N) :(Stand_N)
-  | Key(s) ? Turn(S) :(Stand_S)
-  | Key(q) ? Move(W) :(Stand_W)
-  | Key(d) ? Turn(E) :(Stand_E)
-  | Key(a) ? Hit(W)  :(Stand_W)
-  | Cell(W,P) ? Pick(W) : (Stand_W)
-  
-  * (Stand_E)
-  | Key(z) ? Turn(N) :(Stand_N)
-  | Key(s) ? Turn(S) :(Stand_S)
-  | Key(q) ? Turn(W) :(Stand_W)
-  | Key(d) ? Move(E) :(Stand_E)
-  | Key(a) ? Hit(E)  :(Stand_E)
-  | Cell(E,P) ? Pick(E) : (Stand_E)
-  
-}
+  *()
+ }
 
 Bush(Existing){
   *(Existing)
-  | !GotPower ? 10% Egg(H,A) / 10% Egg(H,P,1) / 5% Egg(H,P,2) / 5% Egg(H,P,3) : ()
+  | !GotPower ? 5% Egg(H,A) / 50% Egg(H,P,1) / 5% Egg(H,P,2) : (Growing)
   
-  * ()
+  * (Growing)
+  | True ? Wait(60000) : (Existing)
  } 
  
- Tree(Existing){
+ Nothing (Existing){
   *(Existing)
   | True ? : (Existing)
   } 
-  
- House(Existing){
+ 
+ Bomb(Existing){
  	*(Existing)
- 	| True ? : (Existing)
+ 	| True ? Wait(5000) : (Explosion)
+
+ 	*(Explosion)
+ 	| True ? Explode : ()
+ 	
+ 	* ()
  }
  
-  Rock(Existing){
- 	*(Existing)
- 	| True ? : (Existing)
- }
- 
- EnergyBall(Forward){
+ Projectile(Forward){
    *(Forward)
    | True ? Move : (Forward)
    
    *()
  }
  
- Ennemy(DontStart) {
-   * (DontStart)
-   | Key(s) ? : (Search)
-   | True ? : (DontStart)
-   
+MeleeEnnemy(Search) {
    * (Search)
-   | Cell(@,N,3) ? Hit(N) : (Search)
-   | Cell(@,S,3) ? Hit(S) : (Search)
-   | Cell(@,E,3) ? Hit(E) : (Search)
-   | Cell(@,W,3) ? Hit(W) : (Search)
-   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
-   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
-   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
-   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
- }
- 
-  Goblin(Search) {
-   * (Search)
+   | !GotPower ? Egg(H,P,1) : ()
+   | Cell(F,P) ? Pick : (Search)
    | Cell(@,N) ? Hit(N) : (Search)
    | Cell(@,S) ? Hit(S) : (Search)
    | Cell(@,E) ? Hit(E) : (Search)
@@ -122,22 +72,110 @@ Bush(Existing){
    | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
    | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
    | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+   | True ? 50% Move(F) / 25% Move(R) / 25% Move(L) : (Search)
+   
+   * ()
  }
  
- Coin(Exists) {
-   *(Exists)
-   | True ? : (Exists) 
+RangeEnnemy(Search) {
+   * (Search)
+   | !GotPower ? Egg(H,P,1) : ()
+   | Cell(F,P) ? Pick : (Search)
+   | Cell(@,N,3) ? Hit(N) : (Search)
+   | Cell(@,S,3) ? Hit(S) : (Search)
+   | Cell(@,E,3) ? Hit(E) : (Search)
+   | Cell(@,W,3) ? Hit(W) : (Search)
+   | Closest(@, N) & Cell(N, V)? Move(N) : (Search)
+   | Closest(@, W) & Cell(W, V)? Move(W) : (Search)
+   | Closest(@, S) & Cell(S, V)? Move(S) : (Search)
+   | Closest(@, E) & Cell(E, V)? Move(E) : (Search)
+   | True ? 50% Move(F) / 25% Move(R) / 25% Move(L) : (Search)
+   
+   * ()
  }
  
- Chest(Exists) {
-   * (Exists)
-   | True ? : (Exists)
- }
- 
-  CaveWall(Existing){
+  Villager (Walking) {
+  * (Walking)
+  | Cell(@, B) ? Turn(B) : (Standing)
+  | Cell(@, L) ? Turn(L) : (Standing)
+  | Cell(@, R) ? Turn(R) : (Standing)
+  | Cell(@, F) ? : (Standing)
+  | True ? 60% Move(F) / 20% Move(L) / 20% Move(R): (Walking)
+  
+  * (Standing)
+  | !Cell(@, F) ? : (Walking)
+  }
+  
+  Rock(Existing){
   *(Existing)
-  | True ? : (Existing)
-  } 
- 
+  | !GotPower ? : ()
+  
+  * ()
+  }
+  
+  Torch(Off){
+  *(Off)
+  | !GotPower ? Pop : (On)
+  
+  * (On)
+  }
+  
+  Hermit (Turning) {
+  * (Turning)
+  | Cell(@, B) ? Turn(B) : (Standing)
+  | Cell(@, L) ? Turn(L) : (Standing)
+  | Cell(@, R) ? Turn(R) : (Standing)
+  | Cell(@, F) ? : (Standing)
+  | True ? Turn(R) : (Moving)
+  
+  * (Moving)
+  | True ? Move(F) : (Turning)
+  
+  * (Standing)
+  | Cell(F,V) ? : (Moving)
+  }
+  
+  
+  Portal (Waiting) {
+  	* (Waiting)
+  	| True ? 25% Wait(5000) / 25% Wait(10000) / 25% Wait(15000) / 25% Wait(20000) : (Drop)
+  	
+  	* (Drop)
+  	| True ? 25% Egg(F,A) / 25% Egg(R,A) / 25% Egg(L,A) / 25% Egg(B,A) : (Waiting) 
+  
+  }
+  
+  Boss(Phase1){
+	*(Phase1)
+	| !GotPower(600) ? : (Phase2)
+	| True ? Hit : (Wait1)
+	
+	* (Wait1)
+	| True ? Wait(7000) : (Phase1)
+	
+	* (Phase2)
+	| !GotPower(300) ? : (Phase3)
+	| True ? 25% Hit/ 75% Pop : (Wait2)
+	
+	* (Wait2)
+	| True ? Wait(2000) : (Phase2)
+	
+	* (Phase3)
+	| !GotPower ? : ()
+	| True ? 15% Hit / 35% Pop / 50% Wizz : (Wait3)
+	
+	* (Wait3)
+	| True ? Wait(5000) : (Phase3)
+	
+	* ()
+  }
+  
+  Choregraphie (Turning) {
+  * (Turning)
+  | True ? Turn(R) : (Moving)
+  
+  * (Moving)
+  | True ? Move(F) : (Turning)
+  }
  
  
