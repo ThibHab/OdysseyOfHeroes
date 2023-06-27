@@ -559,7 +559,7 @@ public abstract class Map implements IMap {
 						}
 					}
 					if (!alreadyTicked) {
-						if (ent instanceof House || ent instanceof Tree || ent instanceof Hero) {
+						if (ent instanceof House || ent instanceof Tree || ent instanceof Hero || ent instanceof Boss) {
 							tab[indexTab++] = ent;
 						}
 						ent.tick(elapsed);
