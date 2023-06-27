@@ -9,6 +9,7 @@ import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
+import info3.game.map.Tile;
 import info3.game.sound.RandomFileInputStream;
 
 public class Hermit extends Villager {
@@ -33,7 +34,7 @@ public class Hermit extends Villager {
 		this.anim = new Animation(this, ImagesConst.HERMIT, dirs, acts);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
@@ -45,6 +46,59 @@ public class Hermit extends Villager {
 			return 0;
 		}
 	}
+
+	@Override
+	public void Move(Aut_Direction d) {
+		this.frozen = true;
+		if (d != null) {
+			this.direction = d;
+		}
+		this.direction = d;
+
+		if (this.action != Action.M) {
+			this.action = Action.M;
+		}
+		this.anim.changeAction(action);
+
+		this.destLocation = new Location(this.location.getX(), this.location.getY());
+		this.originLocation = new Location(this.location.getX(), this.location.getY());
+		this.relativeMouv = new Location(0, 0);
+		switch (d) {
+		case N:
+			this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY - 1) % EntitiesConst.MAP.lenY);
+			this.relativeMouv.setY(-1);
+			break;
+		case S:
+			this.destLocation.setY((this.location.getY() + EntitiesConst.MAP.lenY + 1) % EntitiesConst.MAP.lenY);
+			this.relativeMouv.setY(1);
+			break;
+		case W:
+			this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX - 1) % EntitiesConst.MAP.lenX);
+			this.relativeMouv.setX(-1);
+			break;
+		case E:
+			this.destLocation.setX((this.location.getX() + EntitiesConst.MAP.lenX + 1) % EntitiesConst.MAP.lenX);
+			this.relativeMouv.setX(1);
+			break;
+		default:
+			break;
+		}
+
+		Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
+		if (destTile.walkable && destTile.entity == null) {
+			destTile.entity = this;
+		} else {
+			this.frozen = false;
+		}
+		for (int i = 0; i < EntitiesConst.MAP.bubbles.size(); i++) {
+			SpeechBubble bubble = EntitiesConst.MAP.bubbles.get(i);
+			if (bubble.v == this) {
+				EntitiesConst.MAP.bubbles.remove(i);
+			}
+		}
+		this.dialogIndex = 0;
+	}
+
 	@Override
 	public void tick(long elapsed) {
 		if (!EntitiesConst.GAME.inMenu.isPaused) {
@@ -98,14 +152,14 @@ public class Hermit extends Villager {
 						this.frozen = false;
 						this.actionIndex = 0;
 					}
-				}else  if (timer != Integer.MIN_VALUE) {
+				} else if (timer != Integer.MIN_VALUE) {
 					this.timer -= elapsed;
 					if (timer < 0) {
 						this.frozen = false;
 						timer = Integer.MIN_VALUE;
 						waited();
 					}
-				} 
+				}
 			} else {
 				if (this.action != Action.S) {
 					if (EntitiesConst.GAME.debug) {
@@ -120,15 +174,15 @@ public class Hermit extends Villager {
 			this.anim.step(elapsed);
 		}
 	}
-	
+
 	@Override
 	public void talks() {
 		super.talks();
-		if(this.dialogIndex == 3) {
+		if (this.dialogIndex == 3) {
 			try {
 				RandomAccessFile file = new RandomAccessFile("resources/sounds/fireUnlocked.ogg", "r");
 				RandomFileInputStream fis = new RandomFileInputStream(file);
-				EntitiesConst.GAME.m_canvas.playSound("lvlup",fis, 0, 0.8F);
+				EntitiesConst.GAME.m_canvas.playSound("lvlup", fis, 0, 0.8F);
 			} catch (Throwable th) {
 				th.printStackTrace(System.err);
 				System.exit(-1);
@@ -139,7 +193,7 @@ public class Hermit extends Villager {
 			this.dialogs.clear();
 		}
 	}
-	
+
 	@Override
 	public boolean isFinished() {
 		switch (this.action) {

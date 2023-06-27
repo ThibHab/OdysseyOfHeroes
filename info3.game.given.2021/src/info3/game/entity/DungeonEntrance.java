@@ -24,7 +24,11 @@ public class DungeonEntrance extends DecorElement {
 		// -----------------------------
 
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.DUNGEON_ENTRANCE_CLOSED, null, acts);
+		if (Hero.firePowerUnlocked) {
+			this.anim = new Animation(this, ImagesConst.DUNGEON_ENTRANCE_OPEN, null, acts);
+		} else {
+			this.anim = new Animation(this, ImagesConst.DUNGEON_ENTRANCE_CLOSED, null, acts);
+		}
 		// -----------------------------------
 
 		this.width = 1;
@@ -36,7 +40,7 @@ public class DungeonEntrance extends DecorElement {
 
 		this.scale = EntitiesConst.DUNGEON_ENTRANCE_SCALE;
 	}
-	
+
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {

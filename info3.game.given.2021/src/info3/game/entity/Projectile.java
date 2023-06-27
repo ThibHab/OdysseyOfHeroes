@@ -56,7 +56,7 @@ public class Projectile extends Entity {
 
 		this.action = Action.M;
 		Action acts[] = new Action[] { Action.M };
-		this.anim = new Animation(this, ImagesConst.ENERGYBALL, null, acts);
+		this.anim = new Animation(this, ImagesConst.FIREBALL, null, acts);
 
 		this.location.setX(location.getX());
 		this.location.setY(location.getY());
