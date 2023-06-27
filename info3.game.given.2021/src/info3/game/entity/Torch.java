@@ -5,6 +5,7 @@ import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
+import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -42,6 +43,7 @@ public class Torch extends DecorElement {
 	public void takeDamage(Entity ent) {
 		if (ent instanceof Range) {
 			this.health -= ent.weaponDamage;
+			this.anim.sprites = ImagesConst.loadSprite("TorchLight", 2, 3);
 		}
 	}
 	
@@ -50,6 +52,29 @@ public class Torch extends DecorElement {
 		//TODO UPDATE ANIM
 		//this.imageIndex = 1;
 		this.lit=true;
+	}
+	
+	@Override
+	public int getNbActionSprite(Action a) {
+		switch (a) {
+		case M:
+			return 0;
+		case H:
+			return 0;
+		case T:
+			return 0;
+		case D:
+			return 0;
+		case S:
+			return AnimConst.TORCH_S;
+		default:
+			return 0;
+		}
+	}
+
+	@Override
+	public int totSrpitePerDir() {
+		return AnimConst.TORCH_S;
 	}
 
 }

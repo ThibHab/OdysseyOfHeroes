@@ -69,6 +69,7 @@ public abstract class Map implements IMap {
 					if (x != tr_x || y != tr_y) {
 						if (map[tr_x][tr_y].tpBlock != null) {
 							map[tr_x][tr_y].tpBlock.del(tr);
+							map[tr_x][tr_y].tpBlock = null;
 						}
 					}
 				}

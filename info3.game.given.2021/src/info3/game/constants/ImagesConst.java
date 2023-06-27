@@ -17,7 +17,8 @@ public class ImagesConst {
 	public static BufferedImage[] HOUSE, ROCK, TREE, STATUE, CURSOR;
 	public static BufferedImage[] COIN, HEALING_POTION, STRENGTH_POTION;
 	public static BufferedImage[] BOSS, GOBLIN, SKELETON, MERCHANT, VILLAGERGIRL, HERMIT, MINER;
-	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL,DUNGEON_ENTRANCE_OPEN,DUNGEON_ENTRANCE_CLOSED, PORTAL;
+	public static BufferedImage[] BUSH, CHEST, TORCH, MAZE_WALL, MAZE_ENTRANCE, DUNGEON_WALL, DUNGEON_ENTRANCE_OPEN,
+			DUNGEON_ENTRANCE_CLOSED, PORTAL;
 	public static BufferedImage[] MELEE, RANGE;
 	public static BufferedImage[] ENERGYBALL, FIREBALL, BONE;
 	public static BufferedImage[] SPEECHBUBBLE;
@@ -59,12 +60,12 @@ public class ImagesConst {
 
 		BUSH = loadSprite("bush", 1, 1);
 		CHEST = loadSprite("Chest", 2, 2);
-		TORCH = loadSprite("torch", 2, 3);
+		TORCH = loadSprite("TorchNoLight", 2, 3);
 		MAZE_WALL = loadSprite("MazeWall", 1, 1);
 		MAZE_ENTRANCE = loadSprite("MazeEntrance", 1, 1);
 		DUNGEON_WALL = loadSprite("DungeonWall", 3, 2);
 		DUNGEON_ENTRANCE_OPEN = loadSprite("portalRing", 1, 5);
-		DUNGEON_ENTRANCE_CLOSED= loadSprite("PortalRingClosed", 3, 2);
+		DUNGEON_ENTRANCE_CLOSED = loadSprite("PortalRingClosed", 3, 2);
 		PORTAL = loadSprite("portal", 2, 2);
 
 		MELEE = loadSprite("Melee", 8, 7);
@@ -98,32 +99,42 @@ public class ImagesConst {
 
 	}
 
-	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) throws IOException {
-		File imageFile = new File(path + filename + ".png");
-		if (!imageFile.exists()) {
-			imageFile = new File(path + "default.png");
-		}
-		BufferedImage image = ImageIO.read(imageFile);
-		int width = image.getWidth(null) / ncols;
-		int height = image.getHeight(null) / nrows;
-
-		BufferedImage[] images = new BufferedImage[nrows * ncols];
-		for (int i = 0; i < nrows; i++) {
-			for (int j = 0; j < ncols; j++) {
-				int x = j * width;
-				int y = i * height;
-				images[(i * ncols) + j] = image.getSubimage(x, y, width, height);
+	public static BufferedImage[] loadSprite(String filename, int nrows, int ncols) {
+		try {
+			File imageFile = new File(path + filename + ".png");
+			if (!imageFile.exists()) {
+				imageFile = new File(path + "default.png");
 			}
+			BufferedImage image = ImageIO.read(imageFile);
+			int width = image.getWidth(null) / ncols;
+			int height = image.getHeight(null) / nrows;
+
+			BufferedImage[] images = new BufferedImage[nrows * ncols];
+			for (int i = 0; i < nrows; i++) {
+				for (int j = 0; j < ncols; j++) {
+					int x = j * width;
+					int y = i * height;
+					images[(i * ncols) + j] = image.getSubimage(x, y, width, height);
+				}
+			}
+			return images;
+		} catch (Exception e) {
+			System.out.println("failed to load sprite sheet");
+			return null;
 		}
-		return images;
 	}
 
-	public static BufferedImage loadTile(String filename) throws IOException {
-		File imageFile = new File(path + filename + ".png");
-		if (!imageFile.exists()) {
-			imageFile = new File(path + "default.png");
+	public static BufferedImage loadTile(String filename) {
+		try {
+			File imageFile = new File(path + filename + ".png");
+			if (!imageFile.exists()) {
+				imageFile = new File(path + "default.png");
+			}
+			return ImageIO.read(imageFile);
+		} catch (Exception e) {
+			System.out.println("failed to load sprite");
+			return null;
 		}
-		return ImageIO.read(imageFile);
 	}
 
 	public static void loadFire() {

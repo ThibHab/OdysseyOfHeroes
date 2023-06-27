@@ -137,6 +137,7 @@ public class EntitiesConst {
 	// DUNGEON CONSTANTS
 	public static final int NUMBER_OF_TORCHES = 6;
 	
+	
 	public static int getActionIndexMax(Action a) {
 		if(a == null)
 			a = Action.S;

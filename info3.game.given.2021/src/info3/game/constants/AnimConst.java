@@ -76,6 +76,7 @@ public class AnimConst {
 	
 	public static final int PORTAL_S = 4;
 	public static final int DUNGEON_ENTRANCE_S = 4;
+	public static final int TORCH_S = 4;
 	
 	//Timed Effects
 	public static final int TIME_SWORD_EFFECT = 200;
