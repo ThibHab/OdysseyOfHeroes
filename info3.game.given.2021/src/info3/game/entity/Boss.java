@@ -1,5 +1,11 @@
 package info3.game.entity;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 import java.util.Random;
 
 import animations.Animation;
@@ -16,6 +22,7 @@ public class Boss extends Mob {
 	public int phase;
 	public static String n;
 	public static int h;
+	public int width, height;
 	
 	public Boss(Location l) {
 		super();
@@ -29,6 +36,16 @@ public class Boss extends Mob {
 		this.direction = Aut_Direction.W;
 		this.frozen = true;
 		this.range = 18;
+		this.width = 3;
+		this.height = 3;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()-1][(int)l.getY()].entity = this;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()-2][(int)l.getY()].entity = this;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()-1][(int)l.getY()+1].entity = this;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()-2][(int)l.getY()+1].entity = this;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()-1][(int)l.getY()-1].entity = this;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()-2][(int)l.getY()-1].entity = this;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()][(int)l.getY()-1].entity = this;
+		EntitiesConst.MAP_MATRIX[(int)l.getX()][(int)l.getY()+1].entity = this;
 
 		for (Aut_Automaton next : EntitiesConst.GAME.listAutomata) {
 			if (next.name.equals(name))
@@ -46,6 +63,20 @@ public class Boss extends Mob {
 		
 		this.scale = EntitiesConst.BOSS_SCALE;
 		this.hitbox = new Hitbox(this, (float) 2.0, (float) 2.0);
+	}
+	
+	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
+		BufferedImage img = anim.getFrame();
+		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
+		int dimension = (int) (scale * tileSize * width);
+		int positionX = (int) (pixel.getX() - 3*tileSize);
+		int positionY = (int) (pixel.getY() - 3*tileSize + tileSize/2);
+		g.drawImage(img, positionX, positionY, dimension, dimension, null);
+		if (EntitiesConst.GAME.debug) {
+			g.setColor(Color.blue);
+			g.drawRect((int) pixel.getX(), (int) pixel.getY(), (int) (tileSize),
+					(int) (tileSize));
+		}
 	}
 	
 	@Override

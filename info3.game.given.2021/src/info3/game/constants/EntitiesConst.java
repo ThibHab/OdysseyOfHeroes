@@ -76,7 +76,7 @@ public class EntitiesConst {
 	public static final int BOSS_MOB_SPAWN_NUMBER = 3;
 	public static final int BOSS_FLAME_ATTACK_SIZE = 3;
 	public static final int BOSS_NUMBER_PROJECTILES_TO_BE_FIRED = 10;
-	public static final float BOSS_SCALE = 3.0f;
+	public static final float BOSS_SCALE = 2.0f;
 	
 	// HOUSE CONSTANTS
 	public static final float HOUSE_SCALE = 1f;
