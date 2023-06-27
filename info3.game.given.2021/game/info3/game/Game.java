@@ -597,7 +597,6 @@ public class Game {
 			Range.unlockFire();
 		} else {
 			Hero.firePowerUnlocked = false;
-			ImagesConst.DUNGEON_ENTRANCE_OPEN = ImagesConst.DUNGEON_ENTRANCE_CLOSED;
 			EntitiesConst.MAP.setDungeonEntrance(EntitiesConst.DUNGEON_ENTRANCE_X_POS, EntitiesConst.DUNGEON_ENTRANCE_Y_POS);
 		}
 
