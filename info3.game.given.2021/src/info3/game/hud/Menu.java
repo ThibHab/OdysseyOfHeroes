@@ -134,7 +134,7 @@ public class Menu extends Button {
 					buttons[i].paint(g);
 				}
 
-				String gameName = "YES CA MARCHE !";
+				String gameName = "Odyssey of heroes";
 				Font title = new Font(null, 0, 100);
 				g.setFont(title);
 

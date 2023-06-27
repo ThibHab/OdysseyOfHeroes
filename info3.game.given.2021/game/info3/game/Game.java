@@ -177,6 +177,8 @@ public class Game {
 		m_frame.setIconImage(null);
 
 		System.out.println("  - setting up the frame...");
+		
+		m_frame.setIconImage(ImagesConst.CURSOR[0]);
 
 		setupFrame();
 
