@@ -1,13 +1,7 @@
 package info3.game.entity;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import animations.Animation;
 import animations.SmokeEffect;
-import info3.game.automata.Aut_Automaton;
-import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
@@ -24,6 +18,7 @@ public class Bone extends Projectile {
 		this.scale = EntitiesConst.BONE_SCALE;
 	}
 
+	@Override
 	public void tick(long elapsed) {
 		if (this.owner.weaponRange < this.tilesCrossed) {
 			EntitiesConst.MAP.projectiles.remove(this);
@@ -75,14 +70,6 @@ public class Bone extends Projectile {
 		switch (a) {
 		case M:
 			return AnimConst.BONE_M;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
-		case S:
-			return 0;
 		default:
 			return 0;
 		}

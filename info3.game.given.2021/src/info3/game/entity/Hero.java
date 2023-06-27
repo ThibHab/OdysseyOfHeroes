@@ -4,16 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.RandomAccessFile;
-import java.util.Random;
 
 import info3.game.Game;
-import info3.game.automata.*;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
+import info3.game.automata.Aut_Transition;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
-import info3.game.constants.MapConstants;
-import info3.game.map.DungeonMap;
-import info3.game.map.MapRender;
-import info3.game.map.MazeMap;
 import info3.game.map.Tile;
 import info3.game.map.WorldMap;
 import info3.game.sound.RandomFileInputStream;
@@ -23,7 +20,7 @@ public abstract class Hero extends Entity {
 	public static boolean firePowerUnlocked;
 	public int healingPotions, strengthPotions;
 	public static boolean tryToEnterDungeon;
-	
+
 	public Hero() {
 		super();
 		this.category = Aut_Category.AT;
@@ -37,7 +34,7 @@ public abstract class Hero extends Entity {
 		Hero.bombs = 0;
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
-	
+
 	@Override
 	public void Move(Aut_Direction d) {
 		if (!this.frozen) {
@@ -77,7 +74,8 @@ public abstract class Hero extends Entity {
 			}
 
 			Tile destTile = EntitiesConst.MAP_MATRIX[(int) destLocation.getX()][(int) destLocation.getY()];
-			if ((destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance) && this.direction == Aut_Direction.N) {
+			if ((destTile.entity instanceof DungeonEntrance || destTile.entity instanceof MazeEntrance)
+					&& this.direction == Aut_Direction.N) {
 				if (destTile.entity instanceof DungeonEntrance) {
 					if (Hero.firePowerUnlocked) {
 						EntitiesConst.GAME.openMap(Game.BOSS);
@@ -99,13 +97,14 @@ public abstract class Hero extends Entity {
 			WorldMap.saveTile2.changeTile(false);
 		}
 	}
-	
-	
-	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int wDamage, int range, Aut_Direction dir) {
+
+	public void saveRestore(Location loc, String state, int health, int maxHealth, int hPotions, int wDamage, int range,
+			Aut_Direction dir) {
 		this.location = loc;
 		this.destLocation = loc;
 		EntitiesConst.MAP_MATRIX[(int) loc.getX()][(int) loc.getY()].entity = this;
-		EntitiesConst.MAP_MATRIX[0][4].entity = null;		// remove players from the tiles where they are created in world map
+		EntitiesConst.MAP_MATRIX[0][4].entity = null; // remove players from the tiles where they are created in world
+														// map
 		EntitiesConst.MAP_MATRIX[1][4].entity = null;
 		if (this.automaton.initial.name.equals(state))
 			this.currentState = this.automaton.initial;
@@ -113,16 +112,16 @@ public abstract class Hero extends Entity {
 			if (next.dest.name.equals(state)) {
 				this.currentState = next.dest;
 				break;
-			}	
+			}
 		}
-		
+
 		this.healingPotions = hPotions;
 		this.weaponDamage = wDamage;
 		this.weaponRange = range;
 		this.health = health;
 		this.maxHealth = maxHealth;
 		this.direction = dir;
-	
+
 	}
 
 	public void paint(Graphics g, int tileSize) {
@@ -143,13 +142,13 @@ public abstract class Hero extends Entity {
 
 	@Override
 	public void Power() {
-		if (this.healingPotions > 0 && this.health<this.maxHealth) {
+		if (this.healingPotions > 0 && this.health < this.maxHealth) {
 			this.health = this.maxHealth;
 			this.healingPotions--;
 			try {
 				RandomAccessFile file = new RandomAccessFile("resources/sounds/heal.ogg", "r");
 				RandomFileInputStream fis = new RandomFileInputStream(file);
-				EntitiesConst.GAME.m_canvas.playSound("heal",fis, 0, 0.8F);
+				EntitiesConst.GAME.m_canvas.playSound("heal", fis, 0, 0.8F);
 			} catch (Throwable th) {
 				th.printStackTrace(System.err);
 				System.exit(-1);
@@ -168,19 +167,18 @@ public abstract class Hero extends Entity {
 		Entity entity = EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity;
 		if (entity.category == Aut_Category.P) {
 			if (entity instanceof Coin) {
-				Hero.coins ++;
+				Hero.coins++;
 				try {
 					RandomAccessFile file = new RandomAccessFile("resources/sounds/coin.ogg", "r");
 					RandomFileInputStream fis = new RandomFileInputStream(file);
-					EntitiesConst.GAME.m_canvas.playSound("coin",fis, 0, 0.8F);
+					EntitiesConst.GAME.m_canvas.playSound("coin", fis, 0, 0.8F);
 				} catch (Throwable th) {
 					th.printStackTrace(System.err);
 					System.exit(-1);
 				}
-			}
-			else if (entity instanceof HealingPotion)
+			} else if (entity instanceof HealingPotion)
 				this.healingPotions++;
-			
+
 			else if (entity instanceof StrengthPotion)
 				this.strengthPotions++;
 			else if (entity instanceof Chest) {
@@ -188,13 +186,13 @@ public abstract class Hero extends Entity {
 				try {
 					RandomAccessFile file = new RandomAccessFile("resources/sounds/chest.ogg", "r");
 					RandomFileInputStream fis = new RandomFileInputStream(file);
-					EntitiesConst.GAME.m_canvas.playSound("chest",fis, 0, 0.8F);
+					EntitiesConst.GAME.m_canvas.playSound("chest", fis, 0, 0.8F);
 				} catch (Throwable th) {
 					th.printStackTrace(System.err);
 					System.exit(-1);
 				}
 			}
-			
+
 			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
 	}
@@ -206,36 +204,25 @@ public abstract class Hero extends Entity {
 			try {
 				RandomAccessFile file = new RandomAccessFile("resources/sounds/lvlup.ogg", "r");
 				RandomFileInputStream fis = new RandomFileInputStream(file);
-				EntitiesConst.GAME.m_canvas.playSound("lvlup",fis, 0, 0.8F);
+				EntitiesConst.GAME.m_canvas.playSound("lvlup", fis, 0, 0.8F);
 			} catch (Throwable th) {
 				th.printStackTrace(System.err);
 				System.exit(-1);
 			}
 			Hero.experience = 0;
 			Hero.levelUp = Hero.levelUp * 2;
-			
+
 			EntitiesConst.GAME.player1.updateStats();
 			EntitiesConst.GAME.player2.updateStats();
 		}
-		
+
 	}
-	
+
 	@Override
 	public void takeDamage(Entity attacker) {
 		this.health -= attacker.weaponDamage;
-//		try {
-//			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
-//			RandomFileInputStream fis = new RandomFileInputStream(file);
-//			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
-//		} catch (Throwable th) {
-//			th.printStackTrace(System.err);
-//			System.exit(-1);
-//		}
-//		if (this.health <= 0) {
-//			this.die();
-//		}
 	}
-	
+
 	@Override
 	public void die() {
 		if (this.action != Action.D) {
@@ -248,7 +235,7 @@ public abstract class Hero extends Entity {
 			}
 		}
 	}
-	
+
 	@Override
 	public void Pop(Aut_Direction d, Aut_Category c) {
 		this.frozen = true;
@@ -269,8 +256,7 @@ public abstract class Hero extends Entity {
 			v.talks();
 		}
 	}
-	
-	
+
 	public static void restore(int lvl, int xp, int coins, int bombs, int bushes) {
 		Hero.coins += coins;
 		int i = 1;
@@ -279,8 +265,8 @@ public abstract class Hero extends Entity {
 			i++;
 		}
 		Hero.level = lvl;
-		Hero.experience = xp;	
-		
+		Hero.experience = xp;
+
 		Hero.bombs = bombs;
 		Hero.bushesCut = bushes;
 	}

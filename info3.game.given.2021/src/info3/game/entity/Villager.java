@@ -1,17 +1,12 @@
 package info3.game.entity;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
-import java.util.List;
 
-import info3.game.Game;
-import info3.game.automata.*;
+import info3.game.automata.Aut_Category;
+import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
-import info3.game.constants.ImagesConst;
 
 public abstract class Villager extends NPC {
 
@@ -82,14 +77,14 @@ public abstract class Villager extends NPC {
 						this.frozen = false;
 						this.actionIndex = 0;
 					}
-				}else  if (timer != Integer.MIN_VALUE) {
+				} else if (timer != Integer.MIN_VALUE) {
 					this.timer -= elapsed;
 					if (timer < 0) {
 						this.frozen = false;
 						timer = Integer.MIN_VALUE;
 						waited();
 					}
-				} 
+				}
 			} else {
 				if (this.action != Action.S) {
 					if (EntitiesConst.GAME.debug) {
@@ -104,7 +99,7 @@ public abstract class Villager extends NPC {
 			this.anim.step(elapsed);
 		}
 	}
-	
+
 	@Override
 	public void Move(Aut_Direction d) {
 		float x = this.location.getX();

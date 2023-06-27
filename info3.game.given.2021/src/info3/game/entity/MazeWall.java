@@ -19,12 +19,11 @@ public class MazeWall extends DecorElement {
 		this.currentState = automaton.initial;
 
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.MAZE_WALL, null, acts);
-		// -----------------------------------
-		
+		this.anim = new Animation(this, ImagesConst.MAZE_WALL, null, acts);
+
 		this.width = 1;
 		this.height = 1;
-		
+
 		this.scale = EntitiesConst.MAZE_WALL_SCALE;
 	}
 

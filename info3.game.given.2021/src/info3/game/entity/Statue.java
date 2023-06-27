@@ -17,13 +17,13 @@ public class Statue extends TransparentDecorElement {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		
+
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.STATUE, null, acts);
-		
+		this.anim = new Animation(this, ImagesConst.STATUE, null, acts);
+
 		this.width = 5;
 		this.height = 5;
-		
+
 		this.scale = EntitiesConst.STATUE_SCALE;
 	}
 }

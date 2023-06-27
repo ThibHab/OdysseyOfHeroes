@@ -32,9 +32,9 @@ public class Bomb extends Entity {
 				automaton = next;
 		}
 		this.currentState = automaton.initial;
-		
+
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.BOMB, null, acts);
+		this.anim = new Animation(this, ImagesConst.BOMB, null, acts);
 
 		this.scale = 1;
 		this.category = Aut_Category.D;
@@ -43,7 +43,7 @@ public class Bomb extends Entity {
 		this.scale = EntitiesConst.BOMB_SCALE;
 	}
 
-
+	@Override
 	public void paint(Graphics g, int TileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
 		int diff = (int) (TileSize * (scale - 1)) / 2;
@@ -55,14 +55,14 @@ public class Bomb extends Entity {
 					(int) (TileSize * EntitiesConst.BOMB_RADIUS * 2), (int) (TileSize * EntitiesConst.BOMB_RADIUS * 2));
 		}
 	}
-	
+
 	@Override
 	public void Explode() {
 		Map map = EntitiesConst.MAP;
 		try {
 			RandomAccessFile file = new RandomAccessFile("resources/sounds/bomb.ogg", "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("bomb",fis, 0, 0.8F);
+			EntitiesConst.GAME.m_canvas.playSound("bomb", fis, 0, 0.8F);
 		} catch (Throwable th) {
 			th.printStackTrace(System.err);
 			System.exit(-1);
@@ -71,7 +71,9 @@ public class Bomb extends Entity {
 			for (int j = 0; j < EntitiesConst.BOMB_RADIUS * 2 + 1; j++) {
 				Entity entity = EntitiesConst.MAP_MATRIX[(int) (this.location.getX() - 2 + i + map.lenX)
 						% map.lenX][(int) (this.location.getY() - 2 + j + map.lenY) % map.lenY].entity;
-				if (entity != null && circleIntersect(this.location, entity, EntitiesConst.BOMB_RADIUS) && (entity instanceof Mob || entity instanceof Hero || entity.category == Aut_Category.O || entity instanceof Bush)) {
+				if (entity != null && circleIntersect(this.location, entity, EntitiesConst.BOMB_RADIUS)
+						&& (entity instanceof Mob || entity instanceof Hero || entity.category == Aut_Category.O
+								|| entity instanceof Bush)) {
 					entity.takeDamage(this);
 				}
 			}

@@ -101,7 +101,6 @@ public class Game {
 	JLabel m_text;
 	public GameCanvas m_canvas;
 	public CanvasListener m_listener;
-	Cowboy m_cowboy;
 	public Melee player1;
 	public Range player2;
 	Sound m_music;

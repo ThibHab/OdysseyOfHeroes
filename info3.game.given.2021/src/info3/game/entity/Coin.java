@@ -23,7 +23,7 @@ public class Coin extends Item {
 		this.currentState = automaton.initial;
 
 		Action acts[] = new Action[] { Action.S };
-		this.anim = new Animation(this,ImagesConst.COIN, null, acts);
+		this.anim = new Animation(this, ImagesConst.COIN, null, acts);
 
 		this.scale = 0.3f;
 		this.category = Aut_Category.P;
@@ -32,14 +32,6 @@ public class Coin extends Item {
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
-		case M:
-			return 0;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.COIN_S;
 		default:

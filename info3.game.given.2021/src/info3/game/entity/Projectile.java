@@ -10,7 +10,6 @@ import info3.game.automata.Aut_Automaton;
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
-import info3.game.constants.AnimConst;
 import info3.game.constants.EntitiesConst;
 import info3.game.constants.ImagesConst;
 
@@ -34,8 +33,8 @@ public class Projectile extends Entity {
 
 		this.action = Action.M;
 
-		this.location.setX((float) (this.owner.location.getX()));
-		this.location.setY((float) (this.owner.location.getY()));
+		this.location.setX((this.owner.location.getX()));
+		this.location.setY((this.owner.location.getY()));
 
 		this.hitbox = new Hitbox(this, (float) 0.30, (float) 0.40);
 	}
@@ -123,6 +122,7 @@ public class Projectile extends Entity {
 		}
 	}
 
+	@Override
 	public void tick(long elapsed) {
 		if (this.owner.weaponRange < this.tilesCrossed) {
 			EntitiesConst.MAP.projectiles.remove(this);

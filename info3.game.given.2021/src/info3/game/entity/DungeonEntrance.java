@@ -41,14 +41,6 @@ public class DungeonEntrance extends DecorElement {
 	@Override
 	public int getNbActionSprite(Action a) {
 		switch (a) {
-		case M:
-			return 0;
-		case H:
-			return 0;
-		case T:
-			return 0;
-		case D:
-			return 0;
 		case S:
 			return AnimConst.DUNGEON_ENTRANCE_S;
 		default:

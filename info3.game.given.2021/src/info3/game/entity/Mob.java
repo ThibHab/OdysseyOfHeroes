@@ -3,13 +3,11 @@ package info3.game.entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.RandomAccessFile;
 
 import info3.game.automata.Aut_Category;
 import info3.game.automata.Aut_Direction;
 import info3.game.constants.Action;
 import info3.game.constants.EntitiesConst;
-import info3.game.sound.RandomFileInputStream;
 
 public abstract class Mob extends Entity {
 	public Mob() {
@@ -17,8 +15,7 @@ public abstract class Mob extends Entity {
 		this.attackSpeed = 1000;
 		this.hitbox = new Hitbox(this, (float) 0.50, (float) 0.65);
 	}
-	
-	
+
 	@Override
 	public void tick(long elapsed) {
 		if (!EntitiesConst.GAME.inMenu.isPaused && !EntitiesConst.GAME.endGameFreeze) {
@@ -72,14 +69,14 @@ public abstract class Mob extends Entity {
 						this.frozen = false;
 						this.actionIndex = 0;
 					}
-				}else  if (timer != Integer.MIN_VALUE) {
+				} else if (timer != Integer.MIN_VALUE) {
 					this.timer -= elapsed;
 					if (timer < 0) {
 						this.frozen = false;
 						timer = Integer.MIN_VALUE;
 						waited();
 					}
-				} 
+				}
 			} else {
 				if (this.action != Action.S) {
 					if (EntitiesConst.GAME.debug) {
@@ -94,7 +91,7 @@ public abstract class Mob extends Entity {
 			this.anim.step(elapsed);
 		}
 	}
-	
+
 	@Override
 	public void Pick(Aut_Direction d) {
 		if (d == null) {
@@ -107,7 +104,7 @@ public abstract class Mob extends Entity {
 			EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = null;
 		}
 	}
-	
+
 	@Override
 	public boolean isFinished() {
 		switch (this.action) {
@@ -127,7 +124,7 @@ public abstract class Mob extends Entity {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public void die() {
 		if (this.action != Action.D) {
@@ -139,10 +136,10 @@ public abstract class Mob extends Entity {
 				System.out.println(this.name + " has died");
 			}
 		}
-		
+
 	}
-	
-	
+
+	@Override
 	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
 		BufferedImage img = anim.getFrame();
 		Location pixel = EntitiesConst.GAME.render.gridToPixel(location, true);
@@ -157,18 +154,5 @@ public abstract class Mob extends Entity {
 			g.drawRect((int) l.getX(), (int) l.getY(), (int) (tileSize * this.hitbox.width),
 					(int) (tileSize * this.hitbox.height));
 		}
-	}
-	
-	@Override
-	public void takeDamage(Entity attacker) {
-		super.takeDamage(attacker);
-//		try {
-//			RandomAccessFile file = new RandomAccessFile("resources/damage.ogg", "r");
-//			RandomFileInputStream fis = new RandomFileInputStream(file);
-//			EntitiesConst.GAME.m_canvas.playSound("damage",fis, 0, 0.7F);
-//		} catch (Throwable th) {
-//			th.printStackTrace(System.err);
-//			System.exit(-1);
-//		}
 	}
 }

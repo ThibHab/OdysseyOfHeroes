@@ -1,7 +1,5 @@
 package info3.game.entity;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.RandomAccessFile;
 import java.util.Random;
 
@@ -47,17 +45,17 @@ public class Bush extends DecorElement {
 	}
 
 	@Override
-	public void takeDamage(Entity attacker) {	
+	public void takeDamage(Entity attacker) {
 		try {
 			RandomAccessFile file = new RandomAccessFile("resources/sounds/bush.ogg", "r");
 			RandomFileInputStream fis = new RandomFileInputStream(file);
-			EntitiesConst.GAME.m_canvas.playSound("bush",fis, 0, 0.8F);
+			EntitiesConst.GAME.m_canvas.playSound("bush", fis, 0, 0.8F);
 		} catch (Throwable th) {
 			th.printStackTrace(System.err);
 			System.exit(-1);
 		}
 		health -= attacker.weaponDamage;
-		if(attacker instanceof Hero && VillagerGirl.started) {
+		if (attacker instanceof Hero && VillagerGirl.started) {
 			Hero.bushesCut++;
 		}
 		if (health <= 0) {
@@ -95,12 +93,12 @@ public class Bush extends DecorElement {
 				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = gob;
 				break;
 			case 2:
-//				Skeleton s = new Skeleton(location);
-//				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
+				Skeleton s = new Skeleton(location);
+				EntitiesConst.MAP_MATRIX[(int) location.getX()][(int) location.getY()].entity = s;
 				break;
 			}
 			break;
-			
+
 		case D:
 			new Bomb(location, this);
 			Hero.bombs--;
@@ -130,13 +128,6 @@ public class Bush extends DecorElement {
 			break;
 		}
 	}
-
-//	public void paint(Graphics g, int tileSize, float screenPosX, float screenPosY) {
-//		BufferedImage img = anim.getFrame();
-//		int diff = (int) (tileSize * (scale - 1)) / 2;
-//		g.drawImage(img, (int) screenPosX - diff, (int) screenPosY - diff, (int) (tileSize * scale),
-//				(int) (tileSize * scale), null);
-//	}
 
 	@Override
 	public int getNbActionSprite(Action a) {
